@@ -30,7 +30,7 @@
                     <div class="text-center">
                         <form action="{{ route('index') }}" method="GET" role="form" id="form-word">
                             <div class="input-group">
-                                <input type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')">
+                                <input id="word" type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')" autofocus>
                                 <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit">@lang('word.btn.search')</button>
                                 </span>
