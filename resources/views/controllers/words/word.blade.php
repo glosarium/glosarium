@@ -2,14 +2,19 @@
 
 @push('metadata')
 <meta name="title" content="{{ $word->glosarium }}">
+@if (isset($word->descriptions) and $word->descriptions->count() >= 1)
 <meta name="description" content="{{ $word->descriptions->first()->description }}">
+@endif
 <meta name="author" content="{{ config('app.name') }}">
 
 <meta property="og:title" content="{{ $word->glosarium }}" />
+@if (isset($word->descriptions) and $word->descriptions->count() >= 1)
 <meta property="og:description" content="{{ $word->descriptions->first()->description }}" />
+@endif
 <meta property="og:author" content="{{ config('app.name') }}" />
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:locale" content="id_ID" />
+<meta property="og:image" content="{{ $canvas }}" />
 <meta property="og:site_name" content="{{ config('app.name') }}" />
 @endpush
 

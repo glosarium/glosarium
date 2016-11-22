@@ -57,7 +57,19 @@ class WordController extends Controller
      */
     public function word(Word $word)
     {
-        return view('controllers.words.word', compact('word'))
+        $canvas = \Image::canvas(800, 400, '#e74c3c');
+
+        $canvas->text($word->glosarium, 400, 200, function ($font) {
+            $font->file(storage_path('font/Monaco.ttf'));
+            $font->size(50);
+            $font->color('#fff');
+            $font->align('center');
+            $font->valign('center');
+        });
+
+        $canvas->encode('data-url');
+
+        return view('controllers.words.word', compact('word', 'canvas'))
             ->withTitle(sprintf('(%s) %s', $word->origin, $word->glosarium));
     }
 
