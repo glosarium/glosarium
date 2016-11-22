@@ -14,7 +14,7 @@
 <meta property="og:author" content="{{ config('app.name') }}" />
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:locale" content="id_ID" />
-<meta property="og:image" content="{{ $canvas }}" />
+<meta property="og:image" content="{{ asset(sprintf('image/%s/%s', substr($word->slug, 0, 1), $file)) }}" />
 <meta property="og:site_name" content="{{ config('app.name') }}" />
 @endpush
 

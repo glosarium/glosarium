@@ -67,9 +67,28 @@ class WordController extends Controller
             $font->valign('center');
         });
 
-        $canvas->encode('data-url');
+        $canvas->text('(' . $word->origin . ')', 400, 250, function ($font) {
+            $font->file(storage_path('font/Monaco.ttf'));
+            $font->size(30);
+            $font->color('#fff');
+            $font->align('center');
+            $font->valign('center');
+        });
 
-        return view('controllers.words.word', compact('word', 'canvas'))
+        $path = sprintf(
+            'image/%s/',
+            substr($word->slug, 0, 1)
+        );
+
+        if (!\File::isDirectory($path)) {
+            \File::makeDirectory($path, 0777, true);
+        }
+
+        $file = sprintf('%s.jpg', $word->slug);
+
+        $canvas->save(public_path($path . $file));
+
+        return view('controllers.words.word', compact('word', 'file'))
             ->withTitle(sprintf('(%s) %s', $word->origin, $word->glosarium));
     }
 
