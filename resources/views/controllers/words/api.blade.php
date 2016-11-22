@@ -97,7 +97,7 @@ if (!function_exists('curl_init')) {
 
 $word = 'tool';
 
-$curl = curl_init('http://glosarium.web.id/api/word/search?word='.$word);
+$curl = curl_init('{{ config('app.url') }}/api/word/search?word='.$word);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
 $response = json_decode($curl);
