@@ -15,19 +15,21 @@ class CreateWordsTable extends Migration
     {
         Schema::create('words', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('type_id')->unsigned();
+            $table->integer('category_id')->unsigned();
             $table->string('slug')->unique();
-            $table->string('origin');
-            $table->string('glosarium');
+            $table->string('lang', 4)->default('en');
+            $table->string('foreign');
+            $table->string('locale');
             $table->string('spell')->nullable();
             $table->string('pronounce')->nullable();
             $table->enum('status', [
                 'drafted',
                 'published',
             ])->default('drafted');
+            $table->boolean('is_standard')->default(true);
             $table->timestamps();
 
-            $table->index(['origin', 'glosarium']);
+            $table->index(['foreign', 'locale']);
         });
     }
 
