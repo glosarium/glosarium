@@ -15,6 +15,7 @@ class CreateWordSearchesTable extends Migration
     {
         Schema::create('word_searches', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('source')->default('web');
             $table->string('keyword');
             $table->timestamps();
 
