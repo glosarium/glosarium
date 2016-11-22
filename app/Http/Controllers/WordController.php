@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Glosarium\Word;
 use App\Glosarium\WordDescription;
+use App\Glosarium\WordSearch;
 use App\Glosarium\WordType;
 use App\Http\Requests\Word\ValidationRequest;
 
@@ -28,6 +29,13 @@ class WordController extends Controller
                 ->orderBy('origin', 'ASC')
                 ->with('type', 'descriptions')
                 ->paginate();
+
+            // log search keyword
+            WordSearch::insert([
+                'keyword'    => request('kata'),
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
         }
 
         $title = empty(request('kata')) ? trans('word.search') : trans('word.result', ['keyword' => request('kata')]);
