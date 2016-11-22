@@ -8,6 +8,8 @@ return [
     'welcome'      => 'Selamat Datang!',
     'headline'     => 'Sudah ada :total kata yang disimpan dalam basisdata. Bantu kami berkembang dengan berkontribusi menambah kata.',
     'contribution' => 'Berkontribusi',
+    'api'          => 'API',
+    'apiDoc'       => 'Dokumentasi API',
 
     'field'        => [
         'search'      => 'Cari kata...',

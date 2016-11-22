@@ -24,4 +24,4 @@ Route::get('/info', function () {
     ];
 });
 
-Route::get('word/search', 'API\WordController@search');
+Route::get('word/search', 'API\WordController@search')->name('api.word.search');

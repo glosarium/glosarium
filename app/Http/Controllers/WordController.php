@@ -115,4 +115,10 @@ class WordController extends Controller
             ->back()
             ->withSuccess(trans('word.msg.created'));
     }
+
+    public function api()
+    {
+        return view('controllers.words.api')
+            ->withTitle(trans('word.apiDoc'));
+    }
 }

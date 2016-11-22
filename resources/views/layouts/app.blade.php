@@ -53,6 +53,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ route('word.create') }}">@lang('word.create')</a></li>
+                        <li><a href="{{ route('word.api') }}">@lang('word.api')</a></li>
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">@lang('user.login')</a></li>
