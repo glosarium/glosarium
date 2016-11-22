@@ -13,6 +13,7 @@ return [
      */
 
     'name'            => 'Glosarium Bahasa Indonesia',
+    'description'     => 'Glosarium adalah suatu daftar alfabetis istilah dalam suatu ranah pengetahuan tertentu yang dilengkapi dengan definisi untuk istilah-istilah tersebut.',
 
     /*
     |--------------------------------------------------------------------------

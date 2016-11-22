@@ -13,7 +13,7 @@
                         <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                             <label for="type" class="col-md-4 control-label">@lang('word.field.type')</label>
                             <div class="col-md-6">
-                                <select name="type" class="form-control">
+                                <select name="type" id="type" class="form-control">
                                     @foreach ($types as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }} ({{ $type->description }})</option>
                                     @endforeach
@@ -35,7 +35,7 @@
                             <label for="glosarium" class="col-md-4 control-label">@lang('word.field.glosarium')</label>
 
                             <div class="col-md-6">
-                                <input id="origin" type="text" class="form-control" name="glosarium" value="{{ old('glosarium') }}" required autofocus>
+                                <input id="glosarium" type="text" class="form-control" name="glosarium" value="{{ old('glosarium') }}" required autofocus>
 
                                 <span class="help-block">{{ $errors->first('glosarium') }}</span>
                             </div>
@@ -45,7 +45,7 @@
                             <label for="spell" class="col-md-4 control-label">@lang('word.field.spell')</label>
 
                             <div class="col-md-6">
-                                <input id="origin" type="text" class="form-control" name="spell" value="{{ old('spell') }}" required autofocus>
+                                <input id="spell" type="text" class="form-control" name="spell" value="{{ old('spell') }}" required autofocus>
 
                                 <span class="help-block">{{ $errors->first('spell') }}</span>
                             </div>
@@ -75,3 +75,19 @@
     </div>
 </div>
 @endsection
+
+@push('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+@endpush
+
+@push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+@endpush
+
+@push('script')
+    <script>
+        $(function(){
+            $('#type').select2()
+        })
+    </script>
+@endpush

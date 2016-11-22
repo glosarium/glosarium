@@ -1,12 +1,15 @@
 <?php
 
 return [
-    'title'  => 'Kata',
-    'result' => 'Hasil Pencarian untuk ":keyword"',
-    'search' => 'Cari Kata',
-    'create' => 'Tambah Kata',
+    'title'        => 'Kata',
+    'result'       => 'Hasil Pencarian untuk ":keyword"',
+    'search'       => 'Cari Kata',
+    'create'       => 'Tambah Kata',
+    'welcome'      => 'Selamat Datang!',
+    'headline'     => 'Sudah ada :total kata yang disimpan dalam basisdata. Bantu kami berkembang dengan berkontribusi menambah kata.',
+    'contribution' => 'Berkontribusi',
 
-    'field'  => [
+    'field'        => [
         'search'      => 'Cari kata...',
         'type'        => 'Jenis Kata',
         'origin'      => 'Kata Asing',
@@ -15,12 +18,13 @@ return [
         'description' => 'Deskripsi',
     ],
 
-    'btn'    => [
+    'btn'          => [
         'search' => 'Cari',
         'save'   => 'Simpan',
+        'create' => 'Tambah Kata',
     ],
 
-    'msg'    => [
+    'msg'          => [
         'created' => 'Kata baru berhasil ditambah dan disimpan.',
     ],
 ];

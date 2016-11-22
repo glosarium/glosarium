@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+@push('metadata')
+<meta name="title" content="{{ config('app.name') }}">
+<meta name="description" content="{{ config('app.description') }}">
+<meta name="author" content="{{ config('app.name') }}">
+
+<meta property="og:title" content="{{ config('app.name') }}" />
+<meta property="og:description" content="{{ config('app.description') }}" />
+<meta property="og:author" content="{{ config('app.name') }}" />
+<meta property="og:url" content="{{ url()->current() }}" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="{{ config('app.name') }}" />
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -7,6 +20,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ $title or null }}</div>
                 <div class="panel-body">
+
+                    <div class="jumbotron">
+                        <h2>@lang('word.welcome')</h2>
+                        <p>@lang('word.headline', ['total' => $wordTotal])</p>
+                        <a href="{{ route('word.create') }}" class="btn btn-primary">@lang('word.btn.create')</a>
+                    </div>
+
                     <div class="text-center">
                         <form action="{{ route('index') }}" method="GET" role="form" id="form-word">
                             <div class="input-group">

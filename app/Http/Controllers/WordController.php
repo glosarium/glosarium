@@ -38,9 +38,12 @@ class WordController extends Controller
             ]);
         }
 
+        // count all words
+        $wordTotal = Word::count();
+
         $title = empty(request('kata')) ? trans('word.search') : trans('word.result', ['keyword' => request('kata')]);
 
-        return view('controllers.words.index', compact('words'))
+        return view('controllers.words.index', compact('words', 'wordTotal'))
             ->withTitle($title);
     }
 
@@ -53,7 +56,7 @@ class WordController extends Controller
     public function word(Word $word)
     {
         return view('controllers.words.word', compact('word'))
-            ->withTitle($word->glosarium);
+            ->withTitle(sprintf('(%s) %s', $word->origin, $word->glosarium));
     }
 
     /**
