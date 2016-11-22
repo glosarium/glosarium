@@ -6,7 +6,7 @@ return [
     'search'       => 'Cari Kata',
     'create'       => 'Tambah Kata',
     'welcome'      => 'Selamat Datang!',
-    'headline'     => 'Sudah ada :total kata yang disimpan dalam basisdata. Bantu kami berkembang dengan berkontribusi menambah kata.',
+    'headline'     => 'Sudah ada :total kata yang disimpan dalam basisdata. Bantu kami berkembang dengan cara berkontribusi menambah kata.',
     'contribution' => 'Berkontribusi',
     'api'          => 'API',
     'apiDoc'       => 'Dokumentasi API',
