@@ -31,11 +31,13 @@ class WordController extends Controller
                 ->paginate();
 
             // log search keyword
-            WordSearch::insert([
-                'keyword'    => request('kata'),
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
-            ]);
+            if (strlen(request('kata')) >= 3) {
+                WordSearch::insert([
+                    'keyword'    => request('kata'),
+                    'created_at' => \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now(),
+                ]);
+            }
         }
 
         // count all words
