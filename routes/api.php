@@ -11,7 +11,7 @@
 |
  */
 
-Route::get('/', function () {
+Route::get('/info', function () {
     return [
         'status'  => true,
         'content' => [
@@ -19,6 +19,7 @@ Route::get('/', function () {
             'description' => config('app.description'),
             'author'      => 'Yugo (dedy.yugo.purwanto@gmail.com)',
             'website'     => config('app.url'),
+            'version'     => '0.1-dev',
         ],
     ];
 });
