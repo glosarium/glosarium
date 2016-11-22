@@ -7,12 +7,24 @@ use App\Glosarium\WordDescription;
 use App\Glosarium\WordType;
 use App\Http\Requests\Word\ValidationRequest;
 
+/**
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @link https://github.com/arvernester/glosarium
+ * @copyright 2016 - Glosarium
+ */
 class WordController extends Controller
 {
+    /**
+     * Show form and search results if available
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return Response
+     */
     public function index()
     {
         if (request('kata')) {
             $words = Word::where('origin', 'LIKE', '%' . request('kata') . '%')
+                ->orWhere('glosarium', 'LIKE', '%' . request('kata') . '%')
                 ->orderBy('origin', 'ASC')
                 ->with('type', 'descriptions')
                 ->paginate();
@@ -25,6 +37,9 @@ class WordController extends Controller
     }
 
     /**
+     * Show word detail
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param Word $word
      */
     public function word(Word $word)
@@ -33,6 +48,12 @@ class WordController extends Controller
             ->withTitle($word->glosarium);
     }
 
+    /**
+     * Show create form
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return Response
+     */
     public function create()
     {
         $types = WordType::orderBy('name', 'ASC')
@@ -43,6 +64,9 @@ class WordController extends Controller
     }
 
     /**
+     * Store new word into database
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param ValidationRequest $request
      */
     public function store(ValidationRequest $request)
