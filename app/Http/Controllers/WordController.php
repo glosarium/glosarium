@@ -71,11 +71,16 @@ class WordController extends Controller
         }
 
         // count all words
-        $wordTotal = Word::count();
+        $rememberFor = \Carbon\Carbon::now()->addDays(7);
+        $wordTotal = \Cache::remember('wordTotal', $rememberFor, function () {
+            return Word::count();
+        });
 
         $title = empty(request('kata')) ? config('app.name') : trans('word.result', ['keyword' => request('kata')]);
 
-        return view('controllers.words.index', compact('words', 'wordTotal'))
+        $file = $this->createImage('Glosarium', 50, 'home.jpg');
+
+        return view('controllers.words.index', compact('words', 'wordTotal', 'file'))
             ->withTitle($title);
     }
 
@@ -129,7 +134,10 @@ class WordController extends Controller
 
         $word->load('views');
 
-        $categories = WordCategory::orderBy('name', 'ASC')->get();
+        $rememberFor = \Carbon\Carbon::now()->addDays(7);
+        $categories = \Cache::remember('categories', $rememberFor, function () {
+            return WordCategory::orderBy('name', 'ASC')->get();
+        });
 
         return view('controllers.words.word', compact('word', 'path', 'file', 'categories'))
             ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
@@ -143,8 +151,11 @@ class WordController extends Controller
      */
     public function create()
     {
-        $categories = WordCategory::orderBy('name', 'ASC')
-            ->get();
+        // cache categories
+        $rememberFor = \Carbon\Carbon::now()->addDays(7);
+        $categories = \Cache::remember('categories', $rememberFor, function () {
+            return WordCategory::orderBy('name', 'ASC')->get();
+        });
 
         return view('controllers.words.create', compact('categories'))
             ->withTitle(trans('word.create'));
@@ -192,17 +203,34 @@ class WordController extends Controller
             ->withSuccess(trans('word.msg.created'));
     }
 
+    /**
+     * API Documentation
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return \Response
+     */
     public function api()
     {
+        $file = $this->createImage(trans('word.apa'), 30, 'api.jpg');
+
+        return view('controllers.words.api', compact('file'))
+            ->withTitle(trans('word.apa'));
+    }
+
+    /**
+     * @param $text
+     * @param $size
+     */
+    public function createImage($text, $size, $file)
+    {
         $path = 'image/';
-        $file = 'api.jpg';
 
         if (!\File::exists(public_path($path . $file))) {
-            $canvas = \Image::canvas(800, 400, '#e74c3c');
+            $canvas = \Image::canvas(800, 400, $this->colors->random());
 
-            $canvas->text(trans('word.apa'), 400, 200, function ($font) {
+            $canvas->text($text, 400, 200, function ($font) use ($size) {
                 $font->file(storage_path('font/Monaco.ttf'));
-                $font->size(30);
+                $font->size($size);
                 $font->color('#fff');
                 $font->align('center');
                 $font->valign('center');
@@ -215,7 +243,6 @@ class WordController extends Controller
             $canvas->save(public_path($path . $file));
         }
 
-        return view('controllers.words.api', compact('path', 'file'))
-            ->withTitle(trans('word.apa'));
+        return $path . $file;
     }
 }

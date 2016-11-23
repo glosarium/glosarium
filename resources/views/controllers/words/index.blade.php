@@ -11,6 +11,7 @@
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="{{ config('app.name') }}" />
+<meta property="og:image" content="{{ asset($file) }}" />
 @endpush
 
 @section('content')
