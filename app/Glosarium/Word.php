@@ -52,4 +52,12 @@ class Word extends Model
     {
         return $this->hasMany(\App\Glosarium\WordDescription::class);
     }
+
+    /**
+     * @return mixed
+     */
+    public function views()
+    {
+        return $this->hasMany(\App\Glosarium\WordView::class);
+    }
 }

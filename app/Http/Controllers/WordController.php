@@ -6,6 +6,7 @@ use App\Glosarium\Word;
 use App\Glosarium\WordCategory;
 use App\Glosarium\WordDescription;
 use App\Glosarium\WordSearch;
+use App\Glosarium\WordView;
 use App\Http\Requests\Word\ValidationRequest;
 
 /**
@@ -116,6 +117,16 @@ class WordController extends Controller
 
             $canvas->save(public_path($path . $file));
         }
+
+        // log to view
+        WordView::firstOrCreate([
+            'word_id'    => $word->id,
+            'ip'         => \Request::ip(),
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+
+        $word->load('views');
 
         return view('controllers.words.word', compact('word', 'path', 'file'))
             ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
