@@ -55,6 +55,7 @@ class WordController extends Controller
         if (request('kata')) {
             $words = Word::where('foreign', 'LIKE', '%' . request('kata') . '%')
                 ->orWhere('locale', 'LIKE', '%' . request('kata') . '%')
+                ->whereStatus('published')
                 ->orderBy('locale', 'ASC')
                 ->with('category', 'descriptions.type')
                 ->paginate();
