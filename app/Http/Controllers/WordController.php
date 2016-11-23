@@ -128,7 +128,9 @@ class WordController extends Controller
 
         $word->load('views');
 
-        return view('controllers.words.word', compact('word', 'path', 'file'))
+        $categories = WordCategory::orderBy('name', 'ASC')->get();
+
+        return view('controllers.words.word', compact('word', 'path', 'file', 'categories'))
             ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
 

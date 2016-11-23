@@ -38,6 +38,17 @@
                     @include('controllers.words.partials.ad-responsive')
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Kategori</div>
+                <div class="panel-body">
+                    <ul>
+                        @foreach ($categories as $category)
+                            <li><a href="{{ route('word.category', [$category->slug]) }}">{{ $category->name }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
