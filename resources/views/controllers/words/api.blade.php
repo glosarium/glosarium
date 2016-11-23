@@ -59,7 +59,7 @@
                     <hr>
 
                     <h3 id="search"><a href="#search">#</a> Pencarian Glosarium</h3>
-                    <p>Memungkinkan Anda untuk mencari beberapa glosarium sekaligus dengan satu kata kunci.</p>
+                    <p>Memungkinkan Anda untuk mencari beberapa glosarium sekaligus dengan satu kata kunci. Sebagai informasi tambahan, jumlah permintaan dalam satu menit dibatasi hanya 10 (sepuluh) kali. Hal ini berguna untuk mengurangi beban server.</p>
 
                     <h4 id="search_request"><a href="#search_request">#</a> Permintaan</h4>
                     <p>Permintaan pengguna pada server akan mengembalikan data dalam format JSON. Adapun atribut, tipe data, dan nilai yang dikembalikan adalah sebagai berikut.</p>
