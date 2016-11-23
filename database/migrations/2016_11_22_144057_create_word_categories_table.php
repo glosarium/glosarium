@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWordDescriptionsTable extends Migration
+class CreateWordCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateWordDescriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('word_descriptions', function (Blueprint $table) {
+        Schema::create('word_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('word_id')->unsigned();
-            $table->integer('type_id')->unsigned();
-            $table->text('description');
+            $table->string('slug')->unique();
+            $table->string('name');
             $table->timestamps();
+
+            $table->index(['name', 'slug']);
         });
     }
 
@@ -29,6 +30,6 @@ class CreateWordDescriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('word_descriptions');
+        Schema::dropIfExists('word_categories');
     }
 }
