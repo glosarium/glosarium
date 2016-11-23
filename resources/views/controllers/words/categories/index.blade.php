@@ -16,6 +16,10 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="col-md-12">
+            @include('controllers.words.partials.ad-billboard')
+        </div>
+
         <div class="col-md-12 col-sm-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">{{ $category->name }}</div>
