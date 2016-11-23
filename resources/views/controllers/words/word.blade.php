@@ -44,7 +44,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach ($categories as $category)
-                            <li><a href="{{ route('word.category', [$category->slug]) }}">{{ $category->name }}</a></li>
+                            <li><a href="{{ route('word.category', [$category->slug]) }}">{{ $category->name }}</a> ({{ number_format($category->words->count(), 0, ',', '.') }})</li>
                         @endforeach
                     </ul>
                 </div>
