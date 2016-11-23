@@ -26,6 +26,7 @@ return [
         'glosarium'   => 'Glosarium',
         'spell'       => 'Ejaan',
         'description' => 'Deskripsi',
+        'category'    => 'Kategori',
     ],
 
     'btn'          => [
