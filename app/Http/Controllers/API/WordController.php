@@ -22,7 +22,8 @@ class WordController extends Controller
     public function search()
     {
         $validator = \Validator::make(request()->all(), [
-            'word' => 'required|string',
+            'word'  => 'required|string',
+            'limit' => 'integer',
         ]);
 
         if ($validator->fails()) {
@@ -32,10 +33,13 @@ class WordController extends Controller
             ];
         }
 
-        $words = Word::where('origin', 'LIKE', '%' . request('word') . '%')
-            ->orWhere('glosarium', 'LIKE', '%' . request('word') . '%')
+        $limit = empty(request('limit')) ? 500 : (int) request('limit');
+
+        $words = Word::where('foreign', 'LIKE', '%' . request('word') . '%')
+            ->orWhere('locale', 'LIKE', '%' . request('word') . '%')
             ->whereStatus('published')
-            ->with('descriptions', 'type')
+            ->limit($limit)
+            ->with('category', 'descriptions.type')
             ->get();
 
         // save to search
@@ -53,15 +57,13 @@ class WordController extends Controller
             'total'    => $words->count(),
             'contents' => $words->map(function ($word) {
                 return [
-                    'wordType'     => $word->type->name,
-                    'origin'       => $word->origin,
-                    'glosarium'    => $word->glosarium,
-                    'spell'        => $word->spell,
-                    'createdAt'    => $word->created_at->toIso8601String(),
-                    'updatedAt'    => $word->updated_at->toIso8601String(),
-                    'descriptions' => $word->descriptions->map(function ($description) {
-                        return [$description->description];
-                    }),
+                    'category'   => $word->category->name,
+                    'foreign'    => $word->foreign,
+                    'locale'     => $word->locale,
+                    'spell'      => $word->spell,
+                    'createdAt'  => $word->created_at->toIso8601String(),
+                    'updatedAt'  => $word->updated_at->toIso8601String(),
+                    'totalViews' => $word->views()->count(),
                 ];
             }),
         ];
