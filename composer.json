@@ -10,7 +10,8 @@
         "intervention/image": "^2.3",
         "fabpot/goutte": "^3.2",
         "cviebrock/eloquent-sluggable": "^4.1",
-        "barryvdh/laravel-debugbar": "^2.3"
+        "barryvdh/laravel-debugbar": "^2.3",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
