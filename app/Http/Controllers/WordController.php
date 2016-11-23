@@ -57,7 +57,7 @@ class WordController extends Controller
                 ->orWhere('locale', 'LIKE', '%' . request('kata') . '%')
                 ->whereStatus('published')
                 ->orderBy('locale', 'ASC')
-                ->with('category', 'descriptions.type')
+                ->with('category', 'descriptions.type', 'views')
                 ->paginate();
 
             // log search keyword
