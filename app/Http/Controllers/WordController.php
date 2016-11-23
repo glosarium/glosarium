@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Glosarium\Word;
+use App\Glosarium\WordCategory;
 use App\Glosarium\WordDescription;
 use App\Glosarium\WordSearch;
-use App\Glosarium\WordType;
 use App\Http\Requests\Word\ValidationRequest;
 
 /**
@@ -16,6 +16,34 @@ use App\Http\Requests\Word\ValidationRequest;
 class WordController extends Controller
 {
     /**
+     * @var collection
+     */
+    protected $colors;
+
+    public function __construct()
+    {
+        $this->colors = collect([
+            '#1abc9c',
+            '#2ecc71',
+            '#3498db',
+            '#9b59b6',
+            '#34495e',
+            '#16a085',
+            '#27ae60',
+            '#2980b9',
+            '#8e44ad',
+            '#2c3e50',
+            '#f1c40f',
+            '#e67e22',
+            '#e74c3c',
+            '#95a5a6',
+            '#f39c12',
+            '#d35400',
+            '#c0392b',
+        ]);
+    }
+
+    /**
      * Show form and search results if available
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -24,10 +52,10 @@ class WordController extends Controller
     public function index()
     {
         if (request('kata')) {
-            $words = Word::where('origin', 'LIKE', '%' . request('kata') . '%')
-                ->orWhere('glosarium', 'LIKE', '%' . request('kata') . '%')
-                ->orderBy('origin', 'ASC')
-                ->with('type', 'descriptions')
+            $words = Word::where('foreign', 'LIKE', '%' . request('kata') . '%')
+                ->orWhere('locale', 'LIKE', '%' . request('kata') . '%')
+                ->orderBy('locale', 'ASC')
+                ->with('category', 'descriptions.type')
                 ->paginate();
 
             // log search keyword
@@ -43,7 +71,7 @@ class WordController extends Controller
         // count all words
         $wordTotal = Word::count();
 
-        $title = empty(request('kata')) ? trans('word.search') : trans('word.result', ['keyword' => request('kata')]);
+        $title = empty(request('kata')) ? config('app.name') : trans('word.result', ['keyword' => request('kata')]);
 
         return view('controllers.words.index', compact('words', 'wordTotal'))
             ->withTitle($title);
@@ -55,41 +83,42 @@ class WordController extends Controller
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param Word $word
      */
-    public function word(Word $word)
+    public function word(WordCategory $category, Word $word)
     {
-        $canvas = \Image::canvas(800, 400, '#e74c3c');
-
-        $canvas->text($word->glosarium, 400, 200, function ($font) {
-            $font->file(storage_path('font/Monaco.ttf'));
-            $font->size(50);
-            $font->color('#fff');
-            $font->align('center');
-            $font->valign('center');
-        });
-
-        $canvas->text('(' . $word->origin . ')', 400, 250, function ($font) {
-            $font->file(storage_path('font/Monaco.ttf'));
-            $font->size(30);
-            $font->color('#fff');
-            $font->align('center');
-            $font->valign('center');
-        });
-
         $path = sprintf(
-            'image/%s/',
-            substr($word->slug, 0, 1)
+            'image/%s/%s/',
+            substr($word->slug, 0, 1),
+            $word->category->slug
         );
-
-        if (!\File::isDirectory($path)) {
-            \File::makeDirectory($path, 0777, true);
-        }
-
         $file = sprintf('%s.jpg', $word->slug);
 
-        $canvas->save(public_path($path . $file));
+        if (!\File::exists(public_path($path . $file))) {
+            if (!\File::isDirectory($path)) {
+                \File::makeDirectory($path, 0777, true);
+            }
+            $canvas = \Image::canvas(800, 400, $this->colors->random());
 
-        return view('controllers.words.word', compact('word', 'file'))
-            ->withTitle(sprintf('(%s) %s', $word->origin, $word->glosarium));
+            $canvas->text($word->locale, 400, 200, function ($font) {
+                $font->file(storage_path('font/Monaco.ttf'));
+                $font->size(50);
+                $font->color('#fff');
+                $font->align('center');
+                $font->valign('center');
+            });
+
+            $canvas->text('(' . $word->foreign . ')', 400, 250, function ($font) {
+                $font->file(storage_path('font/Monaco.ttf'));
+                $font->size(30);
+                $font->color('#fff');
+                $font->align('center');
+                $font->valign('center');
+            });
+
+            $canvas->save(public_path($path . $file));
+        }
+
+        return view('controllers.words.word', compact('word', 'path', 'file'))
+            ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
 
     /**
@@ -100,10 +129,10 @@ class WordController extends Controller
      */
     public function create()
     {
-        $types = WordType::orderBy('name', 'ASC')
+        $categories = WordCategory::orderBy('name', 'ASC')
             ->get();
 
-        return view('controllers.words.create', compact('types'))
+        return view('controllers.words.create', compact('categories'))
             ->withTitle(trans('word.create'));
     }
 
@@ -117,13 +146,14 @@ class WordController extends Controller
     {
         \DB::transaction(function () use ($request) {
             $word = Word::create([
-                'slug'      => str_slug($request->glosarium),
-                'type_id'   => $request->type,
-                'origin'    => $request->origin,
-                'glosarium' => $request->glosarium,
-                'spell'     => $request->spell,
-                'pronounce' => null,
-                'status'    => 'published',
+                'slug'        => str_slug($request->locale),
+                'category_id' => 1,
+                'lang'        => 'en',
+                'type_id'     => $request->type,
+                'foreign'     => $request->origin,
+                'locale'      => $request->glosarium,
+                'spell'       => $request->spell,
+                'status'      => 'published',
             ]);
 
             if (!empty($request->descriptions)) {
@@ -132,6 +162,7 @@ class WordController extends Controller
                 foreach (explode(PHP_EOL, $request->descriptions) as $description) {
                     $wordDescriptions[] = [
                         'word_id'     => $word->id,
+                        'type_id'     => 2,
                         'description' => str_replace(PHP_EOL, '', $description),
                         'created_at'  => $now,
                         'updated_at'  => $now,
@@ -149,7 +180,28 @@ class WordController extends Controller
 
     public function api()
     {
-        return view('controllers.words.api')
-            ->withTitle(trans('word.apiDoc'));
+        $path = 'image/';
+        $file = 'api.jpg';
+
+        if (!\File::exists(public_path($path . $file))) {
+            $canvas = \Image::canvas(800, 400, '#e74c3c');
+
+            $canvas->text(trans('word.apa'), 400, 200, function ($font) {
+                $font->file(storage_path('font/Monaco.ttf'));
+                $font->size(30);
+                $font->color('#fff');
+                $font->align('center');
+                $font->valign('center');
+            });
+
+            if (!\File::isDirectory($path)) {
+                \File::makeDirectory($path, 0777, true);
+            }
+
+            $canvas->save(public_path($path . $file));
+        }
+
+        return view('controllers.words.api', compact('path', 'file'))
+            ->withTitle(trans('word.apa'));
     }
 }

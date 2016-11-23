@@ -1,23 +1,57 @@
 @extends('layouts.app')
 
+@push('metadata')
+<meta name="title" content="{{ trans('word.apa') }}">
+<meta name="description" content="{{ config('app.description') }}">
+<meta name="author" content="{{ config('app.name') }}">
+
+<meta property="og:title" content="{{ trans('word.apa') }}" />
+<meta property="og:description" content="{{ config('app.description') }}" />
+<meta property="og:author" content="{{ config('app.name') }}" />
+<meta property="og:url" content="{{ url()->current() }}" />
+<meta property="og:locale" content="id_ID" />
+<meta property="og:site_name" content="{{ config('app.name') }}" />
+<meta property="og:image" content="{{ asset($path.$file) }}" />
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-sm-4">
+        <div class="col-md-12">
+            @include('controllers.words.partials.ad-billboard')
+        </div>
+
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">{{ $title or null }}</div>
                 <div class="panel-body">
 
-                    <h2>Dokumentasi API</h2>
+                    <h2>Dokumentasi @lang('word.apa')</h2>
                     <p>Anda dapat melakukan permintaan ke aplikasi Glosarium untuk mendapatkan data dengan format JSON. Adapaun, daftar API yang tersedia untuk saat ini adalah:</p>
 
                     <ul>
                         <li>
-                            <a href="#search">Pencarian Glosarium</a>
+                            <a href="#search">Pencarian Glosarium Berdasarkan Katakunci</a>
                             <ul>
                                 <li><a href="#search_request">Permintaan</a></li>
                                 <li><a href="#search_response">Kembalian</a></li>
                                 <li><a href="#search_code">Contoh Kode</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            Tambah Baru Glosarium
+                            <ul>
+                                <li>Permintaan</li>
+                                <li>Kembalian</li>
+                                <li>Contoh Kode</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Sugesti Perubahan Glosarium
+                            <ul>
+                                <li>Permintaan</li>
+                                <li>Kembalian</li>
+                                <li>Contoh Kode</li>
                             </ul>
                         </li>
                     </ul>
@@ -108,15 +142,6 @@ if ($response->status === true) {
     // do something
 }
                     </pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-sm-12">
-        <div class="panel panel-default">
-                <div class="panel-heading">Iklan</div>
-                <div class="panel-body">
-                    <p>Belum ada iklan.</p>
                 </div>
             </div>
         </div>

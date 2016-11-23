@@ -2,18 +2,22 @@
 
 namespace App\Glosarium;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Word extends Model
 {
+    use Sluggable;
+
     /**
      * @var array
      */
     protected $fillable = [
-        'type_id',
+        'category_id',
         'slug',
-        'origin',
-        'glosarium',
+        'lang',
+        'foreign',
+        'locale',
         'spell',
         'pronounce',
         'status',
@@ -24,12 +28,21 @@ class Word extends Model
         return 'slug';
     }
 
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'locale',
+            ],
+        ];
+    }
+
     /**
      * @return mixed
      */
-    public function type()
+    public function category()
     {
-        return $this->belongsTo(\App\Glosarium\WordType::class);
+        return $this->belongsTo(\App\Glosarium\WordCategory::class);
     }
 
     /**

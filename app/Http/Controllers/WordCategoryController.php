@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Glosarium\Word;
 use App\Glosarium\WordCategory;
 
 /**
@@ -17,6 +18,11 @@ class WordCategoryController extends Controller
      */
     public function show(WordCategory $category)
     {
+        $words = Word::whereCategoryId($category->id)
+            ->orderBy('locale', 'ASC')
+            ->paginate(90);
 
+        return view('controllers.words.categories.index', compact('category', 'words'))
+            ->withTitle(trans('word.category') . $category->name);
     }
 }

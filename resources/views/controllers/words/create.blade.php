@@ -3,72 +3,67 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
+        <div class="col-md-7 col-sm-12">
+            <div class="panel panel-primary">
                 <div class="panel-heading">{{ $title or null }}</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('word.store') }}">
+
+                    <div class="alert alert-info">@lang('word.createInfo')</div>
+
+                    <form role="form" method="POST" action="{{ route('word.store') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-                            <label for="type" class="col-md-4 control-label">@lang('word.field.type')</label>
-                            <div class="col-md-6">
-                                <select name="type" id="type" class="form-control">
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }} ({{ $type->description }})</option>
-                                    @endforeach
-                                </select>
-                                <span class="help-block">{{ $errors->first('type') }}</span>
-                            </div>
+                        <div class="form-group{{ $errors->has('category') ? ' has-error' : '' }}">
+                            <label for="category" class="control-label">@lang('word.field.category')</label>
+                            <select name="category" id="category" class="form-control">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="help-block">{{ $errors->first('type') }}</span>
                         </div>
 
                         <div class="form-group{{ $errors->has('origin') ? ' has-error' : '' }}">
-                            <label for="origin" class="col-md-4 control-label">@lang('word.field.origin')</label>
+                            <label for="origin" class="control-label">@lang('word.field.origin')</label>
 
-                            <div class="col-md-6">
-                                <input id="origin" type="text" class="form-control" name="origin" value="{{ old('origin') }}" required>
-                                <span class="help-block">{{ $errors->first('origin') }}</span>
-                            </div>
+                            <input id="origin" type="text" class="form-control" name="origin" value="{{ old('origin') }}" required>
+
+                            <span class="help-block">{{ $errors->first('origin') }}</span>
                         </div>
 
                         <div class="form-group{{ $errors->has('glosarium') ? ' has-error' : '' }}">
-                            <label for="glosarium" class="col-md-4 control-label">@lang('word.field.glosarium')</label>
+                            <label for="glosarium" class="control-label">@lang('word.field.glosarium')</label>
 
-                            <div class="col-md-6">
-                                <input id="glosarium" type="text" class="form-control" name="glosarium" value="{{ old('glosarium') }}" required autofocus>
+                            <input id="glosarium" type="text" class="form-control" name="glosarium" value="{{ old('glosarium') }}" required autofocus>
 
-                                <span class="help-block">{{ $errors->first('glosarium') }}</span>
-                            </div>
+                            <span class="help-block">{{ $errors->first('glosarium') }}</span>
                         </div>
 
                         <div class="form-group{{ $errors->has('spell') ? ' has-error' : '' }}">
-                            <label for="spell" class="col-md-4 control-label">@lang('word.field.spell')</label>
+                            <label for="spell" class="control-label">@lang('word.field.spell')</label>
 
-                            <div class="col-md-6">
-                                <input id="spell" type="text" class="form-control" name="spell" value="{{ old('spell') }}" required autofocus>
+                            <input id="spell" type="text" class="form-control" name="spell" value="{{ old('spell') }}" required autofocus>
 
-                                <span class="help-block">{{ $errors->first('spell') }}</span>
-                            </div>
+                            <span class="help-block">{{ $errors->first('spell') }}</span>
                         </div>
 
-                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label for="description" class="col-md-4 control-label">@lang('word.field.description')</label>
-
-                            <div class="col-md-6">
-                                <textarea name="descriptions" class="form-control">{{ old('descriptions') }}</textarea>
-
-                                <span class="help-block">{{ $errors->first('descriptions') }}</span>
-                            </div>
-                        </div>
+                        <hr>
 
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    @lang('word.btn.save')
-                                </button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                @lang('word.btn.save')
+                            </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Iklan</div>
+                <div class="panel-body">
+                    @include('controllers.words.partials.ad-responsive')
                 </div>
             </div>
         </div>

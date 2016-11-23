@@ -34,4 +34,12 @@ class WordDescription extends Model
     {
         return $this->belongsTo(\App\Glosarium\Word::class);
     }
+
+    /**
+     * @return mixed
+     */
+    public function type()
+    {
+        return $this->belongsTo(\App\Glosarium\WordType::class);
+    }
 }

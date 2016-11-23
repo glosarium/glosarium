@@ -16,14 +16,13 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ $title or null }}</div>
+        <div class="col-md-12 col-sm-12">
+            <div class="panel panel-primary">
                 <div class="panel-body">
 
                     <div class="jumbotron">
                         <h2>@lang('word.welcome')</h2>
-                        <p>@lang('word.headline', ['total' => $wordTotal])</p>
+                        <p>@lang('word.headline', ['total' => number_format($wordTotal, 0, ',', '.')])</p>
                         <a href="{{ route('word.create') }}" class="btn btn-primary">@lang('word.btn.create')</a>
                     </div>
 
@@ -40,36 +39,30 @@
                     </div>
 
                     @if (isset($words) AND $words->total() >= 1)
+                        <h3>@lang('word.found', ['total' => number_format($words->total(), 0, ',', '.')])</h3>
+
                         <hr>
                         <ul class="list-group">
                             @foreach ($words as $word)
                                 <li class="list-group-item">
-                                    <h2>
-                                        <a href="{{ route('word.detail', [$word->slug]) }}">({{ $word->origin }}) {{ $word->glosarium }}</a>
-                                        <small>{{ $word->spell }}</small>
-                                        <small><i class="fa fa-volume-up"></i></small>
-                                    </h2>
-                                    <h3>{{ $word->type->name }} ({{ $word->type->description }})</h3>
-
-                                    @if (! empty($word->descriptions))
-                                        <ul>
-                                            @foreach ($word->descriptions as $description)
-                                                <li>{{ $description->description }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
+                                    @include('controllers.words.partials.content')
                                 </li>
                             @endforeach
                         </ul>
 
                         {{ $words->appends(['kata' => request('kata')])->links() }}
+
                     @elseif (!empty(request('kata')))
                         <hr>
-                        <div class="alert alert-info">Tidak ada hasil pencarian untuk "{{ request('kata') }}".</div>
+                        <div class="alert alert-info">@lang('word.noResult', ['keyword' => request('kata')]).</div>
                     @endif
 
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+            @include('controllers.words.partials.ad-billboard')
         </div>
     </div>
 </div>

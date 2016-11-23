@@ -9,8 +9,8 @@ class WordType extends Model
     /**
      * @return mixed
      */
-    public function words()
+    public function descriptions()
     {
-        return $this->hasMany(\App\Glosarium\Word::class);
+        return $this->hasMany(\App\Glosarium\WordDescription::class);
     }
 }

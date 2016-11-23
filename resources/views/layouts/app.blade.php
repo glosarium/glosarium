@@ -13,6 +13,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     @stack('css')
@@ -91,5 +92,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('js')
     @stack('script')
+
+    @include('partials.ga-analytic')
 </body>
 </html>
