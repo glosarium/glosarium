@@ -41,6 +41,24 @@ class WordCategoryController extends Controller
     }
 
     /**
+     * Show category index
+     *
+     * @author Yugp <dedy.yugo.purwanto@gmail.com>
+     * @return \Response
+     */
+    public function index()
+    {
+        // cache category
+        $rememberFor = \Carbon\Carbon::now()->addDays(7);
+        $categories = \Cache::remember('categories', $rememberFor, function () {
+            return WordCategory::orderBy('name', 'ASC')->get();
+        });
+
+        return view('controllers.words.categories.index', compact('categories'))
+            ->withTitle('Kategori');
+    }
+
+    /**
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param WordCategory $category
      */
@@ -73,7 +91,7 @@ class WordCategoryController extends Controller
             ->orderBy('locale', 'ASC')
             ->paginate(90);
 
-        return view('controllers.words.categories.index', compact('category', 'words', 'path', 'file'))
+        return view('controllers.words.categories.show', compact('category', 'words', 'path', 'file'))
             ->withTitle(trans('word.category') . $category->name);
     }
 }

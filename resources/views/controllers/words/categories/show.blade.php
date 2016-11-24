@@ -11,6 +11,7 @@
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="{{ config('app.name') }}" />
+<meta property="og:image" content="{{ asset($path.$file) }}" />
 @endpush
 
 @section('content')
@@ -22,20 +23,22 @@
 
         <div class="col-md-12 col-sm-12">
             <div class="panel panel-primary">
-                <div class="panel-heading">{{ $title or config('app.name') }}</div>
+                <div class="panel-heading">{{ $category->name }} ({{ number_format($words->total(), 0, ',', '.') }})</div>
                 <div class="panel-body">
 
                 <div class="row">
-                    @foreach ($categories->chunk(15) as $chunk)
+                    @foreach ($words->chunk(30) as $chunk)
                         <div class="col-md-4">
                             <ul>
-                            @foreach ($chunk as $category)
-                                <li><a href="{{ route('word.category.show', [$category->slug]) }}">{{ $category->name }}</a></li>
+                            @foreach ($chunk as $word)
+                                <li><a href="{{ route('word.detail', [$category->slug, $word->slug]) }}">{{ $word->locale }}</a> ({{ $word->foreign }})</li>
                             @endforeach
                             </ul>
                         </div>
                     @endforeach
                 </div>
+
+                {{ $words->links() }}
 
                 </div>
             </div>

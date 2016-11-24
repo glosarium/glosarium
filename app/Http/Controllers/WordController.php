@@ -134,11 +134,6 @@ class WordController extends Controller
 
         $word->load('views');
 
-        $rememberFor = \Carbon\Carbon::now()->addDays(7);
-        $categories = \Cache::remember('categories', $rememberFor, function () {
-            return WordCategory::orderBy('name', 'ASC')->get();
-        });
-
         return view('controllers.words.word', compact('word', 'path', 'file', 'categories'))
             ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
