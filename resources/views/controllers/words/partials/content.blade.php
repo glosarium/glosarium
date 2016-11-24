@@ -6,7 +6,7 @@
 <h3>{{ $word->foreign }}</h3>
 <hr>
 
-<p>@lang('word.category') <a href="{{ route('word.category.show', [$word->category->slug]) }}">{{ $word->category->name }}</a></p>
+<h5>@lang('word.category') <a href="{{ route('word.category.show', [$word->category->slug]) }}">{{ $word->category->name }}</a></h5>
 @if (! empty($word->type))
 <h3>{{ $word->type->name }} ({{ $word->type->description }})</h3>
 @endif
