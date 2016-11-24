@@ -128,6 +128,9 @@ class WordController extends Controller
         WordView::firstOrCreate([
             'word_id'    => $word->id,
             'ip'         => \Request::ip(),
+            'browser'    => \BrowserDetect::browserName(),
+            'os'         => \BrowserDetect::osName(),
+            'device'     => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
