@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @push('metadata')
-<meta name="title" content="{{ $word->glosarium }}">
+<meta name="title" content="{{ $word->locale }}">
 @if (isset($word->descriptions) and $word->descriptions->count() >= 1)
 <meta name="description" content="{{ $word->descriptions->first()->description }}">
 @endif
 <meta name="author" content="{{ config('app.name') }}">
 
-<meta property="og:title" content="{{ $word->glosarium }}" />
+<meta property="og:title" content="{{ $word->locale }}" />
 @if (isset($word->descriptions) and $word->descriptions->count() >= 1)
 <meta property="og:description" content="{{ $word->descriptions->first()->description }}" />
 @endif
