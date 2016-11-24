@@ -23,8 +23,6 @@
     <div class="row">
         <div class="col-md-7 col-sm-12">
             <div class="panel panel-primary">
-                <div class="panel-heading">{{ $title or null }}</div>
-
                 <div class="panel-body">
                     @include('controllers.words.partials.content')
                 </div>
@@ -44,7 +42,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach ($categories as $category)
-                            <li><a href="{{ route('word.category', [$category->slug]) }}">{{ $category->name }}</a> ({{ number_format($category->words->count(), 0, ',', '.') }})</li>
+                            <li><a href="{{ route('word.category', [$category->slug]) }}">{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>

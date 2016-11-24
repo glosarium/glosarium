@@ -22,7 +22,7 @@
 
         <div class="col-md-12 col-sm-12">
             <div class="panel panel-primary">
-                <div class="panel-heading">{{ $category->name }}</div>
+                <div class="panel-heading">{{ $category->name }} ({{ number_format($words->total(), 0, ',', '.') }})</div>
                 <div class="panel-body">
 
                 <div class="row">

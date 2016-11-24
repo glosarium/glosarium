@@ -170,6 +170,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
         //
 

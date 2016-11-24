@@ -19,6 +19,7 @@ class CreateWordViewsTable extends Migration
             $table->string('ip', 100)->nullable();
             $table->string('browser')->nullable();
             $table->string('os')->nullable();
+            $table->string('device')->nullable();
             $table->timestamps();
         });
     }
