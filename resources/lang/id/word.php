@@ -22,8 +22,8 @@ return [
     'field'        => [
         'search'      => 'Cari kata...',
         'type'        => 'Jenis Kata',
-        'origin'      => 'Kata Asing',
-        'glosarium'   => 'Glosarium',
+        'foreign'     => 'Kata Asing',
+        'locale'      => 'Bahasa Indonesia',
         'spell'       => 'Ejaan',
         'description' => 'Deskripsi',
         'category'    => 'Kategori',

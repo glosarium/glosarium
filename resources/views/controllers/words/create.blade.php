@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+{{ debug($errors) }}
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -9,6 +11,10 @@
                 <div class="panel-body">
 
                     <div class="alert alert-info">@lang('word.createInfo')</div>
+
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
 
                     <form role="form" method="POST" action="{{ route('word.store') }}">
                         {{ csrf_field() }}
@@ -23,28 +29,20 @@
                             <span class="help-block">{{ $errors->first('type') }}</span>
                         </div>
 
-                        <div class="form-group{{ $errors->has('origin') ? ' has-error' : '' }}">
-                            <label for="origin" class="control-label">@lang('word.field.origin')</label>
+                        <div class="form-group{{ $errors->has('foreign') ? ' has-error' : '' }}">
+                            <label for="foreign" class="control-label">@lang('word.field.foreign')</label>
 
-                            <input id="origin" type="text" class="form-control" name="origin" value="{{ old('origin') }}" required>
+                            <input id="foreign" type="text" class="form-control" name="foreign" value="{{ old('foreign') }}" required>
 
-                            <span class="help-block">{{ $errors->first('origin') }}</span>
+                            <span class="help-block">{{ $errors->first('foreign') }}</span>
                         </div>
 
-                        <div class="form-group{{ $errors->has('glosarium') ? ' has-error' : '' }}">
-                            <label for="glosarium" class="control-label">@lang('word.field.glosarium')</label>
+                        <div class="form-group{{ $errors->has('locale') ? ' has-error' : '' }}">
+                            <label for="locale" class="control-label">@lang('word.field.locale')</label>
 
-                            <input id="glosarium" type="text" class="form-control" name="glosarium" value="{{ old('glosarium') }}" required autofocus>
+                            <input id="locale" type="text" class="form-control" name="locale" value="{{ old('locale') }}" required autofocus>
 
-                            <span class="help-block">{{ $errors->first('glosarium') }}</span>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('spell') ? ' has-error' : '' }}">
-                            <label for="spell" class="control-label">@lang('word.field.spell')</label>
-
-                            <input id="spell" type="text" class="form-control" name="spell" value="{{ old('spell') }}" required autofocus>
-
-                            <span class="help-block">{{ $errors->first('spell') }}</span>
+                            <span class="help-block">{{ $errors->first('locale') }}</span>
                         </div>
 
                         <hr>

@@ -214,34 +214,17 @@ class WordController extends Controller
      */
     public function store(ValidationRequest $request)
     {
-        \DB::transaction(function () use ($request) {
-            $word = Word::create([
-                'slug'        => str_slug($request->locale),
-                'category_id' => 1,
-                'lang'        => 'en',
-                'type_id'     => $request->type,
-                'foreign'     => $request->origin,
-                'locale'      => $request->glosarium,
-                'spell'       => $request->spell,
-                'status'      => 'published',
-            ]);
+        $word = Word::create([
+            'slug'        => str_slug($request->locale),
+            'lang'        => 'en',
+            'category_id' => $request->category,
+            'foreign'     => $request->foreign,
+            'locale'      => $request->locale,
+            'status'      => 'published',
+        ]);
 
-            if (!empty($request->descriptions)) {
-                $now = \Carbon\Carbon::now();
-
-                foreach (explode(PHP_EOL, $request->descriptions) as $description) {
-                    $wordDescriptions[] = [
-                        'word_id'     => $word->id,
-                        'type_id'     => 2,
-                        'description' => str_replace(PHP_EOL, '', $description),
-                        'created_at'  => $now,
-                        'updated_at'  => $now,
-                    ];
-                }
-
-                WordDescription::insert($wordDescriptions);
-            }
-        });
+        // make sure cache is empty
+        \Cache::flush();
 
         return redirect()
             ->back()

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Word;
 
+use App\Glosarium\WordCategory;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidationRequest extends FormRequest
 {
@@ -21,12 +23,16 @@ class ValidationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(WordCategory $category)
     {
         $rules = [
-            'origin'    => 'required|string',
-            'glosarium' => 'required|string',
-            'spell'     => 'required|string',
+            'category' => [
+                'required',
+                Rule::exists($category->getTable(), 'id'),
+            ],
+            'foreign'  => 'required|string',
+            'locale'   => 'required|string',
+            'spell'    => 'string',
         ];
 
         return $rules;
