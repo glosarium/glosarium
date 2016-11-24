@@ -40,10 +40,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-md-12 col-sm-12">
-            @include('controllers.words.partials.ad-billboard')
-        </div>
     </div>
 </div>
 @endsection
