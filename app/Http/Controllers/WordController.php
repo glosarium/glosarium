@@ -137,6 +137,53 @@ class WordController extends Controller
 
         $word->load('views');
 
+        // find description in KBBI
+        $client = new \Goutte\Client;
+
+        $entry = urlencode(strtolower($word->locale));
+        $response = $client->request('GET', 'http://kbbi4.portalbahasa.com/entri/' . $entry);
+
+        if (empty($word->spell)) {
+            // try to search on KBBI
+            $element = 'h2 > span.syllable';
+
+            if ($response->filter($element)->count() > 0) {
+                $word->spell = $response->filter($element)->first()->text();
+                $word->save();
+            }
+        }
+
+        // try to find description
+        $element = $response->filter('ol > li');
+        if (empty($word->descriptions->count() >= 1) and $element->count() >= 0) {
+            $descriptions = $element->each(function ($li, $i) use ($word) {
+                list($type, $description) = explode(' ', $li->text(), 2);
+
+                // static data
+                $classAlias = [
+                    'n'    => 2,
+                    'v'    => 1,
+                    'a'    => 5,
+                    'adv'  => 6,
+                    'num'  => 4,
+                    'p'    => 7,
+                    'pron' => 3,
+                ];
+
+                return [
+                    'word_id'     => $word->id,
+                    'type_id'     => isset($classAlias[$type]) ? $classAlias[$type] : 0,
+                    'description' => sprintf('%s: %s', $type, $description),
+                    'created_at'  => \Carbon\Carbon::now(),
+                    'updated_at'  => \Carbon\Carbon::now(),
+                ];
+            });
+
+            WordDescription::insert($descriptions);
+        }
+
+        $word->load('descriptions', 'descriptions.type');
+
         return view('controllers.words.word', compact('word', 'path', 'file', 'categories'))
             ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }

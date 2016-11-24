@@ -14,7 +14,12 @@
 @if (! empty($word->descriptions))
     <ul>
         @foreach ($word->descriptions as $description)
-            <li>({{ $description->type->name }}) {{ $description->description }}</li>
+            <li>
+            	@if (! empty($description->type))
+            		(<strong>{{ $description->type->name }}</strong>)
+            	@endif
+            	{{ $description->description }}
+            </li>
         @endforeach
     </ul>
 
