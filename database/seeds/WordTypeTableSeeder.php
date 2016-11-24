@@ -20,7 +20,7 @@ class WordTypeTableSeeder extends Seeder
             'Numeralia' => 'Kata Bilangan',
             'Adjektiva' => 'Kata Sifat',
             'Adverbia'  => 'Kata Keterangan',
-            'Artikel'   => 'Kata Sandang',
+            'Partikel'  => 'Kata Sandang',
             'Proposisi' => 'Kata Depan',
             'Konjungsi' => 'Kata Penghubung',
             'Injeksi'   => 'Kata Seru',
