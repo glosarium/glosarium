@@ -52,9 +52,11 @@ class WordController extends Controller
      */
     public function index()
     {
-        if (request('kata')) {
-            $words = Word::where('foreign', 'LIKE', '%' . request('kata') . '%')
-                ->orWhere('locale', 'LIKE', '%' . request('kata') . '%')
+        $keyword = trim(request('word'));
+
+        if (!empty($keyword)) {
+            $words = Word::where('foreign', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('locale', 'LIKE', '%' . $keyword . '%')
                 ->whereStatus('published')
                 ->orderBy('locale', 'ASC')
                 ->with('category', 'descriptions.type', 'views')
