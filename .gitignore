@@ -12,3 +12,4 @@ resources/views/controllers/words/partials/ad-responsive.blade.php
 resources/views/partials/ga-analytic.blade.php
 public/image
 storage/debugbar
+composer.lock
