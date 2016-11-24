@@ -188,7 +188,7 @@ class WordController extends Controller
      */
     public function index()
     {
-        $keyword = trim(request('word'));
+        $keyword = trim(request('kata'));
 
         if (!empty($keyword)) {
             $words = Word::where('foreign', 'LIKE', '%' . $keyword . '%')
