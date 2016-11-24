@@ -13,3 +13,5 @@ resources/views/partials/ga-analytic.blade.php
 public/image
 storage/debugbar
 composer.lock
+storage/ad
+storage/tool
