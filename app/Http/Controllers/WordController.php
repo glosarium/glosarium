@@ -271,7 +271,7 @@ class WordController extends Controller
         // log to view
         WordView::firstOrCreate([
             'word_id'    => $word->id,
-            'ip'         => \Request::ip(),
+            'ip'         => request()->ip(),
             'browser'    => \BrowserDetect::browserName(),
             'os'         => \BrowserDetect::osName(),
             'device'     => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
