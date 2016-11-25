@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @push('metadata')
-<meta name="title" content="{{ config('app.name') }}">
+<meta name="title" content="{{ $title }}">
 <meta name="description" content="{{ config('app.description') }}">
 <meta name="author" content="{{ config('app.name') }}">
 
-<meta property="og:title" content="{{ config('app.name') }}" />
+<meta property="og:title" content="{{ $title }}" />
 <meta property="og:description" content="{{ config('app.description') }}" />
 <meta property="og:author" content="{{ config('app.name') }}" />
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="{{ config('app.name') }}" />
-<meta property="og:image" content="{{ asset($path.$file) }}" />
+<meta property="og:image" content="{{ asset($image) }}" />
 @endpush
 
 @section('content')
