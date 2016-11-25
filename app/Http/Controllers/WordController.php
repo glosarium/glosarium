@@ -230,7 +230,6 @@ class WordController extends Controller
      */
     public function show(WordCategory $category, $slug)
     {
-
         $word = Word::whereSlug($slug)
             ->limit(1)
             ->with('descriptions', 'descriptions.type')
