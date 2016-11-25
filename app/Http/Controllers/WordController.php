@@ -216,7 +216,7 @@ class WordController extends Controller
 
         $title = empty(request('kata')) ? config('app.name') : trans('word.result', ['keyword' => request('kata')]);
 
-        $file = $this->createImage('Glosarium', 50, 'home.jpg');
+        $file = $this->createImage(config('app.name'), 'image/page', 'home.jpg');
 
         return view('controllers.words.index', compact('words', 'wordTotal', 'file'))
             ->withTitle($title);
@@ -228,7 +228,7 @@ class WordController extends Controller
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param Word $word
      */
-    public function word(WordCategory $category, $slug)
+    public function show(WordCategory $category, $slug)
     {
 
         $word = Word::whereSlug($slug)
@@ -289,7 +289,7 @@ class WordController extends Controller
 
         $word->load('descriptions', 'descriptions.type');
 
-        return view('controllers.words.word', compact(
+        return view('controllers.words.show', compact(
             'word',
             'path',
             'file',
@@ -351,38 +351,9 @@ class WordController extends Controller
      */
     public function api()
     {
-        $file = $this->createImage(trans('word.apa'), 30, 'api.jpg');
+        $file = $this->createImage('API', 'image/page', 'api.jpg');
 
         return view('controllers.words.api', compact('file'))
             ->withTitle(trans('word.apa'));
-    }
-
-    /**
-     * @param $text
-     * @param $size
-     */
-    public function createImage($text, $size, $file)
-    {
-        $path = 'image/';
-
-        if (!\File::exists(public_path($path . $file))) {
-            $canvas = \Image::canvas(800, 400, $this->colors->random());
-
-            $canvas->text($text, 400, 200, function ($font) use ($size) {
-                $font->file(storage_path('font/Monaco.ttf'));
-                $font->size($size);
-                $font->color('#fff');
-                $font->align('center');
-                $font->valign('center');
-            });
-
-            if (!\File::isDirectory($path)) {
-                \File::makeDirectory($path, 0777, true);
-            }
-
-            $canvas->save(public_path($path . $file));
-        }
-
-        return $path . $file;
     }
 }

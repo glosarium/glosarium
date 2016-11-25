@@ -21,4 +21,4 @@ Route::get('/', 'WordController@index')->name('index');
 Route::get('/kategori/{category}', 'WordCategoryController@show')->name('word.category.show');
 Route::get('/kategori', 'WordCategoryController@index')->name('word.category');
 
-Route::get('/{category}/{word}', 'WordController@word')->name('word.detail');
+Route::get('/{category}/{word}', 'WordController@show')->name('word.detail');
