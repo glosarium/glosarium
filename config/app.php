@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
      */
 
-    'name'            => 'Glosarium Bahasa Indonesia',
+    'name'            => 'Glosarium Indonesia',
     'description'     => 'Glosarium adalah suatu daftar alfabetis istilah dalam suatu ranah pengetahuan tertentu yang dilengkapi dengan definisi untuk istilah-istilah tersebut.',
 
     /*

@@ -80,4 +80,17 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        $image = $this->createImage(trans('user.register'), 'image/user', 'register.jpg');
+
+        return view('controllers.auth.register', compact('image'))
+            ->withTitle(trans('user.register'));
+    }
 }
