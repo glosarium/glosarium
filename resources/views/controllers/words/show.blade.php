@@ -33,7 +33,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Iklan</div>
                 <div class="panel-body">
-                    @include('controllers.words.partials.ad-responsive')
+                    @include('partials.ad-responsive')
                 </div>
             </div>
         </div>

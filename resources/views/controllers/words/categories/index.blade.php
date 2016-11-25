@@ -17,7 +17,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @include('controllers.words.partials.ad-billboard')
+            @include('partials.ad-billboard')
         </div>
 
         <div class="col-md-12 col-sm-12">
