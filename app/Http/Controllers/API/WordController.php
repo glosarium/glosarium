@@ -14,6 +14,26 @@ use App\Http\Controllers\Controller;
 class WordController extends Controller
 {
     /**
+     * Test purpose only
+     *
+     * @author Yugo <dedy.yugo.purwanto>
+     * @return array JSON formatted data
+     */
+    public function index()
+    {
+        return [
+            'status'  => true,
+            'content' => [
+                'name'        => config('app.name'),
+                'description' => config('app.description'),
+                'author'      => 'Yugo (dedy.yugo.purwanto@gmail.com)',
+                'website'     => config('app.url'),
+                'version'     => '0.1-dev',
+            ],
+        ];
+    }
+
+    /**
      * Search glosarium by a word
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -22,8 +42,9 @@ class WordController extends Controller
     public function search()
     {
         $validator = \Validator::make(request()->all(), [
-            'word'  => 'required|string',
-            'limit' => 'integer',
+            'word'     => 'required|string',
+            'limit'    => 'integer',
+            'category' => 'exists:word_categories,slug',
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +60,13 @@ class WordController extends Controller
             ->orWhere('locale', 'LIKE', '%' . request('word') . '%')
             ->whereStatus('published')
             ->limit($limit)
-            ->with('category', 'descriptions.type')
+            ->with('descriptions.type', 'descriptions')
+            ->when(request('category'), function ($query) {
+                // filter by category
+                return $query->whereHas('category', function ($category) {
+                    return $category->whereSlug(request('category'));
+                });
+            })
             ->get();
 
         // save to search
@@ -57,13 +84,19 @@ class WordController extends Controller
             'total'    => $words->count(),
             'contents' => $words->map(function ($word) {
                 return [
-                    'category'   => $word->category->name,
-                    'foreign'    => $word->foreign,
-                    'locale'     => $word->locale,
-                    'spell'      => $word->spell,
-                    'createdAt'  => $word->created_at->toIso8601String(),
-                    'updatedAt'  => $word->updated_at->toIso8601String(),
-                    'totalViews' => $word->views()->count(),
+                    'category'     => $word->category->name,
+                    'foreign'      => $word->foreign,
+                    'locale'       => $word->locale,
+                    'spell'        => $word->spell,
+                    'createdAt'    => $word->created_at->toIso8601String(),
+                    'updatedAt'    => $word->updated_at->toIso8601String(),
+                    'totalViews'   => $word->views()->count(),
+                    'descriptions' => $word->descriptions->map(function ($description) {
+                        return [
+                            'type'        => $description->type->name,
+                            'description' => $description->description,
+                        ];
+                    }),
                 ];
             }),
         ];

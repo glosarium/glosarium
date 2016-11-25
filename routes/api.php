@@ -11,17 +11,5 @@
 |
  */
 
-Route::get('/info', function () {
-    return [
-        'status'  => true,
-        'content' => [
-            'name'        => config('app.name'),
-            'description' => config('app.description'),
-            'author'      => 'Yugo (dedy.yugo.purwanto@gmail.com)',
-            'website'     => config('app.url'),
-            'version'     => '0.1-dev',
-        ],
-    ];
-});
-
+Route::get('/info', 'API\WordController@index')->name('api.word.index');
 Route::get('word/search', 'API\WordController@search')->name('api.word.search');
