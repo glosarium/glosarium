@@ -88,10 +88,10 @@ class WordController extends Controller
             $url = 'http://kbbi4.portalbahasa.com/entri/' . $entry
         );
 
-        \Log::debug('Requested KBBI', ['url' => $url]);
+        \Log::debug('Requested KBBI: ' . $url);
 
         if ($this->curlContent->filter('div.kbbi4 > ol')->count() == 0) {
-            \Log::debug('Word not found', ['locale' => $entry]);
+            \Log::debug('Word not found: ' . $entry);
         }
 
         return $this;
@@ -114,7 +114,7 @@ class WordController extends Controller
                     $word->save();
                 }
             } else {
-                \Log::info('Spell not found for', ['locale' => $word->locale]);
+                \Log::info('Spell not found for: ' . $word->locale);
             }
         }
 
@@ -157,7 +157,7 @@ class WordController extends Controller
 
                 WordDescription::insert($descriptions);
             } else {
-                \Log::debug('Word descriptions not found for', ['locale' => $word->locale]);
+                \Log::debug('Word descriptions not found for:' . $word->locale);
             }
         }
 
