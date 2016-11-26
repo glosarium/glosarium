@@ -10,6 +10,8 @@
 <meta property="og:title" content="{{ $word->locale }}" />
 @if (isset($word->descriptions) and $word->descriptions->count() >= 1)
 <meta property="og:description" content="{{ $word->descriptions->first()->description }}" />
+@else
+<meta property="og:description" content="{{ config('app.description') }}" />
 @endif
 <meta property="og:author" content="{{ config('app.name') }}" />
 <meta property="og:url" content="{{ url()->current() }}" />

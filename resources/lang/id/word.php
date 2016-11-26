@@ -6,7 +6,7 @@ return [
     'search'        => 'Cari Kata',
     'create'        => 'Tambah Kata',
     'welcome'       => 'Selamat Datang!',
-    'headline'      => 'Sudah ada <strong class="counter">:total</strong> kata yang disimpan dalam basisdata. Bantu kami berkembang dengan cara berkontribusi menambah dan mengubah kesalahan kata.',
+    'headline'      => 'Sudah ada <strong>:wordTotal</strong> kata dan <strong><a href=":categoryLink">:categoryTotal</a></strong> kategori yang disimpan dalam basisdata. Bantu kami berkembang dengan cara berkontribusi menambah dan mengubah kesalahan kata.',
     'contribution'  => 'Berkontribusi',
     'api'           => 'API',
     'apiDoc'        => 'Dokumentasi API',

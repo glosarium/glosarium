@@ -11,7 +11,7 @@
 <meta property="og:url" content="{{ url()->current() }}" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="{{ config('app.name') }}" />
-<meta property="og:image" content="{{ asset($file) }}" />
+<meta property="og:image" content="{{ asset($image) }}" />
 @endpush
 
 @section('content')
@@ -23,7 +23,11 @@
 
                     <div class="jumbotron">
                         <h2>@lang('word.welcome')</h2>
-                        <p>@lang('word.headline', ['total' => number_format($wordTotal, 0, ',', '.')])</p>
+                        <p>@lang('word.headline', [
+                            'wordTotal' => number_format($wordTotal, 0, ',', '.'),
+                            'categoryTotal' => number_format($categoryTotal, 0, ',', '.'),
+                            'categoryLink' => route('word.category')
+                        ])</p>
                         <a href="{{ route('word.create') }}" class="btn btn-primary">@lang('word.btn.create')</a>
                     </div>
 
