@@ -40,7 +40,7 @@ return [
         'word'        => [
             'salt'     => '93a7c5d4057a5e4673acf39de9f73b11d0ecdb1d',
             'length'   => '',
-            'alphabet' => 'qwertyuiopasdfghjklzxcvbnm',
+            'alphabet' => 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890',
         ],
 
         'alternative' => [
