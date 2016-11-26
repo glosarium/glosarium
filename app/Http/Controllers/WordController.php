@@ -82,7 +82,8 @@ class WordController extends Controller
         // find description in KBBI
         $client = new \Goutte\Client;
 
-        $entry = urlencode(strtolower($word->locale));
+        $entry = !empty($word->alias) ? urlencode($word->alias) : urlencode(strtolower($word->locale));
+
         $this->curlContent = $client->request(
             'GET',
             $url = 'http://kbbi4.portalbahasa.com/entri/' . $entry
