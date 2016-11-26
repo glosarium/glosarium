@@ -167,7 +167,7 @@ class WordController extends Controller
     /**
      * @return mixed
      */
-    public function getWordInstance() : null
+    public function getWordInstance()
     {
         if (!empty($this->curlContent)) {
             $element = $this->curlContent->filter('dl.turunan > dd');
