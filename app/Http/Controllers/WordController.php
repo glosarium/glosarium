@@ -306,6 +306,16 @@ class WordController extends Controller
             $view->save();
         }
 
+        // create short URL if not available
+        $link = \App\Glosarium\Link::firstOrNew([
+            'hash' => \Hashids::encode($word->id),
+            'url'  => implode('/', [$word->category->slug, $word->slug]),
+        ]);
+
+        $link->created_at = \Carbon\Carbon::now();
+        $link->updated_at = \Carbon\Carbon::now();
+        $link->save();
+
         $word->load('views');
 
         if (empty($word->spell) or $word->descriptions->count() <= 0) {
@@ -321,8 +331,7 @@ class WordController extends Controller
             'path',
             'file',
             'categories',
-            'wordInstance',
-            'wordJoin'
+            'link'
         ))
             ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }

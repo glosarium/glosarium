@@ -167,10 +167,23 @@ return [
         /*
          * Package Service Providers...
          */
+
+        // http://image.intervention.io
         Intervention\Image\ImageServiceProvider::class,
+
+        // https://github.com/cviebrock/eloquent-sluggable
         Cviebrock\EloquentSluggable\ServiceProvider::class,
+
+        // https://github.com/barryvdh/laravel-debugbar
         Barryvdh\Debugbar\ServiceProvider::class,
+
+        // https://github.com/laravel/scout
         Laravel\Scout\ScoutServiceProvider::class,
+
+        // https://github.com/vinkla/laravel-hashids
+        Vinkla\Hashids\HashidsServiceProvider::class,
+
+        // https://github.com/hisorange/browser-detect
         'hisorange\BrowserDetect\Provider\BrowserDetectService',
 
         //
@@ -234,6 +247,7 @@ return [
 
         'Image'         => Intervention\Image\Facades\Image::class,
         'Debugbar'      => Barryvdh\Debugbar\Facade::class,
+        'Hashids'       => Vinkla\Hashids\Facades\Hashids::class,
         'BrowserDetect' => 'hisorange\BrowserDetect\Facade\Parser',
     ],
 
