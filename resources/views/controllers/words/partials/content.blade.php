@@ -4,7 +4,6 @@
     <small><i class="fa fa-volume-up disabled"></i></small>
 </h2>
 <h3>{{ $word->foreign }}</h3>
-<hr>
 
 <h5>@lang('word.category') <a href="{{ route('word.category.show', [$word->category->slug]) }}">{{ $word->category->name }}</a></h5>
 @if (! empty($word->type))

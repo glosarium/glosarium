@@ -26,7 +26,7 @@
         <div class="col-md-7 col-sm-12">
             <div class="panel panel-primary">
                 <div class="panel-body">
-                    <div class="row visible-sm-block">
+                    <div class="row">
                         <div class="col-md-12">
                             <form action="{{ route('index') }}" method="GET" role="form" id="form-word">
                                 <div class="input-group">
@@ -39,6 +39,8 @@
                             </form>
                         </div>
                     </div>
+
+                    <hr>
 
                     @include('controllers.words.partials.content')
 
