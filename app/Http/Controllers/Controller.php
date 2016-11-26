@@ -19,7 +19,7 @@ class Controller extends BaseController
      * @param string $paths base path for image
      * @param integer $size default font size
      */
-    protected function createImage($text, $path, $file, $size = 50)
+    protected function createImage(string $text, string $path, string $file, $size = 50): string
     {
         // list of flat colors
         $colors = collect([
