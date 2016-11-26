@@ -39,6 +39,17 @@
                     </div>
 
                     @include('controllers.words.partials.content')
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Bagikan:</h4>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('word.detail', [$word->category->slug, $word->slug]) }}" class="btn btn-primary"><i class="fa fa-facebook fa-fw"></i></a>
+
+                            <a href="https://twitter.com/home?status=Glosarium untuk {{ $word->locale }} lihat pada {{ route('word.detail', [$word->category->slug, $word->slug]) }}" class="btn btn-info"><i class="fa fa-twitter fa-fw"></i></a>
+
+                            <a href="https://plus.google.com/share?url={{ route('word.detail', [$word->category->slug, $word->slug]) }}" class="btn btn-danger"><i class="fa fa-google-plus fa-fw"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
