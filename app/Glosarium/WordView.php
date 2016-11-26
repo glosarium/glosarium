@@ -14,6 +14,7 @@ class WordView extends Model
         'ip',
         'browser',
         'os',
+        'device',
     ];
 
     /**
