@@ -50,6 +50,28 @@ class WordController extends Controller
     }
 
     /**
+     * Get real IP Address from client
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return mixed
+     */
+    private function getIP(): string
+    {
+        $ipAddress = '';
+
+        // Check for X-Forwarded-For headers and use those if found
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
+            $ipAddress = trim($_SERVER['HTTP_X_FORWARDED_FOR']);
+        } else {
+            if (isset($_SERVER['REMOTE_ADDR']) && ('' !== trim($_SERVER['REMOTE_ADDR']))) {
+                $ipAddress = trim($_SERVER['REMOTE_ADDR']);
+            }
+        }
+
+        return $ipAddress;
+    }
+
+    /**
      * Get live information from KBBI
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -145,7 +167,7 @@ class WordController extends Controller
     /**
      * @return mixed
      */
-    public function getWordInstance()
+    public function getWordInstance() : null
     {
         if (!empty($this->curlContent)) {
             $element = $this->curlContent->filter('dl.turunan > dd');
@@ -242,6 +264,7 @@ class WordController extends Controller
         );
         $file = sprintf('%s.jpg', $word->slug);
 
+        // create hader image
         if (!\File::exists(public_path($path . $file))) {
             if (!\File::isDirectory($path)) {
                 \File::makeDirectory($path, 0777, true);
@@ -268,15 +291,20 @@ class WordController extends Controller
         }
 
         // log to view
-        WordView::firstOrCreate([
-            'word_id'    => $word->id,
-            'ip'         => request()->ip(),
-            'browser'    => \BrowserDetect::browserName(),
-            'os'         => \BrowserDetect::osName(),
-            'device'     => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
-            'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now(),
-        ]);
+        if (!\BrowserDetect::isBot()) {
+            $view = WordView::firstOrNew([
+                'word_id' => $word->id,
+                'ip'      => $this->getIP(),
+                'browser' => \BrowserDetect::browserName(),
+                'os'      => \BrowserDetect::osName(),
+                'device'  => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
+            ]);
+
+            $view->created_at = \Carbon\Carbon::now();
+            $view->updated_at = \Carbon\Carbon::now();
+
+            $view->save();
+        }
 
         $word->load('views');
 
