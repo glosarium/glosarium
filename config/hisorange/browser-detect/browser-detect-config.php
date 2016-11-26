@@ -11,21 +11,21 @@ return [
          *
          * @var string
          */
-        'operatingsystem' => 'HiSoRange Generic OS',
+        'operatingsystem' => 'Generic OS',
 
         /**
          * Generic browser family name.
          *
          * @var string
          */
-        'browser'         => 'HiSoRange Generic Browser',
+        'browser'         => 'Generic Browser',
 
         /**
          * This agent will be used when the visitor does not sent User-Agent: header.
          *
          * @var string
          */
-        'agent'           => 'HiSoRangeBrowser/1.0 (https://github.com/hisorange/browser-detect; hisoranger@gmail.com) GenericBrowser/1.0',
+        'agent'           => 'GeneriBorwser/1.0 (https://github.com/hisorange/browser-detect; hisoranger@gmail.com) GenericBrowser/1.0',
     ],
 
     /**
