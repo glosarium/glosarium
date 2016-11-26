@@ -56,16 +56,6 @@
                             <a href="{{ url($link->hash) }}" class="btn btn-default"><i class="fa fa-external-link fa-fw"></i></a>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="#">Laporkan Kesalahan</a>
-
-                            <div class="form-group">
-                                <textarea name="message" id="message" cols="10" rows="10" class="form-control">{{ old('message') }}</textarea>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
