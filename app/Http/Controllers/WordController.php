@@ -217,8 +217,9 @@ class WordController extends Controller
             $words = Word::where('foreign', 'LIKE', '%' . $keyword . '%')
                 ->orWhere('locale', 'LIKE', '%' . $keyword . '%')
                 ->whereStatus('published')
+                ->orderByRaw('LENGTH(`locale`) ASC')
                 ->orderBy('locale', 'ASC')
-                ->with('category', 'descriptions.type', 'views')
+                ->with('category', 'descriptions', 'descriptions.type', 'views')
                 ->paginate();
 
             // log search keyword
@@ -402,5 +403,39 @@ class WordController extends Controller
 
         return view('controllers.words.api', compact('file'))
             ->withTitle(trans('word.apa'));
+    }
+
+    /**
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return mixed
+     */
+    public function search()
+    {
+        $keyword = request('query');
+        $words = Word::where('locale', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('foreign', 'LIKE', '%' . $keyword . '%')
+            ->with('category', 'descriptions', 'descriptions.type')
+            ->orderByRaw('LENGTH(`locale`) ASC')
+            ->orderBy('locale', 'ASC')
+            ->limit(10)
+            ->get();
+
+        $response = $words->map(function ($word) {
+            return [
+                'value' => sprintf('%s (%s)',
+                    $word->locale,
+                    $word->foreign
+                ),
+                'data'  => [
+                    'category' => $word->category->name,
+                    'url'      => route('word.detail', [$word->category->slug, $word->slug]),
+                ],
+            ];
+        });
+
+        return [
+            'query'       => $keyword,
+            'suggestions' => $response,
+        ];
     }
 }

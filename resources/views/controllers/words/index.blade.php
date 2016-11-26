@@ -34,7 +34,7 @@
                     <div class="text-center">
                         <form action="{{ route('index') }}" method="GET" role="form" id="form-word">
                             <div class="input-group">
-                                <input id="word" type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')" autofocus>
+                                <input id="word" type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')">
                                 <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit">@lang('word.btn.search')</button>
                                 </span>
@@ -71,3 +71,22 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src=" {{ asset('components/devbridge-autocomplete/dist/jquery.autocomplete.min.js') }}"></script>
+@endpush
+
+@push('script')
+    <script>
+        $(function(){
+            $('#word').autocomplete({
+                serviceUrl: '{{ route('word.search') }}',
+                minChars: 3,
+                groupBy: 'category',
+                onSelect: function(suggestion) {
+                    $(location).attr('href', suggestion.data.url)
+                }
+            })
+        })
+    </script>
+@endpush

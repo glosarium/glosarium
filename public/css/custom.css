@@ -3,3 +3,29 @@
     width: 1000px;
   }
 }
+
+.autocomplete-selected {
+	background: #3097D1;
+	color: #fff;
+}
+
+.autocomplete-group {
+	color: :#ddd;
+	margin-left: 5px;
+}
+
+.autocomplete-suggestion {
+	cursor: pointer;
+	overflow: hidden;
+	padding: 3px 20px;
+	white-space: nowrap;
+}
+
+.autocomplete-suggestions {
+	margin-top: 10px;
+	background: #fff;
+	border: 1px solid #3097D1;
+	border-radius: 5px;
+	overflow: auto;
+	padding: 5px 0;
+}

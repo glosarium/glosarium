@@ -71,3 +71,22 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src=" {{ asset('components/devbridge-autocomplete/dist/jquery.autocomplete.min.js') }}"></script>
+@endpush
+
+@push('script')
+    <script>
+        $(function(){
+            $('#word').autocomplete({
+                serviceUrl: '{{ route('word.search') }}',
+                minChars: 3,
+                groupBy: 'category',
+                onSelect: function(suggestion) {
+                    $(location).attr('href', suggestion.data.url)
+                }
+            })
+        })
+    </script>
+@endpush
