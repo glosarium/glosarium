@@ -30,7 +30,7 @@
                         <div class="col-md-12">
                             <form action="{{ route('index') }}" method="GET" role="form" id="form-word">
                                 <div class="input-group">
-                                    <input id="word" type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')" autofocus>
+                                    <input id="word" type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')">
                                     <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">@lang('word.btn.search')</button>
                                     </span>
@@ -54,6 +54,16 @@
                             <a href="https://plus.google.com/share?url={{ route('word.detail', [$word->category->slug, $word->slug]) }}" class="btn btn-danger"><i class="fa fa-google-plus fa-fw"></i></a>
 
                             <a href="{{ url($link->hash) }}" class="btn btn-default"><i class="fa fa-external-link fa-fw"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="#">Laporkan Kesalahan</a>
+
+                            <div class="form-group">
+                                <textarea name="message" id="message" cols="10" rows="10" class="form-control">{{ old('message') }}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>

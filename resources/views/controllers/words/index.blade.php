@@ -61,7 +61,6 @@
                         <hr>
                         <div class="alert alert-info">@lang('word.noResult', ['keyword' => request('kata')]).</div>
                     @endif
-
                 </div>
             </div>
         </div>
