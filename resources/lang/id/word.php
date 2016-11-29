@@ -20,6 +20,7 @@ return [
     'found'         => 'Ditemukan <strong>:total</strong> kata dalam basisdata.',
     'createInfo'    => 'Pastikan kata yang ingin Anda tambahkan belum terdaftar dalam basisdata.',
     'new'           => 'Kata Paling Baru',
+    'notFound'      => 'Kata :word tidak ditemukan dalam basisdata.',
 
     'field'         => [
         'search'      => 'Cari kata...',

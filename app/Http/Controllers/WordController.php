@@ -269,6 +269,8 @@ class WordController extends Controller
             ->with('descriptions', 'descriptions.type')
             ->first();
 
+        abort_if(empty($word), 404, trans('word.notFound', ['word' => ucwords($slug)]));
+
         $path = sprintf(
             'image/%s/%s/',
             substr($word->slug, 0, 1),
