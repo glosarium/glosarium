@@ -16,6 +16,7 @@ Auth::routes();
 Route::get('/tambah-kata', 'WordController@create')->name('word.create');
 Route::post('/simpan-kata', 'WordController@store')->name('word.store');
 Route::get('/api', 'WordController@api')->name('word.api');
+Route::get('/acak', 'WordController@random')->name('word.random');
 Route::get('cari', 'WordController@search')->name('word.search');
 Route::get('/', 'WordController@index')->name('index');
 

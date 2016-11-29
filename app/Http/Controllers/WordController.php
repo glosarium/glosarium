@@ -204,6 +204,96 @@ class WordController extends Controller
     }
 
     /**
+     * Add view log to word description
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return void
+     */
+    private function wordView($word)
+    {
+        // log to view
+        if (!\BrowserDetect::isBot()) {
+            $view = WordView::firstOrNew([
+                'word_id' => $word->id,
+                'ip'      => $this->getIP(),
+                'browser' => \BrowserDetect::browserName(),
+                'os'      => \BrowserDetect::osName(),
+                'device'  => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
+            ]);
+
+            $view->created_at = \Carbon\Carbon::now();
+            $view->updated_at = \Carbon\Carbon::now();
+
+            $view->save();
+        }
+
+        return;
+    }
+
+    /**
+     * Create short link for a word
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @param $word
+     * @return object link data
+     */
+    public function createLink($word)
+    {
+        // create short URL if not available
+        $link = \App\Glosarium\Link::firstOrNew([
+            'hash' => \Hashids::encode($word->id),
+            'url'  => implode('/', [$word->category->slug, $word->slug]),
+        ]);
+
+        $link->created_at = \Carbon\Carbon::now();
+        $link->updated_at = \Carbon\Carbon::now();
+        $link->save();
+
+        return $link;
+    }
+
+    /**
+     * @param $word
+     */
+    private function createWordImage($word): string
+    {
+        $path = sprintf(
+            'image/%s/%s/',
+            substr($word->slug, 0, 1),
+            $word->category->slug
+        );
+        $file = sprintf('%s.jpg', $word->slug);
+
+        // create hader image
+        if (!\File::exists(public_path($path . $file))) {
+            if (!\File::isDirectory($path)) {
+                \File::makeDirectory($path, 0777, true);
+            }
+            $canvas = \Image::canvas(800, 400, $this->colors->random());
+
+            $canvas->text($word->locale, 400, 200, function ($font) {
+                $font->file(storage_path('font/Monaco.ttf'));
+                $font->size(50);
+                $font->color('#fff');
+                $font->align('center');
+                $font->valign('center');
+            });
+
+            $canvas->text('(' . $word->foreign . ')', 400, 250, function ($font) {
+                $font->file(storage_path('font/Monaco.ttf'));
+                $font->size(30);
+                $font->color('#fff');
+                $font->align('center');
+                $font->valign('center');
+            });
+
+            $canvas->save(public_path($path . $file));
+        }
+
+        return $path . $file;
+    }
+
+    /**
      * Show form and search results if available
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -266,69 +356,19 @@ class WordController extends Controller
     {
         $word = Word::whereSlug($slug)
             ->limit(1)
-            ->with('descriptions', 'descriptions.type')
+            ->with('category', 'descriptions', 'descriptions.type')
             ->first();
 
         abort_if(empty($word), 404, trans('word.notFound', ['word' => ucwords($slug)]));
 
-        $path = sprintf(
-            'image/%s/%s/',
-            substr($word->slug, 0, 1),
-            $word->category->slug
-        );
-        $file = sprintf('%s.jpg', $word->slug);
+        // create image for spesified word
+        $image = $this->createWordImage($word);
 
-        // create hader image
-        if (!\File::exists(public_path($path . $file))) {
-            if (!\File::isDirectory($path)) {
-                \File::makeDirectory($path, 0777, true);
-            }
-            $canvas = \Image::canvas(800, 400, $this->colors->random());
+        // create short link
+        $link = $this->createLink($word);
 
-            $canvas->text($word->locale, 400, 200, function ($font) {
-                $font->file(storage_path('font/Monaco.ttf'));
-                $font->size(50);
-                $font->color('#fff');
-                $font->align('center');
-                $font->valign('center');
-            });
-
-            $canvas->text('(' . $word->foreign . ')', 400, 250, function ($font) {
-                $font->file(storage_path('font/Monaco.ttf'));
-                $font->size(30);
-                $font->color('#fff');
-                $font->align('center');
-                $font->valign('center');
-            });
-
-            $canvas->save(public_path($path . $file));
-        }
-
-        // log to view
-        if (!\BrowserDetect::isBot()) {
-            $view = WordView::firstOrNew([
-                'word_id' => $word->id,
-                'ip'      => $this->getIP(),
-                'browser' => \BrowserDetect::browserName(),
-                'os'      => \BrowserDetect::osName(),
-                'device'  => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
-            ]);
-
-            $view->created_at = \Carbon\Carbon::now();
-            $view->updated_at = \Carbon\Carbon::now();
-
-            $view->save();
-        }
-
-        // create short URL if not available
-        $link = \App\Glosarium\Link::firstOrNew([
-            'hash' => \Hashids::encode($word->id),
-            'url'  => implode('/', [$word->category->slug, $word->slug]),
-        ]);
-
-        $link->created_at = \Carbon\Carbon::now();
-        $link->updated_at = \Carbon\Carbon::now();
-        $link->save();
+        // update total views for the word
+        $this->wordView($word);
 
         $word->load('views');
 
@@ -338,16 +378,13 @@ class WordController extends Controller
                 ->getDescription($word);
         }
 
-        $word->load('descriptions', 'descriptions.type');
+        $word->load('category', 'descriptions', 'descriptions.type');
 
         return view('controllers.words.show', compact(
             'word',
-            'path',
-            'file',
-            'categories',
+            'image',
             'link'
-        ))
-            ->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
+        ))->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
 
     /**
@@ -439,5 +476,50 @@ class WordController extends Controller
             'query'       => $keyword,
             'suggestions' => $response,
         ];
+    }
+
+    /**
+     * Show a word in random order
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return mixed
+     */
+    public function random()
+    {
+        $word = Word::inRandomOrder()
+            ->when(request('kategori'), function ($query) {
+                return $query->whereHas('category', function ($category) {
+                    return $category->whereSlug(request('kategori'));
+                });
+            })
+            ->whereStatus('published')
+            ->limit(1)
+            ->with('category', 'descriptions', 'descriptions.type')
+            ->first();
+
+        abort_if(empty($word), 400, trans('word.notFound'));
+
+        // create image for spesified word
+        $image = $this->createWordImage($word);
+
+        // create short link
+        $link = $this->createLink($word);
+
+        // update total views for the word
+        $this->wordView($word);
+
+        $word->load('views');
+
+        if (empty($word->spell) or $word->descriptions->count() <= 0) {
+            $this->getContent($word)
+                ->getSpell($word)
+                ->getDescription($word);
+        }
+
+        return view('controllers.words.show', compact(
+            'word',
+            'image',
+            'link'
+        ))->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
 }
