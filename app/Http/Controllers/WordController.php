@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Glosarium\Word;
 use App\Glosarium\WordCategory;
-use App\Glosarium\WordDescription;
 use App\Glosarium\WordSearch;
 use App\Glosarium\WordView;
 use App\Http\Requests\Word\ValidationRequest;
+use App\Library\Dictionary;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -69,138 +69,6 @@ class WordController extends Controller
         }
 
         return $ipAddress;
-    }
-
-    /**
-     * Get live information from KBBI
-     *
-     * @author Yugo <dedy.yugo.purwanto@gmail.com>
-     * @return void
-     */
-    private function getContent($word)
-    {
-        // find description in KBBI
-        $client = new \Goutte\Client;
-
-        $entry = !empty($word->alias) ? urlencode($word->alias) : urlencode(strtolower($word->locale));
-
-        $this->curlContent = $client->request(
-            'GET',
-            $url = 'http://kbbi4.portalbahasa.com/entri/' . $entry
-        );
-
-        \Log::debug('Requested KBBI: ' . $url);
-
-        if ($this->curlContent->filter('div.kbbi4 > ol')->count() == 0) {
-            \Log::debug('Word not found: ' . $entry);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Parse DOM to get spell word
-     *
-     * @author Yugo <dedy.yugo.purwanto@gmail.com>
-     * @return object $this
-     */
-    private function getSpell($word)
-    {
-        if (!empty($this->curlContent)) {
-            if (empty($word->spell)) {
-                $element = 'h2 > span.syllable';
-
-                if ($this->curlContent->filter($element)->count() > 0) {
-                    $word->spell = $this->curlContent->filter($element)->first()->text();
-                    $word->save();
-                }
-            } else {
-                \Log::info('Spell not found for: ' . $word->locale);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Parse DOM to get descriptions
-     *
-     * @author Yugo <dedy.yugo.purwanto@gmail.com>
-     * @return object $this
-     */
-    private function getDescription($word)
-    {
-        if (!empty($this->curlContent)) {
-            $element = $this->curlContent->filter('ol > li');
-            if (empty($word->descriptions->count() >= 1) and $element->count() >= 0) {
-                $descriptions = $element->each(function ($li, $i) use ($word) {
-                    list($type, $description) = explode(' ', $li->text(), 2);
-
-                    // static data
-                    $classAlias = [
-                        'n'    => 2,
-                        'v'    => 1,
-                        'a'    => 5,
-                        'adv'  => 6,
-                        'num'  => 4,
-                        'p'    => 7,
-                        'pron' => 3,
-                    ];
-
-                    return [
-                        'word_id'     => $word->id,
-                        'type_id'     => isset($classAlias[$type]) ? $classAlias[$type] : 0,
-                        'description' => sprintf('%s: %s', $type, $description),
-                        'created_at'  => \Carbon\Carbon::now(),
-                        'updated_at'  => \Carbon\Carbon::now(),
-                    ];
-                });
-
-                WordDescription::insert($descriptions);
-            } else {
-                \Log::debug('Word descriptions not found for:' . $word->locale);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWordInstance()
-    {
-        if (!empty($this->curlContent)) {
-            $element = $this->curlContent->filter('dl.turunan > dd');
-            if ($element->count() >= 0) {
-                $instance = $element->first()->each(function ($dd, $i) {
-                    return str_replace("\n", null, $dd->text());
-                });
-
-                return end($instance);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWordJoin()
-    {
-        if (!empty($this->curlContent)) {
-            $element = $this->curlContent->filter('dl.turunan > dd');
-            if ($element->count() >= 0) {
-                $joins = $element->eq(1)->each(function ($dd, $i) {
-                    return str_replace("\n", null, $dd->text());
-                });
-
-                return end($joins);
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -356,7 +224,6 @@ class WordController extends Controller
     {
         $word = Word::whereSlug($slug)
             ->limit(1)
-            ->with('category', 'descriptions', 'descriptions.type')
             ->first();
 
         abort_if(empty($word), 404, trans('word.notFound', ['word' => ucwords($slug)]));
@@ -370,15 +237,12 @@ class WordController extends Controller
         // update total views for the word
         $this->wordView($word);
 
-        $word->load('views');
+        // update spell and descriptions
+        $dictionary = (new Dictionary($word))->getRemoteContent();
+        $spell = $dictionary->getSpell();
+        $descriptions = $dictionary->getDescriptions();
 
-        if (empty($word->spell) or $word->descriptions->count() <= 0) {
-            $this->getContent($word)
-                ->getSpell($word)
-                ->getDescription($word);
-        }
-
-        $word->load('category', 'descriptions', 'descriptions.type');
+        $word->load('category', 'descriptions', 'descriptions.type', 'views');
 
         return view('controllers.words.show', compact(
             'word',
@@ -510,11 +374,10 @@ class WordController extends Controller
 
         $word->load('views');
 
-        if (empty($word->spell) or $word->descriptions->count() <= 0) {
-            $this->getContent($word)
-                ->getSpell($word)
-                ->getDescription($word);
-        }
+        // update spell and descriptions
+        $dictionary = (new Dictionary($word))->getRemoteContent();
+        $spell = $dictionary->getSpell();
+        $descriptions = $dictionary->getDescriptions();
 
         return view('controllers.words.show', compact(
             'word',
