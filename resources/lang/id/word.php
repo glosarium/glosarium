@@ -21,6 +21,7 @@ return [
     'createInfo'    => 'Pastikan kata yang ingin Anda tambahkan belum terdaftar dalam basisdata.',
     'new'           => 'Kata Paling Baru',
     'notFound'      => 'Kata :word tidak ditemukan dalam basisdata.',
+    'random'        => 'Kata Acak',
 
     'field'         => [
         'search'      => 'Cari kata...',

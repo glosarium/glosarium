@@ -54,6 +54,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ route('word.category') }}">Kategori</a></li>
+                        <li><a href="{{ route('word.random') }}">@lang('word.random')</a></li>
                         <li><a href="{{ route('word.create') }}">@lang('word.create')</a></li>
                         <li><a href="{{ route('word.api') }}">@lang('word.api')</a></li>
                         <!-- Authentication Links -->
