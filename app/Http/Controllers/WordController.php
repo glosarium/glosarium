@@ -302,9 +302,12 @@ class WordController extends Controller
      */
     public function api()
     {
-        $file = $this->createImage('API', 'image/page', 'api.jpg');
+        $image = $this->createImage('API', 'image/page', 'api.jpg');
 
-        return view('controllers.words.api', compact('file'))
+        // get static page
+        $page = \File::get(storage_path('pages/api.html'));
+
+        return view('controllers.words.api', compact('image', 'page'))
             ->withTitle(trans('word.apa'));
     }
 
