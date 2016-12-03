@@ -15,7 +15,8 @@
         "predis/predis": "^1.1",
         "hisorange/browser-detect": "2.*",
         "jenssegers/rollbar": "^1.5",
-        "vinkla/hashids": "^3.0"
+        "vinkla/hashids": "^3.0",
+        "roumen/sitemap": "^2.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

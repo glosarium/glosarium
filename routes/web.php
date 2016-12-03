@@ -20,6 +20,9 @@ Route::get('/acak', 'WordController@random')->name('word.random');
 Route::get('cari', 'WordController@search')->name('word.search');
 Route::get('/', 'WordController@index')->name('index');
 
+Route::get('sitemap/{category}.xml', 'SitemapController@category')->name('sitemap.category');
+Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
+
 Route::get('/kategori/{category}', 'WordCategoryController@show')->name('word.category.show');
 Route::get('/kategori', 'WordCategoryController@index')->name('word.category');
 

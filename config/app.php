@@ -186,7 +186,8 @@ return [
         // https://github.com/hisorange/browser-detect
         'hisorange\BrowserDetect\Provider\BrowserDetectService',
 
-        //
+        // https://github.com/RoumenDamianoff/laravel-sitemap
+        Roumen\Sitemap\SitemapServiceProvider::class,
 
         /*
          * Application Service Providers...
