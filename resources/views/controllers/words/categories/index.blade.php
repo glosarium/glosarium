@@ -51,8 +51,13 @@
                     <ul>
                         @foreach ($words as $word)
                             <li>
-                                <a href="{{ route('word.detail', [$word->category->slug, $word->slug]) }}">{{ $word->locale }}</a>
-                                <small class="text-muted">{{ $word->category->name }}</small>
+                                <a href="{{ route('word.detail', [
+                                    $word->category->data->slug,
+                                    $word->slug
+                                ]) }}">
+                                    {{ $word->locale }}
+                                </a>
+                                <small class="text-muted">{{ $word->category->data->name }}</small>
                             </li>
                         @endforeach
                     </ul>

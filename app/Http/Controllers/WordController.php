@@ -8,6 +8,7 @@ use App\Glosarium\WordSearch;
 use App\Glosarium\WordView;
 use App\Http\Requests\Word\ValidationRequest;
 use App\Library\Dictionary;
+use GuzzleHttp\Client;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -20,11 +21,6 @@ class WordController extends Controller
      * @var collection
      */
     private $colors;
-
-    /**
-     * @var mixed
-     */
-    private $curlContent = null;
 
     public function __construct()
     {

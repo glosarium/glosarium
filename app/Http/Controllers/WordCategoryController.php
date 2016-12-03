@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Glosarium\Word;
 use App\Glosarium\WordCategory;
+use GuzzleHttp\Client;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -20,22 +21,36 @@ class WordCategoryController extends Controller
      */
     public function index()
     {
-        // cache category
-        $rememberFor = \Carbon\Carbon::now()->addDays(7);
-        $categories = \Cache::remember('categories', $rememberFor, function () {
-            return WordCategory::orderBy('name', 'ASC')->get();
-        });
+        $client = new Client([
+            'base_uri' => config('api.url'),
+        ]);
+
+        // get category from API
+        $response = $client->request('GET', 'word/category');
+
+        if ($response->getStatusCode() == 200) {
+            $categories = collect(json_decode($response->getBody())->data);
+        } else {
+            abort(500, 'Gagal mendapatkan kategori dari API.');
+        }
 
         // create image header
         $image = $this->createImage(trans('word.categoryTitle'), 'image/page', 'category.jpg');
 
-        // get latest words
-        $words = Word::orderBy('created_at', 'DESC')
-            ->with('category')
-            ->limit(20)
-            ->get();
+        // get latest words from API
+        $wordsResponse = $client->request('GET', 'word/latest');
 
-        return view('controllers.words.categories.index', compact('categories', 'image', 'words'))
+        if ($wordsResponse->getStatusCode() == 200) {
+            $words = collect(json_decode($wordsResponse->getBody())->data);
+        } else {
+            abort(500, 'Gagal mendapatkan kata terbaru dari API.');
+        }
+
+        return view('controllers.words.categories.index', compact(
+            'categories',
+            'image',
+            'words'
+        ))
             ->withTitle('Kategori');
     }
 
