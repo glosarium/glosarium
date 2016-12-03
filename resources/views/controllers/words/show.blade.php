@@ -56,11 +56,9 @@
                             <a href="{{ url($link->hash) }}" class="btn btn-default"><i class="fa fa-external-link fa-fw"></i></a>
 
                             @if (view()->exists('partials.disqus'))
-                            <div class="col-md-12">
                                 @include('partials.disqus', [
                                     'slug' => $word->slug
                                 ])
-                            </div>
                             @endif
 
                         </div>
