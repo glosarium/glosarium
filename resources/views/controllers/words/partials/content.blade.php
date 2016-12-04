@@ -21,9 +21,11 @@
             </li>
         @endforeach
     </ul>
-
-	<hr>
 @endif
 
-<span class="label label-info"> <i class="fa fa-eye"></i> @lang('word.viewed', ['total' => number_format($word->views->count(), 0, ',', '.')])</span>
-<span class="label label-default"><i class="fa fa-pencil"></i> @lang('word.edited', ['total' => 0])</span>
+<hr>
+
+@include('partials.ad-link')
+
+<span class="label label-info"> <i class="fa fa-fw fa-eye"></i> {{ number_format($word->views->count(), 0, ',', '.') }}</span>
+<span class="label label-default"><i class="fa fa-fw fa-pencil"></i> 0</span>
