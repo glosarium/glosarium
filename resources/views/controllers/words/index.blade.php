@@ -55,7 +55,6 @@
                     <div class="panel-heading">@lang('word.found', ['total' => number_format($words->total(), 0, ',', '.')])</div>
                     <div class="panel-body">
 
-                        <hr>
                         <ul class="list-group">
                             @foreach ($words as $word)
                                 <li class="list-group-item">
