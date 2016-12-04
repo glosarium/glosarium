@@ -17,34 +17,43 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <div class="panel panel-primary">
-                <div class="panel-body">
+        <div class="col-md-12">
+            @include('partials.ad-billboard')
+            <hr>
+        </div>
+    </div>
 
-                    <div class="jumbotron">
-                        <h2>@lang('word.welcome')</h2>
-                        <p>@lang('word.headline', [
-                            'wordTotal' => number_format($wordTotal, 0, ',', '.'),
-                            'categoryTotal' => number_format($categoryTotal, 0, ',', '.'),
-                            'categoryLink' => route('word.category')
-                        ])</p>
-                        <a href="{{ route('word.create') }}" class="btn btn-primary">@lang('word.btn.create')</a>
+    <div class="row search-box">
+        <div class="col-md-12 text-center">
+            <div id="custom-search-input">
+                <form action="{{ route('index') }}" method="GET" role="form">
+
+                    <div class="form-group">
+                        <input id="word" type="text" name="kata" class="search-query form-control" placeholder="@lang('word.placeholder.search', ['total' => number_format($wordTotal, 0, ',', '.')])" />
                     </div>
 
-                    <div class="text-center">
-                        <form action="{{ route('index') }}" method="GET" role="form" id="form-word">
-                            <div class="input-group">
-                                <input id="word" type="text" name="kata" value="{{ request('kata') }}" class="form-control" placeholder="@lang('word.search')">
-                                <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit">@lang('word.btn.search')</button>
-                                </span>
-                            </div>
-
-                        </form>
+                    <div class="form-group search-button">
+                        <button class="btn btn-primary">Penelusuran Glosarium</button>
                     </div>
 
-                    @if (isset($words) AND $words->total() >= 1)
-                        <h3>@lang('word.found', ['total' => number_format($words->total(), 0, ',', '.')])</h3>
+                    <p>
+                        Temukan juga Glosarium untuk:
+                        <a href="{{ route('word.random') }}">Kata Acak</a>,
+                        <a href="{{ route('word.category') }}">Kata Terbaru</a>,
+                        <a href="{{ route('word.category') }}">Kategori</a>
+                    </p>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @if (isset($words) AND $words->total() >= 1)
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">@lang('word.found', ['total' => number_format($words->total(), 0, ',', '.')])</div>
+                    <div class="panel-body">
 
                         <hr>
                         <ul class="list-group">
@@ -56,19 +65,11 @@
                         </ul>
 
                         {{ $words->appends(['kata' => request('kata')])->links() }}
-
-                    @elseif (!empty(request('kata')))
-                        <hr>
-                        <div class="alert alert-info">@lang('word.noResult', ['keyword' => request('kata')]).</div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-12 col-sm-12">
-            @include('partials.ad-billboard')
-        </div>
-    </div>
+    @endif
 </div>
 @endsection
 

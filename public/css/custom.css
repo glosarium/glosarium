@@ -25,7 +25,11 @@
 	margin-top: 10px;
 	background: #fff;
 	border: 1px solid #3097D1;
-	border-radius: 5px;
+	border-radius: 2px;
 	overflow: auto;
 	padding: 5px 0;
+}
+
+.search-button {
+	margin-top: 20px;
 }

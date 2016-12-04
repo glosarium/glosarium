@@ -33,6 +33,10 @@ return [
         'category'    => 'Kategori',
     ],
 
+    'placeholder'   => [
+        'search' => 'Cari dalam :total pangkalan data',
+    ],
+
     'btn'           => [
         'search' => 'Cari',
         'save'   => 'Simpan',
