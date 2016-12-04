@@ -99,5 +99,6 @@
     @stack('script')
 
     @include('partials.ga-analytic')
+    @include('partials.fb-app')
 </body>
 </html>

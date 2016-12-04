@@ -47,13 +47,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h4>Bagikan:</h4>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('word.detail', [$word->category->slug, $word->slug]) }}" class="btn btn-primary"><i class="fa fa-facebook fa-fw"></i></a>
-
-                            <a href="https://twitter.com/home?status=Glosarium untuk {{ $word->locale }} lihat pada {{ url($link->hash) }}" class="btn btn-info"><i class="fa fa-twitter fa-fw"></i></a>
-
-                            <a href="https://plus.google.com/share?url={{ route('word.detail', [$word->category->slug, $word->slug]) }}" class="btn btn-danger"><i class="fa fa-google-plus fa-fw"></i></a>
-
-                            <a href="{{ url($link->hash) }}" class="btn btn-default"><i class="fa fa-external-link fa-fw"></i></a>
+                            <div
+                              class="fb-like"
+                              data-share="true"
+                              data-width="450"
+                              data-show-faces="true">
+                            </div>
 
                             @if (view()->exists('partials.disqus'))
                                 @include('partials.disqus', [
