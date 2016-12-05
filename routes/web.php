@@ -31,4 +31,4 @@ Route::get('/kategori', 'WordCategoryController@index')->name('word.category');
 
 Route::get('/{category}/{word}', 'WordController@show')->name('word.detail');
 
-Route::get('/{link}', 'LinkController@show')->name('link.show');
+Route::get('/{hash}', 'LinkController@show')->name('link.show');

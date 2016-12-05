@@ -15,8 +15,14 @@ class LinkController extends Controller
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param Link $link
      */
-    public function show(Link $link)
+    public function show($hash)
     {
+        $link = Link::whereHash(trim($hash))->first();
+        if (empty($link)) {
+            return redirect()->route('index');
+        }
+
+        // add view counter and redirect
         $link->increment('view');
         $link->save();
 
