@@ -195,11 +195,6 @@ class WordController extends Controller
             return Word::count();
         });
 
-        // count categories
-        $categoryTotal = \Cache::remember('categoryTotal', $rememberFor, function () {
-            return WordCategory::count();
-        });
-
         $title = empty(request('kata')) ? config('app.name') : trans('word.result', ['keyword' => request('kata')]);
 
         $image = $this->createImage(config('app.name'), 'image/page', 'home.jpg');
