@@ -104,14 +104,17 @@ class WordController extends Controller
     public function createLink($word)
     {
         // create short URL if not available
-        $link = \App\Glosarium\Link::firstOrNew([
-            'hash' => \Hashids::encode($word->id),
-            'url'  => implode('/', [$word->category->slug, $word->slug]),
-        ]);
+        $hash = \Hashids::encode($word->id);
+        $link = \App\Glosarium\Link::select('hash')->whereHash($hash)->first();
 
-        $link->created_at = \Carbon\Carbon::now();
-        $link->updated_at = \Carbon\Carbon::now();
-        $link->save();
+        if (empty($link)) {
+            $link = \App\Glosarium\Link::create([
+                'hash'       => $hash,
+                'url'        => implode('/', [$word->category->slug, $word->slug]),
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
+        }
 
         return $link;
     }
@@ -216,11 +219,14 @@ class WordController extends Controller
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @param Word $word
      */
-    public function show(WordCategory $category, $slug)
+    public function show($category, $slug)
     {
-        $word = Word::whereSlug($slug)
-            ->limit(1)
-            ->first();
+        $rememberWordFor = \Carbon\Carbon::now()->addDays(3);
+        $word = \Cache::remember($slug, $rememberWordFor, function () use ($slug) {
+            return Word::whereSlug($slug)
+                ->limit(1)
+                ->first();
+        });
 
         abort_if(empty($word), 404, trans('word.notFound', ['word' => ucwords($slug)]));
 
