@@ -22,6 +22,7 @@ return [
     'new'           => 'Kata Paling Baru',
     'notFound'      => 'Kata :word tidak ditemukan dalam basisdata.',
     'random'        => 'Kata Acak',
+    'ajaxOnly'      => 'Pemintaan hanya diizinkan menggunakan AJAX',
 
     'field'         => [
         'search'      => 'Cari kata...',
@@ -44,6 +45,6 @@ return [
     ],
 
     'msg'           => [
-        'created' => 'Kata baru berhasil ditambah dan disimpan.',
+        'created' => 'Kata (:foreign) :locale berhasil ditambah dan disimpan.',
     ],
 ];

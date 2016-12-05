@@ -13,6 +13,7 @@ class Word extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'category_id',
         'slug',
         'lang',

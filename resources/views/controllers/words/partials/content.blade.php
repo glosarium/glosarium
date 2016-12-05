@@ -3,7 +3,14 @@
     <br><small>{{ $word->spell }}</small>
     <small><i class="fa fa-volume-up disabled"></i></small>
 </h2>
-<h3>{{ $word->foreign }}</h3>
+<h3>
+    {{ $word->foreign }}
+    <small>
+        <span class="label label-default">
+            {{ $word->lang }}
+        </span>
+    </small>
+</h3>
 
 <h5>@lang('word.category') <a href="{{ route('word.category.show', [$word->category->slug]) }}">{{ $word->category->name }}</a></h5>
 @if (! empty($word->type))

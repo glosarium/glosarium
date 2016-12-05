@@ -217,8 +217,11 @@ class WordController extends Controller
     public function show($category, $slug)
     {
         $rememberWordFor = \Carbon\Carbon::now()->addDays(3);
-        $word = \Cache::remember($slug, $rememberWordFor, function () use ($slug) {
+        $word = \Cache::remember($slug, $rememberWordFor, function () use ($category, $slug) {
             return Word::whereSlug($slug)
+                ->whereHas('category', function ($query) use ($category) {
+                    return $query->whereSlug($category);
+                })
                 ->limit(1)
                 ->first();
         });
@@ -275,9 +278,9 @@ class WordController extends Controller
     public function store(ValidationRequest $request)
     {
         $word = Word::create([
-            'slug'        => str_slug($request->locale),
-            'lang'        => 'en',
             'category_id' => $request->category,
+            'user_id'     => \Auth::id(),
+            'lang'        => 'en',
             'foreign'     => $request->foreign,
             'locale'      => $request->locale,
             'status'      => 'published',
@@ -288,7 +291,10 @@ class WordController extends Controller
 
         return redirect()
             ->back()
-            ->withSuccess(trans('word.msg.created'));
+            ->withSuccess(trans('word.msg.created', [
+                'locale'  => $word->lcoale,
+                'foreign' => $word->foreign,
+            ]));
     }
 
     /**
@@ -309,11 +315,15 @@ class WordController extends Controller
     }
 
     /**
+     * Suggest word when user typing in search box
+     *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      * @return mixed
      */
     public function search()
     {
+        abort_if(!request()->ajax(), 400, trans('word.ajaxOnly'));
+
         $keyword = request('query');
         $words = Word::where('locale', 'LIKE', '%' . $keyword . '%')
             ->orWhere('foreign', 'LIKE', '%' . $keyword . '%')
