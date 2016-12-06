@@ -35,11 +35,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
+        $this->mapAdminRoutes();
 
         $this->mapWebRoutes();
-
-        //
     }
 
     /**
@@ -75,6 +73,24 @@ class RouteServiceProvider extends ServiceProvider
             'prefix'     => 'api',
         ], function ($router) {
             require base_path('routes/api.php');
+        });
+    }
+
+    public function mapApplicationRoutes()
+    {
+        # code...
+    }
+
+    public function mapAdminRoutes()
+    {
+        Route::group([
+            'middleware' => 'web',
+            'prefix'     => config('backpack.base.route_prefix'),
+            'namespace'  => $this->namespace . '\Admin',
+        ], function ($router) {
+            require base_path('routes/admin/word.php');
+            require base_path('routes/admin/category.php');
+            require base_path('routes/admin/user.php');
         });
     }
 }

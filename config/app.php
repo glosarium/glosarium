@@ -189,6 +189,8 @@ return [
         // https://github.com/RoumenDamianoff/laravel-sitemap
         Roumen\Sitemap\SitemapServiceProvider::class,
 
+        Backpack\Base\BaseServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

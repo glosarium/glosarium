@@ -10,6 +10,3 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-
-Route::get('/info', 'API\WordController@index')->name('api.word.index');
-Route::get('word/search', 'API\WordController@search')->name('api.word.search');

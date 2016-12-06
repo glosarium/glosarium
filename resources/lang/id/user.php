@@ -7,6 +7,7 @@ return [
     'description'    => 'Daftar atau masuk sebagai pengguna untuk berkontribusi dalam pengembangan glosarium',
     'forgotPassword' => 'Saya Lupa Sandi Lewat',
     'changePassword' => 'Ubah Sandi Lewat',
+    'index'          => 'Pengguna',
 
     'field'          => [
         'name'                 => 'Nama Lengkap',

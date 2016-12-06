@@ -23,6 +23,7 @@ return [
     'notFound'      => 'Kata :word tidak ditemukan dalam basisdata.',
     'random'        => 'Kata Acak',
     'ajaxOnly'      => 'Pemintaan hanya diizinkan menggunakan AJAX',
+    'index'         => 'Indeks Kata (Glosarium)',
 
     'field'         => [
         'search'      => 'Cari kata...',
