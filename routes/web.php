@@ -18,17 +18,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/simpan-kata', 'WordController@store')->name('word.store');
 });
 
-Route::get('/api', 'WordController@api')->name('word.api');
-Route::get('/acak', 'WordController@random')->name('word.random');
-Route::get('cari', 'WordController@search')->name('word.search');
-Route::get('/', 'WordController@index')->name('index');
-
-Route::get('sitemap/{category}.xml', 'SitemapController@category')->name('sitemap.category');
-Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
-
-Route::get('/kategori/{category}', 'WordCategoryController@show')->name('word.category.show');
-Route::get('/kategori', 'WordCategoryController@index')->name('word.category');
-
 Route::get('/{category}/{word}', 'WordController@show')->name('word.detail');
 
 Route::get('/{hash}', 'LinkController@show')->name('link.show');

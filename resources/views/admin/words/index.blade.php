@@ -23,6 +23,12 @@
 
                 <div class="panel-body">
 
+                    <p>
+                        <a href="{{ route('admin.word.create') }}" class="btn btn-primary">
+                            @lang('word.create')
+                        </a>
+                    </p>
+
                     @if ($words->total() >= 1)
                     <div class="table-responsive">
                         <table class="table table-bordered">
