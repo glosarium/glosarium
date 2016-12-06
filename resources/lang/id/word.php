@@ -24,6 +24,7 @@ return [
     'random'        => 'Kata Acak',
     'ajaxOnly'      => 'Pemintaan hanya diizinkan menggunakan AJAX',
     'index'         => 'Indeks Kata (Glosarium)',
+    'searchFor'     => 'Pencarian untuk ":keyword"',
 
     'field'         => [
         'search'      => 'Cari kata...',

@@ -23,6 +23,7 @@
 
                 <div class="panel-body">
 
+                    @if ($users->total() >= 1)
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -69,8 +70,13 @@
                             </tbody>
                         </table>
                     </div>
+                    @else
+                        <div class="alert alert-info">
+                            Hasil pencarian tidak ditemukan atau belum ada kata yang disimpan.
+                        </div>
+                    @endif
 
-                    {{ $users->links() }}
+                    {{ $users->appends(['query' => request('query')])->links() }}
                 </div>
             </div>
         </div>

@@ -23,6 +23,7 @@
 
                 <div class="panel-body">
 
+                    @if ($words->total() >= 1)
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -70,8 +71,16 @@
                             </tbody>
                         </table>
                     </div>
+                    @else
+                        <div class="alert alert-info">
+                            Hasil pencarian tidak ditemukan atau belum ada kata yang disimpan.
+                        </div>
+                    @endif
 
-                    {{ $words->appends(['category' => request('category')])->links() }}
+                    {{ $words->appends([
+                        'category' => request('category'),
+                        'query' => request('query')
+                    ])->links() }}
                 </div>
             </div>
         </div>

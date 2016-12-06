@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'title' => 'Kategori',
-    'index' => 'Kategori',
+    'title'     => 'Kategori',
+    'index'     => 'Kategori',
+    'searchFor' => 'Pencarian untuk ":keyword"',
 ];

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title'          => 'Pengguna',
     'login'          => 'Masuk',
     'register'       => 'Daftar',
     'logout'         => 'Keluar',
@@ -8,6 +9,7 @@ return [
     'forgotPassword' => 'Saya Lupa Sandi Lewat',
     'changePassword' => 'Ubah Sandi Lewat',
     'index'          => 'Pengguna',
+    'searchFor'      => 'Pencarian untuk ":keyword"',
 
     'field'          => [
         'name'                 => 'Nama Lengkap',

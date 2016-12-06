@@ -15,10 +15,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('name', 'ASC')->paginate();
+        $users = User::orderBy('name', 'ASC')
+            ->when(request('query'), function ($query) {
+                return $query->where('name', 'like', '%' . request('query') . '%')
+                    ->orWhere('email', 'like', '%' . request('query') . '%');
+            })
+            ->paginate();
+
+        $title = request('query') ? trans('user.searchFor', ['keyword' => request('query')]) : trans('user.index');
 
         return view('admin.users.index', compact('users'))
-            ->withTitle(trans('user.index'));
+            ->withTitle($title);
     }
 
     /**

@@ -22,10 +22,16 @@ class WordController extends Controller
                     return $category->whereId(request('category'));
                 });
             })
+            ->when(request('query'), function ($query) {
+                return $query->where('locale', 'like', '%' . request('query') . '%')
+                    ->orWhere('foreign', 'like', '%' . request('query') . '%');
+            })
             ->paginate();
 
+        $title = request('query') ? trans('word.searchFor', ['keyword' => request('query')]) : trans('word.index');
+
         return view('admin.words.index', compact('words'))
-            ->withTitle(trans('word.index'));
+            ->withTitle($title);
     }
 
     /**

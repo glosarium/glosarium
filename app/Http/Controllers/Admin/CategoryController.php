@@ -16,10 +16,15 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = WordCategory::orderBy('name', 'ASC')
+            ->when(request('query'), function ($query) {
+                return $query->where('name', 'like', '%' . request('query') . '%');
+            })
             ->paginate();
 
+        $title = request('query') ? trans('category.searchFor', ['keyword' => request('query')]) : trans('category.index');
+
         return view('admin.categories.index', compact('categories'))
-            ->withTitle(trans('category.index'));
+            ->withTitle($title);
     }
 
     /**
