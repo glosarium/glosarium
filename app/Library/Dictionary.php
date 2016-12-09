@@ -138,31 +138,78 @@ class Dictionary
 
         $element = $this->content->filter('ol > li');
 
-        if (empty($this->word->descriptions->count() >= 1) and $element->count() >= 0) {
-            $word = $this->word;
+        $first = $element->first()->text();
 
-            $descriptions = $element->each(function ($li, $i) use ($word) {
-                list($type, $description) = explode(' ', $li->text(), 2);
+        $word = $this->word;
 
-                // static data
-                $classAlias = [
-                    'n'    => 2,
-                    'v'    => 1,
-                    'a'    => 5,
-                    'adv'  => 6,
-                    'num'  => 4,
-                    'p'    => 7,
-                    'pron' => 3,
-                ];
+        if ($this->word->descriptions->count() <= 0 and $element->count() >= 1) {
+            if (strpos(trim($first), ' ') !== false) {
 
-                return [
-                    'word_id'     => $this->word->id,
-                    'type_id'     => isset($classAlias[$type]) ? $classAlias[$type] : 0,
-                    'description' => sprintf('%s: %s', $type, $description),
-                    'created_at'  => \Carbon\Carbon::now(),
-                    'updated_at'  => \Carbon\Carbon::now(),
-                ];
-            });
+                $descriptions = $element->each(function ($li, $i) use ($word) {
+
+                    if (strpos(trim($li->text()), ' ') !== false) {
+                        list($type, $description) = explode(' ', $li->text(), 2);
+                    } else {
+                        $type = null;
+                        $description = $li->text();
+                    }
+
+                    // static data
+                    $classAlias = [
+                        null   => 0,
+                        'n'    => 2,
+                        'v'    => 1,
+                        'a'    => 5,
+                        'adv'  => 6,
+                        'num'  => 4,
+                        'p'    => 7,
+                        'pron' => 3,
+                    ];
+
+                    return [
+                        'word_id'     => $this->word->id,
+                        'type_id'     => isset($classAlias[$type]) ? $classAlias[$type] : 0,
+                        'description' => empty($type) ? $description : sprintf('%s: %s', $type, $description),
+                        'created_at'  => \Carbon\Carbon::now(),
+                        'updated_at'  => \Carbon\Carbon::now(),
+                    ];
+                });
+            } else {
+                $client = new \Goutte\Client;
+                $alias = $client->request('GET', $this->url . $first);
+
+                // update word alias
+                list($aliasWord, $spell) = explode('/', $alias->filter('h2')->text(), 2);
+
+                $this->word->alias = trim($first);
+                $this->word->locale = trim(ucwords($aliasWord));
+                $this->word->save();
+
+                $aliasElement = $alias->filter('ol > li');
+                $descriptions = $aliasElement->each(function ($li, $i) use ($word) {
+
+                    list($type, $description) = explode(' ', $li->text(), 2);
+
+                    // static data
+                    $classAlias = [
+                        'n'    => 2,
+                        'v'    => 1,
+                        'a'    => 5,
+                        'adv'  => 6,
+                        'num'  => 4,
+                        'p'    => 7,
+                        'pron' => 3,
+                    ];
+
+                    return [
+                        'word_id'     => $this->word->id,
+                        'type_id'     => isset($classAlias[$type]) ? $classAlias[$type] : 0,
+                        'description' => empty($type) ? $description : sprintf('%s: %s', $type, $description),
+                        'created_at'  => \Carbon\Carbon::now(),
+                        'updated_at'  => \Carbon\Carbon::now(),
+                    ];
+                });
+            }
 
             WordDescription::insert($descriptions);
         } else {
