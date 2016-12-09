@@ -62,7 +62,7 @@ class WordCategoryController extends Controller
     {
         // create header image
         $file = sprintf('%s.jpg', $category->slug);
-        $text = trans('word.category') . $category->name;
+        $text = $category->name;
 
         $image = $this->createImage($text, 'image/category', $file);
 
