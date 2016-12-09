@@ -20,9 +20,9 @@
 
     <!-- Scripts -->
     <script>
-        window.Laravel = <?php echo json_encode([
-    'csrfToken' => csrf_token(),
-]); ?>
+        window.Laravel =                                                                                                 <?php echo json_encode([
+                                                                                                         'csrfToken' => csrf_token(),
+                                                                                                 ]); ?>
     </script>
 </head>
 <body>
@@ -100,5 +100,16 @@
 
     @include('partials.ga-analytic')
     @include('partials.fb-app')
+
+    @stack('structured-data')
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "name": "{{ config('app.name')}} ",
+          "alternateName": "{{ config('app.description') }}",
+          "url": "{{ route('index') }}"
+        }
+    </script>
 </body>
 </html>

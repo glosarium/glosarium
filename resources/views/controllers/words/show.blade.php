@@ -96,3 +96,34 @@
         })
     </script>
 @endpush
+
+@push('structured-data')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'http://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'item' => [
+                        '@type' => 'Thing',
+                        '@id' => route('word.category.show', [$word->category->slug]),
+                        'name' => $word->category->name,
+                        'image' => asset('image/category/'.$word->category->slug.'.jpg')
+                    ]
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'item' => [
+                        '@type' => 'Thing',
+                        '@id' => route('word.detail', [$word->category->slug, $word->slug]),
+                        'name' => $word->locale,
+                        'image' => asset($image)
+                    ]
+                ]
+            ]
+        ]) !!}
+    </script>
+@endpush

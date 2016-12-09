@@ -39,8 +39,7 @@
                     <p>
                         Temukan juga Glosarium untuk:
                         <a href="{{ route('word.random') }}">Kata Acak</a>,
-                        <a href="{{ route('word.category') }}">Kata Terbaru</a>,
-                        <a href="{{ route('word.category') }}">Kategori</a>
+                        <a href="{{ route('word.category') }}">Kata Terbaru</a>
                     </p>
 
                 </form>
@@ -88,5 +87,20 @@
                 }
             })
         })
+    </script>
+@endpush
+
+@push('structured-data')
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "url": "{{ route('index') }}",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ route('index') }}?kata={kata}",
+            "query-input": "required name=kata"
+          }
+        }
     </script>
 @endpush
