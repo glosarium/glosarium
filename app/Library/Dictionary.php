@@ -137,12 +137,15 @@ class Dictionary
         abort_if(empty($this->content), 500, 'Empty response content from dictionary.');
 
         $element = $this->content->filter('ol > li');
+        if ($element->count() <= 0) {
+            return [];
+        }
 
         $first = $element->first()->text();
 
         $word = $this->word;
 
-        if ($this->word->descriptions->count() <= 0 and $element->count() >= 1) {
+        if ($this->word->descriptions->count() <= 0) {
             if (strpos(trim($first), ' ') !== false) {
 
                 $descriptions = $element->each(function ($li, $i) use ($word) {
