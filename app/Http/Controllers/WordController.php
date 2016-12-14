@@ -322,7 +322,9 @@ class WordController extends Controller
      */
     public function search()
     {
-        abort_if(!request()->ajax(), 400, trans('word.ajaxOnly'));
+        if (! request()->ajax()) {
+            return redirect()->route('index');
+        }
 
         $keyword = request('query');
         $words = Word::where('locale', 'LIKE', '%' . $keyword . '%')
