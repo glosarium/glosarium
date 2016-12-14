@@ -15,15 +15,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('vendor/flat-ui/dist/css/flat-ui.css') }}">
 
     @stack('css')
-
-    <!-- Scripts -->
-    <script>
-        window.Laravel =                                                                                                 <?php echo json_encode([
-                                                                                                         'csrfToken' => csrf_token(),
-                                                                                                 ]); ?>
-    </script>
 </head>
 <body>
     <div id="app">
@@ -95,6 +89,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('vendor/flat-ui/dist/js/flat-ui.js') }}">
+
+    </script>
     @stack('js')
     @stack('script')
 
