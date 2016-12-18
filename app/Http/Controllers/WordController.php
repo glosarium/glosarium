@@ -397,4 +397,21 @@ class WordController extends Controller
             'link'
         ))->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
+
+    /**
+     * Show some latest words
+     *
+     * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     * @return \Illuminate\Http\Response
+     */
+    public function latest()
+    {
+        $words = Word::orderBy('created_at', 'DESC')
+            ->with('descriptions')
+            ->take(10)
+            ->get();
+
+        return view('contents.words.latest', compact('words'))
+            ->withTitle(trans('word.latest'));
+    }
 }
