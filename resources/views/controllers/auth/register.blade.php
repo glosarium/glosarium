@@ -72,6 +72,10 @@
                             <button type="submit" class="btn btn-primary">
                                 @lang('user.btn.register')
                             </button>
+
+                            <a href="{{ url('login') }}" class="btn btn-link btn-simple">
+                                Masuk sebagai pengguna
+                            </a>
                         </div>
                     </form>
                 </div>

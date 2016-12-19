@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="form-group search-button">
-                        <button class="btn btn-primary">Penelusuran Glosarium</button>
+                        <button class="btn btn-primary btn-fill">Penelusuran Glosarium</button>
                     </div>
 
                     <p>

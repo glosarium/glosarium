@@ -12,10 +12,12 @@
     <title>{{ $title or config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('vendor/gsdk/bootstrap3/css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('vendor/gsdk/bootstrap3/css/bootstrap-theme.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('vendor/gsdk/assets/css/gsdk.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/gsdk/assets/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ asset('vendor/flat-ui/dist/css/flat-ui.css') }}">
 
     @stack('css')
 </head>
@@ -88,10 +90,13 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('vendor/flat-ui/dist/js/flat-ui.js') }}">
+    <script type="text/javascript" src="{{ asset('vendor/gsdk/jquery/jquery-1.10.2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/gsdk/bootstrap3/js/bootstrap.min.js') }}" /></script>
+    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/gsdk-checkbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/gsdk-radio.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/gsdk-bootstrapswitch.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/get-shit-done.js') }}"></script>
 
-    </script>
     @stack('js')
     @stack('script')
 

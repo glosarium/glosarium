@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="remember">@lang('user.field.remember')
+                                    <input data-toggle="checkbox" type="checkbox" name="remember">@lang('user.field.remember')
                                 </label>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                 @lang('user.btn.login')
                             </button>
 
-                            <a class="btn btn-link" href="{{ url('/password/reset') }}">
+                            <a class="btn btn-link btn-simple" href="{{ url('/password/reset') }}">
                                 @lang('user.forgotPassword')
                             </a>
                         </div>
