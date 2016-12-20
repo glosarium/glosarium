@@ -16,12 +16,14 @@ class Word extends Model
         'user_id',
         'category_id',
         'slug',
+        'alias',
         'lang',
         'foreign',
         'locale',
         'spell',
         'pronounce',
         'status',
+        'is_standard'
     ];
 
     public function getRouteKeyName()
