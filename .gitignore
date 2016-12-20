@@ -15,4 +15,5 @@ storage/debugbar
 composer.lock
 storage/ad
 storage/tool
+storage/index
 public/sitemap.xml

@@ -177,9 +177,6 @@ return [
         // https://github.com/barryvdh/laravel-debugbar
         Barryvdh\Debugbar\ServiceProvider::class,
 
-        // https://github.com/laravel/scout
-        Laravel\Scout\ScoutServiceProvider::class,
-
         // https://github.com/vinkla/laravel-hashids
         Vinkla\Hashids\HashidsServiceProvider::class,
 
