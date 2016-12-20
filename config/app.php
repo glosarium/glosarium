@@ -191,6 +191,9 @@ return [
 
         Backpack\Base\BaseServiceProvider::class,
 
+        // https://laravelcollective.com/docs/5.3/html#installation
+        Collective\Html\HtmlServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -251,6 +254,8 @@ return [
         'Image'         => Intervention\Image\Facades\Image::class,
         'Debugbar'      => Barryvdh\Debugbar\Facade::class,
         'Hashids'       => Vinkla\Hashids\Facades\Hashids::class,
+        'Form'          => Collective\Html\FormFacade::class,
+        'Html'          => Collective\Html\HtmlFacade::class,
         'BrowserDetect' => 'hisorange\BrowserDetect\Facade\Parser',
     ],
 
