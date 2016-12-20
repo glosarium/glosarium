@@ -38,15 +38,17 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <td>
-                                        {{ $user->name }}
+                                        <a href="#" class="name" data-name="name" data-pk="{{ $user->id }}" data-value="{{ $user->name }}" data-type="text">
+                                            {{ $user->name }}
+                                        </a>
                                         @if ($user->id == auth()->id())
                                             <small class="label label-info">
-                                                Akun Anda!
+                                                &nbsp;&nbsp;Akun Anda!
                                             </small>
                                         @endif
                                     </td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->updated_at->format(config('backpack.base.default_datetime_format')) }}</td>
+                                    <td class="updated-{{ $user->id }}">{{ $user->updated_at->format(config('backpack.base.default_datetime_format')) }}</td>
                                     <td>{{ $user->created_at->format(config('backpack.base.default_datetime_format')) }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('admin.user.show', [$user->id]) }}" class="btn btn-default btn-xs">
@@ -82,3 +84,27 @@
         </div>
     </div>
 @endsection
+
+
+@push('after_css')
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+@endpush
+
+@push('after_script')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+
+            $('.name').editable({
+                url: '{{ route('admin.user.updateable') }}',
+                success: function(response, value) {
+                    if (response.isSuccess == true) {
+                        $('td.updated-' + response.data.id).text(response.data.updated);
+                    }
+                }
+            })
+        })
+    </script>
+@endpush

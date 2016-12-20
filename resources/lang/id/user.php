@@ -20,6 +20,9 @@ return [
         'currentPassword'      => 'Sandi Lewat Sekarang',
         'newPassword'          => 'Sandi Lewat Baru',
         'passwordConfirmation' => 'Konfirmasi Sandi Lewat',
+        'updated' => 'Diperbarui',
+        'created' => 'Dibuat',
+        'actions' => 'Aksi'
     ],
 
     'btn'            => [

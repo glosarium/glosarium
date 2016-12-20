@@ -84,6 +84,41 @@ class UserController extends Controller
     }
 
     /**
+     * Update the specified column and value user in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateable()
+    {
+        $user = User::find(request('pk'));
+        if (empty($user)) {
+            return [
+                'isSuccess' => false,
+                'message' => trans('user.notFound')
+            ];
+        }
+
+        $field = request('name');
+        $user->$field = request('value');
+        $user->save();
+
+        return [
+            'isSuccess' => true,
+            'message' => trans('user.msg.updateable', [
+                'field' => $field,
+                'value' => request('value')
+            ]),
+            'data' => [
+                'id' => $user->id,
+                'updated' => \Carbon\Carbon::parse($user->updated_at)->format(config('backpack.base.default_datetime_format'))
+            ]
+        ];
+
+    }
+
+    /**
      * Remove the specified user from storage.
      *
      * @param  int  $id

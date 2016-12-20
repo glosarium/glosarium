@@ -49,7 +49,7 @@
 
 
           <!-- ======================================= -->
-          <li class="header">{{ trans('backpack::base.user') }}</li>
+          <li class="header">@lang('user.title')</li>
           <li>
             <a href="{{ route('admin.user.index') }}">
               <i class="fa fa-users"></i>

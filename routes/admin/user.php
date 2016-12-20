@@ -10,7 +10,7 @@
 | is assigned the "admin" middleware group. Enjoy building your API!
 |
  */
-
+Route::put('user/updateable', 'UserController@updateable')->name('admin.user.updateable');
 Route::resource('user', 'UserController', [
     'names' => [
         'index'   => 'admin.user.index',
