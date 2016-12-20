@@ -98,6 +98,40 @@ class CategoryController extends Controller
     }
 
     /**
+     * Update the specified category in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateable()
+    {
+        $category = WordCategory::find(request('pk'));
+        if (empty($category)) {
+            return [
+                'isSuccess' => false,
+                'message' => trans('category.notFound')
+            ];
+        }
+
+        $field = request('name');
+        $category->$field = request('value');
+        $category->save();
+
+        return [
+            'isSuccess' => true,
+            'message' => trans('word.updateable', [
+                'field' => request('name'),
+                'value' => request('value')
+            ]),
+            'data' => [
+                'id' => $category->id,
+                'updated' => \Carbon\Carbon::parse($category->updated_at)->format(config('backpack.base.default_datetime_format'))
+            ]
+        ];
+    }
+
+    /**
      * Remove the specified category from storage.
      *
      * @param  int  $id

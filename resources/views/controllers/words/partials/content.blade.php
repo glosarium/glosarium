@@ -1,7 +1,14 @@
+@if (auth()->check())
+    <p>
+        <a href="{{ route('admin.word.edit', [$word->id]) }}" class="btn btn-xs btn-info">
+            <span class="fa fa-edit"></span>
+        </a>
+    </p>
+@endif
+
 <h2>
     <a href="{{ route('word.detail', [$word->category->slug, $word->slug]) }}">{{ $word->locale }}</a>
     <br><small>{{ $word->spell }}</small>
-    <small><i class="fa fa-volume-up disabled"></i></small>
 </h2>
 <h3>
     {{ $word->foreign }}

@@ -43,13 +43,13 @@
                                 <tr>
                                     <td>{{ $category->slug }}</td>
                                     <td>
-                                        <a href="{{ route('admin.word.index', ['category' => $category->id]) }}">
+                                        <a href="#" class="name" data-type="text" data-pk="{{ $category->id }}" data-name="name" data-value="{{ $category->name }}">
                                             {{ $category->name }}
                                         </a>
                                     </td>
-                                    <td>{{ $category->updated_at->format(config('backpack.base.default_datetime_format')) }}</td>
+                                    <td class="updated-{{ $category->id }}">{{ $category->updated_at->format(config('backpack.base.default_datetime_format')) }}</td>
                                     <td class="text-right">
-                                        <a href="{{ route('admin.category.show', [$category->id]) }}" class="btn btn-default btn-xs">
+                                        <a href="{{ route('word.category.show', [$category->slug]) }}" target="_blank" class="btn btn-default btn-xs">
                                             <i class="fa fa-search fa-fw"></i>
                                         </a>
 
@@ -78,3 +78,30 @@
         </div>
     </div>
 @endsection
+
+@push('after_css')
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+@endpush
+
+@push('after_script')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+
+            $('.name').editable({
+                url: '{{ route('admin.category.updateable') }}',
+                emptytext: '{{ trans('category.field.empty') }}',
+                success: function(response, value){
+                    if (response.isSuccess == true) {
+                        $('td.updated-' + response.data.id).text(response.data.updated)
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }
+            })
+        })
+    </script>
+@endpush
