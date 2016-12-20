@@ -21,6 +21,21 @@ class CategoryController extends Controller
             })
             ->paginate();
 
+        if (request()->ajax()) {
+            return [
+                'isSuccess' => true,
+                'data' => [
+                    'raw' => $categories->pluck('name', 'id'),
+                    'formatted' => $categories->map(function($category){
+                        return [
+                            'value' => $category->id,
+                            'text' => $category->name
+                        ];
+                    })
+                ]
+            ];
+        }
+
         $title = request('query') ? trans('category.searchFor', ['keyword' => request('query')]) : trans('category.index');
 
         return view('admin.categories.index', compact('categories'))
