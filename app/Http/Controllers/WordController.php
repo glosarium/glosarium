@@ -23,6 +23,10 @@ class WordController extends Controller
      */
     private $colors;
 
+    private $tntSearch;
+
+    private $wordIndex;
+
     public function __construct()
     {
         $this->colors = collect([
@@ -44,6 +48,14 @@ class WordController extends Controller
             '#d35400',
             '#c0392b',
         ]);
+
+        $this->tntSearch = new TNTSearch;
+
+        $this->tntSearch->loadConfig(config('search'));
+
+        $this->tntSearch->selectIndex('word.index');
+
+        $this->wordIndex = $this->tntSearch->getIndex();
     }
 
     /**
@@ -172,8 +184,9 @@ class WordController extends Controller
         $keyword = trim(request('kata'));
 
         if (!empty($keyword)) {
-            $words = Word::where('foreign', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('locale', 'LIKE', '%' . $keyword . '%')
+            $index = $this->tntSearch->search($keyword);
+
+            $words = Word::whereIn('id', $index['ids'])
                 ->whereStatus('published')
                 ->orderByRaw('LENGTH(`locale`) ASC')
                 ->orderBy('locale', 'ASC')
@@ -330,11 +343,7 @@ class WordController extends Controller
         $keyword = request('query');
         $limit = 10;
 
-        $tntSearch = new TNTSearch;
-        $tntSearch->loadConfig(config('search'));
-        $tntSearch->selectIndex('word.index');
-
-        $index = $tntSearch->search($keyword, $limit);
+        $index = $this->tntSearch->search($keyword, $limit);
 
         $words = Word::whereIn('id', $index['ids'])
             ->with('category')
