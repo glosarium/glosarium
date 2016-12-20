@@ -18,9 +18,9 @@ Route::resource('word', 'WordController', [
         'index'   => 'admin.word.index',
         'create'  => 'admin.word.create',
         'store'   => 'admin.word.store',
-        'show'    => 'admin.word.show',
         'edit'    => 'admin.word.edit',
         'update'  => 'admin.word.update',
         'destroy' => 'admin.word.destroy',
     ],
+    'except' => ['show']
 ]);

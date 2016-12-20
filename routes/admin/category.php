@@ -10,6 +10,7 @@
 | is assigned the "admin" middleware group. Enjoy building your API!
 |
  */
+Route::put('updateable', 'CategoryController@updateable')->name('admin.category.updateable');
 Route::resource('category', 'CategoryController', [
     'names' => [
         'index'   => 'admin.category.index',
