@@ -11,6 +11,8 @@
 |
  */
 
+Route::put('word/updateable', 'WordController@updateable')->name('admin.word.updateable');
+
 Route::resource('word', 'WordController', [
     'names' => [
         'index'   => 'admin.word.index',

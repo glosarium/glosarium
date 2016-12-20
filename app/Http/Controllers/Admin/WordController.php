@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Glosarium\Word;
+use App\Glosarium\WordCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\WordRequest;
 
@@ -41,7 +42,10 @@ class WordController extends Controller
      */
     public function create()
     {
-        //
+        $categories = WordCategory::orderBy('name', 'ASC')->pluck('name', 'id');
+
+        return view('admin.words.create', compact('categories'))
+            ->withTitle(trans('word.create'));
     }
 
     /**
@@ -52,7 +56,16 @@ class WordController extends Controller
      */
     public function store(WordRequest $request)
     {
-        //
+        $request->request->add(['status' => 'published']);
+
+        $word = Word::create($request->all());
+
+        return redirect()
+            ->route('admin.word.edit', [$word->id])
+            ->withSuccess(trans('word.msg.created', [
+                'foreign' => $word->foreign,
+                'locale' => $word->locale
+            ]));
     }
 
     /**
@@ -74,7 +87,12 @@ class WordController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = WordCategory::orderBy('name', 'ASC')->pluck('name', 'id');
+
+        $word = Word::findOrFail($id);
+
+        return view('admin.words.edit', compact('word', 'categories'))
+            ->withTitle(trans('word.edit', ['locale' => $word->locale]));
     }
 
     /**
@@ -86,7 +104,47 @@ class WordController extends Controller
      */
     public function update(WordRequest $request, $id)
     {
-        //
+        $word = Word::findOrFail($id);
+        $updated = $word->update($request->all());
+
+        return redirect()
+            ->route('admin.word.edit', [$word->id])
+            ->withSuccess(trans('word.msg.updated', [
+                'foreign' => $request->foreign,
+                'locale' => $request->locale
+            ]));
+    }
+
+    /**
+     * Update the specified column and value word in storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateable()
+    {
+        $word = Word::find(request('pk'));
+        if (empty($word)) {
+            return [
+                'isSuccess' => false,
+                'message' => trans('word.notFound')
+            ];
+        }
+
+        $field = request('name');
+        $word->$field = request('value');
+        $word->save();
+
+        return [
+            'isSuccess' => true,
+            'message' => trans('word.updateable', [
+                'field' => request('name'),
+                'value' => request('value')
+            ]),
+            'data' => [
+                'id' => $word->id,
+                'updated' => \Carbon\Carbon::parse($word->updated_at)->format(config('backpack.base.default_datetime_format'))
+            ]
+        ];
     }
 
     /**

@@ -25,19 +25,29 @@ return [
     'ajaxOnly'      => 'Pemintaan hanya diizinkan menggunakan AJAX',
     'index'         => 'Indeks Kata (Glosarium)',
     'searchFor'     => 'Pencarian untuk ":keyword"',
+    'required' => 'Kolom harus diisi.',
 
     'field'         => [
         'search'      => 'Cari kata...',
         'type'        => 'Jenis Kata',
         'foreign'     => 'Kata Asing',
-        'locale'      => 'Bahasa Indonesia',
+        'locale'      => 'Kata Lokal',
         'spell'       => 'Ejaan',
         'description' => 'Deskripsi',
         'category'    => 'Kategori',
+        'published' => 'Tayang',
+        'lang' => 'Bahasa',
+        'alias' => 'Alias Kata',
+        'created' => 'Dibuat',
+        'updated' => 'Diperbarui',
+        'actions' => 'Aksi',
+        'empty' => 'Kosong',
+        'published' => 'Tayang',
+        'drafted' => 'Draf'
     ],
-
     'placeholder'   => [
         'search' => 'Cari dalam :total pangkalan data',
+        'alias' => 'Misal: Buku; Bacaan menjadi Buku'
     ],
 
     'btn'           => [
@@ -48,5 +58,7 @@ return [
 
     'msg'           => [
         'created' => 'Kata (:foreign) :locale berhasil ditambah dan disimpan.',
+        'updated' => 'Kata (:foreign) :locale berhasil diperbarui dan disimpan.',
+        'updatedable' => 'Kolom :field berhasil diperbarui menjadi :value'
     ],
 ];

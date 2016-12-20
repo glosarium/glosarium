@@ -23,8 +23,14 @@ class WordRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
+        $rules = [
+            'category_id' => 'required|integer',
+            'lang' => 'required|string|max:3',
+            'foreign' => 'required|string',
+            'locale' => 'required|string',
+            'alias' => 'string'
         ];
+
+        return $rules;
     }
 }
