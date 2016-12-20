@@ -43,8 +43,9 @@ class WordController extends Controller
                 });
             })
             ->when(request('query'), function ($query) {
-                return $query->where('locale', 'like', '%' . request('query') . '%')
-                    ->orWhere('foreign', 'like', '%' . request('query') . '%');
+                $index = $this->tntSearch->search(request('query'));
+
+                return $query->whereIn('id', $index['ids']);
             })
             ->paginate();
 
@@ -95,17 +96,6 @@ class WordController extends Controller
                 'foreign' => $transaction->foreign,
                 'locale' => $transaction->locale
             ]));
-    }
-
-    /**
-     * Display the specified word.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
