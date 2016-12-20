@@ -26,6 +26,7 @@ return [
     'index'         => 'Indeks Kata (Glosarium)',
     'searchFor'     => 'Pencarian untuk ":keyword"',
     'required' => 'Kolom harus diisi.',
+    'edit' => 'Perbarui kata ":locale"',
 
     'field'         => [
         'search'      => 'Cari kata...',

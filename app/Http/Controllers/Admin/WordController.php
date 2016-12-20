@@ -6,9 +6,28 @@ use App\Glosarium\Word;
 use App\Glosarium\WordCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\WordRequest;
+use TeamTNT\TNTSearch\TNTSearch;
 
 class WordController extends Controller
 {
+    /**
+     * TNT Search object
+     */
+    private $tntSearch;
+
+    private $wordIndex;
+
+    public function __construct()
+    {
+        // initialize TNT Search
+        $this->tntSearch = new TNTSearch;
+
+        $this->tntSearch->loadConfig(config('search'));
+
+        $this->tntSearch->selectIndex('word.index');
+
+        $this->wordIndex = $this->tntSearch->getIndex();
+    }
     /**
      * Display a listing of the word.
      *
@@ -58,13 +77,23 @@ class WordController extends Controller
     {
         $request->request->add(['status' => 'published']);
 
-        $word = Word::create($request->all());
+        $transaction = \DB::transaction(function() use ($request){
+            $word = Word::create($request->all());
 
-        return redirect()
-            ->route('admin.word.edit', [$word->id])
-            ->withSuccess(trans('word.msg.created', [
+            $this->wordIndex->insert([
+                'id' => $word->id,
                 'foreign' => $word->foreign,
                 'locale' => $word->locale
+            ]);
+
+            return $word;
+        });
+
+        return redirect()
+            ->route('admin.word.edit', [$transaction->id])
+            ->withSuccess(trans('word.msg.created', [
+                'foreign' => $transaction->foreign,
+                'locale' => $transaction->locale
             ]));
     }
 
@@ -105,13 +134,26 @@ class WordController extends Controller
     public function update(WordRequest $request, $id)
     {
         $word = Word::findOrFail($id);
-        $updated = $word->update($request->all());
+
+        $transaction = \DB::transaction(function() use($word, $request){
+            $word->fill($request->all());
+            if ($word->update()) {
+
+                $this->wordIndex->update($word->id, [
+                    'id' => $word->id,
+                    'foreign' => $word->foreign,
+                    'locale' => $word->locale
+                ]);
+            }
+
+            return $word;
+        });
 
         return redirect()
-            ->route('admin.word.edit', [$word->id])
+            ->route('admin.word.edit', [$transaction->id])
             ->withSuccess(trans('word.msg.updated', [
-                'foreign' => $request->foreign,
-                'locale' => $request->locale
+                'foreign' => $transaction->foreign,
+                'locale' => $transaction->locale
             ]));
     }
 
@@ -133,6 +175,11 @@ class WordController extends Controller
         $field = request('name');
         $word->$field = request('value');
         $word->save();
+
+        $this->wordIndex->update($word->id, [
+            'id' => $word->id,
+            $field => request('value')
+        ]);
 
         return [
             'isSuccess' => true,
