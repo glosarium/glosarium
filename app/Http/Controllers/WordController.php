@@ -9,6 +9,7 @@ use App\Glosarium\WordView;
 use App\Http\Requests\Word\ValidationRequest;
 use App\Library\Dictionary;
 use GuzzleHttp\Client;
+use TeamTNT\TNTSearch\TNTSearch;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -327,12 +328,18 @@ class WordController extends Controller
         }
 
         $keyword = request('query');
-        $words = Word::where('locale', 'LIKE', '%' . $keyword . '%')
-            ->orWhere('foreign', 'LIKE', '%' . $keyword . '%')
-            ->with('category', 'descriptions', 'descriptions.type')
-            ->orderByRaw('LENGTH(`locale`) ASC')
+        $limit = 10;
+
+        $tntSearch = new TNTSearch;
+        $tntSearch->loadConfig(config('search'));
+        $tntSearch->selectIndex('word.index');
+
+        $index = $tntSearch->search($keyword, $limit);
+
+        $words = Word::whereIn('id', $index['ids'])
+            ->with('category')
             ->orderBy('locale', 'ASC')
-            ->limit(10)
+            ->limit($limit)
             ->get();
 
         $response = $words->map(function ($word) {
@@ -344,13 +351,14 @@ class WordController extends Controller
                 'data'  => [
                     'category' => $word->category->name,
                     'url'      => route('word.detail', [$word->category->slug, $word->slug]),
-                ],
+                ]
             ];
         });
 
-        return [
+        return  [
             'query'       => $keyword,
             'suggestions' => $response,
+            'total' => $words->count()
         ];
     }
 
