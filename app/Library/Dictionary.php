@@ -111,6 +111,10 @@ class Dictionary
 
     public function descriptions()
     {
+        if (! empty($this->word->descriptions) OR empty($this->content)) {
+            return $this->word->descriptions;
+        }
+
         $element = $this->content->filter('ol > li');
 
         $types = WordType::where('alias', '!=', '')->pluck('id', 'alias');
