@@ -8,7 +8,6 @@ use App\Glosarium\WordSearch;
 use App\Glosarium\WordView;
 use App\Http\Requests\Word\ValidationRequest;
 use App\Library\Dictionary;
-use GuzzleHttp\Client;
 use TeamTNT\TNTSearch\TNTSearch;
 
 /**
@@ -252,16 +251,18 @@ class WordController extends Controller
         $this->wordView($word);
 
         // update spell and descriptions
-        $dictionary = (new Dictionary($word))->getRemoteContent();
-        $spell = $dictionary->getSpell();
-        $descriptions = $dictionary->getDescriptions();
+        $dictionary = new Dictionary($word);
+        $spell = $dictionary->spell();
+        $descriptions = $dictionary->descriptions();
 
         $word->load('category', 'descriptions', 'descriptions.type', 'views');
 
         return view('controllers.words.show', compact(
             'word',
             'image',
-            'link'
+            'link',
+            'spell',
+            'descriptions'
         ))->withTitle(sprintf('(%s) %s', $word->foreign, $word->locale));
     }
 
