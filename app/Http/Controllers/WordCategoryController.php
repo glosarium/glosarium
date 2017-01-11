@@ -25,14 +25,10 @@ class WordCategoryController extends Controller
             'base_uri' => config('api.url'),
         ]);
 
-        // get category from API
-        $response = $client->request('GET', 'word/category');
-
-        if ($response->getStatusCode() == 200) {
-            $categories = collect(json_decode($response->getBody())->data);
-        } else {
-            abort(500, 'Gagal mendapatkan kategori dari API.');
-        }
+        $cacheTime = \Carbon\Carbon::now()->addDays(30);
+        $categories = \Cache::remember('categories', $cacheTime, function () {
+            return WordCategory::orderBy('name', 'ASC')->get();
+        });
 
         // create image header
         $image = $this->createImage(trans('word.categoryTitle'), 'image/page', 'category.jpg');
