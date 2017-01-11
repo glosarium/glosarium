@@ -52,12 +52,12 @@
                         @foreach ($words as $word)
                             <li>
                                 <a href="{{ route('word.detail', [
-                                    $word->category->data->slug,
+                                    $word->category->slug,
                                     $word->slug
                                 ]) }}">
                                     {{ $word->locale }}
                                 </a>
-                                <small class="text-muted">{{ $word->category->data->name }}</small>
+                                <small class="text-muted">{{ $word->category->name }}</small>
                             </li>
                         @endforeach
                     </ul>

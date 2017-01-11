@@ -33,14 +33,12 @@ class WordCategoryController extends Controller
         // create image header
         $image = $this->createImage(trans('word.categoryTitle'), 'image/page', 'category.jpg');
 
-        // get latest words from API
-        $wordsResponse = $client->request('GET', 'word/latest');
-
-        if ($wordsResponse->getStatusCode() == 200) {
-            $words = collect(json_decode($wordsResponse->getBody())->data);
-        } else {
-            abort(500, 'Gagal mendapatkan kata terbaru dari API.');
-        }
+        $words = \Cache::remember('latestWords', \Carbon\Carbon::now()->addDays(1), function(){
+            return Word::orderBy('created_at', 'DESC')
+                ->with('category')
+                ->limit(20)
+                ->get();
+        });
 
         return view('controllers.words.categories.index', compact(
             'categories',
