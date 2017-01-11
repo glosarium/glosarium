@@ -405,9 +405,9 @@ class WordController extends Controller
         $word->load('views');
 
         // update spell and descriptions
-        $dictionary = (new Dictionary($word))->getRemoteContent();
-        $spell = $dictionary->getSpell();
-        $descriptions = $dictionary->getDescriptions();
+        $dictionary = new Dictionary($word);
+        $spell = $dictionary->spell();
+        $descriptions = $dictionary->descriptions();
 
         return view('controllers.words.show', compact(
             'word',
