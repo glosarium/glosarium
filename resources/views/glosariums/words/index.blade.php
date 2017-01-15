@@ -29,7 +29,7 @@
                 <div class="item">
                     <div class="row">
                         <div class="col-md-1 hidden-sm hidden-xs">
-                            <div class="img-item"><img src="{{ asset('images/company-logo/1.jpg') app.}}" alt=""></div>
+                            <div class="img-item"><img src="{{ asset('images/company-logo/1.jpg') }}" alt=""></div>
                         </div>
                         <div class="col-md-11">
                             <h3 class="no-margin-top">
