@@ -20,7 +20,7 @@ class Category extends Model
     ];
 
     /**
-     * Default parameter for URI
+     * Default parameter for URI.
      *
      * @return string
      */

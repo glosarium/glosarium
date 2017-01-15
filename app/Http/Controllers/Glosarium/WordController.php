@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Glosarium;
 
 use App\Glosarium\Word;
 use App\Glosarium\Category;
-use Illuminate\Http\Request;
 use App\Jobs\Glosarium\Dictionary;
 use App\Http\Controllers\Controller;
-use Sastrawi\Stemmer\StemmerFactory;
 
 class WordController extends Controller
 {
@@ -39,7 +37,7 @@ class WordController extends Controller
             ->firstOrFail();
 
         // save to dictionary
-        $locales = array_map(function($word){
+        $locales = array_map(function ($word) {
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
 

@@ -11,7 +11,7 @@ use TeamTNT\TNTSearch\TNTSearch;
 class WordController extends Controller
 {
     /**
-     * TNT Search object
+     * TNT Search object.
      */
     private $tntSearch;
 
@@ -20,7 +20,7 @@ class WordController extends Controller
     public function __construct()
     {
         // initialize TNT Search
-        $this->tntSearch = new TNTSearch;
+        $this->tntSearch = new TNTSearch();
 
         $this->tntSearch->loadConfig(config('search'));
 
@@ -71,20 +71,21 @@ class WordController extends Controller
     /**
      * Store a newly created word in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(WordRequest $request)
     {
         $request->request->add(['status' => 'published']);
 
-        $transaction = \DB::transaction(function() use ($request){
+        $transaction = \DB::transaction(function () use ($request) {
             $word = Word::create($request->all());
 
             $this->wordIndex->insert([
                 'id' => $word->id,
                 'foreign' => $word->foreign,
-                'locale' => $word->locale
+                'locale' => $word->locale,
             ]);
 
             return $word;
@@ -94,14 +95,15 @@ class WordController extends Controller
             ->route('admin.word.edit', [$transaction->id])
             ->withSuccess(trans('word.msg.created', [
                 'foreign' => $transaction->foreign,
-                'locale' => $transaction->locale
+                'locale' => $transaction->locale,
             ]));
     }
 
     /**
      * Show the form for editing the specified word.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -117,22 +119,22 @@ class WordController extends Controller
     /**
      * Update the specified word in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(WordRequest $request, $id)
     {
         $word = Word::findOrFail($id);
 
-        $transaction = \DB::transaction(function() use($word, $request){
+        $transaction = \DB::transaction(function () use ($word, $request) {
             $word->fill($request->all());
             if ($word->update()) {
-
                 $this->wordIndex->update($word->id, [
                     'id' => $word->id,
                     'foreign' => $word->foreign,
-                    'locale' => $word->locale
+                    'locale' => $word->locale,
                 ]);
             }
 
@@ -143,7 +145,7 @@ class WordController extends Controller
             ->route('admin.word.edit', [$transaction->id])
             ->withSuccess(trans('word.msg.updated', [
                 'foreign' => $transaction->foreign,
-                'locale' => $transaction->locale
+                'locale' => $transaction->locale,
             ]));
     }
 
@@ -158,7 +160,7 @@ class WordController extends Controller
         if (empty($word)) {
             return [
                 'isSuccess' => false,
-                'message' => trans('word.notFound')
+                'message' => trans('word.notFound'),
             ];
         }
 
@@ -168,30 +170,30 @@ class WordController extends Controller
 
         $this->wordIndex->update($word->id, [
             'id' => $word->id,
-            $field => request('value')
+            $field => request('value'),
         ]);
 
         return [
             'isSuccess' => true,
             'message' => trans('word.updateable', [
                 'field' => request('name'),
-                'value' => request('value')
+                'value' => request('value'),
             ]),
             'data' => [
                 'id' => $word->id,
-                'updated' => \Carbon\Carbon::parse($word->updated_at)->format(config('backpack.base.default_datetime_format'))
-            ]
+                'updated' => \Carbon\Carbon::parse($word->updated_at)->format(config('backpack.base.default_datetime_format')),
+            ],
         ];
     }
 
     /**
      * Remove the specified word from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
     }
 }

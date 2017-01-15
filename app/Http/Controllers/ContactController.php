@@ -14,7 +14,7 @@ class ContactController extends Controller
 
     public function send(ContactRequest $request)
     {
-        \Mail::raw($request->message, function($mail) use($request){
+        \Mail::raw($request->message, function ($mail) use ($request) {
             $mail->to('dedy.yugo.purwanto@gmail.com');
             $mail->from($request->email);
             $mail->subject($request->subject);

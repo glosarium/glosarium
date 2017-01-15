@@ -12,12 +12,13 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * Generate image header for every need
+     * Generate image header for every need.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
-     * @param string $text image label
+     *
+     * @param string $text  image label
      * @param string $paths base path for image
-     * @param integer $size default font size
+     * @param int    $size  default font size
      */
     protected function createImage(string $text, string $path, string $file, $size = 50): string
     {
@@ -44,7 +45,7 @@ class Controller extends BaseController
 
         $path = str_finish($path, '/');
 
-        if (!\File::exists(public_path($path . $file))) {
+        if (!\File::exists(public_path($path.$file))) {
             $canvas = \Image::canvas(800, 400, $colors->random());
 
             $canvas->text($text, 400, 200, function ($font) use ($size) {
@@ -59,9 +60,9 @@ class Controller extends BaseController
                 \File::makeDirectory($path, 0777, true);
             }
 
-            $canvas->save(public_path($path . $file));
+            $canvas->save(public_path($path.$file));
         }
 
-        return $path . $file;
+        return $path.$file;
     }
 }

@@ -25,7 +25,7 @@ class Word extends Model
         'spell',
         'pronounce',
         'status',
-        'is_standard'
+        'is_standard',
     ];
 
     public function getRouteKeyName()
@@ -79,7 +79,7 @@ class Word extends Model
         }
 
         if (request('category')) {
-            $query->whereHas('category', function($category){
+            $query->whereHas('category', function ($category) {
                 return $category->whereSlug(request('category'));
             });
         }

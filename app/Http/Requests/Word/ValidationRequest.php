@@ -30,9 +30,9 @@ class ValidationRequest extends FormRequest
                 'required',
                 Rule::exists($category->getTable(), 'id'),
             ],
-            'foreign'  => 'required|string',
-            'locale'   => 'required|string',
-            'spell'    => 'string',
+            'foreign' => 'required|string',
+            'locale' => 'required|string',
+            'spell' => 'string',
         ];
 
         return $rules;

@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         $categories = WordCategory::orderBy('name', 'ASC')
             ->when(request('query'), function ($query) {
-                return $query->where('name', 'like', '%' . request('query') . '%');
+                return $query->where('name', 'like', '%'.request('query').'%');
             })
             ->paginate();
 
@@ -26,13 +26,13 @@ class CategoryController extends Controller
                 'isSuccess' => true,
                 'data' => [
                     'raw' => $categories->pluck('name', 'id'),
-                    'formatted' => $categories->map(function($category){
+                    'formatted' => $categories->map(function ($category) {
                         return [
                             'value' => $category->id,
-                            'text' => $category->name
+                            'text' => $category->name,
                         ];
-                    })
-                ]
+                    }),
+                ],
             ];
         }
 
@@ -49,59 +49,59 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created category in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified category.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified category.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
     }
 
     /**
      * Update the specified category in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
      * Update the specified category in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function updateable()
@@ -110,7 +110,7 @@ class CategoryController extends Controller
         if (empty($category)) {
             return [
                 'isSuccess' => false,
-                'message' => trans('category.notFound')
+                'message' => trans('category.notFound'),
             ];
         }
 
@@ -122,23 +122,23 @@ class CategoryController extends Controller
             'isSuccess' => true,
             'message' => trans('word.updateable', [
                 'field' => request('name'),
-                'value' => request('value')
+                'value' => request('value'),
             ]),
             'data' => [
                 'id' => $category->id,
-                'updated' => \Carbon\Carbon::parse($category->updated_at)->format(config('backpack.base.default_datetime_format'))
-            ]
+                'updated' => \Carbon\Carbon::parse($category->updated_at)->format(config('backpack.base.default_datetime_format')),
+            ],
         ];
     }
 
     /**
      * Remove the specified category from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
     }
 }

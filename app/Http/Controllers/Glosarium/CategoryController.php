@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Glosarium;
 
 use App\Glosarium\Word;
 use App\Glosarium\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
@@ -29,6 +28,6 @@ class CategoryController extends Controller
 
     public function show($slug)
     {
-        # code...
+        // code...
     }
 }

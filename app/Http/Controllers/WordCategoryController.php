@@ -8,15 +8,18 @@ use GuzzleHttp\Client;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ *
  * @link https://github.com/arvernester/glosarium
+ *
  * @copyright 2016 - Glosarium
  */
 class WordCategoryController extends Controller
 {
     /**
-     * Show category index
+     * Show category index.
      *
      * @author Yugp <dedy.yugo.purwanto@gmail.com>
+     *
      * @return \Response
      */
     public function index()
@@ -33,7 +36,7 @@ class WordCategoryController extends Controller
         // create image header
         $image = $this->createImage(trans('word.categoryTitle'), 'image/page', 'category.jpg');
 
-        $words = \Cache::remember('latestWords', \Carbon\Carbon::now()->addDays(1), function(){
+        $words = \Cache::remember('latestWords', \Carbon\Carbon::now()->addDays(1), function () {
             return Word::orderBy('created_at', 'DESC')
                 ->with('category')
                 ->limit(20)
@@ -50,6 +53,7 @@ class WordCategoryController extends Controller
 
     /**
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @param WordCategory $category
      */
     public function show(WordCategory $category)
@@ -65,6 +69,6 @@ class WordCategoryController extends Controller
             ->paginate(90);
 
         return view('controllers.words.categories.show', compact('category', 'words', 'image'))
-            ->withTitle(trans('word.category') . $category->name);
+            ->withTitle(trans('word.category').$category->name);
     }
 }

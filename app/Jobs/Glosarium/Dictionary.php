@@ -20,8 +20,6 @@ class Dictionary implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct($words, $lang = 'id')
     {
@@ -31,8 +29,6 @@ class Dictionary implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle()
     {
@@ -42,22 +38,21 @@ class Dictionary implements ShouldQueue
 
         $words = [];
         foreach ($this->words as $word) {
-            if (! empty($word)) {
+            if (!empty($word)) {
                 $stem = $stemmer->stem($word);
                 $words[] = [
                     'type' => 'basic',
-                    'text' => $stem
+                    'text' => $stem,
                 ];
 
                 if ($word != $stem) {
                     $words[] = [
                         'type' => 'extended',
-                        'text' => $word
+                        'text' => $word,
                     ];
                 }
             }
         }
-
 
         // save to database
         $now = \Carbon\Carbon::now();
@@ -76,7 +71,7 @@ class Dictionary implements ShouldQueue
                     'is_published' => true,
                     'is_standard' => true,
                     'created_at' => $now,
-                    'updated_at'=> $now
+                    'updated_at' => $now,
                 ]);
             }
         }

@@ -27,8 +27,8 @@ class Word extends Model
     {
         return [
             'slug' => [
-                'source' => 'word'
-            ]
+                'source' => 'word',
+            ],
         ];
     }
 }

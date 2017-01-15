@@ -7,14 +7,15 @@ use App\Glosarium\WordCategory;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ *
  * @link https://github.com/arvernester/glosarium
+ *
  * @copyright 2016 - Glosarium
  */
 class SitemapController extends Controller
 {
-
     /**
-     * Create sitemap index
+     * Create sitemap index.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
      */
@@ -39,9 +40,10 @@ class SitemapController extends Controller
     }
 
     /**
-     * Generate sitemap grouped by category
+     * Generate sitemap grouped by category.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @param $category
      */
     public function category(WordCategory $category)
@@ -73,8 +75,8 @@ class SitemapController extends Controller
 
             $images = [
                 [
-                    'url'     => url($file),
-                    'title'   => $word->locale,
+                    'url' => url($file),
+                    'title' => $word->locale,
                     'caption' => $word->locale,
                 ],
             ];

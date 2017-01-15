@@ -8,7 +8,9 @@ use App\User;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ *
  * @link https://github.com/arvernester/glosarium
+ *
  * @copyright 2016 - Glosarium
  */
 class PasswordController extends Controller

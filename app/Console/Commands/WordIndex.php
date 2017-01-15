@@ -25,8 +25,6 @@ class WordIndex extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -40,21 +38,20 @@ class WordIndex extends Command
      */
     public function handle()
     {
-        $tntSearch = new TNTSearch;
+        $tntSearch = new TNTSearch();
 
         $tntSearch->loadConfig(config('search'));
 
         $path = config('search.storage');
 
         // create directory
-        if (! File::isDirectory($path)) {
+        if (!File::isDirectory($path)) {
             $created = File::makeDirectory($path, 0777, true);
 
             if ($created) {
-                $this->info('Berhasil membuat direktori ' . $path);
-            }
-            else {
-                $this->error('Gagal membuat direktori ' . $path);
+                $this->info('Berhasil membuat direktori '.$path);
+            } else {
+                $this->error('Gagal membuat direktori '.$path);
             }
         }
 

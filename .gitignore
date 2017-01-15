@@ -17,3 +17,4 @@ storage/ad
 storage/tool
 storage/index
 public/sitemap.xml
+database/db.sql

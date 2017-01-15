@@ -12,7 +12,7 @@
     </div>
     <div class="col-md-4">
         <h3 class="font-2x ">{{ number_format($total['dictionary'], 0, ',', '.')}}</h3>
-        <h4 class="color-text">Kosata Kamus</h4>
+        <h4 class="color-text">Kosakata Kamus</h4>
     </div>
     <div class="col-md-4">
         <h3 class="font-2x ">{{ number_format($total['user'], 0, ',', '.') }}</h3>

@@ -17,8 +17,8 @@ class UserController extends Controller
     {
         $users = User::orderBy('name', 'ASC')
             ->when(request('query'), function ($query) {
-                return $query->where('name', 'like', '%' . request('query') . '%')
-                    ->orWhere('email', 'like', '%' . request('query') . '%');
+                return $query->where('name', 'like', '%'.request('query').'%')
+                    ->orWhere('email', 'like', '%'.request('query').'%');
             })
             ->paginate();
 
@@ -35,59 +35,59 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
     {
-        //
     }
 
     /**
      * Display the specified user.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified user.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
     }
 
     /**
      * Update the specified user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UserRequest $request, $id)
     {
-        //
     }
 
     /**
      * Update the specified column and value user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function updateable()
@@ -96,7 +96,7 @@ class UserController extends Controller
         if (empty($user)) {
             return [
                 'isSuccess' => false,
-                'message' => trans('user.notFound')
+                'message' => trans('user.notFound'),
             ];
         }
 
@@ -108,24 +108,23 @@ class UserController extends Controller
             'isSuccess' => true,
             'message' => trans('user.msg.updateable', [
                 'field' => $field,
-                'value' => request('value')
+                'value' => request('value'),
             ]),
             'data' => [
                 'id' => $user->id,
-                'updated' => \Carbon\Carbon::parse($user->updated_at)->format(config('backpack.base.default_datetime_format'))
-            ]
+                'updated' => \Carbon\Carbon::parse($user->updated_at)->format(config('backpack.base.default_datetime_format')),
+            ],
         ];
-
     }
 
     /**
      * Remove the specified user from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
     }
 }

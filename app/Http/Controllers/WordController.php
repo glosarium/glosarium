@@ -12,7 +12,9 @@ use TeamTNT\TNTSearch\TNTSearch;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ *
  * @link https://github.com/arvernester/glosarium
+ *
  * @copyright 2016 - Glosarium
  */
 class WordController extends Controller
@@ -48,7 +50,7 @@ class WordController extends Controller
             '#c0392b',
         ]);
 
-        $this->tntSearch = new TNTSearch;
+        $this->tntSearch = new TNTSearch();
 
         $this->tntSearch->loadConfig(config('search'));
 
@@ -58,9 +60,10 @@ class WordController extends Controller
     }
 
     /**
-     * Get real IP Address from client
+     * Get real IP Address from client.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return mixed
      */
     private function getIP(): string
@@ -80,10 +83,9 @@ class WordController extends Controller
     }
 
     /**
-     * Add view log to word description
+     * Add view log to word description.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
-     * @return void
      */
     private function wordView($word)
     {
@@ -91,10 +93,10 @@ class WordController extends Controller
         if (!\BrowserDetect::isBot()) {
             $view = WordView::firstOrNew([
                 'word_id' => $word->id,
-                'ip'      => $this->getIP(),
+                'ip' => $this->getIP(),
                 'browser' => \BrowserDetect::browserName(),
-                'os'      => \BrowserDetect::osName(),
-                'device'  => \BrowserDetect::deviceFamily() . ' ' . \BrowserDetect::deviceModel(),
+                'os' => \BrowserDetect::osName(),
+                'device' => \BrowserDetect::deviceFamily().' '.\BrowserDetect::deviceModel(),
             ]);
 
             $view->created_at = \Carbon\Carbon::now();
@@ -107,10 +109,12 @@ class WordController extends Controller
     }
 
     /**
-     * Create short link for a word
+     * Create short link for a word.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @param $word
+     *
      * @return object link data
      */
     public function createLink($word)
@@ -121,8 +125,8 @@ class WordController extends Controller
 
         if (empty($link)) {
             $link = \App\Glosarium\Link::create([
-                'hash'       => $hash,
-                'url'        => implode('/', [$word->category->slug, $word->slug]),
+                'hash' => $hash,
+                'url' => implode('/', [$word->category->slug, $word->slug]),
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);
@@ -144,7 +148,7 @@ class WordController extends Controller
         $file = sprintf('%s.jpg', $word->slug);
 
         // create hader image
-        if (!\File::exists(public_path($path . $file))) {
+        if (!\File::exists(public_path($path.$file))) {
             if (!\File::isDirectory($path)) {
                 \File::makeDirectory($path, 0777, true);
             }
@@ -158,7 +162,7 @@ class WordController extends Controller
                 $font->valign('center');
             });
 
-            $canvas->text('(' . $word->foreign . ')', 400, 250, function ($font) {
+            $canvas->text('('.$word->foreign.')', 400, 250, function ($font) {
                 $font->file(storage_path('font/Monaco.ttf'));
                 $font->size(30);
                 $font->color('#fff');
@@ -166,16 +170,17 @@ class WordController extends Controller
                 $font->valign('center');
             });
 
-            $canvas->save(public_path($path . $file));
+            $canvas->save(public_path($path.$file));
         }
 
-        return $path . $file;
+        return $path.$file;
     }
 
     /**
-     * Show form and search results if available
+     * Show form and search results if available.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return Response
      */
     public function index()
@@ -195,7 +200,7 @@ class WordController extends Controller
             // log search keyword
             if (strlen(request('kata')) >= 3) {
                 WordSearch::insert([
-                    'keyword'    => request('kata'),
+                    'keyword' => request('kata'),
                     'created_at' => \Carbon\Carbon::now(),
                     'updated_at' => \Carbon\Carbon::now(),
                 ]);
@@ -222,9 +227,10 @@ class WordController extends Controller
     }
 
     /**
-     * Show word detail
+     * Show word detail.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @param Word $word
      */
     public function show($category, $slug)
@@ -267,9 +273,10 @@ class WordController extends Controller
     }
 
     /**
-     * Show create form
+     * Show create form.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return Response
      */
     public function create()
@@ -285,20 +292,21 @@ class WordController extends Controller
     }
 
     /**
-     * Store new word into database
+     * Store new word into database.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @param ValidationRequest $request
      */
     public function store(ValidationRequest $request)
     {
         $word = Word::create([
             'category_id' => $request->category,
-            'user_id'     => \Auth::id(),
-            'lang'        => 'en',
-            'foreign'     => $request->foreign,
-            'locale'      => $request->locale,
-            'status'      => 'published',
+            'user_id' => \Auth::id(),
+            'lang' => 'en',
+            'foreign' => $request->foreign,
+            'locale' => $request->locale,
+            'status' => 'published',
         ]);
 
         // make sure cache is empty
@@ -307,15 +315,16 @@ class WordController extends Controller
         return redirect()
             ->back()
             ->withSuccess(trans('word.msg.created', [
-                'locale'  => $word->lcoale,
+                'locale' => $word->lcoale,
                 'foreign' => $word->foreign,
             ]));
     }
 
     /**
-     * API Documentation
+     * API Documentation.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return \Response
      */
     public function api()
@@ -330,14 +339,15 @@ class WordController extends Controller
     }
 
     /**
-     * Suggest word when user typing in search box
+     * Suggest word when user typing in search box.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return mixed
      */
     public function search()
     {
-        if (! request()->ajax()) {
+        if (!request()->ajax()) {
             return redirect()->route('index');
         }
 
@@ -358,24 +368,25 @@ class WordController extends Controller
                     $word->locale,
                     $word->foreign
                 ),
-                'data'  => [
+                'data' => [
                     'category' => $word->category->name,
-                    'url'      => route('word.detail', [$word->category->slug, $word->slug]),
-                ]
+                    'url' => route('word.detail', [$word->category->slug, $word->slug]),
+                ],
             ];
         });
 
         return  [
-            'query'       => $keyword,
+            'query' => $keyword,
             'suggestions' => $response,
-            'total' => $words->count()
+            'total' => $words->count(),
         ];
     }
 
     /**
-     * Show a word in random order
+     * Show a word in random order.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return mixed
      */
     public function random()
@@ -417,9 +428,10 @@ class WordController extends Controller
     }
 
     /**
-     * Show some latest words
+     * Show some latest words.
      *
      * @author Yugo <dedy.yugo.purwanto@gmail.com>
+     *
      * @return \Illuminate\Http\Response
      */
     public function latest()
