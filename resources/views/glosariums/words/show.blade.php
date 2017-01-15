@@ -29,7 +29,6 @@
                     @if (! empty($word->user))
                         <li><i class="fa fa-user"></i> {{ $word->user->name }}</li>
                     @endif
-                    <li><i class="fa fa-external-link"></i> {{ route('link.redirect', Hashids::encode($word->id)) }}</li>
                     <li><i class="fa fa-eye"></i> Dilihat 10 kali</li>
                 </ul>
             </div>
