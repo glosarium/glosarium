@@ -9,8 +9,8 @@
     <title>{{ $title or config('app.name') }}</title>
 
     <!--favicon-->
-    <link rel="apple-touch-icon" href="assets/theme/images/apple-touch-icon.png">
-    <link rel="shortcut icon" href="assets/theme/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
 
     <!-- bootstrap -->
     <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
