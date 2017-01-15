@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-4">
         <h3 class="font-2x ">{{ number_format($total['user'], 0, ',', '.') }}</h3>
-        <h4 class="color-text">Pengguna</h4>
+        <h4 class="color-text">Kontributor</h4>
     </div>
 </div>
 @endsection
