@@ -14,6 +14,7 @@ require('laravel-elixir-vue-2');
  */
 
 elixir(mix => {
-    mix.sass('app.scss')
-       .webpack('app.js');
+    mix.less('theme.less', 'public/css/theme.css');
+
+    mix.scripts('theme.js', 'public/js/theme.js');
 });

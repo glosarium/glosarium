@@ -50,7 +50,7 @@ class LoginController extends Controller
 
         $image = $this->createImage($title, 'image/user', 'login.jpg');
 
-        return view('controllers.auth.login', compact('image'))
+        return view('auths.logins.form', compact('image'))
             ->withTitle($title);
     }
 }

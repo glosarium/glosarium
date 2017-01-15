@@ -1,0 +1,21 @@
+
+#affix-box{
+  &.affix{
+    position: relative !important;
+    top:0 !important;
+    z-index: 2;
+    @media (min-width: 1200px){
+      position: fixed !important;
+      width: 263px;
+      top:0;
+    }
+  }
+
+  @media (max-width: 992px){
+    .text-right{
+      text-align:left !important;
+    }
+    
+  }
+
+}

@@ -1,117 +1,138 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-<head>
+<html lang="en" >
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('metadata')
 
-    <title>{{ $title or config('app.name', 'Laravel') }}</title>
+    <title>{{ $title or config('app.name') }}</title>
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('vendor/gsdk/bootstrap3/css/bootstrap.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/gsdk/bootstrap3/css/bootstrap-theme.min.css') }}"> --}}
-    <link rel="stylesheet" href="{{ asset('vendor/gsdk/assets/css/gsdk.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/gsdk/assets/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--favicon-->
+    <link rel="apple-touch-icon" href="assets/theme/images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="assets/theme/images/favicon.ico" type="image/x-icon">
 
+    <!-- bootstrap -->
+    <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+
+    <!-- lightbox -->
+    <link href="{{ asset('vendor/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
+
+    <!-- Themes styles-->
+    <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
     @stack('css')
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- wrapper page -->
+    <div class="wrapper">
+      <!-- main-header -->
+      <header class="main-header">
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
+        <!-- main navbar -->
+        <nav class="navbar navbar-default main-navbar hidden-sm hidden-xs">
+          <div class="container">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ route('word.category') }}">Kategori</a></li>
-                        <li><a href="{{ route('word.random') }}">@lang('word.random')</a></li>
-                        <li><a href="{{ route('word.create') }}">@lang('word.create')</a></li>
-                        <li><a href="{{ route('word.api') }}">@lang('word.api')</a></li>
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">@lang('user.login')</a></li>
-                            <li><a href="{{ url('/register') }}">@lang('user.register')</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('user.password.form') }}">@lang('user.changePassword')</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            @lang('user.logout')
-                                        </a>
-
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
+              <ul class="nav navbar-nav">
+                @include('partials.menu')
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="link-btn"><a href="{{ url('login') }}"><span class="btn btn-theme btn-pill btn-xs btn-line">Masuk</span></a></li>
+                <li class="link-btn"><a href="{{ url('register') }}"><span class="btn btn-theme  btn-pill btn-xs btn-line">Daftar Sebagai Kontributor</span></a></li>
+              </ul>
             </div>
-        </nav>
+          </div>
+        </nav><!-- end main navbar -->
 
-        @yield('content')
-    </div>
+        <!-- mobile navbar -->
+        <div class="container">
+          <nav class="mobile-nav hidden-md hidden-lg">
+            <a href="#" class="btn-nav-toogle first">
+              <span class="bars"></span>
+              Menu
+            </a>
+            <div class="mobile-nav-block">
+              <h4>Navigasi</h4>
+              <a href="#" class="btn-nav-toogle">
+                <span class="barsclose"></span>
+                Tutup
+              </a>
 
-    <!-- Scripts -->
-    <script type="text/javascript" src="{{ asset('vendor/gsdk/jquery/jquery-1.10.2.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('vendor/gsdk/bootstrap3/js/bootstrap.min.js') }}" /></script>
-    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/gsdk-checkbox.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/gsdk-radio.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/gsdk-bootstrapswitch.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('vendor/gsdk/assets/js/get-shit-done.js') }}"></script>
+              <ul class="nav navbar-nav">
+                  @include('partials.menu')
+              </ul>
+            </div>
+          </nav>
+        </div><!-- mobile navbar -->
 
+
+        <!-- form search area-->
+        @yield('heading')
+
+      </header><!-- end main-header -->
+
+
+      <!-- body-content -->
+      <div class="body-content clearfix" id="app" >
+
+        <div class="bg-color2" id="content">
+          <div class="container">
+              @yield('content')
+          </div>
+        </div>
+
+      </div><!--end body-content -->
+
+
+      <!-- main-footer -->
+      <footer class="main-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <ul class="list-inline link-footer text-center-xs">
+                <li><a href="{{ route('index') }}">Beranda</a></li>
+                <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
+              </ul>
+            </div>
+            <div class="col-sm-6 ">
+              <p class="text-center-xs hidden-lg hidden-md hidden-sm">Stay Connect</p>
+              <div class="socials text-right text-center-xs">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer><!-- end main-footer -->
+
+    </div><!-- end wrapper page -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- jQuery Bootstrap -->
+    <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+    <!-- Lightbox -->
+    <script src="{{ asset('vendor/magnific-popup/dist/jquery.magnific-popup.min.js') }}"></script>
+
+    <!-- Theme JS -->
+    <script src="{{ asset ('js/theme.js') }}"></script>
     @stack('js')
-    @stack('script')
 
-    @include('partials.ga-analytic')
-    @include('partials.fb-app')
-
-    @stack('structured-data')
-    <script type="application/ld+json">
-        {
-          "@context": "http://schema.org",
-          "@type": "WebSite",
-          "name": "{{ config('app.name')}} ",
-          "alternateName": "{{ config('app.description') }}",
-          "url": "{{ route('index') }}"
-        }
-    </script>
-</body>
+  </body>
 </html>

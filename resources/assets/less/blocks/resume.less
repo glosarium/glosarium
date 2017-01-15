@@ -1,0 +1,80 @@
+.resume-block{
+  position: relative;
+  padding-left: 100px;
+  @media (max-width: 768px){
+    padding-left: 70px;
+  }
+  .img-profile{
+    position: absolute;
+    left: 0;
+    z-index: 2;
+    top: 0;
+    img{
+      .radius(3px);
+      width: 80px;
+      @media (max-width: 768px){
+        width: 50px;
+      }
+    }
+  }
+
+  .resume-sub-title{
+    position: relative;
+    left: -30px;
+    @media (max-width: 768px){
+      left: -15px;
+    }
+    margin-top: 40px;
+    span{
+      border:1px solid @white - 30;
+      padding: 15px 30px;
+      .radius(3px);
+      position: relative;
+      display:inline-block;
+      @media (max-width: 768px){
+        padding: 15px 15px;
+      }
+      &:before{
+        content: "";
+        left:-30px;
+        top:50%;
+        height:1px;
+        background: @white - 30;
+        width: 30px;
+        position: absolute;
+        @media (max-width: 768px){
+          //width: 30px;
+          // left:-25px;
+        }
+      }
+    }
+
+  }
+  &:before{
+    content: "";
+    position: absolute;
+    left: 40px;
+    width:1px;
+    border-left: 1px solid @white - 30;
+    height: 100%;
+    top:0;
+   
+    @media (max-width: 768px){
+      left: 25px;
+    }
+  }
+
+  &:after{
+    content: "";
+    position: absolute;
+    left: 30px;
+    width:20px;
+    height: 20px;
+    border: 1px solid @white - 30;
+    bottom:-20px;
+    .radius(50%);
+    @media (max-width: 768px){
+      left: 15px;
+    }
+  }
+}

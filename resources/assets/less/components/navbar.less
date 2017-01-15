@@ -1,0 +1,347 @@
+.main-navbar{
+  margin: 0;
+  z-index: 1000;
+  position: relative;
+  .box_shadow;
+  background: @primaryColor - 10;
+  border: 0;
+  .radius;
+  .navbar-nav{
+    >li{
+      >a{
+        font-weight: 300;
+        padding: 20px 30px;
+        &, &:hover, &:focus{
+          color: @white;
+        }
+
+        &.link-profile{
+          padding-left: 50px;
+        }
+        .img-profile{
+          top: 50%;
+          margin-top: -15px;
+          .radius(50%);
+          .box_shadow(0 0 0 3px fade(@white, 20%));
+          left: 15px;
+          width: 30px;
+          height: 30px;
+          position: absolute;
+        }
+      }
+      &.active{
+        >a{
+          &, &:hover, &:focus{
+            color: @white;
+            position: relative;
+            background: @primaryColor;
+            //  .box_shadow(0 3px 0 fade(@white, 50%));
+          }
+        }
+      }
+      &.dropdown{
+        &.open{
+          >a{
+            &, &:hover, &:focus{
+              color: @white;
+              background: transparent;
+            }
+          }
+        }
+      }
+      &.link-btn{
+        >a{
+          padding-top:15px;
+          padding-bottom: 15px;
+          padding-right: 5px;
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+
+  .navbar-collapse{
+    padding-left: 0;
+  }
+
+  .caret{
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    color: @white - 20;
+    border-left: 4px solid transparent;
+  }
+
+
+  .dropdown-menu{
+    .box_shadow(0 3px 3px fade(@black, 10%));
+    background: @primaryColor + 10;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    z-index: 1100;
+    border: 0;
+    .radius(3px);
+
+    @media (min-width: 768px){
+      &:before{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -10px;
+        left: 22px;
+        bottom: auto;
+        border: 10px solid transparent;
+        border-top: 0;
+        border-bottom-color: rgba(0,0,0,0.1);
+
+      }
+      &:after{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -9px;
+        left: 23px;
+        bottom: auto;
+        border: 9px solid transparent;
+        border-top: 0;
+        border-bottom-color: @primaryColor + 10;
+      }
+    }
+
+    >li{
+      >a{
+        padding: 8px 30px;
+        font-size: 13px;
+        .transition;
+        color: @white - 40;
+        &:hover, &:focus{
+          color: @white;
+          background: transparent;
+        }
+      }
+    }
+  }
+
+  .navbar-right {
+    .dropdown-menu{
+      @media (min-width: 768px){
+        &:before{
+          right: 22px;
+          left:inherit;
+        }
+        &:after{
+          right: 23px;
+          left:inherit;
+        }
+      }
+    }
+  }
+
+}
+
+
+
+.mobile-nav{
+  position: relative;
+
+  .btn-nav-toogle{
+    height: 30px;
+    z-index: 100;
+    .transition;
+    border: 1px solid @white;
+    display: block;
+    text-decoration: none;
+    .radius(3px);
+    position: absolute;
+    top: 10px;
+    font-size: 12px;
+    padding: 1px 10px;
+    color:@white;
+    right:0;
+    span.bars{
+      background: @white;
+      display:inline-block;
+      height: 2px;
+      width: 15px;
+      margin-right: 10px;
+      position: relative;
+
+      &:before{
+        content: "";
+        position: absolute;
+        background: @white;
+        display: block;
+        height: 2px;
+        width: 15px;
+        top: -4px;
+
+      }
+      &:after{
+        content: "";
+        position: absolute;
+        background: @white;
+        display: block;
+        height: 2px;
+        width: 15px;
+        top: -8px;
+
+      }
+    }
+
+
+  }
+
+  .nav-block-left{
+    z-index: 100;
+    position: absolute !important;
+    li{
+      a{
+        font-size: 13px;
+        color: @white;
+        &,&:hover, &:focus{
+          background: transparent;
+        }
+      }
+    }
+    .link-profile{
+      padding-left: 50px;
+    }
+    .img-profile{
+      top: 50%;
+      margin-top: -15px;
+      .radius(50%);
+      .box_shadow(0 0 0 3px fade(@white, 20%));
+      left: 15px;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+    }
+
+    .dropdown-menu{
+      position: absolute;
+      .box_shadow(0 3px 3px fade(@black, 10%));
+      background: @primaryColor + 10;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border: 0;
+      .radius(3px);
+
+      &:before{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -10px;
+        left: 22px;
+        bottom: auto;
+        border: 10px solid transparent;
+        border-top: 0;
+        border-bottom-color: rgba(0,0,0,0.1);
+
+      }
+      &:after{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -9px;
+        left: 23px;
+        bottom: auto;
+        border: 9px solid transparent;
+        border-top: 0;
+        border-bottom-color: @primaryColor + 10;
+      }
+
+      >li{
+        >a{
+          padding: 8px 30px;
+          font-size: 13px;
+          .transition;
+          color: @white - 40;
+          &:hover, &:focus{
+            color: @white;
+            background: transparent;
+          }
+        }
+      }
+    }
+  }
+
+
+  .mobile-nav-block{
+    position: fixed;
+    width:275px;
+    border-left: 1px solid @white - 30;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 20px 20px;
+    right:-275px;
+    top:3px;
+    .transition;
+    z-index: 110;
+    background:@white;
+    >h4{
+      padding-bottom: 20px;
+      border-bottom: 1px solid @white - 30;
+    }
+    &.open-mobile-nav{
+      right:0;
+    }
+
+
+    .btn-nav-toogle{
+      border-color:@colorHeading;
+      right: 20px;
+      color:@colorHeading;
+      span.barsclose{
+        background: @colorHeading;
+        display:inline-block;
+        height: 2px;
+        width: 10px;
+        margin-right: 6px;
+        top:-2px;
+        position: relative;
+      }
+    }
+
+    .navbar-nav{
+      margin:0;
+      padding:0;
+      li{
+        clear:both;
+        width: 100%;
+        a{
+          padding: 15px 0;
+          font-size: 13px;
+          &,&:hover,&:focus{
+            background: transparent;
+          }
+        }
+        .dropdown-menu{
+          margin-left: 15px;
+          display: block !important;
+          position: relative;
+          .box_shadow;
+          border: 0;
+          li{
+            a{
+              line-height: 1em;
+              padding-top: 10px;
+              padding-bottom: 10px;
+            }
+            &:first-child{
+              a{
+                padding-top: 0;
+              }
+            }
+            &:last-child{
+              a{
+                padding-bottom: 0;
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+}

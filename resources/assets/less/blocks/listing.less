@@ -1,0 +1,134 @@
+.box-list-area{
+  @media (min-width: 992px){
+    border-right: 1px solid @white - 30;
+    padding-right: 30px;
+  }
+}
+.box-list{
+  margin: 20px 0 ;
+
+
+  .item{
+    .transition;
+    padding: 30px;
+    background: @white;
+    border-bottom: 1px solid @white - 30;
+    border: 1px solid @white - 30;
+    border-top:0;
+    &:first-child{
+      border-top: 1px solid @white - 30;
+      .radius(3px 3px 0 0 );
+    }
+    &:last-child{
+      .radius(0 0 3px 3px);
+    }
+    .rate{
+      font-size: 10px;
+      margin:0 10px;
+    }
+  }
+  .img-item{
+    img{
+      .radius(3px);
+      text-align: center;
+      max-width: 100%;
+    }
+  }
+}
+
+.side-right{
+  position: relative;
+}
+
+.result-filter{
+  margin: 20px 0;
+  .list-area{
+    margin-bottom: 30px;
+  }
+}
+
+
+
+.get_alert{
+  background: @white;
+  padding: 30px;
+  margin-bottom: 30px;
+  border: 1px solid @white - 30;
+  .radius(3px);
+}
+
+.box-item-details{
+  background: @white;
+
+  position: relative;
+  @media (min-width: 992px){
+    padding-right: 30px;
+    border-right: 1px solid @white - 30;
+  }
+  &:before{
+    content: "";
+    position: absolute;
+    background: @white;
+    left: -1000%;
+    width: 1000%;
+    top:0;
+    height: 100%;
+  }
+  @media (max-width: 992px){
+    &:after{
+      content: "";
+      position: absolute;
+      background: @white;
+      right: -1000%;
+      width: 1000%;
+      top:0;
+      height: 100%;
+    }
+  }
+  .title{
+    border-top: 1px solid @white - 30;
+    padding-top: 40px;
+    margin-top: 30px;
+    padding-bottom: 20px;
+  }
+  h4{
+    padding-top: 15px;
+  }
+
+  .job-meta{
+    ul{
+      margin:0;
+      margin-bottom: 20px;
+      padding:0;
+      li{
+        .radius(3px);
+        margin-bottom: 3px;
+        border: 1px solid @white - 30;
+        padding: 5px 20px;
+        i{
+          margin-right: 3px;
+        }
+      }
+    }
+  }
+}
+
+.share-btns{
+  .btn{
+    min-width: 40px;
+    .radius(3px);
+  }
+}
+
+
+.nav-sidebar{
+  border:1px solid @white - 30;
+  li{
+    a{
+      background: @white;
+      border-bottom:1px solid @white - 30;
+      padding:10px 30px;
+      display:block;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+.panel{
+  &.panel-md{
+
+    max-width: 400px; 
+    margin: 0 auto;
+
+  }
+}
+
+.panel-body-lg{
+  padding: 20px;
+}
+
+.panel-heading{
+  position: relative;
+  padding: 15px 20px;
+  .collapse-toogle{
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    .ic-open{
+      display: none;
+    }
+  }
+
+  .collapsed{
+    .collapse-toogle{
+      .ic-close{
+        display: none;
+      }
+      .ic-open{
+        display: inline-block;
+      }
+
+    }
+  }
+
+  .with-ic{
+    padding-right: 30px;
+  }
+}
+
+.panel-title{
+  a{
+    &, &:hover, &:focus{
+      text-decoration: none;
+    }
+  }
+}

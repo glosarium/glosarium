@@ -1,0 +1,164 @@
+.btn-theme{
+  font-size: 13px;
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  .transition;
+  .radius(3px);
+
+  &,&:hover, &:focus{
+    outline: none;
+  }
+
+  font-weight: 700;
+  &.btn-square{
+    .radius; 
+  }
+  &.btn-sm{
+    padding: 6px 15px;
+  }
+
+  &.btn-xs{
+    padding: 3px 10px;
+    font-size: 12px;
+  }
+  &.btn-lg{
+    font-size: 1.1em;
+    padding: 15px 30px;
+  }
+  &.btn-line{
+    background: transparent;
+    border-color: @white;
+    border-width: 2px;
+    color: @white;
+    &:hover, &:focus{
+      background: @primaryColor;
+      border-color: @primaryColor;
+    }
+
+    &.dark{
+      &,&:hover,&:focus{
+        background: transparent;
+        border-color: @primaryColor;
+        color: @primaryColor;
+      }
+    }
+    &.soft{
+      &,&:hover,&:focus{
+        background: transparent;
+        border-color: @white - 30;
+        color: @colorHeading;
+        border-width: 1px;
+      }
+    }
+  }
+
+  &:hover, &:focus, &:active{
+    outline: none;
+  }
+
+  .bordered-left{
+    border-left: 1px solid fade(@white, 50%);
+    padding-left: 15px;
+    margin-left: 10px;
+    &.dark{
+      border-left: 1px solid fade(@black, 20%);
+    }
+  }
+
+  &.btn-long{
+    min-width: 250px;
+  }
+
+  .bordered-right{
+    border-right: 1px solid fade(@white, 50%);
+    padding-right: 15px;
+    margin-right: 10px;
+    &.dark{
+      border-right: 1px solid fade(@black, 20%);
+    }
+
+    &.pull-left{
+      width: 30px;
+      left: 15px;
+      position: absolute;
+    }
+  }
+
+
+
+  &.toogle-btn{
+    .open{
+      display: inline;
+    }
+    .cls{
+      display: none;
+    }
+
+    &.toogle-open{
+      .open{
+        display: none;
+      }
+      .cls{
+        display: inline;
+      }
+    }
+  }
+  &.no-left-border{
+    .radius(0 3px 3px 0 );
+  }
+
+  &.no-right-border{
+    .radius(3px 0 0 3px);
+  }
+
+  &.btn-pill{
+    .radius(50px);
+  }
+
+  &.btn-t-primary{
+    background-color: @primaryColor;
+    color: @white;
+    //  .box_shadow(0 5px 0 @primaryColor - 10);
+    position: relative;
+    &:hover{
+      background: @primaryColor - 20;
+      //.box_shadow(0 5px 0 @primaryColor - 30);
+    }
+  }
+}
+
+
+.btn-block-xs{
+  @media (max-width: 768px){
+    display:block;
+  }
+}
+
+
+.link-white{
+  &, &:hover, &:focus{
+    color: @white;
+    text-decoration: none;
+  }
+}
+
+.link-black{
+  &, &:hover, &:focus{
+    color: @black;
+    text-decoration: none;
+  }
+}
+
+.link-text{
+  &, &:hover, &:focus{
+    color: @colorText;
+    text-decoration: none;
+  }
+}
+
+.link-defaut{
+  &, &:hover, &:focus{
+    color: #23527c;
+  }
+}

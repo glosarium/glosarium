@@ -1,0 +1,51 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+body {
+  overflow-x: hidden;
+  color: @colorText;
+  font-family: @fontFamily2;
+  line-height: 2em;
+  font-size: 13px;
+  position: relative;
+  background:@white - 30;
+  &.open-mobile-nav{
+    @media (max-width: 992px){
+      overflow-y: hidden;
+      .wrapper{
+        left: -275px;
+      }
+      .btn-nav-toogle.first{
+        .opacity(0);
+      }
+    }
+  }
+
+  &:before, &:after{
+    height: 3px;
+    content:"";
+    position: absolute;
+    width: 50%;
+    top:0;
+    background: red;
+    z-index: 2;
+  }
+  &:before{
+    left:0;
+    background: @cFlatAmethyst;
+  }
+
+  &:after{
+    right:0;
+    background: @cFlatAlizarin;
+  }
+}
+
+.wrapper{
+  left:0;
+  .transition;
+  padding-top: 3px;
+  position: relative;
+  .body-content{
+    overflow-x: hidden;
+  }
+}

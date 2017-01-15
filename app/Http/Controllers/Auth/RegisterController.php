@@ -90,7 +90,7 @@ class RegisterController extends Controller
     {
         $image = $this->createImage(trans('user.register'), 'image/user', 'register.jpg');
 
-        return view('controllers.auth.register', compact('image'))
+        return view('auths.registers.form', compact('image'))
             ->withTitle(trans('user.register'));
     }
 }

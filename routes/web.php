@@ -13,11 +13,9 @@
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/tambah-kata', 'WordController@create')->name('word.create');
-    Route::post('/simpan-kata', 'WordController@store')->name('word.store');
-});
+Route::get('contact', 'ContactController@form')->name('contact.form');
+Route::post('contact', 'ContactController@send')->name('contact.post');
 
-Route::get('/{category}/{word}', 'WordController@show')->name('word.detail');
+Route::get('/{link}', 'LinkController@redirect')->name('link.redirect');
 
-Route::get('/{hash}', 'LinkController@show')->name('link.show');
+Route::get('/', 'PageController@index')->name('index');

@@ -1,0 +1,42 @@
+.box-testimonial{
+  margin-bottom: 30px;
+  text-align:center;
+  .desc{
+    //.box_shadow(0 3px 0 fade(@black, 5%));
+     position: relative;
+    background: @white;
+    border:1px solid @white - 30;
+    .radius(10px);
+    padding: 20px;
+    margin-bottom: 20px;
+    &:before{
+      content: "";
+      border-top: 10px solid @white;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      position: absolute;
+      bottom: -10px;
+      z-index: 2;
+      left: 50%;
+      margin-left: -10px;
+    }
+     &:after{
+      content: "";
+      border-top: 12px solid @white - 30;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      margin-left: -12px;
+      
+    }
+  }
+
+  img{
+    width: 64px;
+    height: 64px;
+    .radius(50%);
+  }
+
+}

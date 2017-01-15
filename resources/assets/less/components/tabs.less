@@ -1,0 +1,32 @@
+//Flat Tabs  ============================================================
+.flat-nav-tabs{
+  background: @white - 10;
+  padding: 15px 10px 0 10px;
+  .radius(3px 3px 0 0);
+  border-top: 1px solid @white - 30;
+  border-left: 1px solid @white - 30;
+  border-right: 1px solid @white - 30;
+  &>li{
+    &>a{
+      color: @colorText;
+      .radius;
+    }
+    &.active{
+      &>a{
+        .radius(3px 3px 0 0);
+        .box_shadow(0 -2px 0  @primaryColor); 
+      }
+    }
+  }
+}
+
+.flat-tab-content{
+  border-left: 1px solid @white - 30;
+  border-bottom: 1px solid @white - 30;
+  border-right: 1px solid @white - 30;
+  padding: 20px 0;
+  .tab-pane{
+    padding: 0 20px;
+  }
+}
+//End Flat Tabs  ============================================================

@@ -1,0 +1,34 @@
+.marker-description{
+  position: relative;
+  .inner{
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 250px;
+    background: @white;
+    padding: 20px;
+    z-index: 20;
+    .radius(3px);
+    border: 1px solid @white - 30;
+  }
+}
+
+.map-area-detail{
+  border-top: 1px solid @white - 30;
+  background: @white - 10 url(../images/preloader.gif) center no-repeat; 
+  position: relative;
+  &:before{
+    content: "";
+    position: absolute;
+    height: 100%;
+    background: transparent;
+    width: 60px;
+    right:0;
+    top:0;
+    z-index: 10;
+  }
+  .box-map-detail{
+    height: 600px;
+    width: 100%;  
+  }
+}

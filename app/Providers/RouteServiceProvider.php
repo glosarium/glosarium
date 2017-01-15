@@ -35,10 +35,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApplicationRoutes();
-
-        $this->mapAdminRoutes();
-
         $this->mapWebRoutes();
     }
 
@@ -55,6 +51,8 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => 'web',
             'namespace'  => $this->namespace,
         ], function ($router) {
+            require base_path('routes/web/glosarium.php');
+            require base_path('routes/web/dictionary.php');
             require base_path('routes/web.php');
         });
     }
@@ -74,31 +72,6 @@ class RouteServiceProvider extends ServiceProvider
             'prefix'     => 'api',
         ], function ($router) {
             require base_path('routes/api.php');
-        });
-    }
-
-    public function mapApplicationRoutes()
-    {
-        Route::group([
-            'middleware' => 'web',
-            'namespace'  => $this->namespace,
-        ], function ($router) {
-            require base_path('routes/application/user.php');
-            require base_path('routes/application/category.php');
-            require base_path('routes/application/word.php');
-        });
-    }
-
-    public function mapAdminRoutes()
-    {
-        Route::group([
-            'middleware' => 'web',
-            'prefix'     => config('backpack.base.route_prefix'),
-            'namespace'  => $this->namespace . '\Admin',
-        ], function ($router) {
-            require base_path('routes/admin/word.php');
-            require base_path('routes/admin/category.php');
-            require base_path('routes/admin/user.php');
         });
     }
 }
