@@ -67,7 +67,7 @@ class Dictionary implements ShouldQueue
             if (empty($find)) {
                 $dictionary[] = Word::create([
                     'user_id' => empty($user) ? null : $user->id,
-                    'word' => $word['text'],
+                    'word' => ucfirst($word['text']),
                     'type' => $word['type'],
                     'lang' => $this->lang,
                     'is_published' => true,
