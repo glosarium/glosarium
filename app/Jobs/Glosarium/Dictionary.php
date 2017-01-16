@@ -38,8 +38,10 @@ class Dictionary implements ShouldQueue
 
         $words = [];
         foreach ($this->words as $word) {
+            $word = ucfirst($word);
+
             if (!empty($word)) {
-                $stem = $stemmer->stem($word);
+                $stem = ucfirst($stemmer->stem($word));
                 $words[] = [
                     'type' => 'basic',
                     'text' => $stem,
