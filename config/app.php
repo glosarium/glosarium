@@ -180,13 +180,8 @@ return [
         // https://github.com/vinkla/laravel-hashids
         Vinkla\Hashids\HashidsServiceProvider::class,
 
-        // https://github.com/hisorange/browser-detect
-        'hisorange\BrowserDetect\Provider\BrowserDetectService',
-
         // https://github.com/RoumenDamianoff/laravel-sitemap
         Roumen\Sitemap\SitemapServiceProvider::class,
-
-        Backpack\Base\BaseServiceProvider::class,
 
         // https://laravelcollective.com/docs/5.3/html#installation
         Collective\Html\HtmlServiceProvider::class,
@@ -253,7 +248,6 @@ return [
         'Hashids'       => Vinkla\Hashids\Facades\Hashids::class,
         'Form'          => Collective\Html\FormFacade::class,
         'Html'          => Collective\Html\HtmlFacade::class,
-        'BrowserDetect' => 'hisorange\BrowserDetect\Facade\Parser',
     ],
 
 ];
