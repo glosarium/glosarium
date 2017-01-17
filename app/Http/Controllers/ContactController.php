@@ -1,27 +1,57 @@
 <?php
 
+/**
+ * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
+ * kamus nasional dan kamus bahasa daerah.
+ *
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright Glosarium - 2017
+ */
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Notifications\ContactNotification;
+use App\User;
+use Mail;
+use Notification;
 
-class ContactController extends Controller
-{
-    public function form()
-    {
-        return view('contacts.form')
-            ->withTitle('Kontak');
-    }
+/**
+ * Send message from guest via form
+ */
+class ContactController extends Controller {
 
-    public function send(ContactRequest $request)
-    {
-        \Mail::raw($request->message, function ($mail) use ($request) {
-            $mail->to('dedy.yugo.purwanto@gmail.com');
-            $mail->from($request->email);
-            $mail->subject($request->subject);
-        });
+	/**
+	 * Show contact form
+	 *
+	 * @return Illuminte\Http\Response
+	 */
+	public function form() {
+		return view('contacts.form')
+			->withTitle('Kontak');
+	}
 
-        return redirect()
-            ->route('contact.form')
-            ->with('success', 'Pesan berhasil dikirim.');
-    }
+	/**
+	 * Send to email and notif admin
+	 *
+	 * @param  ContactRequest $request
+	 * @return Illuminate\Http\Response
+	 */
+	public function send(ContactRequest $request) {
+		// send mails
+		Mail::raw($request->message, function ($mail) use ($request) {
+			$mail->from($request->email);
+			$mail->subject($request->subject);
+		});
+
+		// send notification to all users
+		$users = User::whereUsername('dedy.yugo.purwanto@gmail.com');
+		if (!empty($user)) {
+			Notification::send($users, new ContactNotification());
+		}
+
+		return redirect()
+			->route('contact.form')
+			->with('success', 'Terima kasih. Pesan berhasil dikirim dan akan ditanggapi sesegera mungkin.');
+	}
 }

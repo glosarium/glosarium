@@ -186,6 +186,9 @@ return [
         // https://laravelcollective.com/docs/5.3/html#installation
         Collective\Html\HtmlServiceProvider::class,
 
+        // http://laravel-notification-channels.com/onesignal/
+        NotificationChannels\OneSignal\OneSignalServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

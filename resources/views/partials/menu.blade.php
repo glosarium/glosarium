@@ -9,7 +9,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >Kamus <span class="caret"></span></a>
   <ul class="dropdown-menu" role="menu">
-      <li><a href="#">KBBI (Beta)</a></li>
+      <li><a href="{{ route('dictionary.national.index') }}">KBBI (Beta)</a></li>
       <li><a href="#">Kamus Daerah (Akan Datang)</a></li>
   </ul>
 </li>
