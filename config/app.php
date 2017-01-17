@@ -13,7 +13,8 @@ return [
      */
 
     'name'            => 'Glosarium Indonesia',
-    'description'     => 'Glosarium adalah suatu daftar alfabetis istilah dalam suatu ranah pengetahuan tertentu yang dilengkapi dengan definisi untuk istilah-istilah tersebut.',
+    'description'     => env('APP_DESCRIPTION'),
+    'email' => env('APP_EMAIL'),
 
     /*
     |--------------------------------------------------------------------------
