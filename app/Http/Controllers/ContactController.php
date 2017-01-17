@@ -11,47 +11,55 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
-use App\Notifications\ContactNotification;
-use App\User;
+use App\Message;
 use Mail;
-use Notification;
 
 /**
  * Send message from guest via form
  */
-class ContactController extends Controller {
+class ContactController extends Controller
+{
 
-	/**
-	 * Show contact form
-	 *
-	 * @return Illuminte\Http\Response
-	 */
-	public function form() {
-		return view('contacts.form')
-			->withTitle('Kontak');
-	}
+    /**
+     * Show contact form
+     *
+     * @return Illuminte\Http\Response
+     */
+    public function form()
+    {
+        return view('contacts.form')
+            ->withTitle('Kontak');
+    }
 
-	/**
-	 * Send to email and notif admin
-	 *
-	 * @param  ContactRequest $request
-	 * @return Illuminate\Http\Response
-	 */
-	public function send(ContactRequest $request) {
-		// send mails
-		Mail::raw($request->message, function ($mail) use ($request) {
-			$mail->from($request->email);
-			$mail->subject($request->subject);
-		});
+    /**
+     * Send to email and notif admin
+     *
+     * @param  ContactRequest $request
+     * @return Illuminate\Http\Response
+     */
+    public function send(ContactRequest $request)
+    {
+        try {
+            // send mails
+            Mail::raw($request->message, function ($mail) use ($request) {
+                $mail->from($request->email);
+                $mail->to(config('app.email'), config('app.name'));
+                $mail->subject($request->subject);
+            });
 
-		// send notification to all users
-		$users = User::whereUsername('dedy.yugo.purwanto@gmail.com');
-		if (!empty($user)) {
-			Notification::send($users, new ContactNotification());
-		}
+            // save to database for record
+            Message::insert([
+                'from'    => $request->email,
+                'to'      => config('app.email'),
+                'subject' => $request->subject,
+                'text'    => $request->message,
+            ]);
+        } catch (Exception $e) {
+            abort(500, $e->getMessage());
+        }
 
-		return redirect()
-			->route('contact.form')
-			->with('success', 'Terima kasih. Pesan berhasil dikirim dan akan ditanggapi sesegera mungkin.');
-	}
+        return redirect()
+            ->route('contact.form')
+            ->with('success', 'Terima kasih. Pesan berhasil dikirim dan akan ditanggapi sesegera mungkin.');
+    }
 }
