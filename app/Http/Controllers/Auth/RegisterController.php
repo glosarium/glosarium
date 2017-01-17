@@ -59,8 +59,8 @@ class RegisterController extends Controller
         });
 
         return Validator::make($data, [
-            'name' => 'required|max:100|valid_name',
-            'email' => 'required|email|max:255|unique:users',
+            'name'     => 'required|max:100|valid_name',
+            'email'    => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -75,9 +75,10 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'name'      => $data['name'],
+            'email'     => $data['email'],
+            'password'  => bcrypt($data['password']),
+            'is_active' => true,
         ]);
     }
 
@@ -88,8 +89,6 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $image = $this->createImage(trans('user.register'), 'image/user', 'register.jpg');
-
         return view('auths.registers.form', compact('image'))
             ->withTitle(trans('user.register'));
     }

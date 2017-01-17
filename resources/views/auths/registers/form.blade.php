@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <div class="panel panel-md">
     <div class="panel-body">
         <div class="row">
@@ -14,22 +13,32 @@
                 <div class="white-space-10"></div>
                 <p class="text-center"><span class="span-line">OR</span></p>
                 <!-- form login -->
-                <form>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" placeholder="Your Email">
+                <form action="{{ url('register') }}" method="post">
+                    {{ csrf_field() }}
+
+                    <div class="form-group {{ $errors->has('name') ? 'has-error': '' }}">
+                        <label>Nama Lengkap</label>
+                        <input type="text" name="name" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Your Password">
+
+                    <div class="form-group {{ $errors->has('email') ? 'has-error': '' }}">
+                        <label>Alamat Surel</label>
+                        <input name="email" type="email" class="form-control" placeholder="">
                     </div>
-                    <div class="form-group">
-                        <label>Re-type Password</label>
-                        <input type="password" class="form-control" placeholder="Re-type Your Password">
+
+                    <div class="form-group {{ $errors->has('password') ? 'has-error': '' }}">
+                        <label>Katasandi</label>
+                        <input name="password" type="password" class="form-control" placeholder="">
                     </div>
+
+                    <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error': '' }}">
+                        <label>Konfirmasi Katasandi</label>
+                        <input name="password_confirmation" type="password" class="form-control" placeholder="Ulangi kata sandi">
+                    </div>
+
                     <div class="white-space-10"></div>
                     <div class="form-group no-margin">
-                        <button class="btn btn-theme btn-lg btn-t-primary btn-block">Register</button>
+                        <button class="btn btn-theme btn-lg btn-t-primary btn-block">Daftar</button>
                     </div>
                 </form>
                 <!-- form login -->
@@ -38,7 +47,7 @@
     </div>
 </div>
 <div class="white-space-20"></div>
-<div class="text-center color-white">By creating an account, you agree to JobPlanet <br/><a href="#" class="link-white"><strong>Terms of Service</strong></a> and consent to our <a href="#" class="link-white"><strong>Privacy Policy</strong></a>.</div>
+<div class="text-center color-white">Dengan mendaftar sebagai kontributor, <br> Anda setuju dengan <strong><a href="#" class="color-white">Syarat dan Kondisi</a></strong> yang berlaku di {{ config('app.name') }}.</div>
 @endsection
 
 @push('js')

@@ -12,33 +12,35 @@
                 <div class="white-space-10"></div>
                 <p class="text-center"><span class="span-line">OR</span></p>
                 <!-- form login -->
-                <form>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" placeholder="Your Email">
+                <form action="{{ url('login') }}" method="post">
+                    {{ csrf_field() }}
+
+                    <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+                        <label>Alamat Surel</label>
+                        <input name="email" type="email" class="form-control" placeholder="">
                     </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Your Password">
+                    <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
+                        <label>Katasandi</label>
+                        <input name="password" type="password" class="form-control" placeholder="">
                     </div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-xs-6">
                                 <div class="checkbox flat-checkbox">
                                     <label>
-                                    <input type="checkbox">
+                                    <input name="remember" type="checkbox">
                                     <span class="fa fa-check"></span>
-                                    Remember me?
+                                    Ingatkan saya
                                     </label>
                                 </div>
                             </div>
                             <div class="col-xs-6 text-right">
-                                <p class="help-block"><a href="#myModal" data-toggle="modal">Forgot password?</a></p>
+                                <p class="help-block"><a href="#myModal" data-toggle="modal">Lupa katasandi?</a></p>
                             </div>
                         </div>
                     </div>
                     <div class="form-group no-margin">
-                        <button class="btn btn-theme btn-lg btn-t-primary btn-block">Log In</button>
+                        <button class="btn btn-theme btn-lg btn-t-primary btn-block">Masuk</button>
                     </div>
                 </form>
                 <!-- form login -->
@@ -47,7 +49,7 @@
     </div>
 </div>
 <div class="white-space-20"></div>
-<div class="text-center color-white">Not a member? &nbsp; <a href="#" class="link-white"><strong>Create an account free</strong></a></div>
+<div class="text-center color-white">Bukan kontributor? &nbsp; <a href="{{ url('register') }}" class="link-white"><strong>Buat akun gratis!</strong></a></div>
 @endsection
 
 @push('js')
