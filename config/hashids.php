@@ -37,8 +37,20 @@ return [
 
     'connections' => [
 
-        'word'        => [
+        'gosarium'    => [
             'salt'     => '93a7c5d4057a5e4673acf39de9f73b11d0ecdb1d',
+            'length'   => '',
+            'alphabet' => 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890',
+        ],
+
+        'category'    => [
+            'salt'     => '5ccbf9c9c5fc1bc34df8238a97094968f38f5165',
+            'length'   => '',
+            'alphabet' => 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890',
+        ],
+
+        'dictionary'  => [
+            'salt'     => 'f18bfb74e613afb11f36bdd80cf05cd5dfad98d6',
             'length'   => '',
             'alphabet' => 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890',
         ],
