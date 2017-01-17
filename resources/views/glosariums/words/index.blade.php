@@ -9,6 +9,18 @@
     <div class="col-md-9">
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
+
+            @if (! empty($category))
+                <div class="panel panel-default">
+                    <div class="panel-heading">Kategori</div>
+                    <div class="panel-body">
+                        <h3>{{ $category->name }}</h3>
+                        <hr>
+                        <p>{{ $category->description }}</p>
+                    </div>
+                </div>
+            @endif
+
             <!-- desc top -->
             <div class="row hidden-xs">
                 <div class="col-sm-6  ">

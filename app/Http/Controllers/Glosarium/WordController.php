@@ -1,17 +1,44 @@
 <?php
 
+/**
+ * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
+ * kamus nasional dan kamus bahasa daerah.
+ *
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright Glosarium - 2017
+ */
+
 namespace App\Http\Controllers\Glosarium;
 
-use App\Glosarium\Word;
 use App\Glosarium\Category;
-use App\Jobs\Glosarium\Dictionary;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
+use App\Jobs\Glosarium\Dictionary;
+use Cache;
+use Carbon\Carbon;
 
+/**
+ * Manage glosarium words
+ */
 class WordController extends Controller
 {
+
+    /**
+     * Show all words
+     *
+     * @return Illuminate\Http\Response
+     */
     public function index()
     {
-        $totalWord = Word::whereIsPublished(true)->count();
+        if (request('category')) {
+            $category = Category::whereSlug(trim(request('category')))->first();
+
+            abort_if(empty($category), 404, sprintf('Kategori "%s" tidak ditemukan.', title_case(request('category'))));
+        }
+
+        $totalWord = Cache::get('glosarium.total', function () {
+            return Word::whereIsPublished(true)->count();
+        });
 
         $words = Word::orderBy('locale')
             ->with('category')
@@ -19,12 +46,14 @@ class WordController extends Controller
             ->filter()
             ->paginate(config('glosarium.limit', 20));
 
-        $categories = Category::select('name', 'slug')
-            ->orderBy('name', 'ASC')
-            ->withCount('words')
-            ->get();
+        $categories = Cache::remember('category', Carbon::now()->addDays(30), function () {
+            return Category::select('name', 'slug')
+                ->orderBy('name', 'ASC')
+                ->withCount('words')
+                ->get();
+        });
 
-        return view('glosariums.words.index', compact('totalWord', 'words', 'categories'))
+        return view('glosariums.words.index', compact('totalWord', 'words', 'categories', 'category'))
             ->withTitle('Indeks Glosarium');
     }
 
