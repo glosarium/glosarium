@@ -49,28 +49,9 @@
                 </div>
                 @endforeach
             </div>
-            <!-- form get alert -->
-            <div class="get_alert">
-                <h4>Get email updates for the latest <span class=" ">PHP jobs in United States</span></h4>
-                <form>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <label>My Email</label>
-                                <input class="form-control" placeholder="Enter Email">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="hidden-sm hidden-xs ">&nbsp;</label>
-                                <button class="btn btn-theme btn-success btn-block">Activate</button>
-                            </div>
-                        </div>
-                    </div>
-                    <small>You can cancel email alerts at any time.</small>
-                </form>
-            </div>
-            <!-- end form get alert -->
+
+            @include('newsletters.partials.subscribe')
+
             <!-- pagination -->
             <nav >
                 {{ $words->appends(['keyword' => request('keyword')])->links() }}

@@ -45,6 +45,8 @@
                     @endforeach
                 </div>
 
+                @include('newsletters.partials.subscribe')
+
                 <!-- pagination -->
                 <nav >
                     {{ $words->appends(['keyword' => request('keyword')])->links() }}
