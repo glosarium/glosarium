@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Glosarium\Link;
+use App\Link;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -18,11 +18,11 @@ class LinkController extends Controller
      *
      * @param Link $link
      */
-    public function show($hash)
+    public function redirect($hash)
     {
         $link = Link::whereHash(trim($hash))->first();
         if (empty($link)) {
-            return redirect()->route('index');
+            abort(404, 'Tautan tidak ditemukan.');
         }
 
         // add view counter and redirect
