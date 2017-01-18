@@ -21,3 +21,4 @@ database/db.sql
 storage/worker.log
 .env.production
 Envoy.blade.php
+public/images/dictionaries

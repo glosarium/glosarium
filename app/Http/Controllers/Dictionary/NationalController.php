@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dictionary;
 use App\Dictionary\Word;
 use App\Http\Controllers\Controller;
 use App\Libraries\Dictionary;
+use App\Libraries\Image;
 use App\User;
 use Carbon\Carbon;
 use Sastrawi\Stemmer\StemmerFactory;
@@ -19,6 +20,17 @@ class NationalController extends Controller
                 ->filter()
                 ->with('descriptions')
                 ->first();
+
+            // create image header
+            if (!empty($word)) {
+                $image = new Image;
+
+                $path = sprintf('images/dictionaries/%s', strtolower($word->word[0]));
+
+                $image->addText(sprintf('Arti kata "%s"', $word->word), 30, 400, 200)->render($path, $word->word);
+
+                $imagePath = $image->path();
+            }
 
             if (empty($word)) {
                 // check if word exists in dictionary
@@ -74,8 +86,8 @@ class NationalController extends Controller
             ->take(20)
             ->get();
 
-        return view('dictionaries.words.index', compact('word', 'totalWord', 'words'))
-            ->withTitle('Indeks Kamus');
+        return view('dictionaries.words.index', compact('word', 'totalWord', 'words', 'imagePath'))
+            ->withTitle(empty($word) ? 'Cari Kata dalam Kamus' : sprintf('Arti Kata "%s"', $word->word));
     }
 
     public function show($slug)

@@ -82,3 +82,14 @@
         </div>
     </div>
 @endsection
+
+@if (! empty($word))
+    @push('metadata')
+        <meta property="og:title" content="{{ sprintf('Arti Kata "%s"', $word->word) }}">
+        <meta property="og:locale" content="'id_ID">
+        <meta property="og:url" content="{{ url('dictionary/'.$word->slug) }}">
+        @if (isset($imagePath))
+            <meta property="og:image" content="{{ $imagePath }}">
+        @endif
+    @endpush
+@endif

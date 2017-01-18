@@ -151,7 +151,9 @@
             })
         </script>
 
-        @include('partials/analytic')
+        @if (app()->environment('production'))
+            @include('partials/analytic')
+        @endif
 
         @stack('js')
     </body>
