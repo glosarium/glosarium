@@ -24,7 +24,11 @@
 
             <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
                 <label>Surel</label>
-                <input name="email" type="email" class="form-control" value="{{ old('email') }}">
+                @if (auth()->check())
+                    <input disabled="" type="email" name="email" class="form-control disabled" value="{{ auth()->user()->email }}">
+                @else
+                    <input name="email" type="email" class="form-control" value="{{ old('email') }}">
+                @endif
             </div>
             <div class="form-group {{ $errors->has('subject') ? 'has-error' : '' }}">
                 <label>Subjek</label>

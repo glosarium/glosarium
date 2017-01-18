@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Message;
+use Auth;
 use Mail;
 
 /**
@@ -42,14 +43,14 @@ class ContactController extends Controller
         try {
             // send mails
             Mail::raw($request->message, function ($mail) use ($request) {
-                $mail->from($request->email);
+                $mail->from(Auth::check() ? Auth::user()->email : $request->email);
                 $mail->to(config('app.email'), config('app.name'));
                 $mail->subject($request->subject);
             });
 
             // save to database for record
             Message::insert([
-                'from'    => $request->email,
+                'from'    => Auth::check() ? Auth::user()->email : $request->email,
                 'to'      => config('app.email'),
                 'subject' => $request->subject,
                 'text'    => $request->message,

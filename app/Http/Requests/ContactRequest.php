@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -23,10 +24,15 @@ class ContactRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'email' => 'required|email|max:100',
+        $rules = [
             'subject' => 'required|string|max:100',
             'message' => 'required|string',
         ];
+
+        if (!Auth::check()) {
+            $rules['email'] = 'required|email|max:100';
+        }
+
+        return $rules;
     }
 }
