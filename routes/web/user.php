@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'User'], function () {
+Route::group(['namespace' => 'User', 'middleware' => 'auth'], function () {
     // notification
     Route::get('notification', 'NotificationController@index')->name('user.notification.index');
 
