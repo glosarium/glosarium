@@ -32,7 +32,7 @@
                                 <div class="col-md-11">
                                     <h3 class="no-margin-top">
                                         <a href="{{ route('dictionary.national.show', ['category' => $word->slug]) }}">
-                                            {{ $word->word }}
+                                            {{ ucfirst($word->word) }}
                                             <small>{{ $word->spell }}</small>
                                         </a>
                                     </h3>
@@ -70,7 +70,7 @@
                             <ul class="list-unstyled">
                                 @foreach ($words as $word)
                                     <li class="{{ $word->slug }}">
-                                        <a href="{{ route('dictionary.national.index', ['keyword' => $word->slug]) }}">{{ $word->word }}</a> (<small class="color-black">{{ $word->created_at->diffForHumans() }}</small>)
+                                        <a href="{{ route('dictionary.national.index', ['keyword' => $word->slug]) }}">{{ ucfirst($word->word ) }}</a> (<small class="color-black">{{ $word->created_at->diffForHumans() }}</small>)
                                     </li>
                                 @endforeach
                             </ul>
