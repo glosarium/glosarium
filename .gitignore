@@ -20,3 +20,4 @@ public/sitemap.xml
 database/db.sql
 storage/worker.log
 .env.production
+Envoy.blade.php
