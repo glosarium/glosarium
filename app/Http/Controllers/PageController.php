@@ -25,9 +25,7 @@ class PageController extends Controller
             return \App\Glosarium\Word::count();
         });
 
-        $total['dictionary'] = Cache::remember('dictionary.total', $cacheTime, function () {
-            return \App\Dictionary\Word::count();
-        });
+        $total['dictionary'] = \App\Dictionary\Word::count();
 
         $total['category'] = Cache::remember('category.total', $cacheTime, function () {
             return \App\Glosarium\Category::count();

@@ -31,4 +31,18 @@ class Word extends Model
             ],
         ];
     }
+
+    public function descriptions()
+    {
+        return $this->hasMany(Description::class);
+    }
+
+    public function scopeFilter($query)
+    {
+        if (request('keyword')) {
+            $query->whereWord(request('keyword'));
+        }
+
+        return $query;
+    }
 }
