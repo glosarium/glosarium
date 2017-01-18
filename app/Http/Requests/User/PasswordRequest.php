@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User\Password;
+namespace App\Http\Requests\User;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidationRequest extends FormRequest
+class PasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class ValidationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -24,13 +25,12 @@ class ValidationRequest extends FormRequest
     public function rules()
     {
         \Validator::extend('password', function ($attribute, $value) {
-            return \Hash::check($value, \Auth::user()->password);
+            return \Hash::check($value, Auth::user()->password);
         });
 
         return [
             'current_password' => 'required|password',
-            'password' => 'required|min:6',
-            'password_confirmation' => 'required|min:6',
+            'password'         => 'required|min:6|confirmed',
         ];
     }
 }

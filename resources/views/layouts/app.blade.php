@@ -56,7 +56,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="#">Beranda</a></li>
                                         <li><a href="{{ route('user.notification.index') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
-                                        <li><a href="#">Ubah Katasandi</a></li>
+                                        <li><a href="{{ route('user.password.form') }}">Ubah Sandi Lewat</a></li>
                                     </ul>
                                 </li>
                                 <li class="link-btn"><a href="{{ url('register') }}" class="logout"><span class="btn btn-theme  btn-pill btn-xs btn-line">Keluar</span></a></li>
