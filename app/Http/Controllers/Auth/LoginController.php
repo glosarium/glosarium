@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\Image;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -46,9 +47,13 @@ class LoginController extends Controller
     {
         $title = trans('user.login');
 
-        $image = $this->createImage($title, 'image/user', 'login.jpg');
+        $image = new Image;
 
-        return view('auths.logins.form', compact('image'))
+        $image->addText('Masuk', 30, 400, 300)->render('images/users/', 'Masuk');
+
+        $imagePath = $image->path();
+
+        return view('auths.logins.form', compact('imagePath'))
             ->withTitle($title);
     }
 }

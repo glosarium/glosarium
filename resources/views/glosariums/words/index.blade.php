@@ -14,9 +14,18 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Kategori</div>
                     <div class="panel-body">
-                        <h3>{{ $category->name }}</h3>
+                        @if (auth()->check() and auth()->user()->type == 'admin')
+                            <h3 contenteditable="true" class="editable" data-id="{{ $category->id }}" data-field="name">{{ $category->name }}</h3>
+                        @else
+                            <h3>{{ $category->name }}</h3>
+                        @endif
+
                         <hr>
-                        <p>{{ $category->description }}</p>
+                        @if (auth()->check())
+                            <p contenteditable="true" class="editable" data-id="{{ $category->id }}" data-field="description">{{ $category->description ? $category->description : 'Klik di sini untuk memperbarui deskripsi.' }}</p>
+                        @else
+                            <p>{{ $category->description }}</p>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -99,7 +108,29 @@
 @push('js')
     <script>
         $(function(){
-            $('li.glosarium').addClass('active')
+            $('li.glosarium').addClass('active');
+
+            $('div.alert').hide();
+
+            $('.editable').blur(function(){
+                var data = {
+                    '_token': Laravel.csrfToken,
+                    'id': $(this).attr('data-id'),
+                    'text': $(this).text(),
+                    'field': $(this).attr('data-field')
+                };
+
+                var url = '{{ route('user.glosarium.category.updateField') }}';
+
+                $.ajax({
+                    url: url,
+                    data: data,
+                    type: 'PUT',
+                    success: function(response) {
+                        console.log(response.message);
+                    }
+                });
+            });
         })
     </script>
 @endpush

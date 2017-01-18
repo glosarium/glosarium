@@ -36,7 +36,11 @@
                                 <a href="{{ route('glosarium.word.index', ['category' => $category->slug]) }}" class="">{{ $category->name }}</a>
                             </h3>
                             <h5><span class="color-black">{{ number_format($category->words_count, 0, ',', '.') }} kata</span></h5>
-                            <p class="text-">{{ $category->description }}</p>
+                            @if (auth()->check() and auth()->user()->type == 'admin')
+                                <p class="editable text-truncate" contenteditable="true" data-id="{{ $category->id }}" data-field="description">{{ !empty($category->description) ? $category->description : 'Klik di sini untuk memperbarui deskripsi.' }}</p>
+                            @else
+                                <p class="text-truncate">{{ $category->description }}</p>
+                            @endif
                             <div>
                                 <span class="color-white-mute">{{ $category->updated_at->diffForHumans() }}</span>
                             </div>
@@ -79,7 +83,27 @@
 @push('js')
     <script>
         $(function(){
-            $('li.glosarium').addClass('active')
+            $('li.glosarium').addClass('active');
+
+            $('.editable').blur(function(){
+                var data = {
+                    '_token': Laravel.csrfToken,
+                    'id': $(this).attr('data-id'),
+                    'text': $(this).text(),
+                    'field': $(this).attr('data-field')
+                };
+
+                var url = '{{ route('user.glosarium.category.updateField') }}';
+
+                $.ajax({
+                    url: url,
+                    data: data,
+                    type: 'PUT',
+                    success: function(response) {
+                        console.log(response.message);
+                    }
+                });
+            });
         })
     </script>
 @endpush

@@ -22,3 +22,4 @@ storage/worker.log
 .env.production
 Envoy.blade.php
 public/images/dictionaries
+public/images/users
