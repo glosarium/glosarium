@@ -55,7 +55,7 @@
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="#">Beranda</a></li>
-                                        <li><a href="#">Notifikasi <span class="badge">0</span></a></li>
+                                        <li><a href="{{ route('user.notification.index') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
                                         <li><a href="#">Ubah Katasandi</a></li>
                                     </ul>
                                 </li>

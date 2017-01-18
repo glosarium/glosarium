@@ -12,8 +12,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Message;
+use App\Notifications\ContactNotification;
+use App\User;
 use Auth;
 use Mail;
+use Notification;
 
 /**
  * Send message from guest via form
@@ -50,11 +53,19 @@ class ContactController extends Controller
 
             // save to database for record
             Message::insert([
-                'from'    => Auth::check() ? Auth::user()->email : $request->email,
+                'from'    => $from = Auth::check() ? Auth::user()->email : $request->email,
                 'to'      => config('app.email'),
                 'subject' => $request->subject,
                 'text'    => $request->message,
             ]);
+
+            // send notification to admin
+            $users = User::whereType('admin')->whereIsActive(true)->get();
+            Notification::send($users, new ContactNotification([
+                'from'    => $from,
+                'subject' => $request->subject,
+            ]));
+
         } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
