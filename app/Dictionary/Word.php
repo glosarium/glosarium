@@ -23,6 +23,13 @@ class Word extends Model
         'updated_at',
     ];
 
+    protected $hidden = [
+        'is_standard',
+        'is_published',
+        'retry_count',
+        'type',
+    ];
+
     public function sluggable()
     {
         return [

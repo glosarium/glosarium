@@ -6,7 +6,7 @@
     <li><a href="{{ route('glosarium.category.index') }}">Semua Kategori</a></li>
   </ul>
 </li>
-<li class="dropdown">
+<li class="dropdown dictionary">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >Kamus <span class="caret"></span></a>
   <ul class="dropdown-menu" role="menu">
       <li><a href="{{ route('dictionary.national.index') }}">KBBI (Beta)</a></li>

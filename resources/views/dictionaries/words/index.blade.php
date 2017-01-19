@@ -31,12 +31,12 @@
                                 </div>
                                 <div class="col-md-11">
                                     <h3 class="no-margin-top">
-                                        <a href="{{ route('dictionary.national.show', ['category' => $word->slug]) }}">
+                                        <a href="{{ route('dictionary.national.index', ['keyword' => $word->slug]) }}">
                                             {{ ucfirst($word->word) }}
                                             <small>{{ $word->spell }}</small>
                                         </a>
                                     </h3>
-                                    @if ($word->descriptions->count() >= 1)
+                                    @if (! empty($word->descriptions) and $word->descriptions->count() >= 1)
                                         <div class="descriptions">
                                             <hr>
                                             <h4>Arti Kata</h4>
@@ -92,4 +92,24 @@
             <meta property="og:image" content="{{ $imagePath }}">
         @endif
     @endpush
+
+    @push('structured-data')
+        {{-- expr --}}
+    @endpush
 @endif
+
+
+@push('js')
+    <script>
+        $(function(){
+            $('li.dictionary').addClass('active');
+
+            $('#dictionary-search-form').submit(function(){
+                $(this).attr('action', '');
+
+                $(this).attr('action', '{{ url()->current() }}/' + $('#keyword').val());
+                $(this).submit();
+            })
+        })
+    </script>
+@endpush

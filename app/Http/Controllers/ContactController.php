@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ * @link https://github.com/glosarium/glosarium
  */
 
 namespace App\Http\Controllers;

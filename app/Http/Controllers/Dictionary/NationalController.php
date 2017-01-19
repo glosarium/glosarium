@@ -1,81 +1,40 @@
 <?php
 
+/**
+ * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
+ * kamus nasional dan kamus bahasa daerah.
+ *
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright Glosarium - 2017
+ * @link https://github.com/glosarium/glosarium
+ */
+
 namespace App\Http\Controllers\Dictionary;
 
 use App\Dictionary\Word;
 use App\Http\Controllers\Controller;
 use App\Libraries\Dictionary;
 use App\Libraries\Image;
-use App\User;
-use Carbon\Carbon;
-use Sastrawi\Stemmer\StemmerFactory;
 
+/**
+ * Search word fron national dictionary
+ */
 class NationalController extends Controller
 {
-    public function index()
+    public function index($keyword = null)
     {
-        if (request('keyword')) {
-            $word = Word::orderBy('word', 'ASC')
-                ->whereIsPublished(true)
-                ->filter()
-                ->with('descriptions')
-                ->first();
+        $dictionary = new Dictionary($keyword);
+        $word       = $dictionary->get();
 
-            // create image header
-            if (!empty($word)) {
-                $image = new Image;
+        // create image header
+        if (!empty($word)) {
+            $image = new Image;
 
-                $path = sprintf('images/dictionaries/%s', strtolower($word->word[0]));
+            $path = sprintf('images/dictionaries/%s', strtolower($word->word[0]));
 
-                $image->addText(sprintf('Arti kata "%s"', $word->word), 30, 400, 200)->render($path, $word->word);
+            $image->addText(sprintf('Arti kata "%s"', $word->word), 30, 400, 200)->render($path, $word->word);
 
-                $imagePath = $image->path();
-            }
-
-            if (empty($word)) {
-                // check if word exists in dictionary
-                $dictionary = new Dictionary;
-
-                if ($dictionary->isExists(request('keyword'))) {
-                    // find basic word
-                    $stemFactory = new StemmerFactory();
-
-                    $stemmer = $stemFactory->createStemmer();
-
-                    $stemmedWord = $stemmer->stem(request('keyword'));
-
-                    $word = Word::create([
-                        'user_id'      => User::find(1)->id,
-                        'lang'         => 'id',
-                        'word'         => ucwords(request('keyword')),
-                        'type'         => request('keyword') == $stemmedWord ? 'basic' : 'extended',
-                        'is_standard'  => true,
-                        'is_published' => true,
-                        'created_at'   => Carbon::now(),
-                        'updated_at'   => Carbon::now(),
-                    ]);
-                }
-
-                unset($dictionary);
-            }
-
-            if (!empty($word) and $word->retry_count <= config('dictionary.retries', 3)) {
-                if (empty($word->spell)) {
-                    if (!isset($dictionary)) {
-                        $dictionary = new Dictionary($word);
-                    }
-
-                    $word->spell = $dictionary->spell();
-                }
-
-                if ($word->descriptions->count() <= 0) {
-                    if (!isset($dictionary)) {
-                        $dictionary = new Dictionary($word);
-                    }
-
-                    $word->descriptions = $dictionary->descriptions();
-                }
-            }
+            $imagePath = $image->path();
         }
 
         $totalWord = Word::whereIsPublished(true)->count();
@@ -90,12 +49,10 @@ class NationalController extends Controller
             ->withTitle(empty($word) ? 'Cari Kata dalam Kamus' : sprintf('Arti Kata "%s"', $word->word));
     }
 
-    public function show($slug)
+    public function show($vocabulary)
     {
-        $word = Word::whereSlug(trim($slug))
-            ->firstOrFail();
+        $dictionary = new Dictionary($vocabulary);
 
-        return view('dictionaries.words.show', compact('word'))
-            ->withTitle(sprintf('Arti kata %s', $word->word));
+        return $dictionary->get();
     }
 }

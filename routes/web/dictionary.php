@@ -1,6 +1,8 @@
 <?php
 
-Route::group(['prefix' => 'dictionary', 'namespace' => 'Dictionary'], function(){
-    Route::get('/', 'NationalController@index')->name('dictionary.national.index');
-    Route::get('/national/{word}', 'NationalController@show')->name('dictionary.national.show');
+Route::group(['prefix' => 'dictionary', 'namespace' => 'Dictionary', 'as' => 'dictionary.'], function () {
+
+    Route::get('/', 'NationalController@index')->name('national.index');
+    Route::get('/{keyword?}', 'NationalController@show')->name('national.index');
+
 });
