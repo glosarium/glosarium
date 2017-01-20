@@ -46,12 +46,10 @@ class Dictionary
     /**
      * @var integer
      */
-    private $maxTries = 3;
+    private $maxTries = 1;
 
     public function __construct($word)
     {
-        header('Content-Type: text/html; charset=UTF-8');
-
         $this->vocabulary = $word;
 
         $key = str_slug($word);
