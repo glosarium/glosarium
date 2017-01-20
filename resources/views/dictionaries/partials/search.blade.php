@@ -7,7 +7,7 @@
                     <div class="col-sm-10 col-xs-12">
                         <div class="form-group">
                             <label class="color-white">Cari kata</label>
-                            <input v-model="forms.keyword" id="keyword" value="" class="form-control" placeholder="Temukan dalam {{ number_format($totalWord, 0, ',', '.') }} pangkalan data...">
+                            <input v-model="forms.keyword" id="keyword" value="" v-bind:disabled="inputs.keyword.disabled" v-bind:class="['form-control', inputs.keyword.class]" placeholder="Temukan dalam {{ number_format($totalWord, 0, ',', '.') }} pangkalan data...">
                         </div>
                     </div>
                     <div class="col-sm-2 col-xs-12 ">

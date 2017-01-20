@@ -33,7 +33,7 @@
                                 </div>
 
                                 <hr>
-                                <a href="" class="btn btn-default" target="_blank"><i class="fa fa-external-link"> </i> @{{ word.url }}</a>
+                                <a v-bind:href="word.url" class="btn btn-default" target="_blank"><i class="fa fa-external-link"> </i> @{{ word.url }}</a>
                             </div>
                         </div>
                     </div>
@@ -99,6 +99,12 @@
                     _token: Laravel.csrfToken,
                     keyword: null
                 },
+                inputs: {
+                    keyword: {
+                        class: null,
+                        disabled: false
+                    }
+                },
                 buttons: {
                     search: {
                         label: 'Cari',
@@ -117,7 +123,12 @@
                     this.buttons.search = {
                         label: 'Sedang mencari...',
                         class: 'disabled'
-                    }
+                    };
+
+                    this.inputs.keyword = {
+                        class: 'disabled',
+                        disabled: true
+                    };
 
                     $.post(url, this.forms, function(response){
                         vm.$set(vm, 'word', response.word);
@@ -126,6 +137,13 @@
                             search: {
                                 label: 'Cari',
                                 class: null
+                            }
+                        });
+
+                        vm.$set(vm, 'inputs', {
+                            keyword: {
+                                class: null,
+                                disabled: false
                             }
                         });
 
