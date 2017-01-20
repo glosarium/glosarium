@@ -68,11 +68,27 @@ class ContactController extends Controller
             ]));
 
         } catch (Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'type'    => 'danger',
+                    'message' => 'Pesan gagal dikirim, silakan coba lagi.',
+                ]);
+            }
+
             abort(500, $e->getMessage());
+        }
+
+        $message = 'Terima kasih. Pesan berhasil dikirim dan akan ditanggapi sesegera mungkin.';
+
+        if (request()->ajax()) {
+            return response()->json([
+                'type'    => 'success',
+                'message' => $message,
+            ]);
         }
 
         return redirect()
             ->route('contact.form')
-            ->with('success', 'Terima kasih. Pesan berhasil dikirim dan akan ditanggapi sesegera mungkin.');
+            ->with('success', $message);
     }
 }
