@@ -94,7 +94,13 @@
 
                     this.alerts = {
                         message: null
-                    }
+                    };
+
+                    this.errors = {
+                        email: null,
+                        subject: null,
+                        message: null
+                    };
 
                     this.$http.post(el.target.action, this.forms).then(function(response){
                         this.alerts = response.body;
