@@ -15,6 +15,7 @@ use App\Dictionary\Description;
 use App\Dictionary\Word;
 use App\Jobs\Glosarium\Dictionary as DictionaryQueue;
 use App\WordType;
+use Cache;
 use Goutte\Client;
 
 /**
@@ -49,8 +50,19 @@ class Dictionary
 
     public function __construct($word)
     {
+        header('Content-Type: text/html; charset=UTF-8');
+
         $this->vocabulary = $word;
-        $this->word       = Word::whereWord($word)->first();
+
+        $key = str_slug($word);
+        if (Cache::has('dictionary.' . $key)) {
+            $this->word = Cache::get('dictionary.' . $key);
+        } else {
+            $this->word = Word::whereWord($word)->with('descriptions')->first();
+
+            Cache::put('dictionary.' . $key, $this->word);
+        }
+
     }
 
     /**
@@ -85,6 +97,8 @@ class Dictionary
         $this->word->spell        = $this->spell();
         $this->word->descriptions = $this->descriptions();
 
+        $this->word->load('descriptions');
+
         return $this->word;
     }
 
@@ -105,7 +119,7 @@ class Dictionary
             $this->word->save();
         }
 
-        if (function_exists('debug')) {
+        if (function_exists('debug') and !empty($this->word)) {
             $action = ucwords($action);
             debug("{$action} request to {$url} ({$this->word->retry_count}).");
         }
@@ -134,7 +148,7 @@ class Dictionary
      *
      * @return string
      */
-    private function spell()
+    public function spell()
     {
         if (!empty($this->word->spell) and $this->word->retry_count) {
             return $this->word->spell;
@@ -166,7 +180,7 @@ class Dictionary
      *
      * @return App\Dictionary\Description
      */
-    private function descriptions()
+    public function descriptions()
     {
         if (!empty($this->word->descriptions) and $this->word->descriptions->count() >= 1) {
             return $this->word->descriptions;
@@ -201,21 +215,22 @@ class Dictionary
             ];
         });
 
-        $now = \Carbon\Carbon::now();
+        if (!empty($descriptions)) {
+            $relatedDescriptions = [];
+            foreach ($descriptions as $description) {
+                $relatedDescriptions[] = new Description([
+                    'type_id' => $description['type'],
+                    'text'    => trim(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $description['text'])),
+                ]);
+            }
 
-        $db = [];
-        foreach ($descriptions as $description) {
-            $db[] = Description::create([
-                'word_id'    => $this->word->id,
-                'type_id'    => $description['type'],
-                'text'       => $description['text'],
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
+            $this->word->descriptions()->saveMany($relatedDescriptions);
+
+            $this->word->descriptions = collect($relatedDescriptions);
+
+            return collect($relatedDescriptions);
         }
 
-        dispatch(new InvalidWord);
-
-        return collect($db);
+        return $descriptions;
     }
 }
