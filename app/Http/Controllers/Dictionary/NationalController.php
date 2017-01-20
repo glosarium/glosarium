@@ -26,18 +26,14 @@ class NationalController extends Controller
     {
         $totalWord = Word::whereIsPublished(true)->count();
 
-        // show latest words
-        $words = Word::orderBy('created_at', 'DESC')
-            ->whereIsPublished(true)
-            ->take(20)
-            ->get();
-
         return view('dictionaries.words.index', compact('word', 'totalWord', 'words', 'imagePath'))
             ->withTitle(empty($word) ? 'Cari Kata dalam Kamus' : sprintf('Arti Kata "%s"', $word->word));
     }
 
     public function search(Request $request)
     {
+        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+
         if (!empty($request->keyword)) {
             $dictionary = new Dictionary($request->keyword);
 
@@ -51,5 +47,24 @@ class NationalController extends Controller
         return [
             'word' => null,
         ];
+    }
+
+    public function show($word)
+    {
+        return redirect()->route('dictionary.national.index');
+    }
+
+    public function latest()
+    {
+        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+
+        $words = Word::orderBy('created_at', 'DESC')
+            ->whereIsPublished(true)
+            ->take(20)
+            ->get();
+
+        return response()->json([
+            'words' => $words,
+        ]);
     }
 }

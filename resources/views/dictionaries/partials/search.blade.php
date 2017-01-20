@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-md-12">
             <!-- form search -->
-            <form v-on:submit.prevent="searchWord" id="dictionary-search-form" action="{{ route('dictionary.national.index') }}" class="form-search-list" method="get">
+            <form v-on:submit.prevent="searchWord" id="dictionary-search-form" action="{{ route('dictionary.national.search') }}" class="form-search-list" method="post">
                 <div class="row">
                     <div class="col-sm-10 col-xs-12">
                         <div class="form-group">
                             <label class="color-white">Cari kata</label>
-                            <input v-model="forms.keyword" id="keyword" value="" v-bind:disabled="inputs.keyword.disabled" v-bind:class="['form-control', inputs.keyword.class]" placeholder="Temukan dalam {{ number_format($totalWord, 0, ',', '.') }} pangkalan data...">
+                            <input v-model="forms.keyword" id="keyword" value="" v-bind:disabled="inputs.keyword.disabled" v-bind:class="['form-control', inputs.keyword.class]" placeholder="Temukan dalam {{ number_format($totalWord, 0, ',', '.') }} pangkalan data..." autocomplete="off">
                         </div>
                     </div>
                     <div class="col-sm-2 col-xs-12 ">

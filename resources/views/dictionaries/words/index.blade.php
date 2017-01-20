@@ -9,6 +9,9 @@
         <div class="col-md-9">
             <!-- box listing -->
             <div class="block-section-sm box-list-area">
+                <div v-if="alerts.message" v-bind:class="['alert', 'alert-' + alerts.type]">
+                    @{{ alerts.message }}
+                </div>
                 <!-- item list -->
                 <div v-if="word" class="box-list">
                     <div class="item">
@@ -45,17 +48,15 @@
         </div>
         <div class="col-md-3">
             <div class="block-section-sm side-right">
-                <div class="result-filter">
+                <div v-if="words" class="result-filter">
 
                     <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#s_collapse_1" data-toggle="collapse" >Kata Terbaru <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
                     <div class="collapse in" id="s_collapse_1">
                         <div class="list-area">
                             <ul class="list-unstyled">
-                                @foreach ($words as $word)
-                                    <li class="{{ $word->slug }}">
-                                        <a href="{{ route('dictionary.national.index', ['keyword' => $word->slug]) }}">{{ ucfirst($word->word ) }}</a> (<small class="color-black">{{ $word->created_at->diffForHumans() }}</small>)
-                                    </li>
-                                @endforeach
+                                <li v-for="word in words">
+                                    <a v-bind:href="word.url">@{{ word.word }} <span class="color-white-mute">@{{ word.updated_diff }}</span></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -66,35 +67,19 @@
     </div>
 @endsection
 
-@if (! empty($word))
-    @push('metadata')
-        <meta property="og:title" content="{{ sprintf('Arti Kata "%s"', $word->word) }}">
-        <meta property="og:locale" content="'id_ID">
-        <meta property="og:url" content="{{ url('dictionary/'.$word->slug) }}">
-        @if (isset($imagePath))
-            <meta property="og:image" content="{{ $imagePath }}">
-        @endif
-    @endpush
-
-    @push('structured-data')
-        {{-- expr --}}
-    @endpush
-@endif
-
-
 @push('js')
     <script>
         $(function(){
             $('li.dictionary').addClass('active');
         });
 
-        var buttons = {
-
-        }
-
         var app = new Vue({
             el: '#app',
             data: {
+                alerts: {
+                    type: 'info',
+                    message: null
+                },
                 forms: {
                     _token: Laravel.csrfToken,
                     keyword: null
@@ -111,12 +96,17 @@
                         class: null
                     }
                 },
-                word: null
+                word: null,
+                words: null
+            },
+
+            mounted: function() {
+                this.latestWords();
             },
 
             methods: {
 
-                searchWord: function() {
+                searchWord: function(el) {
                     var url = '{{ route('dictionary.national.search') }}';
                     var vm = this;
 
@@ -130,24 +120,43 @@
                         disabled: true
                     };
 
-                    $.post(url, this.forms, function(response){
-                        vm.$set(vm, 'word', response.word);
+                    this.alerts = {
+                        message: null
+                    };
 
-                        vm.$set(vm, 'buttons', {
-                            search: {
-                                label: 'Cari',
-                                class: null
+                    this.$http.post(el.target.action, this.forms).then(function(response){
+                        if (response.ok) {
+                            this.word = response.body.word;
+                        }
+
+                        if (! this.word) {
+                            this.alerts = {
+                                type: 'info',
+                                message: 'Kata "' + this.forms.keyword + '"" tidak ditemukan dalam kamus.'
                             }
-                        });
+                        }
 
-                        vm.$set(vm, 'inputs', {
-                            keyword: {
-                                class: null,
-                                disabled: false
-                            }
-                        });
+                        this.buttons.search = {
+                            label: 'Cari',
+                            class: null
+                        };
 
-                    }, 'json');
+                        this.inputs.keyword = {
+                            class: null,
+                            disabled: false
+                        };
+                    });
+                },
+
+                latestWords: function() {
+                    var url = '/dictionary/latest';
+
+                    this.$http.get(url).then(function(response){
+                        if (response.ok) {
+                            console.log(response);
+                            this.words = response.body.words;
+                        }
+                    })
                 }
 
             }
