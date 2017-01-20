@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('heading')
-    @include('partials.dictionaries.search')
+    @include('dictionaries.partials.search')
 @endsection
 
 @section('content')
@@ -9,51 +9,34 @@
         <div class="col-md-9">
             <!-- box listing -->
             <div class="block-section-sm box-list-area">
-                <!-- desc top -->
-                <div class="row hidden-xs">
-                    <div class="col-sm-12 ">
-                        @if (request('keyword'))
-                        <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
-                        @endif
-                    </div>
-                </div>
-                <!-- end desc top -->
                 <!-- item list -->
-                <div class="box-list">
-                    @if (empty($word))
-                        <h3>Tidak ada hasil pencarian.</h3>
-                        <hr>
-                    @else
-                        <div class="item">
-                            <div class="row">
-                                <div class="col-md-1 hidden-sm hidden-xs">
-                                    <div class="img-item"><h2><i class="fa fa-globe"></i></h2></div>
+                <div v-if="word" class="box-list">
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-md-1 hidden-sm hidden-xs">
+                                <div class="img-item"><h2><i class="fa fa-globe"></i></h2></div>
+                            </div>
+                            <div class="col-md-11">
+                                <h3 class="no-margin-top">
+                                    <a href="">@{{ word.word }}</a> <small>@{{ word.spell }}</small>
+                                </h3>
+                                <hr>
+                                <div v-if="word.descriptions.length >= 1" class="descriptions">
+                                    <h4>Arti Kata</h4>
+                                    <ol>
+                                        <li v-for="description in word.descriptions">@{{ description.text }}</li>
+                                    </ol>
                                 </div>
-                                <div class="col-md-11">
-                                    <h3 class="no-margin-top">
-                                        <a href="{{ route('dictionary.national.index', ['keyword' => $word->slug]) }}">
-                                            {{ ucfirst($word->word) }}
-                                            <small>{{ $word->spell }}</small>
-                                        </a>
-                                    </h3>
-                                    @if (! empty($word->descriptions) and $word->descriptions->count() >= 1)
-                                        <div class="descriptions">
-                                            <hr>
-                                            <h4>Arti Kata</h4>
-                                            <ol>
-                                                @foreach ($word->descriptions as $description)
-                                                    <li>{{ $description->text }}</li>
-                                                @endforeach
-                                            </ol>
-                                        </div>
-                                    @endif
-                                    <div>
-                                        <span class="color-white-mute">{{ $word->updated_at->diffForHumans() }}</span>
-                                    </div>
+
+                                <div>
+                                    <span class="color-white-mute">@{{ word.updated_diff }}</span>
                                 </div>
+
+                                <hr>
+                                <a href="" class="btn btn-default" target="_blank"><i class="fa fa-external-link"> </i> @{{ word.url }}</a>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
 
                 @include('newsletters.partials.subscribe')
@@ -103,13 +86,53 @@
     <script>
         $(function(){
             $('li.dictionary').addClass('active');
+        });
 
-            $('#dictionary-search-form').submit(function(){
-                $(this).attr('action', '');
+        var buttons = {
 
-                $(this).attr('action', '{{ url()->current() }}/' + $('#keyword').val());
-                $(this).submit();
-            })
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                forms: {
+                    _token: Laravel.csrfToken,
+                    keyword: null
+                },
+                buttons: {
+                    search: {
+                        label: 'Cari',
+                        class: null
+                    }
+                },
+                word: null
+            },
+
+            methods: {
+
+                searchWord: function() {
+                    var url = '{{ route('dictionary.national.search') }}';
+                    var vm = this;
+
+                    this.buttons.search = {
+                        label: 'Sedang mencari...',
+                        class: 'disabled'
+                    }
+
+                    $.post(url, this.forms, function(response){
+                        vm.$set(vm, 'word', response.word);
+
+                        vm.$set(vm, 'buttons', {
+                            search: {
+                                label: 'Cari',
+                                class: null
+                            }
+                        });
+
+                    }, 'json');
+                }
+
+            }
         })
     </script>
 @endpush

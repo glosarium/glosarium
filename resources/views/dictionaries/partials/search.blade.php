@@ -2,18 +2,18 @@
     <div class="row">
         <div class="col-md-12">
             <!-- form search -->
-            <form id="dictionary-search-form" action="{{ route('dictionary.national.index') }}" class="form-search-list" method="get">
+            <form v-on:submit.prevent="searchWord" id="dictionary-search-form" action="{{ route('dictionary.national.index') }}" class="form-search-list" method="get">
                 <div class="row">
                     <div class="col-sm-10 col-xs-12">
                         <div class="form-group">
                             <label class="color-white">Cari kata</label>
-                            <input id="keyword" value="{{ request('keyword') }}" class="form-control" placeholder="Temukan dalam {{ number_format($totalWord, 0, ',', '.') }} pangkalan data...">
+                            <input v-model="forms.keyword" id="keyword" value="" class="form-control" placeholder="Temukan dalam {{ number_format($totalWord, 0, ',', '.') }} pangkalan data...">
                         </div>
                     </div>
                     <div class="col-sm-2 col-xs-12 ">
                         <div class="form-group">
                             <label class="hidden-xs">&nbsp;</label>
-                            <button class="btn btn-block btn-theme  btn-success">Cari</button>
+                            <button v-bind:class="['btn btn-block btn-theme btn-success', buttons.search.class]">@{{ buttons.search.label }}</button>
                         </div>
                     </div>
                 </div>

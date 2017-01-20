@@ -30,6 +30,25 @@ class Word extends Model
         'type',
     ];
 
+    protected $dates = [
+        'updated_diff',
+    ];
+
+    protected $appends = [
+        'url',
+        'updated_diff',
+    ];
+
+    public function getUrlAttribute()
+    {
+        return route('dictionary.national.show', [$this->attributes['slug']]);
+    }
+
+    public function getUpdatedDiffAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['updated_at'])->diffForHumans();
+    }
+
     public function sluggable()
     {
         return [

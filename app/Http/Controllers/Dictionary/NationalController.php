@@ -14,7 +14,8 @@ namespace App\Http\Controllers\Dictionary;
 use App\Dictionary\Word;
 use App\Http\Controllers\Controller;
 use App\Libraries\Dictionary;
-use App\Libraries\Image;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Search word fron national dictionary
@@ -23,20 +24,6 @@ class NationalController extends Controller
 {
     public function index($keyword = null)
     {
-        $dictionary = new Dictionary($keyword);
-        $word       = $dictionary->get();
-
-        // create image header
-        if (!empty($word)) {
-            $image = new Image;
-
-            $path = sprintf('images/dictionaries/%s', strtolower($word->word[0]));
-
-            $image->addText(sprintf('Arti kata "%s"', $word->word), 30, 400, 200)->render($path, $word->word);
-
-            $imagePath = $image->path();
-        }
-
         $totalWord = Word::whereIsPublished(true)->count();
 
         // show latest words
@@ -49,10 +36,20 @@ class NationalController extends Controller
             ->withTitle(empty($word) ? 'Cari Kata dalam Kamus' : sprintf('Arti Kata "%s"', $word->word));
     }
 
-    public function show($vocabulary)
+    public function search(Request $request)
     {
-        $dictionary = new Dictionary($vocabulary);
+        if (!empty($request->keyword)) {
+            $dictionary = new Dictionary($request->keyword);
 
-        return $dictionary->get();
+            $word = $dictionary->get();
+
+            return response()->json([
+                'word' => $word,
+            ]);
+        }
+
+        return [
+            'word' => null,
+        ];
     }
 }

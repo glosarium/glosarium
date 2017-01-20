@@ -31,10 +31,14 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        @if (app()->environment('production'))
+            @include('partials/piwik')
+        @endif
     </head>
     <body>
         <!-- wrapper page -->
-        <div class="wrapper">
+        <div class="wrapper" id="app">
             <!-- main-header -->
             <header class="main-header">
                 <!-- main navbar -->
@@ -93,8 +97,9 @@
                 @yield('heading')
             </header>
             <!-- end main-header -->
+
             <!-- body-content -->
-            <div class="body-content clearfix" id="app" >
+            <div class="body-content clearfix">
                 <div class="bg-color2" id="content">
                     <div class="container">
                         @yield('content')
@@ -102,6 +107,7 @@
                 </div>
             </div>
             <!--end body-content -->
+
             <!-- main-footer -->
             <footer class="main-footer">
                 <div class="container">
@@ -127,6 +133,7 @@
             <!-- end main-footer -->
         </div>
         <!-- end wrapper page -->
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
@@ -140,6 +147,9 @@
         <!-- Theme JS -->
         <script src="{{ asset ('js/theme.js') }}"></script>
 
+        <!-- External VueJS -->
+        <script type="text/javascript" src="{{ asset('vendor/vue/dist/vue.min.js') }}"></script>
+
         <script>
             window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token(), 'env' => app()->environment()]); ?>;
 
@@ -150,10 +160,6 @@
               })
             })
         </script>
-
-        @if (app()->environment('production'))
-            @include('partials/analytic')
-        @endif
 
         @stack('js')
     </body>
