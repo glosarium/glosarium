@@ -1,6 +1,6 @@
 <!-- form get alert -->
 <div class="get_alert" id="newsletter-form">
-    <h4>Berlangganan nawala untuk mendapatkan informasi terbaru</span></h4>
+    <h4>Berlangganan nawala untuk mendapatkan informasi terbaru</h4>
     <form  action="{{ route('newsletter.subscriber.subscribe') }}" method="post">
         {{ csrf_field() }}
 
