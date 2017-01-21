@@ -50,7 +50,8 @@
             <div class="block-section-sm side-right">
                 <div v-if="words" class="result-filter">
 
-                    <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#s_collapse_1" data-toggle="collapse" >Kata Terbaru <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
+                    <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#s_collapse_1" data-toggle="collapse" >Kata Terbaru <i v-if="loading" class="fa fa-spinner fa-spin" aria-hidden="true"></i> <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
+
                     <div class="collapse in" id="s_collapse_1">
                         <div class="list-area">
                             <ul class="list-unstyled">

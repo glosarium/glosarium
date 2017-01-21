@@ -3,6 +3,7 @@ Vue.use(VueHead);
 var app = new Vue({
     el: '#app',
     data: {
+        loading: false,
         metadata: {
             title: Dictionary.metadata.title,
             meta: [
@@ -56,10 +57,7 @@ var app = new Vue({
 
     methods: {
 
-        searchWord: function(el) {
-            var url = Dictionary.url.search;
-            var vm = this;
-
+        beforeSearch: function() {
             this.buttons.search = {
                 label: 'Mencari...',
                 class: 'disabled'
@@ -73,8 +71,26 @@ var app = new Vue({
             this.alerts = {
                 message: null
             };
+        },
 
-            var self = this;
+        afterSearch: function() {
+            this.buttons.search = {
+                    label: 'Cari',
+                    class: null
+                };
+
+            this.inputs.keyword = {
+                class: null,
+                disabled: false
+            };
+
+            this.loading = false;
+        },
+
+        searchWord: function(el) {
+            var url = Dictionary.url.search;
+
+            this.beforeSearch();            
 
             this.$http.post(el.target.action, this.forms).then(function(response){
                 if (response.ok) {
@@ -101,15 +117,7 @@ var app = new Vue({
                     this.$emit('updateHead');
                 }
 
-                this.buttons.search = {
-                    label: 'Cari',
-                    class: null
-                };
-
-                this.inputs.keyword = {
-                    class: null,
-                    disabled: false
-                };
+                this.afterSearch();
             });
         },
 
@@ -120,11 +128,15 @@ var app = new Vue({
                 if (response.ok) {
                     this.words = response.body.words;
                 }
-            })
+
+                this.loading = false;
+            });
         },
 
         preloadWord: function() {
             var url = Dictionary.url.search;
+
+            this.beforeSearch();
 
             this.$http.post(url, this.forms).then(function(response){
                 if (response.ok && response.body.word) {
@@ -147,6 +159,9 @@ var app = new Vue({
                         message: 'Kata tidak "'+ this.forms.keyword +'" ditemukan dalam kamus.'
                     }
                 }
+
+                this.afterSearch();
+
             }, function(response){
                 this.alerts = {
                     type: 'danger',
@@ -156,6 +171,17 @@ var app = new Vue({
         },
 
         viewDetail: function(el) {
+            this.loading = true;
+
+            this.buttons.search = {
+                label: 'Mencari...',
+                class: 'disabled'
+            };
+
+            this.inputs.keyword = {
+                class: 'disabled',
+                disabled: true
+            };
             this.forms.keyword = el.target.dataset.keyword;
 
             this.preloadWord();
