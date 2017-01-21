@@ -25,13 +25,13 @@ class NationalController extends Controller
     {
         $totalWord = Word::whereIsPublished(true)->count();
 
-        $title = 'Cari Kata dalam Kamus';
+        $title = 'Cari Arti Kata dalam Kamus';
 
         $jsVars = [
             'keyword'  => $keyword,
             'metadata' => [
-                'title'       => config('app.name'),
-                'description' => config('app.description'),
+                'title'       => $title,
+                'description' => 'Layanan gratis mencari definisi sebuah kata berdasarkan standar Kamus Besar Bahasa Indonesia.',
             ],
             'url'      => [
                 'index'  => route('dictionary.national.index'),
