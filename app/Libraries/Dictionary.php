@@ -13,6 +13,7 @@ namespace App\Libraries;
 
 use App\Dictionary\Description;
 use App\Dictionary\Word;
+use App\Jobs\Dictionary\InvalidWord;
 use App\Jobs\Glosarium\Dictionary as DictionaryQueue;
 use App\WordType;
 use Cache;
@@ -53,14 +54,14 @@ class Dictionary
         $this->vocabulary = $word;
 
         $key = str_slug($word);
+
         if (Cache::has('dictionary.' . $key)) {
             $this->word = Cache::get('dictionary.' . $key);
         } else {
-            $this->word = Word::whereWord($word)->with('descriptions')->first();
+            $this->word = Word::whereWord($word)->whereIsPublished(true)->with('descriptions')->first();
 
             Cache::put('dictionary.' . $key, $this->word);
         }
-
     }
 
     /**
@@ -88,7 +89,17 @@ class Dictionary
                     'updated_at'   => $now,
                 ]);
             } else {
+                $this->unpublishWord(Word::whereSlug($this->vocabulary)->first());
+
                 return null;
+            }
+        } else {
+            if ($this->word->retry_count <= $this->maxTries) {
+                $this->response = $this->getResponse($this->vocabulary);
+
+                if (!$this->isExists()) {
+                    $this->unpublishWord($this->word);
+                }
             }
         }
 
@@ -135,12 +146,6 @@ class Dictionary
         $count = $this->response->filter('ol, ul.adjusted-par')->count() >= 1;
 
         if ($count <= 0) {
-            // set word as not standard and not found
-            if (!empty($this->word)) {
-                $this->word->is_standard = false;
-                $this->word->save();
-            }
-
             if (function_exists('debug')) {
                 debug(sprintf('Word %s not found.', $this->vocabulary));
             }
@@ -238,5 +243,20 @@ class Dictionary
         }
 
         return $descriptions;
+    }
+
+    /**
+     * Unpublished registered word
+     * @param  \App\Dictionary\Word $word
+     * @return void
+     */
+    private function unpublishWord($word)
+    {
+        dispatch(new InvalidWord());
+
+        if (!empty($word)) {
+            $word->is_published = false;
+            $word->save();
+        }
     }
 }
