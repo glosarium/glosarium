@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Validator;
 
 class RegisterController extends Controller
@@ -59,9 +61,10 @@ class RegisterController extends Controller
         });
 
         return Validator::make($data, [
-            'name'     => 'required|max:100|valid_name',
-            'email'    => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'name'                 => 'required|max:100|valid_name',
+            'email'                => 'required|email|max:255|unique:users,email',
+            'password'             => 'required|min:6',
+            'passwordConfirmation' => 'required|same:password',
         ]);
     }
 
@@ -74,12 +77,41 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name'      => $data['name'],
             'email'     => $data['email'],
             'password'  => bcrypt($data['password']),
             'is_active' => true,
         ]);
+
+        return $user;
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        $registered = $this->registered($request, $user)
+        ?: redirect($this->redirectPath());
+
+        if (request()->ajax()) {
+            return response()->json([
+                'isSuccess' => true,
+                'url'       => route('index'),
+            ]);
+        }
+
+        return $registered;
     }
 
     /**

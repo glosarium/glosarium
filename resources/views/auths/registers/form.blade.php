@@ -7,38 +7,42 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- buttons top -->
-                <p><a href="#" class="btn btn-primary btn-theme btn-block"><i class="fa fa-facebook pull-left bordered-right"></i> Register with Facebook</a></p>
-                <p><a href="#" class="btn btn-danger btn-theme btn-block"><i class="fa fa-google-plus pull-left bordered-right"></i> Register with Google</a></p>
+                <p><a href="#" class="btn btn-primary btn-theme btn-block" disabled="true"><i class="fa fa-facebook pull-left bordered-right"></i> Register with Facebook</a></p>
+                <p><a href="#" class="btn btn-danger btn-theme btn-block" disabled="true"><i class="fa fa-google-plus pull-left bordered-right"></i> Register with Google</a></p>
                 <!-- end buttons top -->
                 <div class="white-space-10"></div>
-                <p class="text-center"><span class="span-line">OR</span></p>
+                <p class="text-center"><span class="span-line">ATAU</span></p>
                 <!-- form login -->
-                <form action="{{ url('register') }}" method="post">
+                <form v-on:submit.prevent="register" action="{{ url('register') }}" method="post">
                     {{ csrf_field() }}
 
-                    <div class="form-group {{ $errors->has('name') ? 'has-error': '' }}">
+                    <div v-bind:class="['form-group', errors && errors.name ? 'has-error' : '']">
                         <label>Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control">
+                        <input v-model="forms.name" v-bind:disabled="disabled" type="text" name="name" class="form-control">
+                        <span v-if="errors && errors.name" class="label label-danger">@{{ errors.name[0] }}</span>
                     </div>
 
-                    <div class="form-group {{ $errors->has('email') ? 'has-error': '' }}">
+                    <div v-bind:class="['form-group', errors && errors.email ? 'has-error' : '']">
                         <label>Alamat Surel</label>
-                        <input name="email" type="email" class="form-control" placeholder="">
+                        <input v-model="forms.email" v-bind:disabled="disabled" name="email" type="email" class="form-control" placeholder="">
+                        <span v-if="errors && errors.email" class="label label-danger">@{{ errors.email[0] }}</span>
                     </div>
 
-                    <div class="form-group {{ $errors->has('password') ? 'has-error': '' }}">
-                        <label>Katasandi</label>
-                        <input name="password" type="password" class="form-control" placeholder="">
+                    <div v-bind:class="['form-group', errors && errors.password ? 'has-error' : '']">
+                        <label>Sandi Lewat</label>
+                        <input v-model="forms.password" v-bind:disabled="disabled" name="password" type="password" class="form-control" placeholder="">
+                        <span v-if="errors && errors.password" class="label label-danger">@{{ errors.password[0] }}</span>
                     </div>
 
-                    <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error': '' }}">
-                        <label>Konfirmasi Katasandi</label>
-                        <input name="password_confirmation" type="password" class="form-control" placeholder="Ulangi kata sandi">
+                    <div v-bind:class="['form-group', errors && errors.passwordConfirmation ? 'has-error' : '']">
+                        <label>Konfirmasi Sandi Lewat</label>
+                        <input v-model="forms.passwordConfirmation" v-bind:disabled="disabled" name="passwordConfirmation" type="password" class="form-control" placeholder="Ulangi sandi lewat">
+                        <span v-if="errors && errors.passwordConfirmation" class="label label-danger">@{{ errors.passwordConfirmation[0] }}</span>
                     </div>
 
                     <div class="white-space-10"></div>
                     <div class="form-group no-margin">
-                        <button class="btn btn-theme btn-lg btn-t-primary btn-block">Daftar</button>
+                        <button v-bind:disabled="disabled" class="btn btn-theme btn-lg btn-t-primary btn-block">Daftar <i v-if="loading" class="fa fa-spinner fa-spin"></i></button>
                     </div>
                 </form>
                 <!-- form login -->
@@ -54,6 +58,50 @@
     <script>
         $(function(){
             $('#content').addClass('block-section bg-color4');
+        });
+
+        var register = new Vue({
+            el: '#content',
+            data: {
+                loading: false,
+                disabled: false,
+                forms: {
+                    _token: Laravel.csrfToken,
+                    name: null,
+                    email: null,
+                    password: null,
+                    passwordConfirmation: null
+                },
+                errors : {}
+            },
+
+            methods: {
+
+                beforeRegister: function() {
+                    this.loading = true;
+                    this.disabled = true;
+                },
+
+                afterRegister: function() {
+                    this.disabled = false;
+                    this.loading = false;
+                },
+
+                register: function(e) {
+                    this.beforeRegister();
+
+                    this.$http.post(e.target.action, this.forms).then(function(response){
+
+                        window.location = response.body.url;
+
+                    }, function(response){
+                        this.errors = response.body;
+
+                        this.afterRegister();
+                    });
+                }
+
+            }
         })
     </script>
 @endpush
