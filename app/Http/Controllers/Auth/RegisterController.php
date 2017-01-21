@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\User\ActivationMail;
+use App\Notifications\User\RegistrationNotification;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Notification;
 use Validator;
 
 class RegisterController extends Controller
@@ -77,12 +80,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name'      => $data['name'],
-            'email'     => $data['email'],
-            'password'  => bcrypt($data['password']),
-            'is_active' => true,
-        ]);
+        try {
+            $user = User::create([
+                'name'      => $data['name'],
+                'email'     => $data['email'],
+                'password'  => bcrypt($data['password']),
+                'is_active' => true,
+            ]);
+
+            // send user email
+            \Mail::to($user)->send(new ActivationMail($user));
+
+            // notif admin
+            $users = User::whereType('admin')->whereIsActive(true)->get();
+            Notification::send($users, new RegistrationNotification($user));
+        } catch (Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'isSuccess' => false,
+                    'message'   => 'Terjadi kesalahan sistem.',
+                ]);
+            }
+
+            abort(500, $e->getMessage());
+        }
 
         return $user;
     }
