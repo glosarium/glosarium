@@ -21,7 +21,7 @@
                             </div>
                             <div class="col-md-11">
                                 <h3 class="no-margin-top">
-                                    <a v-bind:href="word.url">@{{ word.word }}</a> <small>@{{ word.spell }}</small>
+                                    <a href="">@{{ word.word }}</a> <small>@{{ word.spell }}</small>
                                 </h3>
                                 <hr>
                                 <div v-if="word.descriptions.length >= 1" class="descriptions">
@@ -36,7 +36,7 @@
                                 </div>
 
                                 <hr>
-                                <a v-bind:href="word.url" id="word-link" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-external-link"> </i> @{{ word.url }}</a>
+                                <a v-bind:href="word.url" class="btn btn-default" target="_blank"><i class="fa fa-external-link"> </i> @{{ word.url }}</a>
                             </div>
                         </div>
                     </div>
@@ -66,16 +66,3 @@
         </div>
     </div>
 @endsection
-
-@push('js')
-    <script>
-        $(function(){
-            $('li.dictionary').addClass('active');
-        });
-
-        window.Dictionary = {!! json_encode($jsVars) !!};
-    </script>
-
-    <script src="{{ asset('vendor/vue-head/vue-head.js') }}"></script>
-    <script src="{{ asset('js/dictionary.js') }}"></script>
-@endpush

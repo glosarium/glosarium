@@ -134,8 +134,16 @@ class Dictionary
     {
         $count = $this->response->filter('ol, ul.adjusted-par')->count() >= 1;
 
-        if ($count <= 0 and function_exists('debug')) {
-            debug(sprintf('Word %s not found.', $this->vocabulary));
+        if ($count <= 0) {
+            // set word as not standard and not found
+            if (!empty($this->word)) {
+                $this->word->is_standard = false;
+                $this->word->save();
+            }
+
+            if (function_exists('debug')) {
+                debug(sprintf('Word %s not found.', $this->vocabulary));
+            }
         }
 
         return $count >= 1;

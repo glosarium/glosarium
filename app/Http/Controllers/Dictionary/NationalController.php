@@ -15,7 +15,6 @@ use App\Dictionary\Word;
 use App\Http\Controllers\Controller;
 use App\Libraries\Dictionary;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 /**
  * Search word fron national dictionary
@@ -26,8 +25,23 @@ class NationalController extends Controller
     {
         $totalWord = Word::whereIsPublished(true)->count();
 
-        return view('dictionaries.words.index', compact('word', 'totalWord', 'words', 'imagePath'))
-            ->withTitle(empty($word) ? 'Cari Kata dalam Kamus' : sprintf('Arti Kata "%s"', $word->word));
+        $title = 'Cari Kata dalam Kamus';
+
+        $jsVars = [
+            'keyword'  => $keyword,
+            'metadata' => [
+                'title'       => config('app.name'),
+                'description' => config('app.description'),
+            ],
+            'url'      => [
+                'index'  => route('dictionary.national.index'),
+                'search' => route('dictionary.national.search'),
+                'latest' => route('dictionary.national.latest'),
+            ],
+        ];
+
+        return view('dictionaries.words.index', compact('totalWord', 'jsVars'))
+            ->withTitle($title);
     }
 
     public function search(Request $request)
@@ -44,14 +58,7 @@ class NationalController extends Controller
             ]);
         }
 
-        return [
-            'word' => null,
-        ];
-    }
-
-    public function show($word)
-    {
-        return redirect()->route('dictionary.national.index');
+        return response()->json(['word' => null]);
     }
 
     public function latest()

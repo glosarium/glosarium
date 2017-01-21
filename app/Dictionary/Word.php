@@ -41,7 +41,7 @@ class Word extends Model
 
     public function getUrlAttribute()
     {
-        return route('dictionary.national.show', [$this->attributes['slug']]);
+        return route('dictionary.national.index', [$this->attributes['slug']]);
     }
 
     public function getUpdatedDiffAttribute()
