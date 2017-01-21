@@ -156,7 +156,7 @@ var app = new Vue({
                 else {
                     this.alerts = {
                         type: 'info',
-                        message: 'Kata tidak "'+ this.forms.keyword +'" ditemukan dalam kamus.'
+                        message: 'Kata tidak ditemukan dalam kamus.'
                     }
                 }
 
