@@ -83,7 +83,7 @@ var app = new Vue({
 
                         this.metadata.title = 'Arti Kata "' + this.word.word + '"';
 
-                        if (this.word.descriptions) {
+                        if (this.word.descriptions.length > 0) {
                             this.metadata.meta = [
                                 { name: 'description', content: this.word.descriptions[0].text }
                             ]
@@ -133,7 +133,7 @@ var app = new Vue({
                     // modify metadata
                     this.metadata.title = 'Arti Kata "' + this.word.word + '"';
 
-                    if (this.word.descriptions) {
+                    if (this.word.descriptions.length > 0) {
                         this.metadata.meta = [
                             { name: 'description', content: this.word.descriptions[0].text }
                         ]
@@ -149,10 +149,17 @@ var app = new Vue({
                 }
             }, function(response){
                 this.alerts = {
-                    type: 'error',
-                    message: 'Terjadi kesalahan pada sistem.'
+                    type: 'danger',
+                    message: response.status + ': Terjadi kesalahan pada sistem.'
                 }
             });
+        },
+
+        viewDetail: function(el) {
+            this.forms.keyword = el.target.dataset.keyword;
+
+            this.preloadWord();
+            this.latestWords();
         }
     }
 });

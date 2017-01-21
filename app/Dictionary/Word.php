@@ -39,9 +39,14 @@ class Word extends Model
         'updated_diff',
     ];
 
+    public function getWordAttribute()
+    {
+        return ucfirst(str_slug($this->attributes['word']));
+    }
+
     public function getUrlAttribute()
     {
-        return route('dictionary.national.index', [$this->attributes['slug']]);
+        return route('dictionary.national.index', [str_slug($this->attributes['word'])]);
     }
 
     public function getUpdatedDiffAttribute()

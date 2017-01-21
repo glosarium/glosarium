@@ -55,7 +55,7 @@
                         <div class="list-area">
                             <ul class="list-unstyled">
                                 <li v-for="word in words">
-                                    <a v-bind:href="word.url">@{{ word.word }} <span class="color-white-mute">@{{ word.updated_diff }}</span></a>
+                                    <a v-on:click.prevent="viewDetail" v-bind:data-keyword="word.word" v-bind:href="word.url">@{{ word.word }} <span class="color-white-mute">@{{ word.updated_diff }}</span></a>
                                 </li>
                             </ul>
                         </div>
