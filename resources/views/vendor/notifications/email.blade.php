@@ -142,7 +142,7 @@ switch ($level) {
 
                                         <!-- Salutation -->
                                         <p style="{{ $style['paragraph'] }}">
-                                            Hormat kami,<br>{{ config('app.name') }}.
+                                            Hormat kami,<br>{{ isset($name) ? $name : config('app.name') }}.
                                         </p>
 
                                         <!-- Sub Copy -->

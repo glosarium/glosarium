@@ -13,8 +13,8 @@
 
 Auth::routes();
 
-Route::get('contact', 'ContactController@form')->name('contact.form');
-Route::post('contact', 'ContactController@send')->name('contact.post');
+Route::get('kontak', 'ContactController@form')->name('contact.form');
+Route::post('kontak', 'ContactController@send')->name('contact.post');
 
 Route::get('/{link}', 'LinkController@redirect')->name('link.redirect');
 

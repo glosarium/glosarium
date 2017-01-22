@@ -12,6 +12,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Libraries\Image;
+use App\Mail\ContactMessage;
 use App\Message;
 use App\Notifications\ContactNotification;
 use App\User;
@@ -32,7 +34,12 @@ class ContactController extends Controller
      */
     public function form()
     {
-        return view('contacts.form')
+        $image = new Image;
+        $image->addText('Kontak', 100, 400, 150);
+        $image->addText('Bantu kami berkembang!', 30, 400, 250);
+        $imagePath = $image->render('images/pages/', 'kontak')->path();
+
+        return view('contacts.form', compact('imagePath'))
             ->withTitle('Kontak');
     }
 
@@ -45,12 +52,16 @@ class ContactController extends Controller
     public function send(ContactRequest $request)
     {
         try {
+            $users = User::whereType('admin')->whereIsActive(true)->get();
+
             // send mails
-            Mail::raw($request->message, function ($mail) use ($request) {
-                $mail->from(Auth::check() ? Auth::user()->email : $request->email);
-                $mail->to(config('app.email'), config('app.name'));
-                $mail->subject($request->subject);
-            });
+            Mail::to(env('APP_EMAIL'))
+                ->cc($users)
+                ->queue(new ContactMessage([
+                    'from'    => Auth::check() ? Auth::user()->email : $request->email,
+                    'subject' => $request->subject,
+                    'message' => $request->message,
+                ]));
 
             // save to database for record
             Message::insert([
@@ -61,7 +72,6 @@ class ContactController extends Controller
             ]);
 
             // send notification to admin
-            $users = User::whereType('admin')->whereIsActive(true)->get();
             Notification::send($users, new ContactNotification([
                 'from'    => $from,
                 'subject' => $request->subject,
