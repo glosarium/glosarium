@@ -187,8 +187,8 @@ return [
         // https://laravelcollective.com/docs/5.3/html#installation
         Collective\Html\HtmlServiceProvider::class,
 
-        // http://laravel-notification-channels.com/onesignal/
-        NotificationChannels\OneSignal\OneSignalServiceProvider::class,
+        // https://github.com/GrahamCampbell/Laravel-HTMLMin
+        GrahamCampbell\HTMLMin\HTMLMinServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -252,6 +252,7 @@ return [
         'Hashids'      => Vinkla\Hashids\Facades\Hashids::class,
         'Form'         => Collective\Html\FormFacade::class,
         'Html'         => Collective\Html\HtmlFacade::class,
+        'HTMLMin'      => GrahamCampbell\HTMLMin\Facades\HTMLMin::class,
     ],
 
 ];
