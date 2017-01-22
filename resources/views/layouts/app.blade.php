@@ -35,6 +35,8 @@
         @if (app()->environment('production'))
             @include('partials/piwik')
         @endif
+
+        @include('partials.ads.level')
     </head>
     <body>
         <!-- wrapper page -->

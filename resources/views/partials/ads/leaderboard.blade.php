@@ -1,10 +1,9 @@
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- glosarium-responsive -->
+<!-- glosarium-billboard -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:inline-block;width:970px;height:90px"
      data-ad-client="ca-pub-3097905359517350"
-     data-ad-slot="3560258429"
-     data-ad-format="auto"></ins>
+     data-ad-slot="2821237222"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
