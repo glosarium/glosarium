@@ -10,26 +10,6 @@
 | to using a Closure or controller method. Build something great!
 |
  */
-Route::get('link', function () {
-    $word = \App\Dictionary\Word::whereSlug('meme')->first();
-
-    $hash = \Hashids::connection('dictionary')->encode($word->id);
-
-    $link = \App\Link::whereType('dictionary')->whereHash($hash)->first();
-
-    if (empty($link)) {
-        $now = \Carbon\Carbon::now();
-
-        $link = \App\Link::create([
-            'hash'       => $hash,
-            'type'       => 'dictionary',
-            'url'        => route('dictionary.national.index', [$word->slug]),
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
-    }
-});
-
 Auth::routes();
 
 Route::get('kontak', 'ContactController@form')->name('contact.form');
