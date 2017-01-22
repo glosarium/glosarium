@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Dictionary;
 use App\Dictionary\Word;
 use App\Http\Controllers\Controller;
 use App\Libraries\Dictionary;
+use App\Libraries\Image;
 use Illuminate\Http\Request;
 
 /**
@@ -25,7 +26,7 @@ class NationalController extends Controller
     {
         $totalWord = Word::whereIsPublished(true)->count();
 
-        $title = 'Cari Arti Kata dalam Kamus';
+        $title = 'Kamus Besar Bahasa Indonesia';
 
         $jsVars = [
             'keyword'  => $keyword,
@@ -40,7 +41,11 @@ class NationalController extends Controller
             ],
         ];
 
-        return view('dictionaries.words.index', compact('totalWord', 'jsVars'))
+        $image = new Image;
+        $image->addText('Kamus Besar Bahasa Indonesia', 40, 400, 200);
+        $imagePath = $image->render('images/pages', 'kamus')->path();
+
+        return view('dictionaries.words.index', compact('totalWord', 'jsVars', 'imagePath'))
             ->withTitle($title);
     }
 

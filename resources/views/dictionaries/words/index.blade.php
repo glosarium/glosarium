@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@push('metadata')
+    <meta name="description" content="Layanan gratis mencari definisi sebuah kata berdasarkan standar Kamus Besar Bahasa Indonesia.">
+    <meta name="author" content="{{ config('app.name') }}">
+
+    <meta property="og:name" content="{{ $title }}">
+    <meta property="og:url" content="{{ route('dictionary.national.index') }}">
+    <meta property="og:description" content="Layanan gratis mencari definisi sebuah kata berdasarkan standar Kamus Besar Bahasa Indonesia.">
+    <meta property="og:image" content="{{ $imagePath }}">
+@endpush
+
 @section('heading')
     @include('dictionaries.partials.search')
 @endsection
