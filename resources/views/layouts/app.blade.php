@@ -32,7 +32,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        @if (app()->environment('production', 'testing'))
+        @if (app()->environment('production'))
             @include('partials/piwik')
         @endif
     </head>
