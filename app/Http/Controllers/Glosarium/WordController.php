@@ -75,4 +75,19 @@ class WordController extends Controller
         return view('glosariums.words.show', compact('totalWord', 'word'))
             ->withTitle(sprintf('%s - %s', $word->origin, $word->locale));
     }
+
+    public function total()
+    {
+        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+
+        $cacheTime = \Carbon\Carbon::now()->addDays(7);
+        $total     = Cache::remember('glosarium.total', $cacheTime, function () {
+            return \App\Glosarium\Word::count();
+        });
+
+        return response()->json([
+            'isSuccess' => true,
+            'total'     => number_format($total, 0, ',', '.'),
+        ]);
+    }
 }

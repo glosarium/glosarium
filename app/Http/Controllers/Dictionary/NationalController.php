@@ -74,4 +74,16 @@ class NationalController extends Controller
             'words' => $words,
         ]);
     }
+
+    public function total()
+    {
+        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+
+        $total = \App\Dictionary\Word::whereIsPublished(true)->count();
+
+        return response()->json([
+            'isSuccess' => true,
+            'total'     => number_format($total, 0, ',', '.'),
+        ]);
+    }
 }

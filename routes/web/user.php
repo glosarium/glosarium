@@ -11,5 +11,9 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
     Route::group(['prefix' => 'user/glosarium', 'namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
         Route::put('update/field', 'CategoryController@updateField')->name('category.updateField');
     });
+});
 
+// user
+Route::group(['prefix' => 'user', 'namespace' => 'User', 'as' => 'user.'], function () {
+    Route::get('total', 'UserController@total')->name('user.total');
 });

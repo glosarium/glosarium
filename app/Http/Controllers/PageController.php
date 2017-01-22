@@ -6,36 +6,25 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ * @link https://github.com/glosarium/glosarium
  */
 
 namespace App\Http\Controllers;
 
-use Cache;
+use App\Libraries\Image;
 
 /**
- * Default homepage
+ * Default homepage and single page
  */
 class PageController extends Controller
 {
     public function index()
     {
-        $cacheTime = \Carbon\Carbon::now()->addDays(7);
+        $image = new Image;
+        $image->addText(config('app.name'), 50, 400, 200);
+        $imagePath = $image->render('images/pages', 'home')->path();
 
-        $total['glosarium'] = Cache::remember('glosarium.total', $cacheTime, function () {
-            return \App\Glosarium\Word::count();
-        });
-
-        $total['dictionary'] = \App\Dictionary\Word::count();
-
-        $total['category'] = Cache::remember('category.total', $cacheTime, function () {
-            return \App\Glosarium\Category::count();
-        });
-
-        $total['user'] = Cache::remember('user.total', $cacheTime, function () {
-            return \App\User::count();
-        });
-
-        return view('pages.index', compact('total'));
+        return view('pages.index', compact('total', 'imagePath'));
     }
 
     public function show($page)
