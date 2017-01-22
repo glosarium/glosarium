@@ -57,7 +57,7 @@ class ContactController extends Controller
             // send mails
             Mail::to(env('APP_EMAIL'))
                 ->cc($users)
-                ->queue(new ContactMessage([
+                ->send(new ContactMessage([
                     'from'    => Auth::check() ? Auth::user()->email : $request->email,
                     'subject' => $request->subject,
                     'message' => $request->message,

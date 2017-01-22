@@ -5,11 +5,6 @@
 Homestead.json
 Homestead.yaml
 .env
-app/Jobs/GrabGlossary.php
-storage/data.txt
-resources/views/controllers/words/partials/ad-billboard.blade.php
-resources/views/controllers/words/partials/ad-responsive.blade.php
-resources/views/partials/ga-analytic.blade.php
 public/image
 storage/debugbar
 composer.lock
@@ -22,5 +17,5 @@ storage/worker.log
 .env.production
 Envoy.blade.php
 public/images/dictionaries
-public/images/users
+public/images/users/
 public/images/pages/
