@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Link;
+use Hashids;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -20,15 +21,23 @@ class LinkController extends Controller
      */
     public function redirect($hash)
     {
-        $link = Link::whereHash(trim($hash))->first();
-        if (empty($link)) {
-            abort(404, 'Tautan tidak ditemukan.');
+        if (!empty($id = Hashids::connection('glosarium')->decode($hash))) {
+
+        } elseif (!empty($id = Hashids::connection('dictionary')->decode($hash))) {
+            $link = Link::whereHash(trim($hash))
+                ->whereType('dictionary')
+                ->first();
+
+            if (!empty($link)) {
+                $link->increment('click', 1);
+                $link->save();
+            }
         }
 
-        // add view counter and redirect
-        $link->increment('view');
-        $link->save();
+        if (!empty($link)) {
+            return redirect($link->url);
+        }
 
-        return redirect($link->url);
+        return abort(404, 'Halaman tidak ditemukan.');
     }
 }

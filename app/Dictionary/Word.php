@@ -3,6 +3,7 @@
 namespace App\Dictionary;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Hashids;
 use Illuminate\Database\Eloquent\Model;
 
 class Word extends Model
@@ -36,6 +37,7 @@ class Word extends Model
 
     protected $appends = [
         'url',
+        'short_url',
         'updated_diff',
     ];
 
@@ -52,6 +54,11 @@ class Word extends Model
     public function getUpdatedDiffAttribute()
     {
         return \Carbon\Carbon::parse($this->attributes['updated_at'])->diffForHumans();
+    }
+
+    public function getShortUrlAttribute()
+    {
+        return url(Hashids::connection('dictionary')->encode($this->attributes['id']));
     }
 
     public function sluggable()

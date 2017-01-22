@@ -37,7 +37,7 @@ return [
 
     'connections' => [
 
-        'gosarium'    => [
+        'glosarium'   => [
             'salt'     => '93a7c5d4057a5e4673acf39de9f73b11d0ecdb1d',
             'length'   => '',
             'alphabet' => 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890',
