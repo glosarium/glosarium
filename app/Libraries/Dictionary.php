@@ -14,6 +14,7 @@ namespace App\Libraries;
 use App\Dictionary\Description;
 use App\Dictionary\Word;
 use App\Jobs\Dictionary\InvalidWord;
+use App\Jobs\Dictionary\UrlShortener;
 use App\Jobs\Glosarium\Dictionary as DictionaryQueue;
 use App\WordType;
 use Cache;
@@ -101,6 +102,10 @@ class Dictionary
                     $this->unpublishWord($this->word);
                 }
             }
+        }
+
+        if (empty($this->word->url)) {
+            dispatch(new UrlShortener($this->word));
         }
 
         $this->word->spell        = $this->spell();

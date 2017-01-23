@@ -39,7 +39,13 @@
                                     </ol>
                                 </div>
 
-                                <a v-bind:href="word.short_url" id="word-link" class="btn btn-default btn-sm" target="_blank"><i class="fa fa-external-link"> </i> @{{ word.short_url }}</a>
+                                <div v-if="word.url" class="btn-group">
+                                    <a v-bind:href="word.url" class="btn btn-sm btn-default">
+                                        <i class="fa fa-external-link"></i>
+                                        @{{ word.url }}
+                                    </a>
+                                    <button class="btn btn-sm btn-primary">Salin</button>
+                                </div>
 
                                 <hr>
                                 @include('partials.ads.responsive')
