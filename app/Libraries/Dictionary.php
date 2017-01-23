@@ -14,7 +14,6 @@ namespace App\Libraries;
 use App\Dictionary\Description;
 use App\Dictionary\Word;
 use App\Jobs\Dictionary\InvalidWord;
-use App\Jobs\Dictionary\UrlShortener;
 use App\Jobs\Glosarium\Dictionary as DictionaryQueue;
 use App\WordType;
 use Cache;
@@ -62,10 +61,6 @@ class Dictionary
             $this->word = Word::whereWord($word)->whereIsPublished(true)->with('descriptions')->first();
 
             Cache::put('dictionary.' . $key, $this->word);
-        }
-
-        if (app()->environment('production', 'local')) {
-            dispatch(new UrlShortener($this->word));
         }
     }
 

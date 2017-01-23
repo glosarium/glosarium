@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Dictionary\Word as Dictionary;
+use App\Glosarium\Word as Glosarium;
 use App\Link;
 use Hashids;
 
@@ -22,20 +24,26 @@ class LinkController extends Controller
     public function redirect($hash)
     {
         if (!empty($id = Hashids::connection('glosarium')->decode($hash))) {
-
-        } elseif (!empty($id = Hashids::connection('dictionary')->decode($hash))) {
-            $link = Link::whereHash(trim($hash))
-                ->whereType('dictionary')
+            // redirect to glosarium
+            $word = Glosarium::whereId($id)
+                ->with('category')
                 ->first();
 
-            if (!empty($link)) {
-                $link->increment('click', 1);
-                $link->save();
+            if (!empty($word)) {
+                return redirect()
+                    ->route('glosarium.word.show', [
+                        $word->category->slug,
+                        $word->slug,
+                    ]);
             }
-        }
 
-        if (!empty($link)) {
-            return redirect($link->url);
+        } elseif (!empty($id = Hashids::connection('dictionary')->decode($hash))) {
+            $word = Dictionary::whereId($id)->first();
+
+            if (!empty($word)) {
+                return redirect()
+                    ->route('dictionary.national.index', [$word->slug]);
+            }
         }
 
         return abort(404, 'Halaman tidak ditemukan.');
