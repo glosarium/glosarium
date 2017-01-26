@@ -20,4 +20,9 @@ class Description extends Model
     {
         return $this->belongsTo(Word::class);
     }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
 }

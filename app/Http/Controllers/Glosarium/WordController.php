@@ -10,6 +10,7 @@
 
 namespace App\Http\Controllers\Glosarium;
 
+use App\Dictionary\Word as WordDictionary;
 use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
@@ -72,7 +73,21 @@ class WordController extends Controller
 
         dispatch(new Dictionary($locales, 'id'));
 
-        return view('glosariums.words.show', compact('totalWord', 'word'))
+        // find similar category
+        $categories = Category::orderBy('name', 'ASC')
+            ->whereHas('words', function ($query) use ($word) {
+                return $query->whereOrigin($word->origin);
+            })
+            ->with('words')
+            ->get();
+
+        // find word by word
+        $dictionaries = WordDictionary::whereIn('word', array_filter($locales))
+            ->orderBy('word', 'ASC')
+            ->with('descriptions', 'descriptions.type')
+            ->get();
+
+        return view('glosariums.words.show', compact('totalWord', 'word', 'dictionaries', 'categories'))
             ->withTitle(sprintf('%s - %s', $word->origin, $word->locale));
     }
 
