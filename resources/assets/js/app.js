@@ -13,8 +13,5 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
-
-const app = new Vue({
-    el: '#app'
-});
+// Vue.component('example', require('./components/Example.vue'));
+Vue.component('alert', require('./components/Bootstrap/alert.vue'));

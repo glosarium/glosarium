@@ -151,13 +151,18 @@
         <!-- Theme JS -->
         <script src="{{ asset ('js/theme.js') }}"></script>
 
-        <!-- External VueJS -->
-        <script src="{{ asset('vendor/vue/dist/vue.min.js') }}"></script>
-        <script src="{{ asset('vendor/vue-resource/dist/vue-resource.min.js') }}"></script>
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+                'url' => env('APP_URL')
+            ]) !!}
+        </script>
+
+
+        </script>
+        <script src="{{ asset('js/app.js') }}"></script>
 
         <script>
-            window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token(), 'env' => app()->environment()]); ?>;
-
             $(function(){
               $('a.logout').click(function(){
                 $('#logout-form').submit();

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @push('metadata')
-    <meta name="title" content="Kirim Pesan Melalui Formulir Kontak ke {{ config('app.name') }}">
+    <meta name="title" content="{{ trans('contact.sendMessage') }}">
     <meta name="author" content="{{ config('app.name') }}">
-    <meta name="description" content="Bantu kami berkembang! Sampaikan salam, kritik dan saran untuk kemajuan">
+    <meta name="description" content="{{ trans('contact.description') }}">
 
-    <meta property="og:title" content="Kirim Pesan Melalui Formulir Kontak ke {{ config('app.name') }}">
+    <meta property="og:title" content="{{ trans('contact.sendMessage') }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
-    <meta property="og:description" content="Bantu kami berkembang! Sampaikan salam, kritik dan saran untuk kemajuan">
+    <meta property="og:description" content="{{ trans('contact.description') }}">
     <meta property="og:url" content="{{ route('contact.form') }}">
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
@@ -20,8 +20,8 @@
 
 @section('content')
 
-<h2 class="text-center">Bantu kami berkembang!<br/>
-    <small>Sampaikan salam, kritik dan saran untuk kemajuan</small>
+<h2 class="text-center">{{ trans('contact.heading') }}<br/>
+    <small>{{ trans('contact.subheading') }}</small>
 </h2>
 <div class="white-space-20"></div>
 <div class="row">
@@ -29,42 +29,42 @@
 
         @include('partials.message')
 
-        <div v-if="alerts.message" v-bind:class="['alert', 'alert-' + alerts.type]">
+        <alert :show="alerts.message" :type="alerts.type" :title="alerts.title">
             @{{ alerts.message }}
-        </div>
+        </alert>
 
         <!-- form contact -->
-        <form v-on:submit.prevent="send" action="{{ route('contact.post') }}" method="post">
+        <form @submit.prevent="send" action="{{ route('contact.post') }}" method="post">
             {{ csrf_field() }}
 
             <div v-bind:class="['form-group', errors.email ? 'has-error' : '']">
-                <label>Alamat Surel <small>(Surat Elektronik)</small></label>
+                <label>{{ trans('contact.form.email') }}</label>
                 @if (auth()->check())
                     <input disabled="" type="email" name="email" class="form-control disabled" value="{{ auth()->user()->email }}">
                 @else
-                    <input v-model="forms.email" v-bind:disabled="disabled" name="email" type="email" class="form-control" value="{{ old('email') }}">
+                    <input v-model="forms.email" :disabled="loading" name="email" type="email" class="form-control" value="{{ old('email') }}">
                 @endif
 
                 <span v-if="errors.email" class="label label-danger">@{{ errors.email[0] }}</span>
             </div>
 
             <div v-bind:class="['form-group', errors.subject ? 'has-error' : '']">
-                <label>Subjek</label>
-                <input v-model="forms.subject" v-bind:disabled="disabled" name="subject" type="text" class="form-control" value="{{ old('subject') }}">
+                <label>{{ trans('contact.form.subject') }}</label>
+                <input v-model="forms.subject" :disabled="loading" name="subject" type="text" class="form-control" value="{{ old('subject') }}">
 
                 <span v-if="errors.subject" class="label label-danger">@{{ errors.subject[0] }}</span>
             </div>
 
             <div v-bind:class="['form-group', errors.message ? 'has-error' : '']">
-                <label>Pesan</label>
-                <textarea v-model="forms.message" v-bind:disabled="disabled" name="message" class="form-control" rows="6" value="{{ old('message') }}"></textarea>
+                <label>{{ trans('contact.form.message') }}</label>
+                <textarea v-model="forms.message" :disabled="loading" name="message" class="form-control" rows="6" value="{{ old('message') }}"></textarea>
 
                 <span v-if="errors.message" class="label label-danger">@{{ errors.message[0] }}</span>
             </div>
 
             <div class="form-group text-center">
                 <div class="white-space-10"></div>
-                <button v-bind:disabled="disabled" type="submit" class="btn btn-theme btn-lg btn-long btn-t-primary btn-pill">Kirim Pesan <i v-if="loading" class="fa fa-spinner fa-spin"></i></button>
+                <button :disabled="loading" type="submit" class="btn btn-theme btn-lg btn-long btn-t-primary btn-pill">{{ trans('contact.btn.send') }} <i v-if="loading" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
         <!-- end form contact -->
@@ -78,71 +78,80 @@
             $('li.contact').addClass('active');
         });
 
-        var app = new Vue({
+        let forms = {
+            email: null,
+            subject: null,
+            message: null
+        }
+
+        let contact = new Vue({
             el: '#content',
             data: {
                 loading: false,
-                disabled: false,
+                errors: {
+                    subject: null,
+                    email: null,
+                    message: null
+                },
+                forms: forms,
                 alerts: {
                     type: null,
-                    message: null
-                },
-                forms: {
-                    _token: Laravel.csrfToken,
-                    email: null,
-                    subject: null,
-                    message: null
-                },
-                errors: {
-                    email: null,
-                    subject: null,
+                    title: null,
                     message: null
                 }
             },
 
             methods: {
 
-                send: function(el) {
+                beforeSend: function() {
                     this.loading = true;
-                    this.disabled = true;
 
                     this.alerts = {
+                        type: null,
                         message: null
-                    };
+                    }
+                },
 
+                afterSend: function() {
+                    this.forms = forms;
                     this.errors = {
                         email: null,
                         subject: null,
                         message: null
                     };
 
-                    this.$http.post(el.target.action, this.forms).then(function(response){
-                        this.alerts = response.body;
+                    this.loading = false;
+                },
 
-                        this.forms = {
-                            _token: Laravel.csrfToken,
-                            email: null,
-                            subject: null,
-                            message: null
+                send: function(e) {
+                    this.beforeSend();
+
+                    let url = '{{ route('contact.form') }}';
+
+                    this.$http.post(url, this.forms).then(response => {
+                        this.alerts = {
+                            type: 'success',
+                            title: response.body.title,
+                            message: response.body.message
                         };
 
-                        this.errors = {
-                            email: null,
-                            subject: null,
-                            message: null
-                        };
+                        this.afterSend();
 
-                        this.disabled = false;
-                        this.loading = false;
+                    }, response => {
+                        if (response.status == 422) {
+                            this.errors = response.body;
+                        }
+                        else {
+                            this.alerts = {
+                                type: 'danger',
+                                message: '{{ trans('contact.msg.error') }}'
+                            }
+                        }
 
-                    }, function(response){
-                        this.errors = response.body;
-                        this.disabled = false;
                         this.loading = false;
-                    });
+                    })
                 }
-
             }
-        })
+        });
     </script>
 @endpush
