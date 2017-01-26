@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ *
  * @link https://github.com/glosarium/glosarium
  */
 
@@ -37,6 +38,19 @@ class CategoryController extends Controller
 
         return view('glosariums.categories.index', compact('totalWord', 'categories', 'latestWords'))
             ->withTitle('Kategori Glosarium');
+    }
+
+    public function all()
+    {
+        $categories = Cache::get('glosarium.index', function () {
+            return Category::orderBy('name', 'ASC')
+                ->withCount('words')
+                ->get();
+        });
+
+        return response()->json([
+            'categories' => $categories,
+        ]);
     }
 
     public function show($slug)

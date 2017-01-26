@@ -4,6 +4,7 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="{{ route('glosarium.word.index') }}">Indeks Kata</a></li>
         <li><a href="{{ route('glosarium.category.index') }}">Semua Kategori</a></li>
+        <li><a href="{{ route('glosarium.word.create') }}">Tambah Kata</a></li>
     </ul>
 </li>
 <li class="dictionary"><a href="{{ route('dictionary.national.index') }}">Kamus Bahasa Indonesia</a></li>

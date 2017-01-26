@@ -20,12 +20,14 @@ class Word extends Model
         'slug',
         'alias',
         'lang',
-        'foreign',
+        'origin',
         'locale',
         'spell',
         'pronounce',
         'status',
         'is_standard',
+        'is_published',
+        'retry_count',
     ];
 
     public function getRouteKeyName()
@@ -74,8 +76,8 @@ class Word extends Model
     public function scopeFilter($query)
     {
         if (request('keyword')) {
-            $query = $query->where('locale', 'like', '%'.request('keyword').'%')
-                ->orWhere('origin', 'like', '%'.request('keyword').'%');
+            $query = $query->where('locale', 'like', '%' . request('keyword') . '%')
+                ->orWhere('origin', 'like', '%' . request('keyword') . '%');
         }
 
         if (request('category')) {

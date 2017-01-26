@@ -14,9 +14,12 @@ use App\Dictionary\Word as WordDictionary;
 use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
-use App\Jobs\Glosarium\Dictionary;
+use App\Http\Requests\Glosarium\WordRequest;
+use App\Mail\Glosarium\CreateMail;
+use Auth;
 use Cache;
 use Carbon\Carbon;
+use Mail;
 
 /**
  * Manage glosarium words
@@ -71,8 +74,6 @@ class WordController extends Controller
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
 
-        dispatch(new Dictionary($locales, 'id'));
-
         // find similar category
         $categories = Category::orderBy('name', 'ASC')
             ->whereHas('words', function ($query) use ($word) {
@@ -103,6 +104,47 @@ class WordController extends Controller
         return response()->json([
             'isSuccess' => true,
             'total'     => number_format($total, 0, ',', '.'),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('glosariums.words.create')
+            ->withTitle(trans('glosarium.create'));
+    }
+
+    public function store(WordRequest $request)
+    {
+        try {
+            $glosarium = Word::create([
+                'user_id'      => Auth::id(),
+                'category_id'  => $request->category,
+                'origin'       => $request->origin,
+                'locale'       => $request->locale,
+                'lang'         => 'en',
+                'is_published' => false,
+                'is_standard'  => false,
+                'retry_count'  => 0,
+            ]);
+
+            // send email proposal
+            Mail::to(config('mail.from.address'))->send(new CreateMail($glosarium));
+
+        } catch (Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message'   => $e->getMessage(),
+            ]);
+        }
+
+        return response()->json([
+            'isSuccess' => true,
+            'glosarium' => $glosarium,
+            'alerts'    => [
+                'type'    => 'success',
+                'title'   => trans('glosarium.success'),
+                'message' => trans('glosarium.msg.created'),
+            ],
         ]);
     }
 }
