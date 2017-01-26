@@ -50,7 +50,7 @@ class LoginController extends Controller
 
         $image = new Image;
 
-        $image->addText('Masuk', 30, 400, 300)->render('images/users/', 'Masuk');
+        $image->addText($title, 30, 400, 300)->render('images/users/', $title);
 
         $imagePath = $image->path();
 
@@ -61,7 +61,7 @@ class LoginController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -78,13 +78,6 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            if (request()->ajax()) {
-                return response()->json([
-                    'isSuccess' => true,
-                    'url'       => route('index'),
-                ]);
-            }
-
             return $this->sendLoginResponse($request);
         }
 
@@ -99,7 +92,7 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return void
      */
     protected function validateLogin(Request $request)
@@ -108,5 +101,29 @@ class LoginController extends Controller
             $this->username() => 'required|exists:users,email',
             'password'        => 'required',
         ]);
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request    $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        $auth = $this->authenticated($request, $this->guard()->user());
+
+        if ($auth and request()->ajax()) {
+            return response()->json([
+                'isSuccess' => true,
+                'url'       => $this->redirectPath(),
+            ]);
+        }
+
+        return redirect()->intended($this->redirectPath());
     }
 }

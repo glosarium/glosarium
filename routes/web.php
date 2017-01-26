@@ -15,4 +15,6 @@ Auth::routes();
 Route::get('kontak', 'ContactController@form')->name('contact.form');
 Route::post('kontak', 'ContactController@send')->name('contact.post');
 
+Route::get('example', 'ExampleController@index')->name('example.index');
+
 Route::get('/', 'PageController@index')->name('index');

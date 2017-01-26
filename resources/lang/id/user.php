@@ -1,28 +1,32 @@
 <?php
 
 return [
-    'title'          => 'Pengguna',
+    'title'          => 'Kontributor',
     'login'          => 'Masuk',
+    'loginFacebook'  => 'Masuk dengan Facebook',
+    'loginGoogle'    => 'Masuk dengan Google',
     'register'       => 'Daftar',
     'logout'         => 'Keluar',
     'description'    => 'Daftar atau masuk sebagai pengguna untuk berkontribusi dalam pengembangan glosarium',
     'forgotPassword' => 'Saya Lupa Sandi Lewat',
     'changePassword' => 'Ubah Sandi Lewat',
-    'index'          => 'Pengguna',
     'searchFor'      => 'Pencarian untuk ":keyword"',
+    'or'             => 'ATAU',
+    'notUser'        => 'Bukan terdaftar?',
+    'createAccount'  => 'Daftar sebagai Kontributor',
 
-    'field'          => [
+    'form'           => [
         'name'                 => 'Nama Lengkap',
-        'email'                => 'Surel',
+        'email'                => 'Surel (Surat Elektronik)',
         'password'             => 'Sandi Lewat',
         'confirmPassword'      => 'Konfirmasi Sandi Lewat',
-        'remember'             => 'Ingatkan saya pada peranti ini',
+        'remember'             => 'Ingatkan saya',
         'currentPassword'      => 'Sandi Lewat Sekarang',
         'newPassword'          => 'Sandi Lewat Baru',
         'passwordConfirmation' => 'Konfirmasi Sandi Lewat',
-        'updated' => 'Diperbarui',
-        'created' => 'Dibuat',
-        'actions' => 'Aksi'
+        'updated'              => 'Diperbarui',
+        'created'              => 'Dibuat',
+        'actions'              => 'Aksi',
     ],
 
     'btn'            => [
@@ -31,7 +35,7 @@ return [
         'changePassword' => 'Simpan Sandi Lewat',
     ],
 
-    'message'        => [
+    'msg'            => [
         'passwordUpdated' => 'Sandi lewat berhasil diperbarui.',
     ],
 ];

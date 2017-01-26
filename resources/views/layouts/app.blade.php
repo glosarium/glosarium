@@ -123,12 +123,13 @@
                             </ul>
                         </div>
                         <div class="col-sm-6 ">
-                            <p class="text-center-xs hidden-lg hidden-md hidden-sm">Stay Connect</p>
+                            <p class="text-center-xs hidden-lg hidden-md hidden-sm">Tetap Terhubung</p>
                             <div class="socials text-right text-center-xs">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="https://facebook.com/arvernester"><i class="fa fa-facebook"></i></a>
+                                <a href="https://twitter.com/arvernester"><i class="fa fa-twitter"></i></a>
+                                <a href="https://id.linkedin.com/in/arvernester"><i class="fa fa-linkedin"></i></a>
+                                <a href="https://instagram.com/arvernester"><i class="fa fa-instagram"></i></a>
+                                <a href="https://yugo.my.id"><i class="fa fa-rss"></i></a>
                             </div>
                         </div>
                     </div>
@@ -138,8 +139,16 @@
         </div>
         <!-- end wrapper page -->
 
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+                'url' => env('APP_URL')
+            ]) !!}
+        </script>
+
+        <script src="{{ asset('js/app.js') }}"></script>
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
         <!-- jQuery Bootstrap -->
@@ -150,17 +159,6 @@
 
         <!-- Theme JS -->
         <script src="{{ asset ('js/theme.js') }}"></script>
-
-        <script>
-            window.Laravel = {!! json_encode([
-                'csrfToken' => csrf_token(),
-                'url' => env('APP_URL')
-            ]) !!}
-        </script>
-
-
-        </script>
-        <script src="{{ asset('js/app.js') }}"></script>
 
         <script>
             $(function(){
