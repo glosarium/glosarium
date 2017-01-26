@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ *
  * @link https://github.com/glosarium/glosarium
  */
 
@@ -35,18 +36,18 @@ class ContactController extends Controller
     public function form()
     {
         $image = new Image;
-        $image->addText('Kontak', 100, 400, 150);
-        $image->addText('Bantu kami berkembang!', 30, 400, 250);
+        $image->addText(trans('contact.title'), 100, 400, 150);
+        $image->addText(trans('contact.heading'), 30, 400, 250);
         $imagePath = $image->render('images/pages/', 'kontak')->path();
 
         return view('contacts.form', compact('imagePath'))
-            ->withTitle('Kontak');
+            ->withTitle(trans('contact.title'));
     }
 
     /**
      * Send to email and notif admin
      *
-     * @param  ContactRequest $request
+     * @param  ContactRequest             $request
      * @return Illuminate\Http\Response
      */
     public function send(ContactRequest $request)
@@ -80,19 +81,18 @@ class ContactController extends Controller
         } catch (Exception $e) {
             if (request()->ajax()) {
                 return response()->json([
-                    'type'    => 'danger',
-                    'message' => 'Pesan gagal dikirim, silakan coba lagi.',
+                    'message' => trans('contact.msg.failed'),
                 ]);
             }
 
             abort(500, $e->getMessage());
         }
 
-        $message = 'Terima kasih. Pesan berhasil dikirim dan akan ditanggapi sesegera mungkin.';
+        $message = trans('contact.msg.sent');
 
         if (request()->ajax()) {
             return response()->json([
-                'type'    => 'success',
+                'title'   => trans('contact.msg.thank'),
                 'message' => $message,
             ]);
         }
