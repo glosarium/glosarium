@@ -15,6 +15,7 @@ require('laravel-elixir-vue-2');
 
 elixir(mix => {
     mix.less('theme.less', 'public/css/theme.css');
+    mix.webpack('app.js', 'public/js/app.js');
 
     mix.scripts('theme.js', 'public/js/theme.js');
     mix.scripts('dictionary.js', 'public/js/dictionary.js');
