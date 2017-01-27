@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@push('metadata')
+	<meta name="author" content="{{ config('app.name') }}">
+	<meta name="description" content="@lang('glosarium.contribute')">
+
+	<meta property="og:title" content="{{ $title }}">
+	<meta property="og:description" content="@lang('glosarium.contribute')">
+	<meta property="og:url" content="{{ url()->current() }}">
+	<meta property="og:image" content="{{ $imagePath }}">
+@endpush
+
 @section('heading')
 	@include('glosariums.partials.title', compact('title'))
 @endsection
@@ -11,6 +21,15 @@
     	<alert :show="alerts.message" :title="alerts.title" :type="alerts.type">
     		@{{ alerts.message }}
     	</alert>
+
+	    @if (!auth()->check())
+	        <div class="alert alert-info">
+	            <strong>Halo,</strong>
+	            <p>
+	                Anda belum masuk atau terdaftar sebagai kontributor. Untuk menambahkan glosari, silakan <a href="" class="alert-link">masuk</a> atau <a href="" class="alert-link">registrasi</a> terlebih dahulu.
+	            </p>
+	        </div>
+	    @endif
 
         <!-- form post a job -->
         <form @submit.prevent="create" action="{{ route('glosarium.word.store') }}" method="post">
@@ -63,7 +82,7 @@
             @endif
 
             <div class="form-group ">
-                <button :disabled="loading" class="btn btn-t-primary btn-theme">
+                <button :disabled="loading || ! auth" class="btn btn-t-primary btn-theme">
                 	@lang('glosarium.btn.create') <i v-if="loading" class="fa fa-spinner fa-spin"></i>
                 </button>
             </div>
@@ -78,11 +97,14 @@
 		$(() => {
 			$('#content').removeClass('bg-color2')
 				.addClass('bg-color1');
+
+			$('li.glosarium').addClass('active');
 		});
 
 		new Vue({
 			el: '#content',
 			data: {
+				auth: Laravel.auth,
 				loading: false,
 				categories: null,
 				alerts: {

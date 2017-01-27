@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('heading')
-    @include('partials.glosariums.search', ['totalWord' => $totalWord])
+    @include('glosariums.partials.search', ['totalWord' => $totalWord])
 @endsection
 
 @section('content')

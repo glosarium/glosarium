@@ -6,6 +6,7 @@ return [
     'inLocale'       => 'Kata dalam Bahasa Indonesia',
     'forward'        => 'Proposal juga akan dikiri ke surel: :email',
     'selectCategory' => 'Pilih salah satu kategori',
+    'contribute'     => 'Berkontribusi menambahkan glosari pada aplikasi.',
     'success'        => 'Berhasil!',
 
     'mail'           => [

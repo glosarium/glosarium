@@ -11,7 +11,7 @@
 @endpush
 
 @section('heading')
-    @include('partials/glosariums/hero')
+    @include('glosariums.partials.hero')
 @endsection
 
 @section('content')

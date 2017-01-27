@@ -15,5 +15,6 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('total', 'WordController@total')->name('word.total');
     Route::get('tambah', 'WordController@create')->name('word.create');
     Route::post('simpan', 'WordController@store')->name('word.store');
+    Route::post('sama', 'WordController@sameWord')->name('word.same');
     Route::get('{category}/{slug}', 'WordController@show')->name('word.show');
 });

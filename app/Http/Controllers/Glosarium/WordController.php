@@ -15,6 +15,7 @@ use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
+use App\Libraries\Image;
 use App\Mail\Glosarium\CreateMail;
 use Auth;
 use Cache;
@@ -61,6 +62,13 @@ class WordController extends Controller
             ->withTitle('Indeks Glosarium');
     }
 
+    /**
+     * Show single and detailed word
+     *
+     * @param  string                     $category
+     * @param  string                     $slug
+     * @return Illuminate\Http\Response
+     */
     public function show($category, $slug)
     {
         $totalWord = Word::whereIsPublished(true)->count();
@@ -74,24 +82,48 @@ class WordController extends Controller
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
 
-        // find similar category
-        $categories = Category::orderBy('name', 'ASC')
-            ->whereHas('words', function ($query) use ($word) {
-                return $query->whereOrigin($word->origin);
-            })
-            ->with('words')
-            ->get();
-
         // find word by word
         $dictionaries = WordDictionary::whereIn('word', array_filter($locales))
             ->orderBy('word', 'ASC')
             ->with('descriptions', 'descriptions.type')
             ->get();
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'dictionaries', 'categories'))
+        // generate image
+        $image = new Image;
+
+        $image->addText($word->origin, 50, 400, 150)
+            ->addText($word->locale, 40, 400, 250)
+            ->render(sprintf('images/glosariums/%s', $word->category->slug), $word->slug);
+
+        $imagePath = $image->path();
+
+        return view('glosariums.words.show', compact('totalWord', 'word', 'dictionaries', 'categories', 'imagePath'))
             ->withTitle(sprintf('%s - %s', $word->origin, $word->locale));
     }
 
+    /**
+     * Find similar word
+     *
+     * @return string JSON
+     */
+    public function sameWord()
+    {
+        // find similar category
+        $words = Word::whereOrigin(request('origin'))
+            ->with('category')
+            ->get();
+
+        return response()->json([
+            'words' => $words,
+        ]);
+
+    }
+
+    /**
+     * Count word and get total
+     *
+     * @return string JSON
+     */
     public function total()
     {
         abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
@@ -107,12 +139,31 @@ class WordController extends Controller
         ]);
     }
 
+    /**
+     * Show create form
+     *
+     * @return Illuminate\Http\Response
+     */
     public function create()
     {
-        return view('glosariums.words.create')
+        // create image
+        $image = new Image;
+
+        $image->addText(trans('glosarium.create'), 40, 400, 200)
+            ->render('images/pages', 'create-glossary');
+
+        $imagePath = $image->path();
+
+        return view('glosariums.words.create', compact('imagePath'))
             ->withTitle(trans('glosarium.create'));
     }
 
+    /**
+     * Create and store new glossary
+     *
+     * @param  WordRequest $request
+     * @return string      JSON
+     */
     public function store(WordRequest $request)
     {
         try {
@@ -135,6 +186,8 @@ class WordController extends Controller
                 'isSuccess' => false,
                 'message'   => $e->getMessage(),
             ]);
+
+            abort(500, $e->getMessage());
         }
 
         return response()->json([

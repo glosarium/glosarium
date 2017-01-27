@@ -3,15 +3,15 @@
 @push('metadata')
     <meta name="author" content="{{ config('app.name') }}">
     <meta name="description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
-
     <meta property="og:title" content="{{ $word->origin }} - {{ $word->locale }}">
     <meta property="og:description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
-    <meta property="og:author" content="{{ config('app.name') }}">
+    <meta property="og:author" content="{{ ! empty($word->user) ? $word->user->name : config('app.name')  }}">
     <meta property="og:url" content="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}">
+    <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
 @section('heading')
-    @include('partials/glosariums/search', ['totalWord' => $totalWord])
+    @include('glosariums.partials.search', ['totalWord' => $totalWord])
 @endsection
 
 @section('content')
@@ -46,6 +46,8 @@
                                     </li>
                                 @endforeach
                             </ul>
+                        @else
+                            <p>Belum ada arti untuk kata {{ $dictionary->word }}.</p>
                         @endif
                     @endforeach
                 </div>
@@ -67,15 +69,16 @@
         <!-- box affix right -->
         <div class="block-section-sm side-right" id="affix-box">
             <div>
-                <h5>Dalam Kategori</h5>
-                <ul class="list-unstyled">
-                    @foreach ($categories as $category)
-                        <li><a href="">{{ $category->name }}</a></li>
-                    @endforeach
+                <h4 v-if="categories">Dalam Kategori</h4>
+                <ul v-if="categories" class="list-unstyled">
+                    <li v-for="word in categories">
+                        <a :href="word.url">@{{ word.category.name }}</a>
+                    </li>
                 </ul>
+
                 <hr>
 
-                <h6>Bagikan ke media sosial</h6>
+                <h4>Bagikan ke Media Sosial</h4>
                 <p class="share-btns">
                     <a href="#" class="btn btn-primary"><i class="fa fa-facebook"></i></a>
                     <a href="#" class="btn btn-info"><i class="fa fa-twitter"></i></a>
@@ -96,14 +99,22 @@
             $('li.glosarium').addClass('active')
         });
 
+        const words = {!! json_encode([
+            'locale' => $word->locale,
+            'origin' => $word->origin,
+            'lang' => $word->lang
+        ]) !!}
+
         let glosarium = new Vue({
             el: '#content',
             data: {
-                total: 0
+                total: 0,
+                words: words,
+                categories: null
             },
 
             mounted() {
-
+                this.sameCategory();
             },
 
             methods: {
@@ -113,6 +124,16 @@
 
                     this.$http.get(url).then(response => {
                         this.total = response.body.total;
+                    });
+                },
+
+                sameCategory() {
+                    let url = '{{ route('glosarium.word.same') }}';
+
+                    this.$http.post(url, {origin: this.words.origin}).then(response => {
+                        this.categories = response.body.words;
+                    }, response => {
+
                     });
                 }
 
