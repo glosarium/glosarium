@@ -15,6 +15,7 @@ return [
     'noCategoryDescription' => 'Belum ada deskripsi untuk kategori :name.',
     'show'                  => 'Arti Glosari :origin Adalah :locale',
     'categoryAll'           => 'Kategori :category',
+    'shares'                => 'Bagikan ke Media Sosial',
 
     'mail'                  => [
         'introProposal' => 'Halo, Anda mendapatkan proposal glosari baru dengan kata asal :origin dan arti kata :origin.',

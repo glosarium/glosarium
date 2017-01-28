@@ -68,9 +68,10 @@
     <div class="col-md-3">
         <!-- box affix right -->
         <div class="block-section-sm side-right" id="affix-box">
-            <div>
-                <h4 v-if="categories">Dalam Kategori</h4>
-                <ul v-if="categories" class="list-unstyled">
+            <div class="result-filter">
+                <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#same-words" data-toggle="collapse" >Dalam Kategori <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
+
+                <ul v-if="categories" class="list-unstyled" id="same-words">
                     <li v-for="word in categories">
                         <a :href="word.url">@{{ word.category.name }}</a>
                     </li>
@@ -78,7 +79,7 @@
 
                 <hr>
 
-                <h4>Bagikan ke Media Sosial</h4>
+                <h5>@lang('glosarium.shares')</h5>
                 <p class="share-btns">
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" class="btn btn-primary"><i class="fa fa-facebook"></i></a>
                     <a href="https://twitter.com/home?status=Arti kata {{ $word->origin }} pada {{ config('app.name') }} adalah {{ $word->locale }}. {{ url()->current() }}" class="btn btn-info"><i class="fa fa-twitter"></i></a>

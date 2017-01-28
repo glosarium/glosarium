@@ -48,7 +48,7 @@ class Dictionary
     /**
      * @var integer
      */
-    private $maxTries = 100;
+    private $maxTries = 3;
 
     public function __construct($word)
     {

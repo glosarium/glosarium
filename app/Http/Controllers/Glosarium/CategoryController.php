@@ -48,7 +48,7 @@ class CategoryController extends Controller
         // create image
         $image     = new Image;
         $imagePath = $image->addText(trans('glosarium.categoryTitle'), 50, 400, 200)
-            ->render('pages', 'category')
+            ->render('images/pages', 'category')
             ->path();
 
         return view('glosariums.categories.index', compact('totalWord', 'categories', 'latestWords', 'imagePath'))
@@ -102,7 +102,7 @@ class CategoryController extends Controller
         // create header image
         $image     = new Image;
         $imagePath = $image->addText($category->name, 50, 400, 200)
-            ->render('glosariums/categories', $category->slug)
+            ->render('images/glosariums/categories', $category->slug)
             ->path();
 
         return view('glosariums.categories.show', compact('category', 'imagePath', 'totalWord', 'words'))
