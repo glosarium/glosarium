@@ -15,7 +15,6 @@ namespace App\Libraries;
 use App\Dictionary\Description;
 use App\Dictionary\Word;
 use App\Jobs\Dictionary\AddWord;
-use App\Jobs\Dictionary\BadWord;
 use App\WordType;
 use Cache;
 use Goutte\Client;
@@ -259,8 +258,6 @@ class Dictionary
      */
     private function unpublishWord($word)
     {
-        dispatch(new BadWord());
-
         if (!empty($word)) {
             $word->is_published = false;
             $word->save();
