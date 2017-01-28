@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ *
  * @link https://github.com/glosarium/glosarium
  */
 
@@ -13,9 +14,8 @@ namespace App\Libraries;
 
 use App\Dictionary\Description;
 use App\Dictionary\Word;
-use App\Jobs\Dictionary\InvalidWord;
-use App\Jobs\Dictionary\UrlShortener;
-use App\Jobs\Glosarium\Dictionary as DictionaryQueue;
+use App\Jobs\Dictionary\AddWord;
+use App\Jobs\Dictionary\BadWord;
 use App\WordType;
 use Cache;
 use Goutte\Client;
@@ -48,7 +48,7 @@ class Dictionary
     /**
      * @var integer
      */
-    private $maxTries = 1;
+    private $maxTries = 100;
 
     public function __construct($word)
     {
@@ -104,8 +104,8 @@ class Dictionary
             }
         }
 
-        if (empty($this->word->url)) {
-            dispatch(new UrlShortener($this->word));
+        if (empty($this->word->url) and app()->environment('production')) {
+            // dispatch(new UrlShortener($this->word));
         }
 
         $this->word->spell        = $this->spell();
@@ -119,8 +119,8 @@ class Dictionary
     /**
      * Request data to KBBI
      *
-     * @param  string $word
-     * @param  string $action
+     * @param  string          $word
+     * @param  string          $action
      * @return Goutte\Client
      */
     private function getResponse($word, $action = 'initial')
@@ -196,7 +196,7 @@ class Dictionary
      *
      * @return App\Dictionary\Description
      */
-    public function descriptions()
+    private function descriptions()
     {
         if (!empty($this->word->descriptions) and $this->word->descriptions->count() >= 1) {
             return $this->word->descriptions;
@@ -218,16 +218,24 @@ class Dictionary
 
             list($type, $text) = explode(' ', $description, 2);
 
+            $f = storage_path('logs/desc.txt');
+            \File::put(storage_path('logs/type.txt'), json_encode($types));
+            if (\File::exists($f)) {
+                \File::append($f, sprintf('%s : %s', $type, $text));
+            } else {
+                \File::put($f, sprintf('%s : %s', $type, $text));
+            }
+
             // add new vocabularies
             $words = array_map(function ($word) {
                 return trim(strtolower($word));
             }, preg_split("/[\s,\/;\(\)]+/", $text));
 
-            dispatch(new DictionaryQueue($words, 'id'));
+            dispatch(new AddWord(array_filter($words), 'id'));
 
             return [
                 'type' => array_key_exists($type, $types) ? $types[$type] : null,
-                'text' => ucfirst($text),
+                'text' => $description,
             ];
         });
 
@@ -235,10 +243,12 @@ class Dictionary
             $relatedDescriptions = [];
             foreach ($descriptions as $description) {
                 $relatedDescriptions[] = new Description([
-                    'type_id' => $description['type'],
+                    'type_id' => (int) $description['type'],
                     'text'    => trim(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $description['text'])),
                 ]);
             }
+
+            \File::put(storage_path('logs/desc-data.json'), json_encode($relatedDescriptions));
 
             $this->word->descriptions()->saveMany($relatedDescriptions);
 
@@ -257,7 +267,7 @@ class Dictionary
      */
     private function unpublishWord($word)
     {
-        dispatch(new InvalidWord());
+        dispatch(new BadWord());
 
         if (!empty($word)) {
             $word->is_published = false;

@@ -9,8 +9,8 @@ class Description extends Model
     protected $table = 'dictionary_descriptions';
 
     protected $fillable = [
-        'id',
         'word_id',
+        'type_id',
         'text',
         'created_at',
         'updated_at',

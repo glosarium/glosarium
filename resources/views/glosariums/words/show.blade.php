@@ -3,6 +3,7 @@
 @push('metadata')
     <meta name="author" content="{{ config('app.name') }}">
     <meta name="description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
+
     <meta property="og:title" content="{{ $word->origin }} - {{ $word->locale }}">
     <meta property="og:description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
     <meta property="og:author" content="{{ ! empty($word->user) ? $word->user->name : config('app.name')  }}">
@@ -20,9 +21,6 @@
         <!-- box item details -->
         <div class="block-section box-item-details">
 
-            @include('partials.ads.responsive')
-            <hr>
-
             <div class="panel panel-default">
                 <div class="panel-body">
 
@@ -34,9 +32,9 @@
                     <h4>Arti per kata</h4>
 
                     @foreach ($dictionaries as $dictionary)
-                        <h5>{{ $dictionary->word }}</h5>
+                        <h5>{{ $dictionary->word }}</span></h5>
                         @if ($dictionary->descriptions->count() >= 1)
-                            <ul>
+                            <ol>
                                 @foreach ($dictionary->descriptions as $description)
                                     <li>
                                         @if (! empty($description->type))
@@ -45,9 +43,11 @@
                                         {{ $description->text }}
                                     </li>
                                 @endforeach
-                            </ul>
+                            </ol>
                         @else
-                            <p>Belum ada arti untuk kata {{ $dictionary->word }}.</p>
+                            <ul>
+                                <li>Belum ada arti untuk kata {{ $dictionary->word }}.</li>
+                            </ul>
                         @endif
                     @endforeach
                 </div>
@@ -59,7 +59,7 @@
                     @if (! empty($word->user))
                         <li><i class="fa fa-user"></i> {{ $word->user->name }}</li>
                     @endif
-                    <li><i class="fa fa-eye"></i> Dilihat 10 kali</li>
+                    <li><i class="fa fa-eye"></i> Dilihat 0 kali</li>
                 </ul>
             </div>
         </div>
@@ -80,10 +80,10 @@
 
                 <h4>Bagikan ke Media Sosial</h4>
                 <p class="share-btns">
-                    <a href="#" class="btn btn-primary"><i class="fa fa-facebook"></i></a>
-                    <a href="#" class="btn btn-info"><i class="fa fa-twitter"></i></a>
-                    <a href="#" class="btn btn-danger"><i class="fa fa-google-plus"></i></a>
-                    <a href="#" class="btn btn-warning"><i class="fa fa-envelope"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" class="btn btn-primary"><i class="fa fa-facebook"></i></a>
+                    <a href="https://twitter.com/home?status=Arti kata {{ $word->origin }} pada {{ config('app.name') }} adalah {{ $word->locale }}. {{ url()->current() }}" class="btn btn-info"><i class="fa fa-twitter"></i></a>
+                    <a href="https://plus.google.com/share?url={{ url()->current() }}" class="btn btn-danger"><i class="fa fa-google-plus"></i></a>
+                    {{-- <a href="#" class="btn btn-warning"><i class="fa fa-envelope"></i></a> --}}
                 </p>
             </div>
         </div>

@@ -15,6 +15,7 @@ use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
+use App\Jobs\Dictionary\GrabWord;
 use App\Libraries\Image;
 use App\Mail\Glosarium\CreateMail;
 use Auth;
@@ -27,6 +28,12 @@ use Mail;
  */
 class WordController extends Controller
 {
+    private $cacheTime;
+
+    public function __construct()
+    {
+        $this->cacheTime = Carbon::now()->addDays(30);
+    }
 
     /**
      * Show all words
@@ -35,20 +42,13 @@ class WordController extends Controller
      */
     public function index()
     {
-        if (request('category')) {
-            $category = Category::whereSlug(trim(request('category')))->first();
-
-            abort_if(empty($category), 404, sprintf('Kategori "%s" tidak ditemukan.', title_case(request('category'))));
-        }
-
         $totalWord = Cache::get('glosarium.total', function () {
             return Word::whereIsPublished(true)->count();
         });
 
-        $words = Word::orderBy('locale')
+        $words = Word::orderBy('origin', 'ASC')
             ->with('category')
             ->whereIsPublished(true)
-            ->filter()
             ->paginate(config('glosarium.limit', 20));
 
         $categories = Cache::remember('category', Carbon::now()->addDays(30), function () {
@@ -77,10 +77,15 @@ class WordController extends Controller
             ->with('category', 'descriptions', 'user')
             ->firstOrFail();
 
-        // save to dictionary
+        // explode words
         $locales = array_map(function ($word) {
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
+
+        // find word description by bot
+        foreach (array_filter($locales) as $locale) {
+            dispatch(new GrabWord($locale));
+        }
 
         // find word by word
         $dictionaries = WordDictionary::whereIn('word', array_filter($locales))
@@ -98,7 +103,10 @@ class WordController extends Controller
         $imagePath = $image->path();
 
         return view('glosariums.words.show', compact('totalWord', 'word', 'dictionaries', 'categories', 'imagePath'))
-            ->withTitle(sprintf('%s - %s', $word->origin, $word->locale));
+            ->withTitle(trans('glosarium.show', [
+                'origin' => $word->origin,
+                'locale' => $word->locale,
+            ]));
     }
 
     /**
@@ -198,6 +206,26 @@ class WordController extends Controller
                 'title'   => trans('glosarium.success'),
                 'message' => trans('glosarium.msg.created'),
             ],
+        ]);
+    }
+
+    /**
+     * Get latest words
+     *
+     * @return string JSON
+     */
+    public function latest()
+    {
+        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+
+        $words = Word::orderBy('created_at', 'DESC')
+            ->with('category')
+            ->whereIsPublished(true)
+            ->limit(20)
+            ->get();
+
+        return response()->json([
+            'words' => $words,
         ]);
     }
 }

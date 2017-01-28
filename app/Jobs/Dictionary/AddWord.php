@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Jobs\Glosarium;
+namespace App\Jobs\Dictionary;
 
 use App\Dictionary\Word;
 use App\User;
-use Sastrawi\Stemmer\StemmerFactory;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Sastrawi\Stemmer\StemmerFactory;
 
-class Dictionary implements ShouldQueue
+class AddWord implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
@@ -24,7 +24,7 @@ class Dictionary implements ShouldQueue
     public function __construct($words, $lang = 'id')
     {
         $this->words = $words;
-        $this->lang = $lang;
+        $this->lang  = $lang;
     }
 
     /**
@@ -41,7 +41,7 @@ class Dictionary implements ShouldQueue
             $word = ucfirst($word);
 
             if (!empty($word)) {
-                $stem = ucfirst($stemmer->stem($word));
+                $stem    = ucfirst($stemmer->stem($word));
                 $words[] = [
                     'type' => 'basic',
                     'text' => $stem,
@@ -66,14 +66,14 @@ class Dictionary implements ShouldQueue
             $find = Word::whereWord($word['text'])->first();
             if (empty($find)) {
                 $dictionary[] = Word::create([
-                    'user_id' => empty($user) ? null : $user->id,
-                    'word' => ucfirst($word['text']),
-                    'type' => $word['type'],
-                    'lang' => $this->lang,
+                    'user_id'      => empty($user) ? null : $user->id,
+                    'word'         => ucfirst($word['text']),
+                    'type'         => $word['type'],
+                    'lang'         => $this->lang,
                     'is_published' => true,
-                    'is_standard' => true,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    'is_standard'  => true,
+                    'created_at'   => $now,
+                    'updated_at'   => $now,
                 ]);
             }
         }

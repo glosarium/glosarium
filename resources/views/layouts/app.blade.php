@@ -38,7 +38,9 @@
             @endif
         @endif
 
-        @include('partials.ads.level')
+        @if (app()->environment('production', 'testting'))
+            @include('partials.ads.level')
+        @endif
     </head>
     <body>
         <!-- wrapper page -->

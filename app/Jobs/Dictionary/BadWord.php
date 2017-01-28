@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class InvalidWord implements ShouldQueue
+class BadWord implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 

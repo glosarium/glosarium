@@ -10,25 +10,9 @@
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
 
-            @if (! empty($category))
-                <div class="panel panel-default">
-                    <div class="panel-heading">Kategori</div>
-                    <div class="panel-body">
-                        @if (auth()->check() and auth()->user()->type == 'admin')
-                            <h3 contenteditable="true" class="editable" data-id="{{ $category->id }}" data-field="name">{{ $category->name }}</h3>
-                        @else
-                            <h3>{{ $category->name }}</h3>
-                        @endif
-
-                        <hr>
-                        @if (auth()->check())
-                            <p contenteditable="true" class="editable" data-id="{{ $category->id }}" data-field="description">{{ $category->description ? $category->description : 'Klik di sini untuk memperbarui deskripsi.' }}</p>
-                        @else
-                            <p>{{ $category->description }}</p>
-                        @endif
-                    </div>
-                </div>
-            @endif
+            <alert :show="alerts.message" :title="alerts.title" :type="alerts.type">
+                @{{ alerts.message }}
+            </alert>
 
             <!-- desc top -->
             <div class="row hidden-xs">
@@ -44,24 +28,17 @@
                 </div>
             </div>
             <!-- end desc top -->
+
             <!-- item list -->
             <div class="box-list">
                 @foreach ($words as $word)
                 <div class="item">
                     <div class="row">
-                        <div class="col-md-1 hidden-sm hidden-xs">
-                            <div class="img-item"><img src="{{ asset('images/company-logo/1.jpg') }}" alt=""></div>
-                        </div>
-                        <div class="col-md-11">
+                        <div class="col-md-12">
                             <h3 class="no-margin-top">
                                 <a href="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}" class="">{{ $word->origin }}</a>
                             </h3>
-                            <h5><span class="color-black">{{ $word->locale }}</span> - <span class="color-white-mute">{{ $word->category->name }}</span></h5>
-                            <ol>
-                                @foreach ($word->descriptions as $description)
-                                <li>{{ $description->description }}</li>
-                                @endforeach
-                            </ol>
+                            <h4><span class="color-black">{{ $word->locale }}</span> - <span class="color-white-mute"><a href="{{ $word->category->url }}">{{ $word->category->name }}</a></span></h4>
                             <div>
                                 <span class="color-white-mute">{{ $word->updated_at->diffForHumans() }}</span>
                             </div>
@@ -71,30 +48,30 @@
                 @endforeach
             </div>
 
-            @include('newsletters.partials.subscribe')
-
             <!-- pagination -->
             <nav >
                 {{ $words->appends(['keyword' => request('keyword')])->links() }}
             </nav>
             <!-- pagination -->
+
         </div>
         <!-- end box listing -->
     </div>
     <div class="col-md-3">
         <div class="block-section-sm side-right">
             <div class="result-filter">
-                <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#s_collapse_1" data-toggle="collapse" >Kategori <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
-                <div class="collapse in" id="s_collapse_1">
+                <h5 class="no-margin-top font-bold margin-b-20 " >
+                    <a href="#category" data-toggle="collapse" >
+                        Kategori <loader :show="loading"></loader> <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i>
+                    </a>
+                </h5>
+
+                <div v-if="categories" class="collapse in" id="category">
                     <div class="list-area">
                         <ul class="list-unstyled">
-                            @foreach ($categories as $category)
-                            <li class>
-                                <a href="{{ route('glosarium.word.index', ['category' => $category->slug]) }}" class="{{ $category->slug }}">
-                                    {{ $category->name }} ({{ number_format($category->words_count, 0, ',', '.') }})
-                                </a>
+                            <li v-for="category in categories">
+                                <a :href="category.url">@{{ category.name }} (@{{ category.words_count.toLocaleString('id-Id') }})</a>
                             </li>
-                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -107,8 +84,10 @@
 
 @push('js')
     <script>
-        $(function(){
+        $(() => {
             $('li.glosarium').addClass('active');
+
+            $('ul.pagination').addClass('pagination-theme no-margin');
 
             $('div.alert').hide();
 
@@ -131,6 +110,48 @@
                     }
                 });
             });
+        });
+
+        new Vue({
+            el: '#content',
+            data: {
+                loading: false,
+                categories: null,
+                alerts: {
+                    type: 'default',
+                    title: null,
+                    message: null
+                }
+            },
+
+            mounted() {
+                this.getCategory();
+            },
+
+            methods: {
+
+                getCategory() {
+                    let url = '{{ route('glosarium.category.all') }}';
+
+                    this.loading = true;
+
+                    this.$http.get(url).then(response => {
+
+                        this.categories = response.body.categories;
+
+                        this.loading = false;
+
+                    }, response => {
+                        this.alerts = {
+                            type: 'danger',
+                            message: 'Kesalahan Server Internal.'
+                        }
+
+                        this.loading = false;
+                    });
+                }
+
+            }
         })
     </script>
 @endpush
