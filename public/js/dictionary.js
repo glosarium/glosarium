@@ -1,6 +1,6 @@
 Vue.use(VueHead);
 
-var app = new Vue({
+new Vue({
     el: '#app',
     data: {
         loading: false,
@@ -16,7 +16,6 @@ var app = new Vue({
             message: null
         },
         forms: {
-            _token: Laravel.csrfToken,
             keyword: Dictionary.keyword
         },
         inputs: {
@@ -47,7 +46,7 @@ var app = new Vue({
         }
     },
 
-    mounted: function() {
+    mounted() {
         if (this.forms.keyword) {
             this.preloadWord();
         }
@@ -57,7 +56,7 @@ var app = new Vue({
 
     methods: {
 
-        beforeSearch: function() {
+        beforeSearch() {
             this.buttons.search = {
                 label: 'Mencari...',
                 class: 'disabled'
@@ -73,7 +72,7 @@ var app = new Vue({
             };
         },
 
-        afterSearch: function() {
+        afterSearch() {
             this.buttons.search = {
                     label: 'Cari',
                     class: null
@@ -87,10 +86,10 @@ var app = new Vue({
             this.loading = false;
         },
 
-        searchWord: function(el) {
+        searchWord(el) {
             var url = Dictionary.url.search;
 
-            this.beforeSearch();            
+            this.beforeSearch();
 
             this.$http.post(el.target.action, this.forms).then(function(response){
                 if (response.ok) {
@@ -121,7 +120,7 @@ var app = new Vue({
             });
         },
 
-        latestWords: function() {
+        latestWords() {
             var url = Dictionary.url.latest;
 
             this.$http.get(url).then(function(response){
@@ -133,7 +132,7 @@ var app = new Vue({
             });
         },
 
-        preloadWord: function() {
+        preloadWord() {
             var url = Dictionary.url.search;
 
             this.beforeSearch();
@@ -170,7 +169,7 @@ var app = new Vue({
             });
         },
 
-        viewDetail: function(el) {
+        viewDetail(el) {
             this.loading = true;
 
             this.buttons.search = {

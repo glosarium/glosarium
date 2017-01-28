@@ -38,7 +38,7 @@
                                 @foreach ($dictionary->descriptions as $description)
                                     <li>
                                         @if (! empty($description->type))
-                                            <span>{{ $description->type->name }}</span>
+                                            <span class="color-white-mute">({{ $description->type->name }})</span>
                                         @endif
                                         {{ $description->text }}
                                     </li>

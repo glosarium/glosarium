@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ *
  * @link https://github.com/glosarium/glosarium
  */
 
@@ -68,7 +69,7 @@ class NationalController extends Controller
 
     public function latest()
     {
-        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+        // abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
 
         $words = Word::orderBy('created_at', 'DESC')
             ->whereIsPublished(true)
