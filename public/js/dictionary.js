@@ -46,7 +46,7 @@ new Vue({
         }
     },
 
-    mounted() {
+    mounted: function() {
         if (this.forms.keyword) {
             this.preloadWord();
         }
