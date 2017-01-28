@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
     // notification
@@ -17,3 +18,5 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
 Route::group(['prefix' => 'user', 'namespace' => 'User', 'as' => 'user.'], function () {
     Route::get('total', 'UserController@total')->name('user.total');
 });
+=======
+>>>>>>> 4e0d0dba7ef5d116f29f30dfe374ad68d30d3046
