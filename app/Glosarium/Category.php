@@ -17,6 +17,19 @@ class Category extends Model
     protected $fillable = [
         'slug',
         'name',
+        'is_published',
+        'metadata',
+    ];
+
+    protected $appends = [
+        'url',
+    ];
+
+    protected $hidden = [
+        'id',
+        'is_published',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -36,6 +49,11 @@ class Category extends Model
                 'source' => 'name',
             ],
         ];
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('glosarium.category.show', [$this->attributes['slug']]);
     }
 
     /**

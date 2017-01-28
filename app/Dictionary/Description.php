@@ -9,8 +9,8 @@ class Description extends Model
     protected $table = 'dictionary_descriptions';
 
     protected $fillable = [
-        'id',
         'word_id',
+        'type_id',
         'text',
         'created_at',
         'updated_at',
@@ -19,5 +19,10 @@ class Description extends Model
     public function word()
     {
         return $this->belongsTo(Word::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 }

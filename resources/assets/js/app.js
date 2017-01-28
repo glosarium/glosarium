@@ -15,3 +15,4 @@ require('./bootstrap');
 
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('alert', require('./components/Bootstrap/alert.vue'));
+Vue.component('loader', require('./components/Bootstrap/loader.vue'));

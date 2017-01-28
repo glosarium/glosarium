@@ -20,12 +20,31 @@ class Word extends Model
         'slug',
         'alias',
         'lang',
-        'foreign',
+        'origin',
         'locale',
         'spell',
         'pronounce',
-        'status',
         'is_standard',
+        'is_published',
+        'retry_count',
+    ];
+
+    protected $hidden = [
+        'id',
+        'category_id',
+        'alias',
+        'pronounce',
+        'status',
+        'is_published',
+        'is_standard',
+        'created_at',
+        'updated_at',
+        'retry_count',
+        'user_id',
+    ];
+
+    protected $appends = [
+        'url',
     ];
 
     public function getRouteKeyName()
@@ -40,6 +59,14 @@ class Word extends Model
                 'source' => 'locale',
             ],
         ];
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('glosarium.word.show', [
+            $this->relations['category']['attributes']['slug'],
+            $this->attributes['slug'],
+        ]);
     }
 
     /**
@@ -69,21 +96,5 @@ class Word extends Model
     public function user()
     {
         return $this->belongsTo(\App\User::class);
-    }
-
-    public function scopeFilter($query)
-    {
-        if (request('keyword')) {
-            $query = $query->where('locale', 'like', '%'.request('keyword').'%')
-                ->orWhere('origin', 'like', '%'.request('keyword').'%');
-        }
-
-        if (request('category')) {
-            $query->whereHas('category', function ($category) {
-                return $category->whereSlug(request('category'));
-            });
-        }
-
-        return $query;
     }
 }

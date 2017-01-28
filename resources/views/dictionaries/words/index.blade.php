@@ -23,6 +23,20 @@
                 <div v-if="alerts.message" v-bind:class="['alert', 'alert-' + alerts.type]">
                     @{{ alerts.message }}
                 </div>
+
+                <div v-if="!word" class="box-list">
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="no-margin-top">Selamat Datang!</h3>
+                                <div class="descriptions">
+                                    {{ config('app.name') }} adalah laman tidak resmi pencarian kata dalam Kamus Besar Bahasa Indonesia (KBBI)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- item list -->
                 <div v-if="word" class="box-list">
                     <div class="item">
@@ -35,7 +49,12 @@
                                 <div v-if="word.descriptions.length >= 1" class="descriptions">
                                     <h4>Arti Kata</h4>
                                     <ol>
-                                        <li v-for="description in word.descriptions">@{{ description.text }}</li>
+                                        <li v-for="description in word.descriptions">
+                                            <span v-if="description.type" class="color-white-mute">
+                                                (@{{ description.type.name }})
+                                            </span>
+                                            @{{ description.text }}
+                                        </li>
                                     </ol>
                                 </div>
 
@@ -54,7 +73,6 @@
                     </div>
                 </div>
 
-                @include('newsletters.partials.subscribe')
             </div>
             <!-- end box listing -->
         </div>
@@ -69,7 +87,7 @@
                         <div class="list-area">
                             <ul class="list-unstyled">
                                 <li v-for="word in words">
-                                    <a v-on:click.prevent="viewDetail" v-bind:data-keyword="word.word" v-bind:href="word.url">@{{ word.word }} <span class="color-white-mute">(@{{ word.updated_diff }})</span></a>
+                                    <a @click.prevent="viewDetail" :data-keyword="word.word" :href="word.url">@{{ word.word }} <span class="color-white-mute">(@{{ word.updated_diff }})</span></a>
                                 </li>
                             </ul>
                         </div>

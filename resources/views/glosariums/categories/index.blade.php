@@ -1,7 +1,22 @@
 @extends('layouts.app')
 
+@push('metadata')
+    <meta name="author" content="{{ config('app.name') }}">
+    <meta name="description" content="@lang('glosarium.categoryAll', [
+        'category' => $categories->implode('name', ', ')
+    ])">
+
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="@lang('glosarium.categoryAll', [
+        'category' => $categories->implode('name', ', ')
+    ])">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:author" content="{{ config('app.name') }}">
+    <meta property="og:image" content="{{ $imagePath }}">
+@endpush
+
 @section('heading')
-    @include('partials.glosariums.search', ['totalWord' => $totalWord])
+    @include('glosariums.partials.search', ['totalWord' => $totalWord])
 @endsection
 
 @section('content')
@@ -9,6 +24,7 @@
     <div class="col-md-9">
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
+
             <!-- desc top -->
             <div class="row hidden-xs">
                 <div class="col-sm-6  ">
@@ -18,7 +34,7 @@
                 </div>
                 <div class="col-sm-6">
                     <p class="text-right">
-                        Halaman {{ $categories->currentPage() }} menampilkan {{ $categories->perPage() }} dari {{ number_format($categories->total(), 0, ',', '.') }} kata
+                        Halaman {{ $categories->currentPage() }} menampilkan {{ $categories->perPage() }} dari {{ number_format($categories->total(), 0, ',', '.') }} kategori
                     </p>
                 </div>
             </div>
@@ -33,7 +49,7 @@
                         </div>
                         <div class="col-md-11">
                             <h3 class="no-margin-top">
-                                <a href="{{ route('glosarium.word.index', ['category' => $category->slug]) }}" class="">{{ $category->name }}</a>
+                                <a href="{{ route('glosarium.category.show', ['category' => $category->slug]) }}" class="">{{ $category->name }}</a>
                             </h3>
                             <h5><span class="color-black">{{ number_format($category->words_count, 0, ',', '.') }} kata</span></h5>
                             @if (auth()->check() and auth()->user()->type == 'admin')
@@ -50,8 +66,6 @@
                 @endforeach
             </div>
 
-            @include('newsletters.partials.subscribe')
-
             <!-- pagination -->
             <nav >
                 {{ $categories->appends(['keyword' => request('keyword')])->links() }}
@@ -63,13 +77,16 @@
     <div class="col-md-3">
         <div class="block-section-sm side-right">
             <div class="result-filter">
-                <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#s_collapse_1" data-toggle="collapse" >Kata Paling Baru <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
-                <div class="collapse in" id="s_collapse_1">
+                <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#latest-words" data-toggle="collapse" >Kata Paling Baru <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
+
+                <div v-if="words" class="collapse in" id="latest-words">
                     <div class="list-area">
                         <ul class="list-unstyled">
-                            @foreach ($latestWords as $word)
-                                <li><a href="{{ route('glosarium.word.show', [$word->category->slug, $word->slug] ) }}">{{ $word->locale }} ({{ $word->origin }})</a></li>
-                            @endforeach
+                            <li v-for="word in words">
+                                <a :href="word.url">
+                                    @{{ word.origin }} (@{{ word.locale }})
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -82,28 +99,38 @@
 
 @push('js')
     <script>
-        $(function(){
+        $(() => {
             $('li.glosarium').addClass('active');
+        });
 
-            $('.editable').blur(function(){
-                var data = {
-                    '_token': Laravel.csrfToken,
-                    'id': $(this).attr('data-id'),
-                    'text': $(this).text(),
-                    'field': $(this).attr('data-field')
-                };
+        new Vue({
+            el: '#content',
+            data: {
+                loading: false,
+                words: null
+            },
 
-                var url = '{{ route('user.glosarium.category.updateField') }}';
+            mounted() {
+                this.getWord();
+            },
 
-                $.ajax({
-                    url: url,
-                    data: data,
-                    type: 'PUT',
-                    success: function(response) {
-                        console.log(response.message);
-                    }
-                });
-            });
+            methods: {
+
+                getWord() {
+                    let url = '{{ route('glosarium.word.latest') }}';
+
+                    this.$http.post(url).then(response => {
+
+                        this.words = response.body.words;
+
+                        this.loading = false;
+                    }, response => {
+
+                        this.loading = false;
+                    });
+                }
+
+            }
         })
     </script>
 @endpush

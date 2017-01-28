@@ -20,13 +20,13 @@
 $style = [
     /* Layout ------------------------------ */
 
-    'body'                => 'margin: 0; padding: 0; width: 100%; background-color: #F2F4F6;',
-    'email-wrapper'       => 'width: 100%; margin: 0; padding: 0; background-color: #F2F4F6;',
+    'body'                => 'margin: 0; padding: 0; width: 100%; background-color: #2a3f54;',
+    'email-wrapper'       => 'width: 100%; margin: 0; padding: 0; background-color: #2a3f54;',
 
     /* Masthead ----------------------- */
 
     'email-masthead'      => 'padding: 25px 0; text-align: center;',
-    'email-masthead_name' => 'font-size: 16px; font-weight: bold; color: #2F3133; text-decoration: none; text-shadow: 0 1px 0 white;',
+    'email-masthead_name' => 'font-size: 16px; font-weight: bold; color: #FFFFFF; text-decoration: none; text-shadow: 0 0px 0 white;',
 
     'email-body'          => 'width: 100%; margin: 0; padding: 0; border-top: 1px solid #EDEFF2; border-bottom: 1px solid #EDEFF2; background-color: #FFF;',
     'email-body_inner'    => 'width: auto; max-width: 570px; margin: 0 auto; padding: 0;',
@@ -43,7 +43,7 @@ $style = [
     /* Type ------------------------------ */
 
     'anchor'              => 'color: #3869D4;',
-    'header-1'            => 'margin-top: 0; color: #2F3133; font-size: 19px; font-weight: bold; text-align: left;',
+    'header-1'            => 'margin-top: 0; color: #FFFFFF; font-size: 19px; font-weight: bold; text-align: left;',
     'paragraph'           => 'margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em;',
     'paragraph-sub'       => 'margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em;',
     'paragraph-center'    => 'text-align: center;',

@@ -10,18 +10,30 @@
 
 namespace App\Http\Controllers\Glosarium;
 
+use App\Dictionary\Word as WordDictionary;
 use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
-use App\Jobs\Glosarium\Dictionary;
+use App\Http\Requests\Glosarium\WordRequest;
+use App\Jobs\Dictionary\GrabWord;
+use App\Libraries\Image;
+use App\Mail\Glosarium\CreateMail;
+use Auth;
 use Cache;
 use Carbon\Carbon;
+use Mail;
 
 /**
  * Manage glosarium words
  */
 class WordController extends Controller
 {
+    private $cacheTime;
+
+    public function __construct()
+    {
+        $this->cacheTime = Carbon::now()->addDays(30);
+    }
 
     /**
      * Show all words
@@ -30,20 +42,13 @@ class WordController extends Controller
      */
     public function index()
     {
-        if (request('category')) {
-            $category = Category::whereSlug(trim(request('category')))->first();
-
-            abort_if(empty($category), 404, sprintf('Kategori "%s" tidak ditemukan.', title_case(request('category'))));
-        }
-
         $totalWord = Cache::get('glosarium.total', function () {
             return Word::whereIsPublished(true)->count();
         });
 
-        $words = Word::orderBy('locale')
+        $words = Word::orderBy('origin', 'ASC')
             ->with('category')
             ->whereIsPublished(true)
-            ->filter()
             ->paginate(config('glosarium.limit', 20));
 
         $categories = Cache::remember('category', Carbon::now()->addDays(30), function () {
@@ -57,6 +62,13 @@ class WordController extends Controller
             ->withTitle('Indeks Glosarium');
     }
 
+    /**
+     * Show single and detailed word
+     *
+     * @param  string                     $category
+     * @param  string                     $slug
+     * @return Illuminate\Http\Response
+     */
     public function show($category, $slug)
     {
         $totalWord = Word::whereIsPublished(true)->count();
@@ -65,17 +77,61 @@ class WordController extends Controller
             ->with('category', 'descriptions', 'user')
             ->firstOrFail();
 
-        // save to dictionary
+        // explode words
         $locales = array_map(function ($word) {
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
 
-        dispatch(new Dictionary($locales, 'id'));
+        // find word description by bot
+        foreach (array_filter($locales) as $locale) {
+            dispatch(new GrabWord($locale));
+        }
 
-        return view('glosariums.words.show', compact('totalWord', 'word'))
-            ->withTitle(sprintf('%s - %s', $word->origin, $word->locale));
+        // find word by word
+        $dictionaries = WordDictionary::whereIn('word', array_filter($locales))
+            ->orderBy('word', 'ASC')
+            ->with('descriptions', 'descriptions.type')
+            ->get();
+
+        // generate image
+        $image = new Image;
+
+        $image->addText($word->origin, 50, 400, 150)
+            ->addText($word->locale, 40, 400, 250)
+            ->render(sprintf('images/glosariums/%s', $word->category->slug), $word->slug);
+
+        $imagePath = $image->path();
+
+        return view('glosariums.words.show', compact('totalWord', 'word', 'dictionaries', 'categories', 'imagePath'))
+            ->withTitle(trans('glosarium.show', [
+                'origin' => $word->origin,
+                'locale' => $word->locale,
+            ]));
     }
 
+    /**
+     * Find similar word
+     *
+     * @return string JSON
+     */
+    public function sameWord()
+    {
+        // find similar category
+        $words = Word::whereOrigin(request('origin'))
+            ->with('category')
+            ->get();
+
+        return response()->json([
+            'words' => $words,
+        ]);
+
+    }
+
+    /**
+     * Count word and get total
+     *
+     * @return string JSON
+     */
     public function total()
     {
         abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
@@ -88,6 +144,88 @@ class WordController extends Controller
         return response()->json([
             'isSuccess' => true,
             'total'     => number_format($total, 0, ',', '.'),
+        ]);
+    }
+
+    /**
+     * Show create form
+     *
+     * @return Illuminate\Http\Response
+     */
+    public function create()
+    {
+        // create image
+        $image = new Image;
+
+        $image->addText(trans('glosarium.create'), 40, 400, 200)
+            ->render('images/pages', 'create-glossary');
+
+        $imagePath = $image->path();
+
+        return view('glosariums.words.create', compact('imagePath'))
+            ->withTitle(trans('glosarium.create'));
+    }
+
+    /**
+     * Create and store new glossary
+     *
+     * @param  WordRequest $request
+     * @return string      JSON
+     */
+    public function store(WordRequest $request)
+    {
+        try {
+            $glosarium = Word::create([
+                'user_id'      => Auth::id(),
+                'category_id'  => $request->category,
+                'origin'       => $request->origin,
+                'locale'       => $request->locale,
+                'lang'         => 'en',
+                'is_published' => false,
+                'is_standard'  => false,
+                'retry_count'  => 0,
+            ]);
+
+            // send email proposal
+            Mail::to(config('mail.from.address'))->send(new CreateMail($glosarium));
+
+        } catch (Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message'   => $e->getMessage(),
+            ]);
+
+            abort(500, $e->getMessage());
+        }
+
+        return response()->json([
+            'isSuccess' => true,
+            'glosarium' => $glosarium,
+            'alerts'    => [
+                'type'    => 'success',
+                'title'   => trans('glosarium.success'),
+                'message' => trans('glosarium.msg.created'),
+            ],
+        ]);
+    }
+
+    /**
+     * Get latest words
+     *
+     * @return string JSON
+     */
+    public function latest()
+    {
+        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+
+        $words = Word::orderBy('created_at', 'DESC')
+            ->with('category')
+            ->whereIsPublished(true)
+            ->limit(20)
+            ->get();
+
+        return response()->json([
+            'words' => $words,
         ]);
     }
 }

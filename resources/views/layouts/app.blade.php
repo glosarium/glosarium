@@ -38,7 +38,9 @@
             @endif
         @endif
 
-        @include('partials.ads.level')
+        @if (app()->environment('production', 'testting'))
+            @include('partials.ads.level')
+        @endif
     </head>
     <body>
         <!-- wrapper page -->
@@ -142,7 +144,8 @@
         <script>
             window.Laravel = {!! json_encode([
                 'csrfToken' => csrf_token(),
-                'url' => env('APP_URL')
+                'url' => env('APP_URL'),
+                'auth' => auth()->check()
             ]) !!}
         </script>
 
