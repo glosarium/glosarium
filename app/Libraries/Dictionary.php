@@ -14,7 +14,6 @@ namespace App\Libraries;
 
 use App\Dictionary\Description;
 use App\Dictionary\Word;
-use App\Jobs\Dictionary\AddWord;
 use App\WordType;
 use Cache;
 use Goutte\Client;
@@ -47,7 +46,7 @@ class Dictionary
     /**
      * @var integer
      */
-    private $maxTries = 3;
+    private $maxTries = 10;
 
     public function __construct($word)
     {
@@ -221,8 +220,6 @@ class Dictionary
             $words = array_map(function ($word) {
                 return trim(strtolower($word));
             }, preg_split("/[\s,\/;\(\)]+/", $text));
-
-            dispatch(new AddWord(array_filter($words), 'id'));
 
             return [
                 'type' => array_key_exists($type, $types) ? $types[$type] : null,
