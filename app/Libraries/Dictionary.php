@@ -92,14 +92,6 @@ class Dictionary
 
                 return null;
             }
-        } else {
-            if ($this->word->retry_count <= $this->maxTries) {
-                $this->response = $this->getResponse($this->vocabulary);
-
-                if (!$this->isExists()) {
-                    $this->unpublishWord($this->word);
-                }
-            }
         }
 
         if (empty($this->word->url) and app()->environment('production')) {
@@ -146,7 +138,7 @@ class Dictionary
      */
     private function isExists()
     {
-        $count = $this->response->filter('ol, ul.adjusted-par')->count() >= 1;
+        $count = $this->response->filter('ol, ul.adjusted-par')->count();
 
         if ($count <= 0) {
             if (function_exists('debug')) {
@@ -158,21 +150,29 @@ class Dictionary
     }
 
     /**
+     * Check if IP address has limited access
+     *
+     * @return boolean
+     */
+    public function isLimited()
+    {
+        $count = $this->response->filter('h2.text-warning')->count();
+
+        return $count >= 1;
+    }
+
+    /**
      * Get spell word
      *
      * @return string
      */
-    public function spell()
+    private function spell()
     {
-        if (!empty($this->word->spell) and $this->word->retry_count) {
+        if (!empty($this->word->spell)) {
             return $this->word->spell;
         }
 
         if (empty($this->response)) {
-            if ($this->word->retry_count >= $this->maxTries) {
-                return null;
-            }
-
             $this->response = $this->getResponse($this->word->word, 'spell');
         }
 
@@ -196,15 +196,11 @@ class Dictionary
      */
     private function descriptions()
     {
-        if (!empty($this->word->descriptions) and $this->word->descriptions->count() >= 1) {
+        if (!empty($this->word->descriptions)) {
             return $this->word->descriptions;
         }
 
         if (empty($this->response)) {
-            if ($this->word->retry_count >= $this->maxTries) {
-                return null;
-            }
-
             $this->response = $this->getResponse($this->word->word, 'description');
         }
 

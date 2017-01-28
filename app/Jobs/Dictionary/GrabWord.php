@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Dictionary;
 
+use App\Dictionary\Log;
 use App\Libraries\Dictionary;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,7 +32,18 @@ class GrabWord implements ShouldQueue
      */
     public function handle()
     {
-        $dictionary = new Dictionary($this->word);
-        $dictionary->get();
+
+        $log = Log::whereWord($this->word)->first();
+
+        if (empty($log)) {
+            $dictionary = new Dictionary($this->word);
+            $dictionary->get();
+
+            Log::create([
+                'word'       => $this->word,
+                'is_success' => !$dictionary->isLimited(),
+                'created_at' => \Carbon\Carbon::now(),
+            ]);
+        }
     }
 }

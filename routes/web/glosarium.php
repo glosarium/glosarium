@@ -1,5 +1,4 @@
 <?php
-
 Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     // category
     Route::get('kategori', 'CategoryController@index')->name('category.index');

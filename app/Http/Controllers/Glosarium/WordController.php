@@ -84,8 +84,13 @@ class WordController extends Controller
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
 
         // find word description by bot
+        $minutes = 0;
         foreach (array_filter($locales) as $locale) {
-            dispatch(new GrabWord($locale));
+            $job = (new GrabWord($locale))->delay(60 * $minutes);
+
+            $this->dispatch($job);
+
+            $minutes += 2;
         }
 
         // find word by word
