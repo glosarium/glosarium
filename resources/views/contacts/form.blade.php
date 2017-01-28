@@ -12,14 +12,7 @@
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
-@section('heading')
-    @include('partials.glosariums.title', [
-        'title' => $title
-    ])
-@endsection
-
 @section('content')
-
 <h2 class="text-center">{{ trans('contact.heading') }}<br/>
     <small>{{ trans('contact.subheading') }}</small>
 </h2>
