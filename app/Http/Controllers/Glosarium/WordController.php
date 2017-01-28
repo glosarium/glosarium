@@ -49,6 +49,7 @@ class WordController extends Controller
         $words = Word::orderBy('origin', 'ASC')
             ->with('category')
             ->whereIsPublished(true)
+            ->filter()
             ->paginate(config('glosarium.limit', 20));
 
         $categories = Cache::remember('category', Carbon::now()->addDays(30), function () {

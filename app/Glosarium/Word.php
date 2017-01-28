@@ -97,4 +97,14 @@ class Word extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
+
+    public function scopeFilter($query)
+    {
+        if (request('keyword')) {
+            $query->where('origin', 'LIKE', '%' . request('keyword') . '%')
+                ->orWhere('locale', 'LIKE', '%' . request('keyword') . '%');
+        }
+
+        return $query;
+    }
 }

@@ -218,14 +218,6 @@ class Dictionary
 
             list($type, $text) = explode(' ', $description, 2);
 
-            $f = storage_path('logs/desc.txt');
-            \File::put(storage_path('logs/type.txt'), json_encode($types));
-            if (\File::exists($f)) {
-                \File::append($f, sprintf('%s : %s', $type, $text));
-            } else {
-                \File::put($f, sprintf('%s : %s', $type, $text));
-            }
-
             // add new vocabularies
             $words = array_map(function ($word) {
                 return trim(strtolower($word));
