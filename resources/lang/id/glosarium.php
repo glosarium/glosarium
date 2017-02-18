@@ -24,7 +24,7 @@ return [
     'form'                  => [
         'category'    => 'Kategori',
         'origin'      => 'Kata Asal',
-        'locale'      => 'Kata Transasi',
+        'locale'      => 'Kata Translasi',
         'description' => 'Deskripsi',
     ],
 

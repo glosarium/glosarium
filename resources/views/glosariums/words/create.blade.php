@@ -37,7 +37,7 @@
         	<div :class="['form-group', errors && errors.category ? 'has-error' : '']">
         		<label>@lang('glosarium.form.category')</label>
         		<select :disabled="loading" v-model="forms.category" name="category" class="form-control">
-        			<option value="null">@lang('glosarium.selectCategory')</option>
+        			<option value="">@lang('glosarium.selectCategory')</option>
         			<option v-for="category in categories" :value="category.id">
         				@{{ category.name }} (@{{ category.words_count }})
         			</option>
@@ -119,7 +119,7 @@
 					description: null
 				},
 				forms: {
-					category: null,
+					category: '',
 					origin: null,
 					locale: null,
 					description: null

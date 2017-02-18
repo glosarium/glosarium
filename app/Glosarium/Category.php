@@ -26,7 +26,6 @@ class Category extends Model
     ];
 
     protected $hidden = [
-        'id',
         'is_published',
         'created_at',
         'updated_at',
