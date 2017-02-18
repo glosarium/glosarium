@@ -54,7 +54,6 @@
         mounted: function() {
             this.totaGlosarium();
             this.totalCategory();
-            this.totalDictionary();
             this.totalUser();
         },
 
