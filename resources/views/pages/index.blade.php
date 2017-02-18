@@ -17,12 +17,12 @@
 @section('content')
 <div class="row text-center">
     <div class="col-md-4">
-        <h3 class="font-2x ">@{{ total.glosarium }} (@{{ total.category }})</h3>
-        <h4 class="color-text">Glosarium &amp; Kategori</h4>
+        <h3 class="font-2x ">@{{ total.glosarium }}</h3>
+        <h4 class="color-text">Glosari</h4>
     </div>
     <div class="col-md-4">
-        <h3 class="font-2x">@{{ total.dictionary }}</h3>
-        <h4 class="color-text">Kosakata Kamus</h4>
+        <h3 class="font-2x">@{{ total.category }}</h3>
+        <h4 class="color-text">Kategori</h4>
     </div>
     <div class="col-md-4">
         <h3 class="font-2x ">@{{ total.user }}</h3>
@@ -73,14 +73,6 @@
 
                 this.$http.get(url).then(function(response){
                     this.total.category = response.body.total;
-                });
-            },
-
-            totalDictionary: function() {
-                var url = '{{ route('dictionary.national.total') }}';
-
-                this.$http.get(url).then(function(response){
-                    this.total.dictionary = response.body.total;
                 });
             },
 

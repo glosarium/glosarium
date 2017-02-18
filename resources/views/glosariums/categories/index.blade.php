@@ -100,7 +100,7 @@
 @push('js')
     <script>
         $(() => {
-            $('li.glosarium').addClass('active');
+            $('li.category').addClass('active');
         });
 
         new Vue({

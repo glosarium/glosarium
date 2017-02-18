@@ -13,10 +13,4 @@ class Log extends Model
         'is_success',
         'created_at',
     ];
-
-    public $timestamps = false;
-
-    protected $dates = [
-        'created_at',
-    ];
 }

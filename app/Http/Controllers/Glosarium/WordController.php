@@ -15,7 +15,6 @@ use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
-use App\Jobs\Dictionary\GrabWord;
 use App\Libraries\Image;
 use App\Mail\Glosarium\CreateMail;
 use Auth;
@@ -82,16 +81,6 @@ class WordController extends Controller
         $locales = array_map(function ($word) {
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
-
-        // find word description by bot
-        $minutes = 0;
-        foreach (array_filter($locales) as $locale) {
-            $job = (new GrabWord($locale))->delay(60 * $minutes);
-
-            $this->dispatch($job);
-
-            $minutes += 2;
-        }
 
         // find word by word
         $dictionaries = WordDictionary::whereIn('word', array_filter($locales))
