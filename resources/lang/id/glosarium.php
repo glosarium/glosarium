@@ -5,7 +5,7 @@ return [
     'categoryTitle'         => 'Kategori :name',
     'create'                => 'Tambah Glosari',
     'inLocale'              => 'Kata dalam Bahasa Indonesia',
-    'forward'               => 'Proposal juga akan dikiri ke surel: :email',
+    'forward'               => 'Proposal juga akan dikirim ke surel: :email',
     'selectCategory'        => 'Pilih salah satu kategori',
     'contribute'            => 'Berkontribusi menambahkan glosari pada aplikasi.',
     'success'               => 'Berhasil!',

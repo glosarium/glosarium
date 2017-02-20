@@ -184,6 +184,16 @@ class WordController extends Controller
             // send email proposal
             Mail::to(config('mail.from.address'))->send(new CreateMail($glosarium));
 
+            return response()->json([
+                'isSuccess' => true,
+                'glosarium' => $glosarium,
+                'alerts'    => [
+                    'type'    => 'success',
+                    'title'   => trans('glosarium.success'),
+                    'message' => trans('glosarium.msg.created'),
+                ],
+            ]);
+
         } catch (Exception $e) {
             return response()->json([
                 'isSuccess' => false,
@@ -192,16 +202,6 @@ class WordController extends Controller
 
             abort(500, $e->getMessage());
         }
-
-        return response()->json([
-            'isSuccess' => true,
-            'glosarium' => $glosarium,
-            'alerts'    => [
-                'type'    => 'success',
-                'title'   => trans('glosarium.success'),
-                'message' => trans('glosarium.msg.created'),
-            ],
-        ]);
     }
 
     /**

@@ -63,6 +63,10 @@ class Word extends Model
 
     public function getUrlAttribute()
     {
+        if (empty($this->relations)) {
+            return null;
+        }
+
         return route('glosarium.word.show', [
             $this->relations['category']['attributes']['slug'],
             $this->attributes['slug'],

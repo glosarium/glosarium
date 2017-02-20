@@ -69,7 +69,7 @@
 
             <div :class="['form-group', errors && errors.description ? 'has-error' : '']">
                 <label>@lang('glosarium.form.description')</label>
-                <div class="color-white-mute"><small>Tulisa rincian, gagasan, atau referensi kata.</small></div>
+                <div class="color-white-mute"><small>Tulis rincian, gagasan, atau referensi kata.</small></div>
                 <textarea :disabled="loading" v-model="forms.description" class="form-control" rows="6"></textarea>
 
                 <span v-if="errors && errors.description" class="label label-danger">
