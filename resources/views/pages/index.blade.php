@@ -15,7 +15,7 @@
 @endsection
 
 @section('content')
-<div class="row text-center">
+<div class="row text-center" v-cloak>
     <div class="col-md-4">
         <h3 class="font-2x ">@{{ total.glosarium }}</h3>
         <h4 class="color-text">Glosari</h4>

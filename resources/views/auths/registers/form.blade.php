@@ -5,7 +5,7 @@
 <div class="panel panel-md">
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" v-cloak>
                 <!-- buttons top -->
                 <p><a href="#" class="btn btn-primary btn-theme btn-block" disabled="true"><i class="fa fa-facebook pull-left bordered-right"></i> Register with Facebook</a></p>
                 <p><a href="#" class="btn btn-danger btn-theme btn-block" disabled="true"><i class="fa fa-google-plus pull-left bordered-right"></i> Register with Google</a></p>
