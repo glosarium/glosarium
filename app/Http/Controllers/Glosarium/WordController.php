@@ -10,7 +10,6 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\Dictionary\Word as WordDictionary;
 use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
@@ -90,22 +89,15 @@ class WordController extends Controller
             return trim(strtolower($word));
         }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
 
-        // find word by word
-        $dictionaries = WordDictionary::whereIn('word', array_filter($locales))
-            ->orderBy('word', 'ASC')
-            ->with('descriptions', 'descriptions.type')
-            ->get();
-
         // generate image
         $image = new Image;
-
         $image->addText($word->origin, 50, 400, 150)
             ->addText($word->locale, 40, 400, 250)
             ->render(sprintf('images/glosariums/%s', $word->category->slug), $word->slug);
 
         $imagePath = $image->path();
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'dictionaries', 'categories', 'imagePath'))
+        return view('glosariums.words.show', compact('totalWord', 'word', 'locales', 'imagePath'))
             ->withTitle(trans('glosarium.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,

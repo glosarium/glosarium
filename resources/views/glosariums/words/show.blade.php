@@ -27,19 +27,16 @@
                     <h2 class="">{{ $word->origin }} <small class="label label-default">{{ $word->lang }}</small></h2>
 
                     <h3>{{ $word->locale }}</h3>
-                    
+
                     <hr>
 
-                    <h4>Arti per kata</h4>
+                    <h4>Arti per kata dalam Kamus Besar Bahasa Indonesia</h4>
 
-                    @foreach ($dictionaries as $dictionary)
-                        <h5>
-                            {{ $dictionary->word }}
-                        </h5>
+                    @foreach ($locales as $locale)
                         <ul>
                             <li>
                                 <i class="fa fa-external-link"></i>
-                                <a target="_blank" href="http://kbbi.kemdikbud.go.id/entri/{{ strtolower($dictionary->word) }}">http://kbbi.kemdikbud.go.id/entri/{{ strtolower($dictionary->word) }}</a>
+                                <a target="_blank" href="http://kbbi.kemdikbud.go.id/entri/{{ strtolower($locale) }}">http://kbbi.kemdikbud.go.id/entri/{{ strtolower($locale) }}</a>
                             </li>
                         </ul>
                     @endforeach

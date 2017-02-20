@@ -98,7 +98,7 @@
 			$('#content').removeClass('bg-color2')
 				.addClass('bg-color1');
 
-			$('li.glosarium').addClass('active');
+			$('li.create-glosarium').addClass('active');
 		});
 
 		new Vue({
