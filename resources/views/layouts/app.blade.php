@@ -33,13 +33,9 @@
         <![endif]-->
 
         @if (app()->environment('production'))
-            @if (auth()->check() and auth()->user()->type != 'admin')
+            @if (auth()->user()->type != 'admin')
                 @include('partials/piwik')
             @endif
-        @endif
-
-        @if (app()->environment('production', 'testting'))
-            @include('partials.ads.level')
         @endif
     </head>
     <body>
