@@ -17,7 +17,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
         <!-- box item details -->
         <div class="block-section box-item-details">
 
@@ -28,10 +28,7 @@
 
                     <h3>{{ $word->locale }}</h3>
 
-                    <hr>
-
                     <h4>Arti per kata dalam Kamus Besar Bahasa Indonesia</h4>
-
                     @foreach ($locales as $locale)
                         <ul>
                             <li>
@@ -40,6 +37,12 @@
                             </li>
                         </ul>
                     @endforeach
+
+                    <hr>
+
+                    <div class="row text-center">
+                        <div class="col-m-8">@include('partials.ads.responsive')</div>
+                    </div>
                 </div>
             </div>
 
@@ -51,6 +54,10 @@
                     @endif
                     <li><i class="fa fa-eye"></i> Dilihat 0 kali</li>
                 </ul>
+            </div>
+
+            <div class="row text-center">
+
             </div>
 
             @if (app()->environment('production'))

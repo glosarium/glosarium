@@ -36,6 +36,8 @@
             @if ((auth()->check() and auth()->user()->type != 'admin') or ! auth()->check())
                 @include('partials/piwik')
             @endif
+
+            @include('partials.ads.level')
         @endif
     </head>
     <body>
