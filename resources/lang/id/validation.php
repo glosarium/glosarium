@@ -115,7 +115,10 @@ return [
      */
 
     'attributes'           => [
-        //
+        'origin'      => 'kata asal',
+        'locale'      => 'kata lokal',
+        'category'    => 'kategori',
+        'description' => 'deskripsi',
     ],
 
 ];
