@@ -176,7 +176,7 @@ class WordController extends Controller
                 'origin'       => $request->origin,
                 'locale'       => $request->locale,
                 'lang'         => 'en',
-                'is_published' => false,
+                'is_published' => Auth::user()->type == 'admin',
                 'is_standard'  => false,
                 'retry_count'  => 0,
             ]);
