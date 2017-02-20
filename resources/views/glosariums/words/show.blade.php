@@ -52,6 +52,10 @@
                     <li><i class="fa fa-eye"></i> Dilihat 0 kali</li>
                 </ul>
             </div>
+
+            @if (app()->environment('production'))
+                @include('partials.disqus', ['slug' => $word->slug])
+            @endif
         </div>
         <!-- end box item details -->
     </div>
