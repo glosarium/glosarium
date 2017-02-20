@@ -33,7 +33,7 @@
         <![endif]-->
 
         @if (app()->environment('production'))
-            @if (auth()->user()->type != 'admin')
+            @if ((auth()->check() and auth()->user()->type != 'admin') or ! auth()->check())
                 @include('partials/piwik')
             @endif
         @endif
