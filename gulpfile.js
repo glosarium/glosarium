@@ -18,5 +18,4 @@ elixir(mix => {
     mix.webpack('app.js', 'public/js/app.js');
 
     mix.scripts('theme.js', 'public/js/theme.js');
-    mix.scripts('dictionary.js', 'public/js/dictionary.js');
 });
