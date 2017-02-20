@@ -18,3 +18,8 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::post('terbaru', 'WordController@latest')->name('word.latest');
     Route::get('{category}/{slug}', 'WordController@show')->name('word.show');
 });
+
+Route::group(['prefix' => 'api/glosarium', 'namespace' => 'Api\Glosarium', 'as' => 'api.'], function () {
+    Route::get('category/all', 'CategoryController@all')->name('category.all');
+    Route::resource('category', 'CategoryController');
+});

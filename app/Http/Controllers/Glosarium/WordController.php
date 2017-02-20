@@ -32,6 +32,14 @@ class WordController extends Controller
     public function __construct()
     {
         $this->cacheTime = Carbon::now()->addDays(30);
+
+        view()->share([
+            'js' => [
+                'api' => [
+                    'categoryIndex' => route('api.category.all'),
+                ],
+            ],
+        ]);
     }
 
     /**

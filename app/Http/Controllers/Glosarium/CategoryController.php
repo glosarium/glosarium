@@ -29,21 +29,24 @@ class CategoryController extends Controller
     public function __construct()
     {
         $this->cacheTime = Carbon::now()->addDays(30);
+
+        view()->share([
+            'js' => [
+                'api' => [
+                    'index' => route('api.category.index'),
+                ],
+            ],
+        ]);
     }
 
+    /**
+     * Show all categories
+     *
+     * @return Response
+     */
     public function index()
     {
         $totalWord = Word::whereIsPublished(true)->count();
-
-        $latestWords = Word::orderBy('created_at', 'DESC')
-            ->with('category')
-            ->limit(20)
-            ->get();
-
-        $categories = Category::orderBy('name', 'ASC')
-            ->whereIsPublished(true)
-            ->withCount('words')
-            ->paginate(config('glosarium.limit', 20));
 
         // create image
         $image     = new Image;
@@ -51,8 +54,8 @@ class CategoryController extends Controller
             ->render('images/pages', 'category')
             ->path();
 
-        return view('glosariums.categories.index', compact('totalWord', 'categories', 'latestWords', 'imagePath'))
-            ->withTitle('Kategori Glosarium');
+        return view('glosariums.categories.index', compact('imagePath', 'totalWord'))
+            ->withTitle(trans('category.title'));
     }
 
     /**

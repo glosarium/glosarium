@@ -2,6 +2,7 @@
 
 namespace App\Glosarium;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +24,7 @@ class Category extends Model
 
     protected $appends = [
         'url',
+        'updated_diff',
     ];
 
     protected $hidden = [
@@ -53,6 +55,12 @@ class Category extends Model
     public function getUrlAttribute()
     {
         return route('glosarium.category.show', [$this->attributes['slug']]);
+    }
+
+    public function getUpdatedDiffAttribute()
+    {
+        $updatedAt = Carbon::parse($this->attributes['updated_at']);
+        return $updatedAt->diffForHumans();
     }
 
     /**

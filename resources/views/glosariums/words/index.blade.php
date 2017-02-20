@@ -84,6 +84,9 @@
 
 @push('js')
     <script>
+        window.words = {!! json_encode($js) !!};
+    </script>
+    <script>
         $(() => {
             $('li.glosarium').addClass('active');
 
@@ -116,7 +119,7 @@
             el: '#content',
             data: {
                 loading: false,
-                categories: null,
+                categories: [],
                 alerts: {
                     type: 'default',
                     title: null,
@@ -125,19 +128,17 @@
             },
 
             mounted() {
-                this.getCategory();
+                this.getCategory(words.api.categoryIndex);
             },
 
             methods: {
 
-                getCategory() {
-                    let url = '{{ route('glosarium.category.all') }}';
-
+                getCategory(url) {
                     this.loading = true;
 
                     this.$http.get(url).then(response => {
 
-                        this.categories = response.body.categories;
+                        this.categories = response.body;
 
                         this.loading = false;
 

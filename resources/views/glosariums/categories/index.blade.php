@@ -2,14 +2,8 @@
 
 @push('metadata')
     <meta name="author" content="{{ config('app.name') }}">
-    <meta name="description" content="@lang('glosarium.categoryAll', [
-        'category' => $categories->implode('name', ', ')
-    ])">
 
     <meta property="og:title" content="{{ $title }}">
-    <meta property="og:description" content="@lang('glosarium.categoryAll', [
-        'category' => $categories->implode('name', ', ')
-    ])">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:author" content="{{ config('app.name') }}">
     <meta property="og:image" content="{{ $imagePath }}">
@@ -27,48 +21,65 @@
 
             <!-- desc top -->
             <div class="row hidden-xs">
-                <div class="col-sm-6  ">
+                <div class="col-sm-6 ">
                     @if (request('keyword'))
-                    <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
+                        <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
+                    @else
+                        {{ $title }}
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-right">
-                        Halaman {{ $categories->currentPage() }} menampilkan {{ $categories->perPage() }} dari {{ number_format($categories->total(), 0, ',', '.') }} kategori
+                    <p class="text-right" v-cloak>
+                        Menampilkan @{{ categories.from }} sampai @{{ categories.to }} dari total @{{ categories.total }} kategori.
                     </p>
                 </div>
             </div>
             <!-- end desc top -->
+
+            <nav >
+                <ul class="pagination pagination-theme no-margin">
+                    <li v-if="categories.prev_page_url">
+                        <a :href="categories.prev_page_url" @click.prevent="getCategory(categories.prev_page_url)">@lang('pagination.previous')</a>
+                    </li>
+                    <li v-if="categories.next_page_url">
+                        <a :href="categories.next_page_url" @click.prevent="getCategory(categories.next_page_url)">@lang('pagination.next')</a>
+                    </li>
+                </ul>
+            </nav>
+
             <!-- item list -->
-            <div class="box-list">
-                @foreach ($categories as $category)
-                <div class="item">
+            <div class="box-list" v-cloak>
+                <div v-for="category in categories.data" class="item">
                     <div class="row">
                         <div class="col-md-1 hidden-sm hidden-xs">
                             <div class="img-item"><h2><i class="fa fa-globe"></i></h2></div>
                         </div>
                         <div class="col-md-11">
                             <h3 class="no-margin-top">
-                                <a href="{{ route('glosarium.category.show', ['category' => $category->slug]) }}" class="">{{ $category->name }}</a>
+                                <a :href="category.url" class="">@{{ category.name }}</a>
                             </h3>
-                            <h5><span class="color-black">{{ number_format($category->words_count, 0, ',', '.') }} kata</span></h5>
-                            @if (auth()->check() and auth()->user()->type == 'admin')
-                                <p class="editable text-truncate" contenteditable="true" data-id="{{ $category->id }}" data-field="description">{{ !empty($category->description) ? $category->description : 'Klik di sini untuk memperbarui deskripsi.' }}</p>
-                            @else
-                                <p class="text-truncate">{{ $category->description }}</p>
-                            @endif
+                            <h5><span class="color-black">@{{ category.words_count.toLocaleString('id-ID') }} kata</span></h5>
+
+                            <p class="text-truncate">@{{ category.description }}</p>
+
                             <div>
-                                <span class="color-white-mute">{{ $category->updated_at->diffForHumans() }}</span>
+                                <span class="color-white-mute">@{{ category.updated_diff }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
 
             <!-- pagination -->
             <nav >
-                {{ $categories->appends(['keyword' => request('keyword')])->links() }}
+                <ul class="pagination pagination-theme no-margin">
+                    <li v-if="categories.prev_page_url">
+                        <a :href="categories.prev_page_url" @click.prevent="getCategory(categories.prev_page_url)">@lang('pagination.previous')</a>
+                    </li>
+                    <li v-if="categories.next_page_url">
+                        <a :href="categories.next_page_url" @click.prevent="getCategory(categories.next_page_url)">@lang('pagination.next')</a>
+                    </li>
+                </ul>
             </nav>
             <!-- pagination -->
         </div>
@@ -96,8 +107,11 @@
 </div>
 @endsection
 
-
 @push('js')
+    <script>
+        window.categories = {!! json_encode($js) !!};
+    </script>
+
     <script>
         $(() => {
             $('li.category').addClass('active');
@@ -106,11 +120,13 @@
         new Vue({
             el: '#content',
             data: {
+                categories: [],
                 loading: false,
                 words: null
             },
 
             mounted() {
+                this.getCategory(categories.api.index);
                 this.getWord();
             },
 
@@ -128,8 +144,20 @@
 
                         this.loading = false;
                     });
-                }
+                },
 
+                getCategory(url) {
+                    this.$http.get(url).then(response => {
+
+                        this.categories = response.body;
+
+                        this.updateMetadata(this.categories);
+
+                        this.loading = false;
+                    }, response => {
+                        this.loading = false;
+                    });
+                }
             }
         })
     </script>
