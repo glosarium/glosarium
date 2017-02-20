@@ -7,9 +7,9 @@
         <ul class="list-unstyled">
             <li><a href="my_alerts.html"> Profil Saya </a></li>
             <li><a href="{{ route('user.notification.index') }}"> Notifikasi ({{ auth()->user()->unreadNotifications->count() }})</a></li>
-            <li><a href="change_password.html"> Ubah Sandi Lewat</a></li>
+            <li><a href="{{ route('user.password.form') }}"> Ubah Sandi Lewat</a></li>
         </ul>
         <div class="white-space-20"></div>
-        <a href="#" class="btn  btn-line soft btn-theme btn-pill btn-block">Tambah Glosarium</a>
+        <a href="{{ route('glosarium.word.create') }}" class="btn  btn-line soft btn-theme btn-pill btn-block">Tambah Glosari</a>
     </div>
 </div>
