@@ -19,7 +19,7 @@
         "teamtnt/tntsearch": "^0.9.0",
         "sastrawi/sastrawi": "^1.2",
         "laravel-notification-channels/onesignal": "^1.0",
-        "graham-campbell/htmlmin": "^4.5"
+        "basemkhirat/elasticsearch": "^0.7.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
