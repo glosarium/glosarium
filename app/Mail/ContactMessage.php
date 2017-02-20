@@ -31,9 +31,9 @@ class ContactMessage extends Mailable
     {
         $messages = explode(PHP_EOL, $this->message['message']);
 
-        return $this->view('vendor.notifications.email')
+        return $this->from($this->message['from'], $this->message['name'])
+            ->view('vendor.notifications.email')
             ->subject($this->message['subject'])
-            ->from($this->message['from'])
             ->with([
                 'greeting'   => sprintf('Halo, %s', config('app.name')),
                 'introLines' => $messages,

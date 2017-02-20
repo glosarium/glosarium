@@ -27,7 +27,6 @@ use Notification;
  */
 class ContactController extends Controller
 {
-
     /**
      * Show contact form
      *
@@ -55,18 +54,22 @@ class ContactController extends Controller
         try {
             $users = User::whereType('admin')->whereIsActive(true)->get();
 
+            $from = (Auth::check() and is_null($request->email)) ? Auth::user()->email : $request->email;
+            $name = Auth::check() ? Auth::user()->name : '';
+
             // send mails
             Mail::to(env('APP_EMAIL'))
                 ->cc($users)
                 ->send(new ContactMessage([
-                    'from'    => Auth::check() ? Auth::user()->email : $request->email,
+                    'from'    => $from,
+                    'name'    => $name,
                     'subject' => $request->subject,
                     'message' => $request->message,
                 ]));
 
             // save to database for record
             Message::insert([
-                'from'    => $from = Auth::check() ? Auth::user()->email : $request->email,
+                'from'    => $from,
                 'to'      => config('app.email'),
                 'subject' => $request->subject,
                 'text'    => $request->message,
@@ -74,6 +77,7 @@ class ContactController extends Controller
 
             // send notification to admin
             Notification::send($users, new ContactNotification([
+                'name'    => $name,
                 'from'    => $from,
                 'subject' => $request->subject,
             ]));
