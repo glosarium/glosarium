@@ -57,8 +57,10 @@ class ContactController extends Controller
             $from = (Auth::check() and is_null($request->email)) ? Auth::user()->email : $request->email;
             $name = Auth::check() ? Auth::user()->name : '';
 
+            $to = empty(env('APP_EMAIL')) ? 'glosarium.id@gmail.com' : env('APP_EMAIL');
+
             // send mails
-            Mail::to(env('APP_EMAIL'))
+            Mail::to($to)
                 ->cc($users)
                 ->send(new ContactMessage([
                     'from'    => $from,
@@ -70,7 +72,7 @@ class ContactController extends Controller
             // save to database for record
             Message::insert([
                 'from'    => $from,
-                'to'      => config('app.email'),
+                'to'      => $to,
                 'subject' => $request->subject,
                 'text'    => $request->message,
             ]);
