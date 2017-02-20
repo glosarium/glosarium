@@ -35,7 +35,8 @@ class WordController extends Controller
         view()->share([
             'js' => [
                 'api' => [
-                    'categoryIndex' => route('api.category.all'),
+                    'categoryIndex' => route('api.category.index'),
+                    'allCategory'   => route('api.category.all'),
                 ],
             ],
         ]);

@@ -68,7 +68,7 @@
 
                 <div v-if="categories" class="collapse in" id="category">
                     <div class="list-area">
-                        <ul class="list-unstyled">
+                        <ul class="list-unstyled" v-cloak>
                             <li v-for="category in categories">
                                 <a :href="category.url">@{{ category.name }} (@{{ category.words_count.toLocaleString('id-Id') }})</a>
                             </li>
@@ -128,7 +128,7 @@
             },
 
             mounted() {
-                this.getCategory(words.api.categoryIndex);
+                this.getCategory(words.api.allCategory);
             },
 
             methods: {

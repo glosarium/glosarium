@@ -12,7 +12,7 @@
                 <div class="white-space-10"></div>
                 <p class="text-center"><span class="span-line">{{ trans('user.or') }}</span></p>
                 <!-- form login -->
-                <form action="{{ url('login') }}" method="post">
+                <form action="{{ url('login') }}" method="post" v-cloak>
                     {{ csrf_field() }}
 
                     <div v-bind:class="['form-group', errors && errors.email ? 'has-error' : '']">

@@ -26,7 +26,7 @@
 	        <div class="alert alert-info">
 	            <strong>Halo,</strong>
 	            <p>
-	                Anda belum masuk atau terdaftar sebagai kontributor. Untuk menambahkan glosari, silakan <a href="" class="alert-link">masuk</a> atau <a href="" class="alert-link">registrasi</a> terlebih dahulu.
+	                Anda belum masuk atau terdaftar sebagai kontributor. Untuk menambahkan glosari, silakan <a href="{{ url('login') }}" class="alert-link">masuk</a> atau <a href="{{ route('register') }}" class="alert-link">registrasi</a> terlebih dahulu.
 	            </p>
 	        </div>
 	    @endif
@@ -94,6 +94,10 @@
 
 @push('js')
 	<script>
+		window.words = {!! json_encode($js) !!};
+	</script>
+
+	<script>
 		$(() => {
 			$('#content').removeClass('bg-color2')
 				.addClass('bg-color1');
@@ -127,7 +131,9 @@
 			},
 
 			mounted() {
-				this.category();
+				if (Laravel.auth) {
+					this.getCategory(words.api.allCategory);
+				}
 			},
 
 			methods: {
@@ -154,11 +160,9 @@
 					};
 				},
 
-				category() {
-					let url = '{{ route('glosarium.category.all') }}';
-
+				getCategory(url) {
 					this.$http.get(url).then(response => {
-						this.categories = response.body.categories;
+						this.categories = response.body;
 
 					}, response => {
 						this.error(response);

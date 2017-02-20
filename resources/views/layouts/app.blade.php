@@ -161,15 +161,6 @@
         <!-- Theme JS -->
         <script src="{{ asset ('js/theme.js') }}"></script>
 
-        <script>
-            $(function(){
-              $('a.logout').click(function(){
-                $('#logout-form').submit();
-                return false;
-              })
-            })
-        </script>
-
         @stack('js')
     </body>
 </html>

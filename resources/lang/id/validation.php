@@ -115,10 +115,16 @@ return [
      */
 
     'attributes'           => [
-        'origin'      => 'kata asal',
-        'locale'      => 'kata lokal',
-        'category'    => 'kategori',
-        'description' => 'deskripsi',
+        'origin'               => 'kata asal',
+        'locale'               => 'kata lokal',
+        'category'             => 'kategori',
+        'description'          => 'deskripsi',
+        'subject'              => 'subjek',
+        'message'              => 'pesan',
+        'name'                 => 'nama',
+        'email'                => 'surel',
+        'password'             => 'sandi lewat',
+        'passwordConfirmation' => 'konfirmasi sandi lewat',
     ],
 
 ];
