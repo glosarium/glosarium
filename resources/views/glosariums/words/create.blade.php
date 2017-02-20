@@ -39,7 +39,7 @@
         		<select :disabled="loading" v-model="forms.category" name="category" class="form-control">
         			<option value="">@lang('glosarium.selectCategory')</option>
         			<option v-for="category in categories" :value="category.id">
-        				@{{ category.name }} (@{{ category.words_count }})
+        				@{{ category.name }} (@{{ category.words_count.toLocaleString('id-ID') }})
         			</option>
         		</select>
 
@@ -161,7 +161,7 @@
 						this.categories = response.body.categories;
 
 					}, response => {
-						this.error();
+						this.error(response);
 					});
 				},
 
@@ -173,7 +173,7 @@
 						this.alerts = response.body.alerts;
 
 						this.forms = {
-							category: null,
+							category: '',
 							origin: null,
 							locale: null,
 							description: null
