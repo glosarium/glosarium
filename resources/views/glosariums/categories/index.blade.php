@@ -23,9 +23,9 @@
             <div class="row hidden-xs">
                 <div class="col-sm-6 ">
                     @if (request('keyword'))
-                        <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
+                        <p><strong class="color-black">@lang('category.searchFor', ['keyword' => request('keyword')])</strong></p>
                     @else
-                        {{ $title }}
+                        <p><strong class="color-black">{{ $title }}</strong></p>
                     @endif
                 </div>
                 <div class="col-sm-6">
@@ -35,17 +35,6 @@
                 </div>
             </div>
             <!-- end desc top -->
-
-            <nav >
-                <ul class="pagination pagination-theme no-margin">
-                    <li v-if="categories.prev_page_url">
-                        <a :href="categories.prev_page_url" @click.prevent="getCategory(categories.prev_page_url)">@lang('pagination.previous')</a>
-                    </li>
-                    <li v-if="categories.next_page_url">
-                        <a :href="categories.next_page_url" @click.prevent="getCategory(categories.next_page_url)">@lang('pagination.next')</a>
-                    </li>
-                </ul>
-            </nav>
 
             <!-- item list -->
             <div class="box-list" v-cloak>
@@ -57,6 +46,7 @@
                         <div class="col-md-11">
                             <h3 class="no-margin-top">
                                 <a :href="category.url" class="">@{{ category.name }}</a>
+                                <a href="#"><i class="fa fa-link color-white-mute font-1x"></i></a>
                             </h3>
                             <h5><span class="color-black">@{{ category.words_count.toLocaleString('id-ID') }} kata</span></h5>
 
@@ -70,25 +60,19 @@
                 </div>
             </div>
 
-            <!-- pagination -->
-            <nav >
-                <ul class="pagination pagination-theme no-margin">
-                    <li v-if="categories.prev_page_url">
-                        <a :href="categories.prev_page_url" @click.prevent="getCategory(categories.prev_page_url)">@lang('pagination.previous')</a>
-                    </li>
-                    <li v-if="categories.next_page_url">
-                        <a :href="categories.next_page_url" @click.prevent="getCategory(categories.next_page_url)">@lang('pagination.next')</a>
-                    </li>
-                </ul>
+            <nav v-if="categories.next_page_url">
+                <button :disabled="loading" @click.prevent="loadMore(categories.next_page_url)" class="btn btn-t-primary btn-theme btn-block">
+                    @lang('category.btn.load') <i v-if="loading" class="fa fa-spin fa-spinner"></i>
+                </button>
             </nav>
-            <!-- pagination -->
+
         </div>
         <!-- end box listing -->
     </div>
     <div class="col-md-3">
         <div class="block-section-sm side-right">
             <div class="result-filter">
-                <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#latest-words" data-toggle="collapse" >Kata Paling Baru <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
+                <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#latest-words" data-toggle="collapse" >@lang('category.latestWord') <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
 
                 <div v-if="words" class="collapse in" id="latest-words">
                     <div class="list-area">
@@ -112,53 +96,5 @@
         window.categories = {!! json_encode($js) !!};
     </script>
 
-    <script>
-        $(() => {
-            $('li.category').addClass('active');
-        });
-
-        new Vue({
-            el: '#content',
-            data: {
-                categories: [],
-                loading: false,
-                words: null
-            },
-
-            mounted() {
-                this.getCategory(categories.api.index);
-                this.getWord();
-            },
-
-            methods: {
-
-                getWord() {
-                    let url = '{{ route('glosarium.word.latest') }}';
-
-                    this.$http.post(url).then(response => {
-
-                        this.words = response.body.words;
-
-                        this.loading = false;
-                    }, response => {
-
-                        this.loading = false;
-                    });
-                },
-
-                getCategory(url) {
-                    this.$http.get(url).then(response => {
-
-                        this.categories = response.body;
-
-                        this.updateMetadata(this.categories);
-
-                        this.loading = false;
-                    }, response => {
-                        this.loading = false;
-                    });
-                }
-            }
-        })
-    </script>
+    <script src="{{ asset('js/category.js') }}"></script>
 @endpush

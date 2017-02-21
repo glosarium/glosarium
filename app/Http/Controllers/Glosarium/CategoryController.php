@@ -32,8 +32,11 @@ class CategoryController extends Controller
 
         view()->share([
             'js' => [
-                'api' => [
+                'api'  => [
                     'index' => route('api.category.index'),
+                ],
+                'word' => [
+                    'latest' => route('glosarium.word.latest'),
                 ],
             ],
         ]);

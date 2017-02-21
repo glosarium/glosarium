@@ -56,10 +56,6 @@
                 </ul>
             </div>
 
-            <div class="row text-center">
-
-            </div>
-
             @if (app()->environment('production'))
                 @include('partials.disqus', ['slug' => $word->slug])
             @endif

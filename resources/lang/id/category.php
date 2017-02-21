@@ -1,11 +1,16 @@
 <?php
 
 return [
-    'title'     => 'Kategori Glosarium',
-    'index'     => 'Kategori',
-    'searchFor' => 'Pencarian untuk ":keyword"',
+    'title'      => 'Kategori Glosarium',
+    'index'      => 'Kategori',
+    'searchFor'  => 'Hasil pencarian untuk ":keyword"',
+    'latestWord' => 'Kata Paling Baru',
 
-    'field'     => [
+    'btn'        => [
+        'load' => 'Muat lebih banyak',
+    ],
+
+    'field'      => [
         'slug'    => 'Slug',
         'name'    => 'Name',
         'updated' => 'Updated',
