@@ -61,6 +61,7 @@ var category = new Vue({
                     data: this.categories.data
                 };
 
+                let index = 0;
                 for(index in response.body.data) {
                     this.categories.data.push(response.body.data[index]);
                 }
