@@ -17,5 +17,6 @@ elixir(mix => {
     mix.less('theme.less', 'public/css/theme.css');
     mix.webpack('app.js', 'public/js/app.js');
 
-    mix.scripts('theme.js', 'public/js/theme.js');
+    mix.browserify('theme.js', 'public/js/theme.js');
+    mix.browserify('category.js', 'public/js/category.js');
 });
