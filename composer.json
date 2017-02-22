@@ -12,14 +12,9 @@
         "cviebrock/eloquent-sluggable": "^4.1",
         "barryvdh/laravel-debugbar": "^2.3",
         "predis/predis": "^1.1",
-        "jenssegers/rollbar": "^1.5",
-        "vinkla/hashids": "^3.0",
         "roumen/sitemap": "^2.6",
         "laravelcollective/html": "^5.3.0",
-        "teamtnt/tntsearch": "^0.9.0",
-        "sastrawi/sastrawi": "^1.2",
-        "laravel-notification-channels/onesignal": "^1.0",
-        "basemkhirat/elasticsearch": "^0.7.5"
+        "sastrawi/sastrawi": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
