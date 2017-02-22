@@ -16,7 +16,7 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::post('simpan', 'WordController@store')->name('word.store');
     Route::post('sama', 'WordController@sameWord')->name('word.same');
     Route::post('terbaru', 'WordController@latest')->name('word.latest');
-    Route::get('{category}/{slug}', 'WordController@show')->name('word.show');
+    Route::get('/{category}/{slug}', 'WordController@show')->name('word.show');
 });
 
 Route::group(['prefix' => 'api/glosarium', 'namespace' => 'Api\Glosarium', 'as' => 'api.'], function () {
