@@ -98,7 +98,15 @@ class WordController extends Controller
 
         $imagePath = $image->path();
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'locales', 'imagePath'))
+        // short link
+        $hash = base_convert($word->id, 20, 36);
+        $link = \App\Link::firstOrCreate([
+            'hash' => $hash,
+            'type' => 'glosarium',
+            'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
+        ]);
+
+        return view('glosariums.words.show', compact('totalWord', 'word', 'locales', 'imagePath', 'link'))
             ->withTitle(trans('glosarium.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,

@@ -18,7 +18,9 @@
             <div class="row hidden-xs">
                 <div class="col-sm-6  ">
                     @if (request('keyword'))
-                    <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
+                        <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
+                    @else
+                        <p><strong class="color-black">{{ $title }}</strong></p>
                     @endif
                 </div>
                 <div class="col-sm-6">
@@ -37,8 +39,11 @@
                         <div class="col-md-12">
                             <h3 class="no-margin-top">
                                 <a href="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}" class="">{{ $word->origin }}</a>
+                                <small>
+                                    <a href="{{ base_convert($word->id, 20, 36) }}" class="color-white-mute"><i class="fa fa-link"></i></a>
+                                </small>
                             </h3>
-                            <h4><span class="color-black">{{ $word->locale }}</span> - <span class="color-white-mute"><a href="{{ $word->category->url }}">{{ $word->category->name }}</a></span></h4>
+                            <h5><span class="color-black">{{ $word->locale }}</span> - <span><a href="{{ $word->category->url }}" class="color-white-mute">{{ $word->category->name }}</a></span></h5>
                             <div>
                                 <span class="color-white-mute">{{ $word->updated_at->diffForHumans() }}</span>
                             </div>
@@ -59,6 +64,11 @@
     </div>
     <div class="col-md-3">
         <div class="block-section-sm side-right">
+
+            <div class="row">
+                @include('partials.ads.300x250')
+            </div>
+
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " >
                     <a href="#category" data-toggle="collapse" >

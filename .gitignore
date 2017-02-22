@@ -20,3 +20,4 @@ public/images/dictionaries
 public/images/users/
 public/images/pages/
 public/images/glosariums
+.env.prod

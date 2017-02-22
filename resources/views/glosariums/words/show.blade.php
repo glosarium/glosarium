@@ -17,32 +17,36 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-9">
         <!-- box item details -->
         <div class="block-section box-item-details">
 
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="margin-top: -20px">
+                <div class="panel-heading">
+                    <h2 class="">{{ $word->origin }} <small class="label label-default">{{ $word->lang }}</small></h2>
+                </div>
                 <div class="panel-body">
 
-                    <h2 class="">{{ $word->origin }} <small class="label label-default">{{ $word->lang }}</small></h2>
-
                     <h3>{{ $word->locale }}</h3>
+                    Tautan pendek: <a href="{{ route('link.redirect', $link->hash) }}" class="btn btn-default btn-xs btn-theme">{{ route('link.redirect', $link->hash) }}</a>
+                </div>
+            </div>
 
+            <div class="panel panel-default">
+                <div class="panel-body">@include('partials.ads.link')</div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
                     <h4>Arti per kata dalam Kamus Besar Bahasa Indonesia</h4>
                     @foreach ($locales as $locale)
                         <ul>
                             <li>
                                 <i class="fa fa-external-link"></i>
-                                <a target="_blank" href="http://kbbi.kemdikbud.go.id/entri/{{ strtolower($locale) }}">http://kbbi.kemdikbud.go.id/entri/{{ strtolower($locale) }}</a>
+                                <a target="_blank" href="{{ route('link.external', ['url' => Crypt::encrypt('http://kbbi.kemdikbud.go.id/entri/'.strtolower($locale))]) }}">http://kbbi.kemdikbud.go.id/entri/{{ strtolower($locale) }}</a>
                             </li>
                         </ul>
                     @endforeach
-
-                    <hr>
-
-                    <div class="row text-center">
-                        <div class="col-m-8">@include('partials.ads.responsive')</div>
-                    </div>
                 </div>
             </div>
 
@@ -64,7 +68,12 @@
     </div>
     <div class="col-md-3">
         <!-- box affix right -->
-        <div class="block-section-sm side-right" id="affix-box">
+        <div class="block-section-sm side-right">
+
+            <div class="row">
+                @include('partials.ads.300x250')
+            </div>
+
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#same-words" data-toggle="collapse" >Dalam Kategori <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
 

@@ -178,9 +178,6 @@ return [
         // https://github.com/barryvdh/laravel-debugbar
         Barryvdh\Debugbar\ServiceProvider::class,
 
-        // https://github.com/vinkla/laravel-hashids
-        Vinkla\Hashids\HashidsServiceProvider::class,
-
         // https://github.com/RoumenDamianoff/laravel-sitemap
         Roumen\Sitemap\SitemapServiceProvider::class,
 
@@ -246,7 +243,6 @@ return [
 
         'Image'        => Intervention\Image\Facades\Image::class,
         'Debugbar'     => Barryvdh\Debugbar\Facade::class,
-        'Hashids'      => Vinkla\Hashids\Facades\Hashids::class,
         'Form'         => Collective\Html\FormFacade::class,
         'Html'         => Collective\Html\HtmlFacade::class,
     ],

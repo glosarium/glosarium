@@ -14,6 +14,8 @@ class CategoryController extends Controller
 
     public function __construct()
     {
+        $this->middleware('cors');
+
         $this->cacheTime = Carbon::now()->addDays(30);
     }
 
