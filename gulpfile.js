@@ -19,4 +19,5 @@ elixir(mix => {
 
     mix.browserify('theme.js', 'public/js/theme.js');
     mix.browserify('category.js', 'public/js/category.js');
+    mix.browserify('word.js', 'public/js/word.js');
 });
