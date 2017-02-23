@@ -2,6 +2,7 @@
 
 namespace App\Glosarium;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,6 +46,8 @@ class Word extends Model
 
     protected $appends = [
         'url',
+        'updated_diff',
+        'short_url',
     ];
 
     public function getRouteKeyName()
@@ -71,6 +74,25 @@ class Word extends Model
             $this->relations['category']['attributes']['slug'],
             $this->attributes['slug'],
         ]);
+    }
+
+    /**
+     * Add attribute human data
+     *
+     * @return ELoquent
+     */
+    public function getUpdatedDiffAttribute()
+    {
+        return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
+    }
+
+    /**
+     * Hash code and convert it as short URL
+     * @return [type] [description]
+     */
+    public function getShortUrlAttribute()
+    {
+        return route('link.redirect', [base_convert($this->attributes['id'], 20, 36)]);
     }
 
     /**
