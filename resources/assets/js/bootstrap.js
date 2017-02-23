@@ -9,13 +9,6 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 
-$(() => {
-	$('a.logout').click(() => {
-		$('#logout-form').submit();
-		return false;
-	});
-});
-
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
