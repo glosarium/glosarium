@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers\Api\Glosarium;
 
-use Illuminate\Http\Request;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
+use Cache;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class WordController extends Controller
 {
+    private $cacheTime;
+
+    public function __construct()
+    {
+        abort_if(!request()->ajax(), 403);
+
+        $this->cacheTime = Carbon::now()->addDays(7);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,15 @@ class WordController extends Controller
      */
     public function index()
     {
-        //
+        $key = sprintf('word.page.%d', request('page'));
+
+        $words = Cache::remember($key, $this->cacheTime, function () {
+            return Word::orderBy('origin', 'ASC')
+                ->with('category')
+                ->paginate(20);
+        });
+
+        return response()->json($words);
     }
 
     /**
@@ -30,7 +50,7 @@ class WordController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +61,7 @@ class WordController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -52,7 +72,7 @@ class WordController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -63,8 +83,8 @@ class WordController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request    $request
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -75,7 +95,7 @@ class WordController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

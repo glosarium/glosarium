@@ -10,10 +10,6 @@
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
 
-            <alert :show="alerts.message" :title="alerts.title" :type="alerts.type">
-                @{{ alerts.message }}
-            </alert>
-
             <!-- desc top -->
             <div class="row hidden-xs">
                 <div class="col-sm-6  ">
@@ -23,41 +19,60 @@
                         <p><strong class="color-black">{{ $title }}</strong></p>
                     @endif
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6" v-cloak>
                     <p class="text-right">
-                        Halaman {{ $words->currentPage() }} menampilkan {{ $words->perPage() }} dari {{ number_format($words->total(), 0, ',', '.') }} kata
+                        Menampilkan @{{ words.from }} sampai @{{ words.to }} dari total @{{ words.total}} kata.
                     </p>
                 </div>
             </div>
             <!-- end desc top -->
 
+            <nav v-cloak>
+                <ul class="pagination pagination-theme no-margin">
+                    <li v-if="words.prev_page_url">
+                        <a class="disabled" @click.prevent="getWord(words.prev_page_url)" :href="words.prev_page_url">@lang('pagination.previous')</a>
+                    </li>
+                    <li v-if="words.next_page_url">
+                        <a :disabled="loading" @click.prevent="getWord(words.next_page_url)" :href="words.next_page_url">@lang('pagination.next')</a>
+                    </li>
+                </ul>
+            </nav>
+
             <!-- item list -->
-            <div class="box-list">
-                @foreach ($words as $word)
-                <div class="item">
+            <div class="box-list" v-cloak>
+                <div v-for="(word, index) in words.data" class="item">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-1 hidden-xs hidden-sm">
+                            <div v-if="word.category.metadata.icon" class="img-item">
+                                <h2><i :class="['fa', word.category.metadata.icon]"></i></h2>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
                             <h3 class="no-margin-top">
-                                <a href="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}" class="">{{ $word->origin }}</a>
+                                <a :href="word.url" class="">@{{ word.origin }}</a>
                                 <small>
-                                    <a href="{{ base_convert($word->id, 20, 36) }}" class="color-white-mute"><i class="fa fa-link"></i></a>
+                                    <a :href="word.short_url" class="color-white-mute"><i class="fa fa-link"></i></a>
                                 </small>
                             </h3>
-                            <h5><span class="color-black">{{ $word->locale }}</span> - <span><a href="{{ $word->category->url }}" class="color-white-mute">{{ $word->category->name }}</a></span></h5>
+                            <h5><span class="color-black">@{{ word.locale }}</span> - <span><a :href="word.category.url" class="color-white-mute">@{{ word.category.name }}</a></span></h5>
                             <div>
-                                <span class="color-white-mute">{{ $word->updated_at->diffForHumans() }}</span>
+                                <span class="color-white-mute">@{{ word.updated_diff }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
 
-            <!-- pagination -->
-            <nav >
-                {{ $words->appends(['keyword' => request('keyword')])->links() }}
+            <nav v-cloak>
+                <ul class="pagination pagination-theme no-margin">
+                    <li v-if="words.prev_page_url">
+                        <a :disabled="loading" @click.prevent="getWord(words.prev_page_url)" :href="words.prev_page_url">@lang('pagination.previous')</a>
+                    </li>
+                    <li v-if="words.next_page_url">
+                        <a :disabled="loading" @click.prevent="getWord(words.next_page_url)" :href="words.next_page_url">@lang('pagination.next')</a>
+                    </li>
+                </ul>
             </nav>
-            <!-- pagination -->
 
         </div>
         <!-- end box listing -->
@@ -96,73 +111,5 @@
     <script>
         window.words = {!! json_encode($js) !!};
     </script>
-    <script>
-        $(() => {
-            $('li.glosarium').addClass('active');
-
-            $('ul.pagination').addClass('pagination-theme no-margin');
-
-            $('div.alert').hide();
-
-            $('.editable').blur(function(){
-                var data = {
-                    '_token': Laravel.csrfToken,
-                    'id': $(this).attr('data-id'),
-                    'text': $(this).text(),
-                    'field': $(this).attr('data-field')
-                };
-
-                var url = '{{ route('user.glosarium.category.updateField') }}';
-
-                $.ajax({
-                    url: url,
-                    data: data,
-                    type: 'PUT',
-                    success: function(response) {
-                        console.log(response.message);
-                    }
-                });
-            });
-        });
-
-        new Vue({
-            el: '#content',
-            data: {
-                loading: false,
-                categories: [],
-                alerts: {
-                    type: 'default',
-                    title: null,
-                    message: null
-                }
-            },
-
-            mounted() {
-                this.getCategory(words.api.allCategory);
-            },
-
-            methods: {
-
-                getCategory(url) {
-                    this.loading = true;
-
-                    this.$http.get(url).then(response => {
-
-                        this.categories = response.body;
-
-                        this.loading = false;
-
-                    }, response => {
-                        this.alerts = {
-                            type: 'danger',
-                            message: 'Kesalahan Server Internal.'
-                        }
-
-                        this.loading = false;
-                    });
-                }
-
-            }
-        })
-    </script>
+    <script src="{{ asset('js/word.js') }}"></script>
 @endpush

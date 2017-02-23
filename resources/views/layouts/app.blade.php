@@ -141,6 +141,7 @@
 
         <script>
             window.Laravel = {!! json_encode([
+                'locale' => config('app.locale'),
                 'csrfToken' => csrf_token(),
                 'url' => env('APP_URL'),
                 'auth' => auth()->check()

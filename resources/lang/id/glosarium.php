@@ -2,6 +2,7 @@
 
 return [
     'title'                 => 'Glosarium',
+    'index'                 => 'Indeks Glosari',
     'categoryTitle'         => 'Kategori :name',
     'create'                => 'Tambah Glosari',
     'inLocale'              => 'Kata dalam Bahasa Indonesia',

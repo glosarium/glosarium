@@ -34,7 +34,9 @@ class WordController extends Controller
 
         view()->share([
             'js' => [
-                'api' => [
+                'route' => \Route::currentRouteName(),
+                'api'   => [
+                    'wordIndex'     => route('api.word.index'),
                     'categoryIndex' => route('api.category.index'),
                     'allCategory'   => route('api.category.all'),
                 ],
@@ -53,21 +55,8 @@ class WordController extends Controller
             return Word::whereIsPublished(true)->count();
         });
 
-        $words = Word::orderBy('origin', 'ASC')
-            ->with('category')
-            ->whereIsPublished(true)
-            ->filter()
-            ->paginate(config('glosarium.limit', 20));
-
-        $categories = Cache::remember('category', Carbon::now()->addDays(30), function () {
-            return Category::select('name', 'slug')
-                ->orderBy('name', 'ASC')
-                ->withCount('words')
-                ->get();
-        });
-
-        return view('glosariums.words.index', compact('totalWord', 'words', 'categories', 'category'))
-            ->withTitle('Indeks Glosarium');
+        return view('glosariums.words.index', compact('totalWord'))
+            ->withTitle(trans('glosarium.index'));
     }
 
     /**
