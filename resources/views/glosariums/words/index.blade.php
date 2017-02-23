@@ -44,7 +44,7 @@
                     <div class="row">
                         <div class="col-md-1 hidden-xs hidden-sm">
                             <div v-if="word.category.metadata.icon" class="img-item">
-                                <h2><i :class="['fa', word.category.metadata.icon]"></i></h2>
+                                <h2><i :class="word.category.metadata.icon"></i></h2>
                             </div>
                         </div>
                         <div class="col-md-11">

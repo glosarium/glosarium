@@ -41,7 +41,9 @@
                 <div v-for="category in categories.data" class="item">
                     <div class="row">
                         <div class="col-md-1 hidden-sm hidden-xs">
-                            <div class="img-item"><h2><i class="fa fa-globe"></i></h2></div>
+                            <div v-if="category.metadata.icon" class="img-item">
+                                <h2><i :class="category.metadata.icon"></i></h2>
+                            </div>
                         </div>
                         <div class="col-md-11">
                             <h3 class="no-margin-top">
