@@ -33,6 +33,10 @@ class Category extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'metadata' => 'json',
+    ];
+
     /**
      * Default parameter for URI.
      *
