@@ -10,11 +10,11 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
 use App\Libraries\Image;
+use App\Libraries\Wikipedia;
 use App\Mail\Glosarium\CreateMail;
 use Auth;
 use Cache;
@@ -74,10 +74,12 @@ class WordController extends Controller
             ->with('category', 'descriptions', 'user')
             ->firstOrFail();
 
-        // explode words
-        $locales = array_map(function ($word) {
-            return trim(strtolower($word));
-        }, preg_split("/[\s,\/;\(\)]+/", $word->locale));
+        // wikipedia page
+        $wikipedia  = new Wikipedia;
+        $wikipedias = $wikipedia->openSearch($word->locale);
+        if (empty($wikipedias)) {
+            $wikipedias = $wikipedia->openSearch($word->origin);
+        }
 
         // generate image
         $image = new Image;
@@ -95,7 +97,7 @@ class WordController extends Controller
             'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'locales', 'imagePath', 'link'))
+        return view('glosariums.words.show', compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link'))
             ->withTitle(trans('glosarium.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,

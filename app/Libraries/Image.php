@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ *
  * @link https://github.com/glosarium/glosarium
  */
 
@@ -66,11 +67,11 @@ class Image
     /**
      * Add new text to canvas
      *
-     * @param string $text
+     * @param string  $text
      * @param integer $size
      * @param integer $x
      * @param integer $y
-     * @param string $color
+     * @param string  $color
      */
     public function addText($text, $size, $x, $y, $color = '#ffffff')
     {

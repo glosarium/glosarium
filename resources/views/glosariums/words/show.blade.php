@@ -23,12 +23,12 @@
 
             <div class="panel panel-default" style="margin-top: -20px">
                 <div class="panel-heading">
-                    <h2 class="">{{ $word->origin }} <small class="label label-default">{{ $word->lang }}</small></h2>
+                    <h2 class="">{{ $word->origin }}</h2><span class="label label-default">{{ $word->lang }}</span>
                 </div>
                 <div class="panel-body">
 
                     <h3>{{ $word->locale }}</h3>
-                    Tautan pendek: <a href="{{ route('link.redirect', $link->hash) }}" class="btn btn-default btn-xs btn-theme">{{ route('link.redirect', $link->hash) }}</a>
+                    <span class="label label-default">{{ config('app.locale') }}</span>
                 </div>
             </div>
 
@@ -38,25 +38,31 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h4>Arti per kata dalam Kamus Besar Bahasa Indonesia</h4>
-                    @foreach ($locales as $locale)
-                        <ul>
-                            <li>
-                                <i class="fa fa-external-link"></i>
-                                <a target="_blank" href="{{ route('link.external', ['url' => Crypt::encrypt('http://kbbi.kemdikbud.go.id/entri/'.strtolower($locale))]) }}">http://kbbi.kemdikbud.go.id/entri/{{ strtolower($locale) }}</a>
-                            </li>
-                        </ul>
+                    <h4>Dari Wikipedia.org</h4>
+                    <hr>
+                    @foreach ($wikipedias as $p => $pages)
+                        @if ($p == 2)
+                            <p>{{ $pages[0] }}</p>
+                        @endif
+
+                        @if ($p == 3)
+                            Selengkapnya dapat dilihat di: <a href="{{ route('link.external', ['url' => Crypt::encrypt($pages[0])]) }}" target="_blank">{{ $pages[0] }}</a>
+                        @endif
                     @endforeach
+
+                    @if (empty($wikipedias))
+                        Deskripsi tidak ditemukan dalam Wikipedia.org.
+                    @endif
                 </div>
             </div>
 
             <div class="job-meta">
                 <ul class="list-inline">
-                    <li><i class="fa fa-briefcase"></i> {{ $word->category->name }}</li>
+                    <li><i class="{{ $word->category->metadata['icon'] }}"></i> {{ $word->category->name }}</li>
                     @if (! empty($word->user))
                         <li><i class="fa fa-user"></i> {{ $word->user->name }}</li>
                     @endif
-                    <li><i class="fa fa-eye"></i> Dilihat 0 kali</li>
+                    <li><i class="fa fa-link"></i> <a href="{{ route('link.redirect', $link->hash) }}" class="">{{ route('link.redirect', $link->hash) }}</a></li>
                 </ul>
             </div>
 
