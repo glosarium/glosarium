@@ -2,6 +2,7 @@
 
 return [
     'title'          => 'Kontributor',
+    'index'          => 'Daftar Kontributor',
     'login'          => 'Masuk',
     'loginFacebook'  => 'Masuk dengan Facebook',
     'loginGoogle'    => 'Masuk dengan Google',
@@ -28,6 +29,14 @@ return [
         'updated'              => 'Diperbarui',
         'created'              => 'Dibuat',
         'actions'              => 'Aksi',
+    ],
+
+    'field'          => [
+        'name'    => 'Name',
+        'email'   => 'Surel',
+        'type'    => 'Tipe',
+        'status'  => 'Status',
+        'actions' => 'Aksi',
     ],
 
     'btn'            => [

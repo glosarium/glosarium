@@ -10,10 +10,10 @@
             @if (auth()->user()->type == 'admin')
                 <li><a href="{{ url('admin/glosarium/word') }}">Glosari</a></li>
                 <li><a href="{{ url('admin/glosarium/category') }}">Kategori</a></li>
+                <li><a href="{{ url('admin/user') }}">Kontributor</a></li>
                 <hr>
             @endif
 
-            <li><a href="my_alerts.html"> Profil Saya </a></li>
             <li><a href="{{ route('user.notification.index') }}"> Notifikasi ({{ auth()->user()->unreadNotifications->count() }})</a></li>
             <li><a href="{{ route('user.password.form') }}"> Ubah Sandi Lewat</a></li>
         </ul>

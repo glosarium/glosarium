@@ -50,4 +50,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Glosarium\Word::class);
     }
+
+    public function scopeFilter($query)
+    {
+        $keyword = request('keyword');
+
+        if ($keyword) {
+            $query->where('name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+        }
+
+        return $query;
+    }
 }
