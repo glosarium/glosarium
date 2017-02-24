@@ -16,8 +16,12 @@
 
 @section('content')
 <div class="row" style="margin-top: 20px" v-cloak>
-    <div class="col-md-6 col-md-offset-3">
+	<div class="col-md-12">
+		<div class="text-center">@include('partials.ads.leaderboard')</div>
+	</div>
 
+    <div class="col-md-6 col-md-offset-3">
+    	<hr>
     	<alert :show="alerts.message" :title="alerts.title" :type="alerts.type">
     		@{{ alerts.message }}
     	</alert>

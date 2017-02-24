@@ -80,6 +80,11 @@
     </div>
     <div class="col-md-3">
         <div class="block-section-sm side-right">
+
+            <div class="row">
+                @include('partials.ads.300x250')
+            </div>
+
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " >
                     <a href="#category" data-toggle="collapse" >
