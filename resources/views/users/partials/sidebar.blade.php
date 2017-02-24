@@ -1,10 +1,18 @@
-<div class="col-md-3 col-sm-3">
-    <div class="block-section text-center ">
+<div class="col-md-2 col-sm-2">
+    <div class="block-section">
         <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}?s=150" class="img-rounded" alt="{{ auth()->user()->name }}">
         <div class="white-space-20"></div>
-        <h4>{{ auth()->user()->name }}</h4>
+        <h4 class="text-center">{{ auth()->user()->name }}</h4>
+
         <div class="white-space-20"></div>
+
         <ul class="list-unstyled">
+            @if (auth()->user()->type == 'admin')
+                <li><a href="{{ url('admin/glosarium/word') }}">Glosari</a></li>
+                <li><a href="{{ url('admin/glosarium/category') }}">Kategori</a></li>
+                <hr>
+            @endif
+
             <li><a href="my_alerts.html"> Profil Saya </a></li>
             <li><a href="{{ route('user.notification.index') }}"> Notifikasi ({{ auth()->user()->unreadNotifications->count() }})</a></li>
             <li><a href="{{ route('user.password.form') }}"> Ubah Sandi Lewat</a></li>

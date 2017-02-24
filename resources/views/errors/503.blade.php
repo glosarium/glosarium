@@ -18,6 +18,7 @@
 @endsection
 
 @push('js')
+	<script src={{ asset('js/app.js') }}></script>
 	<script>
 		$(function(){
 			$('#content').addClass('block-section');

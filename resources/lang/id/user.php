@@ -14,6 +14,7 @@ return [
     'or'             => 'ATAU',
     'notUser'        => 'Bukan terdaftar?',
     'createAccount'  => 'Daftar sebagai Kontributor',
+    'notAuthorized'  => 'Anda tidak punya hak untuk mengakses halaman ini.',
 
     'form'           => [
         'name'                 => 'Nama Lengkap',

@@ -17,6 +17,7 @@ return [
     'show'                  => 'Arti Glosari :origin Adalah :locale',
     'categoryAll'           => 'Kategori :category',
     'shares'                => 'Bagikan ke Media Sosial',
+    'notFound'              => 'Kata tidak ditemukan dalam pangkalan data.',
 
     'mail'                  => [
         'introProposal' => 'Halo, Anda mendapatkan proposal glosari baru dengan kata asal :origin dan arti kata :origin.',
@@ -29,8 +30,17 @@ return [
         'description' => 'Deskripsi',
     ],
 
+    'field'                 => [
+        'origin'    => 'Kata Asal',
+        'locale'    => 'Kata Translasi',
+        'category'  => 'Kategori',
+        'published' => 'Dipublikasikan',
+        'actions'   => 'Aksi',
+    ],
+
     'btn'                   => [
         'create' => 'Ajukan Propsal',
+        'search' => 'Cari',
     ],
 
     'msg'                   => [

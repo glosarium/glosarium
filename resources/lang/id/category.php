@@ -11,10 +11,12 @@ return [
     ],
 
     'field'      => [
-        'slug'    => 'Slug',
-        'name'    => 'Name',
-        'updated' => 'Updated',
-        'actions' => 'Aksi',
-        'empty'   => 'Kosong',
+        'slug'        => 'Slug',
+        'name'        => 'Name',
+        'updated'     => 'Updated',
+        'actions'     => 'Aksi',
+        'empty'       => 'Kosong',
+        'description' => 'Deskripsi',
+        'totalWord'   => 'Jumlah Kata',
     ],
 ];

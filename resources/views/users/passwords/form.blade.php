@@ -4,7 +4,7 @@
 
 @include('users.partials.sidebar')
 
-<div class="col-md-9 col-sm-9">
+<div class="col-md-10 col-sm-10">
 <!-- Block side right -->
 <div class="block-section box-side-account">
     <h3 class="no-margin-top">{{ $title }}</h3>

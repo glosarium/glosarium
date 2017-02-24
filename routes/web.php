@@ -12,6 +12,16 @@
  */
 Auth::routes();
 
+Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
+    Route::resource('glosarium/word', 'Glosarium\WordController', [
+        'only' => ['index', 'edit'],
+    ]);
+
+    Route::resource('glosarium/category', 'Glosarium\CategoryController', [
+        'only' => ['index'],
+    ]);
+});
+
 Route::get('/kontak', 'ContactController@form')->name('contact.form');
 Route::post('/kontak', 'ContactController@send')->name('contact.post');
 
