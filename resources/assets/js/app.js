@@ -13,9 +13,12 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-// Vue.component('example', require('./components/Example.vue'));
+// Bootstarap components
 Vue.component('alert', require('./components/Bootstrap/alert.vue'));
 Vue.component('loader', require('./components/Bootstrap/loader.vue'));
+
+// App components
+Vue.component('search', require('./components/App/search.vue'));
 
 /**
  * jQuery handler

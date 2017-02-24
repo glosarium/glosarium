@@ -74,4 +74,21 @@ class Category extends Model
     {
         return $this->hasMany(\App\Glosarium\Word::class, 'category_id', 'id');
     }
+
+    /**
+     * Filter category based on keyword value
+     *
+     * @param  string     $query
+     * @return Eloquent
+     */
+    public function scopeFilter($query)
+    {
+        $keyword = request('keyword');
+
+        if ($keyword) {
+            $query->where('name', 'LIKE', '%' . $keyword . '%');
+        }
+
+        return $query;
+    }
 }

@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('heading')
-    @include('glosariums.partials.search', ['totalWord' => $totalWord])
+    <search
+        v-on:search="search"
+        placeholder="Kata asing atau dalam Bahasa Indonesia..."
+        >
+    </search>
 @endsection
 
 @section('content')

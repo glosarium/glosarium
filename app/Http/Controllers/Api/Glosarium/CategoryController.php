@@ -26,13 +26,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $key = sprintf('category.page.%d', request('page'));
-
-        $categories = Cache::remember($key, $this->cacheTime, function () {
-            return Category::orderBy('name', 'ASC')
-                ->withCount('words')
-                ->paginate(10);
-        });
+        $categories = Category::orderBy('name', 'ASC')
+            ->filter()
+            ->withCount('words')
+            ->paginate(10);
 
         return response()->json($categories);
     }

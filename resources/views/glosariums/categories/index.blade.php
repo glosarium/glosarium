@@ -10,7 +10,11 @@
 @endpush
 
 @section('heading')
-    @include('glosariums.partials.search', ['totalWord' => $totalWord])
+    <search
+        v-on:search="search"
+        placeholder="Temukan kategori glosari..."
+        >
+    </search>
 @endsection
 
 @section('content')
@@ -81,7 +85,7 @@
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#latest-words" data-toggle="collapse" >@lang('category.latestWord') <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
 
-                <div v-if="words" class="collapse in" id="latest-words">
+                <div v-if="words" class="collapse in" id="latest-words" v-cloak>
                     <div class="list-area">
                         <ul class="list-unstyled">
                             <li v-for="word in words">

@@ -5,7 +5,7 @@ $(() => {
 });
 
 new Vue({
-    el: '#content',
+    el: '#app',
     data: {
         loading: false,
         categories: [],
@@ -54,7 +54,14 @@ new Vue({
 
                 this.loading = false;
             });
-        }
+        },
 
+        search(keyword) {
+            const url = words.api.wordIndex + '?keyword=' + keyword;
+
+            this.$http.get(url).then(response => {
+                this.words = response.body;
+            });
+        }
     }
 });

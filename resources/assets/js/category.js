@@ -3,7 +3,7 @@ $(() => {
 });
 
 var category = new Vue({
-    el: '#content',
+    el: '#app',
     data: {
         categories: [],
         loading: false,
@@ -69,5 +69,13 @@ var category = new Vue({
                 this.loading = false;
             });
         },
+
+        search(keyword) {
+            const url = categories.api.index + '?keyword=' + keyword;
+
+            this.$http.get(url).then(response => {
+                this.categories = response.body;
+            });
+        }
     }
 });

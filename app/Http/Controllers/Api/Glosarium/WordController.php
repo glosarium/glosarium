@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
-use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -26,13 +25,10 @@ class WordController extends Controller
      */
     public function index()
     {
-        $key = sprintf('word.page.%d', request('page'));
-
-        $words = Cache::remember($key, $this->cacheTime, function () {
-            return Word::orderBy('origin', 'ASC')
-                ->with('category')
-                ->paginate(20);
-        });
+        $words = Word::orderBy('origin', 'ASC')
+            ->filter()
+            ->with('category')
+            ->paginate(20);
 
         return response()->json($words);
     }
