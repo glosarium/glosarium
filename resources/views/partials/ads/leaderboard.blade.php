@@ -1,4 +1,4 @@
-@if (app()->environment('production'))
+@if (app()->environment('locale'))
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 	<!-- glosarium-billboard -->
 	<ins class="adsbygoogle"

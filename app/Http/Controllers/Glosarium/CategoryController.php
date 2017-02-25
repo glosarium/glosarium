@@ -32,11 +32,12 @@ class CategoryController extends Controller
 
         view()->share([
             'js' => [
-                'api'  => [
-                    'index' => route('api.category.index'),
-                ],
-                'word' => [
-                    'latest' => route('glosarium.word.latest'),
+                'route' => \Route::currentRouteName(),
+                'index' => route('api.category.index'),
+                'all'   => route('api.category.all'),
+                'word'  => [
+                    'category' => url('api/glosarium/word/category'),
+                    'latest'   => route('glosarium.word.latest'),
                 ],
             ],
         ]);
@@ -95,23 +96,13 @@ class CategoryController extends Controller
 
         abort_if(empty($category), 404, trans('glosarium.categoryNotFound'));
 
-        // find word total
-        $totalWord = Cache::get('glosarium.total', function () {
-            return Word::whereIsPublished(true)->count();
-        });
-
-        // select word by category
-        $words = Word::whereCategoryId($category->id)
-            ->orderBy('origin', 'ASC')
-            ->paginate(config('glosarium.limit', 20));
-
         // create header image
         $image     = new Image;
         $imagePath = $image->addText($category->name, 50, 400, 200)
             ->render('images/glosariums/categories', $category->slug)
             ->path();
 
-        return view('glosariums.categories.show', compact('category', 'imagePath', 'totalWord', 'words'))
+        return view('glosariums.categories.show', compact('category', 'imagePath'))
             ->withTitle(trans('glosarium.categoryTitle', ['name' => $category->name]));
     }
 

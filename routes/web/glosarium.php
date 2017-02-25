@@ -23,5 +23,6 @@ Route::group(['prefix' => 'api/glosarium', 'namespace' => 'Api\Glosarium', 'as' 
     Route::get('category/all', 'CategoryController@all')->name('category.all');
     Route::resource('category', 'CategoryController');
 
+    Route::get('word/category/{slug}', 'WordController@category')->name('glosarium.category');
     Route::resource('word', 'WordController');
 });

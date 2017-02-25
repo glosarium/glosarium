@@ -19,6 +19,25 @@ class WordController extends Controller
     }
 
     /**
+     * Filter word by category
+     * @param  integer $categoryId
+     * @return string  json
+     */
+    public function category($categorySlug)
+    {
+        $words = Word::whereHas('category', function ($category) use ($categorySlug) {
+            return $category->whereSlug($categorySlug);
+        })
+            ->with('category')
+            ->whereIsPublished(true)
+            ->orderBy('origin', 'ASC')
+            ->filter()
+            ->paginate();
+
+        return response()->json($words);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

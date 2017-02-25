@@ -1,4 +1,4 @@
-@if (app()->environment('production'))
+@if (app()->environment('local'))
 	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 	<!-- viral-sidebar -->
 	<ins class="adsbygoogle"

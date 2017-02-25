@@ -11,7 +11,10 @@
 @endpush
 
 @section('heading')
-    @include('glosariums.partials.search', ['totalWord' => $totalWord])
+    <search
+        v-on:search="search"
+        placeholder="Cari kata dalam kategori {{ $category->name }}..."
+    ></search>
 @endsection
 
 @section('content')
@@ -20,9 +23,6 @@
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
 
-            <alert :show="alerts.message" :title="alerts.title" :type="alerts.type">
-                @{{ alerts.message }}
-            </alert>
             <!-- desc top -->
             <div class="row hidden-xs">
                 <div class="col-sm-6  ">
@@ -31,8 +31,8 @@
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-right">
-                        Halaman {{ $words->currentPage() }} menampilkan {{ $words->perPage() }} dari {{ number_format($words->total(), 0, ',', '.') }} kata
+                    <p class="text-right" v-cloak>
+                        Menampilkan @{{ words.from }} sampai @{{ words.to }} dari total @{{ words.total}} kata.
                     </p>
                 </div>
             </div>
@@ -49,31 +49,54 @@
             	</div>
             </div>
 
+            <nav v-cloak>
+                <ul class="pagination pagination-theme no-margin">
+                    <li v-if="words.prev_page_url">
+                        <a class="disabled" @click.prevent="getWord(words.prev_page_url)" :href="words.prev_page_url">@lang('pagination.previous')</a>
+                    </li>
+                    <li v-if="words.next_page_url">
+                        <a :disabled="loading" @click.prevent="getWord(words.next_page_url)" :href="words.next_page_url">@lang('pagination.next')</a>
+                    </li>
+                </ul>
+            </nav>
 
             <!-- item list -->
-            <div class="box-list">
-                @foreach ($words as $word)
-                <div class="item">
+            <div class="box-list" v-cloak>
+                <div v-for="(word, index) in words.data" class="item">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-1 hidden-xs hidden-sm">
+                            <div v-if="word.category.metadata.icon" class="img-item">
+                                <h2><i :class="word.category.metadata.icon"></i></h2>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
                             <h3 class="no-margin-top">
-                                <a href="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}" class="">{{ $word->origin }}</a>
+                                <a :href="word.url" class="">@{{ word.origin }}</a>
+                                <small>
+                                    <a :href="word.short_url" class="color-white-mute"><i class="fa fa-link"></i></a>
+                                </small>
                             </h3>
-                            <h4><span class="color-black">{{ $word->locale }}</span></h4>
+                            <h5><span class="color-black">@{{ word.locale }}</span> - <span><a :href="word.category.url" class="color-white-mute">@{{ word.category.name }}</a></span></h5>
                             <div>
-                                <span class="color-white-mute">{{ $word->updated_at->diffForHumans() }}</span>
+                                <span class="color-white-mute">@{{ word.updated_diff }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
 
-            <!-- pagination -->
-            <nav >
-                {{ $words->appends(['keyword' => request('keyword')])->links() }}
+            <nav v-cloak>
+                <ul class="pagination pagination-theme no-margin">
+                    <li v-if="words.prev_page_url">
+                        <a :disabled="loading" @click.prevent="getWord(words.prev_page_url)" :href="words.prev_page_url">@lang('pagination.previous')</a>
+                    </li>
+                    <li v-if="words.next_page_url">
+                        <a :disabled="loading" @click.prevent="getWord(words.next_page_url)" :href="words.next_page_url">@lang('pagination.next')</a>
+                    </li>
+                </ul>
             </nav>
-            <!-- pagination -->
+
+
 
         </div>
         <!-- end box listing -->
@@ -110,52 +133,8 @@
 
 @push('js')
     <script>
-        $(() => {
-            $('li.glosarium').addClass('active');
-
-            $('ul.pagination').addClass('pagination-theme no-margin');
-        });
-
-        new Vue({
-            el: '#content',
-            data: {
-                loading: false,
-                categories: null,
-                alerts: {
-                    type: 'default',
-                    title: null,
-                    message: null
-                }
-            },
-
-            mounted() {
-                this.getCategory();
-            },
-
-            methods: {
-
-                getCategory() {
-                    let url = '{{ route('glosarium.category.all') }}';
-
-                    this.loading = true;
-
-                    this.$http.get(url).then(response => {
-
-                        this.categories = response.body.categories;
-
-                        this.loading = false;
-
-                    }, response => {
-                        this.alerts = {
-                            type: 'danger',
-                            message: 'Kesalahan Server Internal.'
-                        }
-
-                        this.loading = false;
-                    });
-                }
-
-            }
-        })
+        window.categories = {!! json_encode($js) !!};
+        window.category = {!! json_encode($category) !!};
     </script>
+    <script src="{{ asset('js/showCategory.js') }}"></script>
 @endpush
