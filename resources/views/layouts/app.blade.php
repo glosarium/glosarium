@@ -118,7 +118,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <ul class="list-inline link-footer text-center-xs">
-                                <li><a href="{{ route('index') }}">Beranda</a></li>
+                                <li><a href="{{ route('glosarium.word.index') }}">Beranda</a></li>
                                 <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
                             </ul>
                         </div>

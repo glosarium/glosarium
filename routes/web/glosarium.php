@@ -10,7 +10,7 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
 
     // word
-    Route::get('glosarium', 'WordController@index')->name('word.index');
+    Route::get('/', 'WordController@index')->name('word.index');
     Route::get('total', 'WordController@total')->name('word.total');
     Route::get('tambah', 'WordController@create')->name('word.create');
     Route::post('simpan', 'WordController@store')->name('word.store');

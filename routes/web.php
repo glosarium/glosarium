@@ -17,7 +17,5 @@ Route::post('/kontak', 'ContactController@send')->name('contact.post');
 
 Route::get('/external', 'LinkController@external')->name('link.external');
 
-Route::get('/', 'PageController@index')->name('index');
-
 Route::get('/{hash}', 'LinkController@redirect')->name('link.redirect')
     ->where('hash', '[A-Za-z0-9]+');
