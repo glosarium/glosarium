@@ -67,12 +67,7 @@ class SitemapController extends Controller
 
         foreach ($words as $word) {
             // set images for word
-            $path = sprintf(
-                'image/%s/%s/',
-                substr($word->slug, 0, 1),
-                $word->category->slug
-            );
-            $file = sprintf('%s.jpg', $word->slug);
+            $file = sprintf('images/glosariums/%s/%s.jpg', $category->slug, $word->slug);
 
             $images = [
                 [
