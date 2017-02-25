@@ -12,7 +12,7 @@ var category = new Vue({
     },
 
     mounted() {
-        this.getCategory(categories.api.index);
+        this.getCategory(categories.index);
         this.getWord();
     },
 
