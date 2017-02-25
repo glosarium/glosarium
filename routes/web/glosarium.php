@@ -1,13 +1,15 @@
 <?php
+
+// sitemap
+Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
+Route::get('sitemap/{slug}.xml', 'SitemapController@category')->name('sitemap.category');
+
 Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     // category
     Route::get('kategori', 'CategoryController@index')->name('category.index');
     Route::get('kategori/total', 'CategoryController@total')->name('category.total');
     Route::get('kategori/semua', 'CategoryController@all')->name('category.all');
     Route::get('kategori/{slug}', 'CategoryController@show')->name('category.show');
-
-    // sitemap
-    Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
 
     // word
     Route::get('/', 'WordController@index')->name('word.index');

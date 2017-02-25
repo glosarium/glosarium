@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Glosarium\Category;
 use App\Glosarium\Word;
-use App\Glosarium\WordCategory;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright 2016 - Glosarium
  *
  * @link https://github.com/arvernester/glosarium
- *
- * @copyright 2016 - Glosarium
  */
 class SitemapController extends Controller
 {
@@ -25,8 +24,8 @@ class SitemapController extends Controller
 
         // cache categories
         $rememberFor = \Carbon\Carbon::now()->addDays(30);
-        $categories = \Cache::remember('categories', $rememberFor, function () {
-            return WordCategory::orderBy('name', 'ASC')->get();
+        $categories  = \Cache::remember('sitemap.categories', $rememberFor, function () {
+            return Category::orderBy('name', 'ASC')->get();
         });
 
         foreach ($categories as $category) {
@@ -46,21 +45,23 @@ class SitemapController extends Controller
      *
      * @param $category
      */
-    public function category(WordCategory $category)
+    public function category($slug)
     {
+        $category = Category::whereSlug($slug)->first();
+        abort_if(empty($category), 404);
+
         $sitemap = \App::make('sitemap');
 
-        $keyCache = sprintf('word.%s', $category->slug);
+        $keyCache    = sprintf('sitemap.word.%s', $category->slug);
         $rememberFor = \Carbon\Carbon::now()->addDays(30);
 
         // get word by category in store in cache
         $words = \Cache::remember($keyCache, $rememberFor, function () use ($category) {
-            return Word::whereStatus('published')
+            return Word::whereIsPublished(true)
                 ->whereHas('category', function ($query) use ($category) {
                     return $query->whereSlug($category->slug);
                 })
-                ->whereStatus('published')
-                ->orderBy('locale', 'ASC')
+                ->orderBy('origin', 'ASC')
                 ->get();
         });
 
@@ -75,15 +76,15 @@ class SitemapController extends Controller
 
             $images = [
                 [
-                    'url' => url($file),
-                    'title' => $word->locale,
+                    'url'     => url($file),
+                    'title'   => $word->locale,
                     'caption' => $word->locale,
                 ],
             ];
 
             // add to sitemap record
             $sitemap->add(
-                route('word.detail', [$category->slug, $word->slug]),
+                route('glosarium.word.show', [$category->slug, $word->slug]),
                 $word->updated_at->toIso8601String(),
                 '0.9',
                 'monthly',
