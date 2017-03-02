@@ -36,7 +36,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
 
-        $this->redirectTo = route('index');
+        $this->redirectTo = route('glosarium.word.index');
     }
 
     /**

@@ -6,7 +6,7 @@
 
     <meta property="og:title" content="{{ config('app.name') }}">
     <meta property="og:description" content="{{ config('app.description') }}">
-    <meta property="og:url" content="{{ route('index') }}">
+    <meta property="og:url" content="{{ route('glosarium.word.index') }}">
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
