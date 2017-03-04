@@ -34,6 +34,10 @@ class WordController extends Controller
             ->filter()
             ->paginate();
 
+        if (!empty(request())) {
+            $words->appends(request()->all());
+        }
+
         return response()->json($words);
     }
 
@@ -48,6 +52,10 @@ class WordController extends Controller
             ->filter()
             ->with('category')
             ->paginate(20);
+
+        if (!empty(request())) {
+            $words->appends(request()->all());
+        }
 
         return response()->json($words);
     }
