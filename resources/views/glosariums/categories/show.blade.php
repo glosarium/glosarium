@@ -26,12 +26,12 @@
             <!-- desc top -->
             <div class="row hidden-xs">
                 <div class="col-sm-6  ">
-                    @if (request('keyword'))
-                    <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
-                    @endif
+                    <p v-if="keyword">
+                        <strong class="color-black">Hasil pencarian untuk "@{{ keyword }}"</strong>
+                    </p>
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-right" v-cloak>
+                    <p v-if="! _.isEmpty(words.data)" class="text-right" v-cloak>
                         Menampilkan @{{ words.from }} sampai @{{ words.to }} dari total @{{ words.total}} kata.
                     </p>
                 </div>
@@ -47,6 +47,14 @@
             			<p>@lang('glosarium.noCategoryDescription', ['name' => $category->name])</p>
             		@endif
             	</div>
+            </div>
+
+            <div v-if="_.isEmpty(words.data)" class="row" v-cloak>
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        Kata tidak ditemukan dalam pangkan data.
+                    </div>
+                </div>
             </div>
 
             <nav v-cloak>
@@ -95,9 +103,6 @@
                     </li>
                 </ul>
             </nav>
-
-
-
         </div>
         <!-- end box listing -->
     </div>

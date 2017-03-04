@@ -1,5 +1,5 @@
 $(() => {
-    $('li.glosarium').addClass('active');
+    $('li.category').addClass('active');
 
     $('ul.pagination').addClass('pagination-theme no-margin');
 });
@@ -10,6 +10,7 @@ new Vue({
         loading: false,
         categories: [],
         words: [],
+        keyword: '',
         alerts: {
             type: 'default',
             title: null,
@@ -56,6 +57,8 @@ new Vue({
         },
 
         search(keyword) {
+            this.keyword = keyword;
+            
             const url = categories.word.category + '/' + category.slug + '?keyword=' + keyword;
             this.getWord(url);
         }

@@ -16,20 +16,29 @@
 
             <!-- desc top -->
             <div class="row hidden-xs">
-                <div class="col-sm-6  ">
-                    @if (request('keyword'))
-                        <p><strong class="color-black">Hasil pencarian untuk "{{ request('keyword') }}"</strong></p>
-                    @else
-                        <p><strong class="color-black">{{ $title }}</strong></p>
-                    @endif
+                <div class="col-sm-6" v-cloak>
+                    <p v-if="keyword">
+                        <strong class="color-black">Hasil pencarian untuk "@{{ keyword }}"</strong>
+                    </p>
+                    <p v-else>
+                        <strong class="color-black">{{ $title }}</strong>
+                    </p>
                 </div>
                 <div class="col-sm-6" v-cloak>
-                    <p class="text-right">
+                    <p v-if="! _.isEmpty(words.data)" class="text-right">
                         Menampilkan @{{ words.from }} sampai @{{ words.to }} dari total @{{ words.total}} kata.
                     </p>
                 </div>
             </div>
             <!-- end desc top -->
+
+            <div v-if="_.isEmpty(words.data)" class="row" v-cloak>
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        Kata tidak ditemukan dalam pangkalan data.
+                    </div>
+                </div>
+            </div>
 
             <nav v-cloak>
                 <ul class="pagination pagination-theme no-margin">

@@ -10,6 +10,7 @@ new Vue({
         loading: false,
         categories: [],
         words: [],
+        keyword: '',
         alerts: {
             type: 'default',
             title: null,
@@ -57,6 +58,8 @@ new Vue({
         },
 
         search(keyword) {
+            this.keyword = keyword;
+            
             const url = words.api.wordIndex + '?keyword=' + keyword;
 
             this.$http.get(url).then(response => {
