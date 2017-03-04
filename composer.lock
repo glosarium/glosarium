@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45f0cc0698edd966df73d3dd48b8a1a5",
-    "content-hash": "0b8c92060cc4e9ff81a10fe0914a307a",
+    "hash": "d64fcc3bd2176bd068a5b36dc5175ef5",
+    "content-hash": "4b24ae625c934d01ca9ba3307322cb9f",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -60,40 +60,6 @@
                 "webprofiler"
             ],
             "time": "2017-01-19 08:19:49"
-        },
-        {
-            "name": "casinelli/wikipedia",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Casinelli/Laravel-Wikipedia.git",
-                "reference": "9bebd350f9c45781ca577e10e24a2284aed5368b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Casinelli/Laravel-Wikipedia/zipball/9bebd350f9c45781ca577e10e24a2284aed5368b",
-                "reference": "9bebd350f9c45781ca577e10e24a2284aed5368b",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.0",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Casinelli\\Wikipedia": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Casinelli",
-                    "email": "giovanni.casinelli@gmail.com"
-                }
-            ],
-            "description": "Laravel package to query Wikipedia",
-            "time": "2017-01-20 09:43:28"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -4374,9 +4340,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "casinelli/wikipedia": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
