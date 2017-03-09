@@ -2,6 +2,7 @@
 
 namespace App\Glosarium;
 
+use Auth;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,17 @@ class Word extends Model
         'url',
         'updated_diff',
         'short_url',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'user_id'      => 'integer',
+        'category_id'  => 'integer',
+        'is_standard'  => 'boolean',
+        'is_published' => 'boolean',
+        'retry_count'  => 'integer',
     ];
 
     public function getRouteKeyName()
@@ -135,6 +147,12 @@ class Word extends Model
         if (request('keyword')) {
             $query->where('origin', 'LIKE', '%' . request('keyword') . '%')
                 ->orWhere('locale', 'LIKE', '%' . request('keyword') . '%');
+
+            // save to search database
+            Search::create([
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'keyword' => trim(request('keyword')),
+            ]);
         }
 
         return $query;
@@ -148,7 +166,6 @@ class Word extends Model
     public function scopeSort($query)
     {
         // is on search?
-
         if (request('keyword')) {
             $query->orderBy(\DB::raw('LENGTH(origin)'), 'ASC')
                 ->orderBy(\DB::raw('LENGTH(locale)'), 'ASC');
