@@ -6,9 +6,9 @@
 
 <div class="col-md-9 col-sm-9">
 <div class="block-section box-side-account">
-    <h3 class="no-margin-top">Notifikasi ({{ auth()->user()->unreadNotifications->count() }})</h3>
+    <h3 class="no-margin-top">Notifikasi (@{{ notifications.total }})</h3>
     <hr/>
-    <div class="table-responsive">
+    <div v-if="notifications.data.length >= 1" class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
@@ -19,16 +19,60 @@
                 </tr>
             </thead>
             <tbody>
-            	@foreach (auth()->user()->unreadNotifications as $notification)
-                <tr>
-                    <td>{{ $notification->data['subject'] }}</td>
-                    <td>{{ $notification->data['message'] }}</td>
-                    <td>{{ $notification->created_at->diffForHumans() }}</td>
-                    <td class="text-right"><a href="#" class="btn btn-theme btn-xs btn-default">Tandai Sudah Dibaca</a></td>
+            	<tr v-for="(notification, index) in notifications.data">
+                    <td>@{{ notification.data.subject }}</td>
+                    <td>@{{ notification.data.message }}</td>
+                    <td>@{{ notification.updated_diff }}</td>
+                    <td class="text-right">
+                        <a @click.prevent="readNotification(index, notification.read_url)" :href="notification.read_url" class="btn btn-xs btn-default btn-danger">
+                            <i class="fa fa-trash fa-fw"></i>
+                        </a>
+                    </td>
                 </tr>
-                @endforeach
             </tbody>
         </table>
     </div>
+    <div v-else class="alert alert-info">
+        Tidak ada notifikasi untuk saat ini.
+    </div>
 </div>
 @endsection
+
+@push('js')
+    <script>
+        const notification = {!! json_encode([
+            'paginate' => route('user.notification.paginate')
+        ]) !!}
+    </script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                notifications: []
+            },
+
+            mounted() {
+                this.unreadNotifications(notification.paginate);
+            },
+
+            methods: {
+
+                unreadNotifications(url) {
+                    this.$http.get(url).then(response => {
+                        this.notifications = response.body;
+                    });
+                },
+
+                readNotification(index, url) {
+                    this.$http.get(url).then(response => {
+                        if (response.body.success) {
+                            this.notifications.data.splice(index, 1);
+                            this.notifications.total--;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+@endpush

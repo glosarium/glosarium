@@ -3,6 +3,8 @@
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
     // notification
     Route::get('notification', 'NotificationController@index')->name('notification.index');
+    Route::get('notification/paginate', 'NotificationController@paginate')->name('notification.paginate');
+    Route::get('notification/read', 'NotificationController@read')->name('notification.read');
 
     // password
     Route::get('user/password', 'PasswordController@form')->name('password.form');
