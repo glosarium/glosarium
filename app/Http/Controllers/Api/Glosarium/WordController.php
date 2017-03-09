@@ -48,8 +48,8 @@ class WordController extends Controller
      */
     public function index()
     {
-        $words = Word::orderBy('origin', 'ASC')
-            ->filter()
+        $words = Word::filter()
+            ->sort()
             ->with('category')
             ->paginate(20);
 

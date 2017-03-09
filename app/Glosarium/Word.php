@@ -124,6 +124,12 @@ class Word extends Model
         return $this->belongsTo(\App\User::class);
     }
 
+    /**
+     * Full text search by single keyword
+     *
+     * @param  object $query     Eloquent query
+     * @return object Eloquent
+     */
     public function scopeFilter($query)
     {
         if (request('keyword')) {
@@ -132,5 +138,20 @@ class Word extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * Default sorting for word
+     * @param  object $query     Eloquent query
+     * @return object Eloquent
+     */
+    public function scopeSort($query)
+    {
+
+        $query->orderBy(\DB::raw('LENGTH(origin)'), 'ASC')
+            ->orderBy(\DB::raw('LENGTH(locale)'), 'ASC');
+
+        return $query;
+
     }
 }
