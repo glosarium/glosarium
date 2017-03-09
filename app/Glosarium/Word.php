@@ -147,9 +147,15 @@ class Word extends Model
      */
     public function scopeSort($query)
     {
+        // is on search?
 
-        $query->orderBy(\DB::raw('LENGTH(origin)'), 'ASC')
-            ->orderBy(\DB::raw('LENGTH(locale)'), 'ASC');
+        if (request('keyword')) {
+            $query->orderBy(\DB::raw('LENGTH(origin)'), 'ASC')
+                ->orderBy(\DB::raw('LENGTH(locale)'), 'ASC');
+        }
+
+        $query->orderBy('origin', 'ASC')
+            ->orderBy('locale', 'ASC');
 
         return $query;
 
