@@ -21,47 +21,54 @@
         <!-- box item details -->
         <div class="block-section box-item-details">
 
-            <div class="panel panel-default" style="margin-top: -20px">
-                <div class="panel-heading">
-                    <h2 class="">{{ $word->origin }}</h2><span class="label label-default">{{ $word->lang }}</span>
-                </div>
-                <div class="panel-body">
-
-                    <h3>{{ $word->locale }}</h3>
-                    <span class="label label-default">{{ config('app.locale') }}</span>
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-body">@include('partials.ads.link')</div>
-            </div>
-
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h4>Dari Wikipedia.org</h4>
-                    <hr>
-                    @foreach ($wikipedias as $p => $pages)
-                        @if ($p == 2)
-                            <p>{{ $pages[0] }}</p>
-                        @endif
+                    <div class="col-md-6" style="border-right: 1px dashed #ddd; margin-top: 10px">
+                        <h3 class="">{{ $word->origin }}</h3><span class="label label-default">{{ $word->lang }}</span>
+                    </div>
+                    <div class="col-md-6" style="margin-top:10px">
+                        <h3>{{ $word->locale }}</h3>
+                        <span class="label label-default">{{ config('app.locale') }}</span>
+                    </div>
 
-                        @if ($p == 3)
-                            Selengkapnya dapat dilihat di: <a href="{{ route('link.external', ['url' => Crypt::encrypt($pages[0])]) }}" target="_blank">{{ $pages[0] }}</a>
-                        @endif
-                    @endforeach
+                    <div class="col-md-12">
 
-                    @if (empty($wikipedias))
-                        Deskripsi tidak ditemukan dalam Wikipedia.org.
-                    @endif
+                        <hr>
+
+                        <div class="btn-group" style="margin-bottom: 20px;">
+                            <button class="btn btn-default btn-sm">
+                                <i class="fa fa-heart"></i> 0
+                            </button>
+                            <button class="btn btn-default btn-sm">
+                                <i class="fa fa-thumbs-up"></i> 0
+                            </button>
+                            <button class="btn btn-default btn-sm">
+                                <i class="fa fa-thumbs-down"></i> 0
+                            </button>
+                        </div>
+
+                        @foreach ($wikipedias as $p => $pages)
+                            @if ($p == 2)
+                                <p>{{ $pages[0] }}</p>
+                            @endif
+
+                            @if ($p == 3)
+                                <a href="{{ route('link.external', ['url' => Crypt::encrypt($pages[0])]) }}" target="_blank">{{ $pages[0] }}</a>
+                            @endif
+
+                        @endforeach
+
+
+                        @if (empty($wikipedias))
+                            Deskripsi tidak ditemukan dalam Wikipedia.org.
+                        @endif
+                    </div>
                 </div>
             </div>
 
             <div class="job-meta">
                 <ul class="list-inline">
                     <li><i class="{{ $word->category->metadata['icon'] }}"></i> {{ $word->category->name }}</li>
-                    @if (! empty($word->user))
-                        <li><i class="fa fa-user"></i> {{ $word->user->name }}</li>
-                    @endif
                     <li><i class="fa fa-link"></i> <a href="{{ route('link.redirect', $link->hash) }}" class="">{{ route('link.redirect', $link->hash) }}</a></li>
                 </ul>
             </div>
