@@ -62,7 +62,7 @@ class WordCreatedNotification extends Notification
         return [
             'type'    => 'info',
             'subject' => 'Kata Baru',
-            'message' => sprintf('Sebuah kata baru dari %s', $notifiable->name),
+            'message' => sprintf('Sebuah kata baru %s dari %s.', $this->word->origin, $notifiable->name),
             'data'    => [
                 'origin' => $this->word->origin,
                 'locale' => $this->word->locale,
