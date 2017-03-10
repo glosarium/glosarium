@@ -60,7 +60,7 @@
 
 
                         @if (empty($wikipedias))
-                            Deskripsi tidak ditemukan dalam Wikipedia.org.
+                            <p>Deskripsi tidak ditemukan dalam Wikipedia.org.</p>
                         @endif
                     </div>
                 </div>
