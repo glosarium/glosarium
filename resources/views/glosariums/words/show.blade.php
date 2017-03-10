@@ -23,7 +23,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="col-md-6" style="border-right: 1px dashed #ddd; margin-top: 10px">
+                    <div class="col-md-6" style="border-right: 1px solid #ddd; margin-top: 10px">
                         <h3 class="">{{ $word->origin }}</h3><span class="label label-default">{{ $word->lang }}</span>
                     </div>
                     <div class="col-md-6" style="margin-top:10px">
@@ -90,7 +90,7 @@
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#same-words" data-toggle="collapse" >Dalam Kategori <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
 
-                <ul v-if="categories" class="list-unstyled" id="same-words">
+                <ul v-cloak v-if="categories" class="list-unstyled" id="same-words">
                     <li v-for="word in categories">
                         <a :href="word.url">@{{ word.category.name }}</a>
                     </li>
