@@ -6,7 +6,7 @@
 <li class="contact"><a href="{{ route('contact.form') }}">@lang('contact.title')</a></li>
 
 @if (Auth::check())
-	<li class="logout">
+	<li class="logout visible-sm visible-xs">
 		<a href="{{ url('logout') }}" class="logout">Keluar</a>
 	</li>
 @else
