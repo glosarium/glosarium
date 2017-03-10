@@ -149,10 +149,12 @@ class Word extends Model
                 ->orWhere('locale', 'LIKE', '%' . request('keyword') . '%');
 
             // save to search database
-            Search::create([
-                'user_id' => Auth::check() ? Auth::id() : null,
-                'keyword' => trim(request('keyword')),
-            ]);
+            if (!Auth::check() or (Auth::check() and Auth::user()->type != 'admin')) {
+                Search::create([
+                    'user_id' => Auth::check() ? Auth::id() : null,
+                    'keyword' => strtolower(trim(request('keyword'))),
+                ]);
+            }
         }
 
         return $query;
@@ -160,6 +162,7 @@ class Word extends Model
 
     /**
      * Default sorting for word
+     *
      * @param  object $query     Eloquent query
      * @return object Eloquent
      */
