@@ -32,7 +32,7 @@
             </div>
             <!-- end desc top -->
 
-            <div v-if="_.isEmpty(words.data)" class="row" v-cloak>
+            <div v-if="_.isEmpty(words.data) && keyword" class="row" v-cloak>
                 <div class="col-md-12">
                     <div class="alert alert-info">
                         Kata tidak ditemukan dalam pangkalan data.
