@@ -14,6 +14,12 @@
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
 
+            @if (\Agent::isMobile())
+                <div class="row text-center">
+                    @include('partials.ads.responsive')
+                </div>
+            @endif
+
             <!-- desc top -->
             <div class="row hidden-xs">
                 <div class="col-sm-6" v-cloak>
@@ -93,9 +99,11 @@
     <div class="col-md-3">
         <div class="block-section-sm side-right">
 
-            <div class="row">
-                @include('partials.ads.300x250')
-            </div>
+            @if (\Agent::isDesktop())
+                <div class="row text-center">
+                    @include('partials.ads.300x250')
+                </div>
+            @endif
 
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " >

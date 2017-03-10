@@ -21,7 +21,13 @@
         <!-- box item details -->
         <div class="block-section box-item-details">
 
-            <div class="panel panel-default">
+            @if (Agent::isMobile())
+                <div class="row">
+                    @include('partials.ads.responsive')
+                </div>
+            @endif
+
+            <div class="panel panel-default" style="margin-top: -15px;">
                 <div class="panel-body">
                     <div class="col-md-6" style="border-right: 1px solid #ddd; margin-top: 10px">
                         <h3 class="">{{ $word->origin }}</h3><span class="label label-default">{{ $word->lang }}</span>
@@ -67,15 +73,13 @@
             </div>
 
             <div class="job-meta">
-                <ul class="list-inline">
+                <ul class="list-inline {{ Agent::isMobile() ? 'text-center' : '' }}">
                     <li><i class="{{ $word->category->metadata['icon'] }}"></i> {{ $word->category->name }}</li>
                     <li><i class="fa fa-link"></i> <a href="{{ route('link.redirect', $link->hash) }}" class="">{{ route('link.redirect', $link->hash) }}</a></li>
                 </ul>
             </div>
 
-            @if (app()->environment('production'))
-                @include('partials.disqus', ['slug' => $word->slug])
-            @endif
+            @include('partials.disqus', ['slug' => $word->slug])
         </div>
         <!-- end box item details -->
     </div>
@@ -83,9 +87,11 @@
         <!-- box affix right -->
         <div class="block-section-sm side-right">
 
-            <div class="row">
-                @include('partials.ads.300x250')
-            </div>
+            @if (Agent::isDesktop())
+                <div class="row text-center">
+                    @include('partials.ads.300x250')
+                </div>
+            @endif
 
             <div class="result-filter">
                 <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#same-words" data-toggle="collapse" >Dalam Kategori <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
