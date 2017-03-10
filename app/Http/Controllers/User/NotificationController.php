@@ -11,6 +11,7 @@ class NotificationController extends Controller
     public function paginate()
     {
         $notifications = Notification::whereNotifiableId(Auth::id())
+            ->orderBy('created_at', 'DESC')
             ->paginate();
 
         return response()->json($notifications);
