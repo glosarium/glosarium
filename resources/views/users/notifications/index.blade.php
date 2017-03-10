@@ -6,10 +6,10 @@
 
 <div class="col-md-9 col-sm-9">
 <div class="block-section box-side-account">
-    <h3 class="no-margin-top">Notifikasi (@{{ notifications.total }})</h3>
+    <h3 v-cloak class="no-margin-top">Notifikasi (@{{ notifications.total }})</h3>
     <hr/>
     <div v-if="notifications.data.length >= 1" class="table-responsive">
-        <table class="table">
+        <table class="table" v-cloak>
             <thead>
                 <tr>
                     <th>Subjek</th>
@@ -32,9 +32,18 @@
             </tbody>
         </table>
     </div>
-    <div v-else class="alert alert-info">
+    <div v-else class="alert alert-info" v-cloak>
         Tidak ada notifikasi untuk saat ini.
     </div>
+
+    <ul class="pagination pagination-theme no-margin" v-cloak>
+        <li v-if="notifications.prev_page_url">
+            <a @click.prevent="unreadNotifications(notifications.prev_page_url)" href="#">@lang('pagination.next')</a>
+        </li>
+        <li v-if="notifications.next_page_url">
+            <a @click.prevent="unreadNotifications(notifications.next_page_url)" href="#">@lang('pagination.next')</a>
+        </li>
+    </ul>
 </div>
 @endsection
 
