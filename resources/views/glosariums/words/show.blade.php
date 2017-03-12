@@ -5,7 +5,7 @@
     <meta name="description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
 
     <meta property="og:title" content="{{ $word->origin }} - {{ $word->locale }}">
-    <meta property="og:description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
+    <meta property="og:description" content="{{ $description }}">
     <meta property="og:author" content="{{ ! empty($word->user) ? $word->user->name : config('app.name')  }}">
     <meta property="og:url" content="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}">
     <meta property="og:image" content="{{ $imagePath }}">

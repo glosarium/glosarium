@@ -88,6 +88,17 @@ class WordController extends Controller
             $wikipedias = $wikipedia->openSearch($word->origin);
         }
 
+        // set metadata description
+        $description = null;
+        if (!empty($wikipedias) and isset($wikipedias[2][0])) {
+            $description = $wikipedias[2][0];
+        } else {
+            $description = trans('glosarium.description', [
+                'origin' => $word->origin,
+                'locale' => $word->locale,
+            ]);
+        }
+
         // generate image
         $image = new Image;
         $image->addText($word->origin, 50, 400, 150)
@@ -104,7 +115,7 @@ class WordController extends Controller
             'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link'))
+        return view('glosariums.words.show', compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'description'))
             ->withTitle(trans('glosarium.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,
