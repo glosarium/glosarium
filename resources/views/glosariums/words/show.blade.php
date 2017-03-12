@@ -2,7 +2,7 @@
 
 @push('metadata')
     <meta name="author" content="{{ config('app.name') }}">
-    <meta name="description" content="Arti glosari {{ $word->origin }} adalah {{ $word->locale }}">
+    <meta name="description" content="{{ $description }}">
 
     <meta property="og:title" content="{{ $word->origin }} - {{ $word->locale }}">
     <meta property="og:description" content="{{ $description }}">
