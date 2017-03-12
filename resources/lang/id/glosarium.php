@@ -18,6 +18,7 @@ return [
     'categoryAll'           => 'Kategori :category',
     'shares'                => 'Bagikan ke Media Sosial',
     'notFound'              => 'Kata tidak ditemukan dalam pangkalan data.',
+    'description'           => 'Arti dari glosari :origin adalah :locale.',
 
     'mail'                  => [
         'introProposal' => 'Halo, Anda mendapatkan proposal glosari baru dengan kata asal :origin dan arti kata :origin.',
