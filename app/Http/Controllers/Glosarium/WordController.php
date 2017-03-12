@@ -57,7 +57,12 @@ class WordController extends Controller
             return Word::whereIsPublished(true)->count();
         });
 
-        return view('glosariums.words.index', compact('totalWord'))
+        // generate image for index
+        $image = new Image;
+        $image->addText(config('app.name'), 50, 400, 200);
+        $imagePath = $image->render('images/pages', 'home')->path();
+
+        return view('glosariums.words.index', compact('totalWord', 'imagePath'))
             ->withTitle(trans('glosarium.index'));
     }
 

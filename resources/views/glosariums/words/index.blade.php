@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@push('metadata')
+    <meta title="author" content="Glosarium Indonesia">
+    <meta title="description" content="{{ config('app.description') }}">
+
+    <meta property="og:title" content="{{ $title }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:site_name" content="{{ config('app.name') }}" />
+    <meta property="og:image" content="{{ $imagePath }}" />
+    <meta property="og:description" content="{{ config('app.description') }}" />
+@endpush
+
 @section('heading')
     <search
         v-on:search="search"
