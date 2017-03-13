@@ -15,9 +15,11 @@ namespace App\Http\Controllers\Glosarium;
 use App\Glosarium\Category;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Glosarium\CategoryRequest;
 use App\Libraries\Image;
 use Cache;
 use Carbon\Carbon;
+use Route;
 
 /**
  * Glosarium category controller
@@ -119,5 +121,27 @@ class CategoryController extends Controller
             'isSuccess' => true,
             'total'     => number_format($total, 0, ',', '.'),
         ]);
+    }
+
+    public function edit($slug)
+    {
+        $category = Category::whereSlug($slug)->firstOrFail();
+
+        return view(Route::currentRouteName(), compact('category'))
+            ->withTitle(trans('category.edit', [
+                'name' => $category->name,
+            ]));
+    }
+
+    public function update(CategoryRequest $request, $slug)
+    {
+        $category = Category::whereSlug($slug)->firstOrFail();
+
+        $category->name         = $request->name;
+        $category->description  = $request->description;
+        $category->is_published = $request->publish;
+        $category->save();
+
+        return redirect()->back();
     }
 }

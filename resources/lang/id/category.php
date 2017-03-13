@@ -5,6 +5,7 @@ return [
     'index'      => 'Kategori',
     'searchFor'  => 'Hasil pencarian untuk ":keyword"',
     'latestWord' => 'Kata Paling Baru',
+    'edit'       => 'Ubah Kategori :name',
 
     'btn'        => [
         'load' => 'Muat lebih banyak',

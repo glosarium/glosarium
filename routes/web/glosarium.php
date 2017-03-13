@@ -11,6 +11,10 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('kategori/semua', 'CategoryController@all')->name('category.all');
     Route::get('kategori/{slug}', 'CategoryController@show')->name('category.show');
 
+    // category for admin
+    Route::get('kategori/{slug}/ubah', 'CategoryController@edit')->name('category.edit');
+    Route::put('kategori/{slug}/perbarui', 'CategoryController@update')->name('category.update');
+
     // word
     Route::get('/', 'WordController@index')->name('word.index');
     Route::get('total', 'WordController@total')->name('word.total');

@@ -61,6 +61,11 @@ class Category extends Model
         return route('glosarium.category.show', [$this->attributes['slug']]);
     }
 
+    public function getEditUrlAttribute()
+    {
+        return route('glosarium.category.edit', [$this->attributes['slug']]);
+    }
+
     public function getUpdatedDiffAttribute()
     {
         $updatedAt = Carbon::parse($this->attributes['updated_at']);
