@@ -37,6 +37,7 @@
           <th>@lang('category.field.name')</th>
           <th>@lang('category.field.description')</th>
           <th>@lang('category.field.totalWord')</th>
+          <th>@lang('category.field.published')</th>
           <th>@lang('category.field.actions')</th>
         </tr>
       </thead>
@@ -45,12 +46,15 @@
         <tr>
           <td>
             @if (isset($category->metadata['icon']))
-            <i class="{{ $category->metadata['icon'] }}"></i>
+            <i class="{{ $category->metadata['icon'] }} fa-fw"></i>
             @endif
             {{ $category->name }}
           </td>
           <td>{{ str_limit($category->description, 60) }}</td>
           <td class="text-right">{{ number_format($category->words_count, 0, ',', '.') }}</td>
+          <td class="text-center">
+            <span class="fa fa-square {{ $category->is_published ? 'text-success' : 'text-danger' }}"></span>
+          </td>
           <td>
             <a href="{{ $category->edit_url }}" class="btn btn-xs btn-info">
               <i class="fa fa-edit"></i>

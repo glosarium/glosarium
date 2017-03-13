@@ -19,6 +19,10 @@ class CategoryController extends Controller
             ->filter()
             ->paginate();
 
+        if (!empty(request('keyword'))) {
+            $categories->appends(request()->all());
+        }
+
         return view('admin.glosarium.category.index', compact('categories'))
             ->withTitle(trans('category.index'));
     }

@@ -19,5 +19,6 @@ return [
         'empty'       => 'Kosong',
         'description' => 'Deskripsi',
         'totalWord'   => 'Jumlah Kata',
+        'published'   => 'Dipublikasikan',
     ],
 ];
