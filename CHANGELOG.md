@@ -1,6 +1,6 @@
 # Catatan Perubahan Aplikasi
 
-### 15-03-2017
+### 16-03-2017
 - Simpan deskripsi dari Wikipedia ke dalam pangkalan data ([718a06f](https://github.com/glosarium/glosarium/commit/718a06f5b0c2733b50843935b892250bffbdaf1f))
 - Formulir tambah kata glosari ([8b26770](https://github.com/glosarium/glosarium/commit/8b267708cd6c8c9739b674310d12ef714d407823))
 - Sorting pencarian dari halaman admin ([8b26770](https://github.com/glosarium/glosarium/commit/8b267708cd6c8c9739b674310d12ef714d407823))
