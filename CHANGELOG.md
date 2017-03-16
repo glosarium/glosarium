@@ -1,5 +1,14 @@
 # Catatan Perubahan Aplikasi
 
+### 15-03-2017
+- Simpan deskripsi dari Wikipedia ke dalam pangkalan data ([718a06f](https://github.com/glosarium/glosarium/commit/718a06f5b0c2733b50843935b892250bffbdaf1f))
+- Formulir tambah kata glosari ([8b26770](https://github.com/glosarium/glosarium/commit/8b267708cd6c8c9739b674310d12ef714d407823))
+- Sorting pencarian dari halaman admin ([8b26770](https://github.com/glosarium/glosarium/commit/8b267708cd6c8c9739b674310d12ef714d407823))
+- Fitur form perbarui kata glosari ([1755669](https://github.com/glosarium/glosarium/commit/17556694fec615e5a72607164a82fb0bcf2af4c7))
+- Hapus beberapa route yang tidak digunakan ([0ac11bc](https://github.com/glosarium/glosarium/commit/0ac11bc7fddc5bd5f315ada7955e449c4113820f))
+- Gunakan ukuran tetap untuk ikon aksi ([ed17255](https://github.com/glosarium/glosarium/commit/ed172556d381d0aff61e12bb62e9009bb2c2bd4d))
+- Factory dan table seeder untuk user ([e5e4596](https://github.com/glosarium/glosarium/commit/e5e4596fa69a5e16f351fcc433decad1c4375d44))
+
 ### 13-03-2017
 - Ukuran tetap untuk ikon pada kata terbaru ([2bf4b80](https://github.com/glosarium/glosarium/commit/2bf4b8003f78bfb9b7867a15e9b42a85d0bca637))
 - Formulir ubah kategori ([51b9bb4](https://github.com/glosarium/glosarium/commit/51b9bb4f21d2865e15f56fcc21044e2198806b2a))
