@@ -28,7 +28,6 @@ class Word extends Model
         'pronounce',
         'is_standard',
         'is_published',
-        'retry_count',
     ];
 
     protected $hidden = [
@@ -41,7 +40,6 @@ class Word extends Model
         'is_standard',
         'created_at',
         'updated_at',
-        'retry_count',
         'user_id',
     ];
 
@@ -60,7 +58,6 @@ class Word extends Model
         'category_id'  => 'integer',
         'is_standard'  => 'boolean',
         'is_published' => 'boolean',
-        'retry_count'  => 'integer',
     ];
 
     public function getRouteKeyName()

@@ -15,14 +15,19 @@
             <!-- form search -->
             <form class="form-search-list" method="get" action="{{ url()->current() }}">
                 <div class="row">
-                    <div class="col-sm-10 col-xs-12 ">
+                    <div class="col-sm-4 col-xs-12 ">
                         <div class="form-group">
                             <input class="form-control" value="{{ request('keyword') }}" name="keyword" placeholder="Cari glosarium..." >
                         </div>
                     </div>
                     <div class="col-sm-2 col-xs-12 ">
                         <div class="form-group">
-                            <button class="btn btn-block btn-theme  btn-success">@lang('glosarium.btn.search')</button>
+                            <button class="btn btn-block btn-theme  btn-t-primary">@lang('glosarium.btn.search')</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-xs-12 pull-right">
+                        <div class="form-group">
+                            <a href="{{ route('admin.word.create') }}" class="btn btn-block btn-theme  btn-t-primary">@lang('glosarium.word.btn.create')</a>
                         </div>
                     </div>
                 </div>

@@ -27,8 +27,8 @@ class WordController extends Controller
         }
 
         $words = Word::with('category')
-            ->orderBy('origin', 'ASC')
             ->filter()
+            ->sort()
             ->paginate(20);
 
         if (request('keyword')) {
@@ -37,6 +37,17 @@ class WordController extends Controller
 
         return view('admin.glosarium.word.index', compact('words'))
             ->withTitle(trans('glosarium.index'));
+    }
+
+    public function create()
+    {
+        Auth::user()->can('create', Word::class);
+
+        $categories = Category::orderBy('name', 'ASC')
+            ->pluck('name', 'id');
+
+        return view('admin.glosarium.word.create', compact('categories'))
+            ->withTitle(trans('glosarium.word.create'));
     }
 
     public function edit($id)
@@ -52,6 +63,23 @@ class WordController extends Controller
             ->withTitle(trans('glosarium.word.edit', [
                 'origin' => $word->origin,
             ]));
+    }
+
+    public function store(WordRequest $request)
+    {
+        Auth::user()->can('create', Word::class);
+
+        $word = Word::create([
+            'category_id'  => $request->category,
+            'lang'         => $request->lang,
+            'origin'       => $request->origin,
+            'locale'       => $request->locale,
+            'is_published' => $request->publish,
+            'is_standard'  => true,
+        ]);
+
+        return redirect()->back()
+            ->with('success', trans('glosarium.word.msg.created'));
     }
 
     public function update(WordRequest $request, $id)

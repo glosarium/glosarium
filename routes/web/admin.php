@@ -2,7 +2,7 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
     Route::resource('glosarium/word', 'Glosarium\WordController', [
-        'only' => ['index', 'edit', 'update'],
+        'only' => ['index', 'edit', 'update', 'create', 'store'],
     ]);
 
     Route::resource('glosarium/category', 'Glosarium\CategoryController', [

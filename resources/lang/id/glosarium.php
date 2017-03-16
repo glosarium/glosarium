@@ -21,10 +21,16 @@ return [
     'description'           => 'Arti dari glosari :origin adalah :locale.',
 
     'word'                  => [
-        'edit' => 'Edit Kata :origin',
+        'create' => 'Tambah Kata',
+        'edit'   => 'Edit Kata :origin',
 
-        'msg'  => [
-            'edited' => 'Kata :origin berhasil diperbarui.',
+        'btn'    => [
+            'create' => 'Tambah Kata',
+        ],
+
+        'msg'    => [
+            'created' => 'Kata baru berhasil ditambahkan.',
+            'edited'  => 'Kata :origin berhasil diperbarui.',
         ],
     ],
 
