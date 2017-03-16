@@ -2,10 +2,10 @@
 
 @push('metadata')
     <meta name="author" content="{{ config('app.name') }}">
-    <meta name="description" content="{{ $description }}">
+    <meta name="description" content="{{ $metaDescription }}">
 
     <meta property="og:title" content="{{ $word->origin }} - {{ $word->locale }}">
-    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
     <meta property="og:author" content="{{ ! empty($word->user) ? $word->user->name : config('app.name')  }}">
     <meta property="og:url" content="{{ route('glosarium.word.show', [$word->category->slug, $word->slug]) }}">
     <meta property="og:image" content="{{ $imagePath }}">
@@ -45,27 +45,23 @@
                             <button class="btn btn-default btn-sm">
                                 <i class="fa fa-heart"></i> 0
                             </button>
-                            <button class="btn btn-default btn-sm">
-                                <i class="fa fa-thumbs-up"></i> 0
-                            </button>
-                            <button class="btn btn-default btn-sm">
-                                <i class="fa fa-thumbs-down"></i> 0
-                            </button>
+                            @if (! empty($word->description))
+                                <button class="btn btn-default btn-sm">
+                                    <i class="fa fa-thumbs-up"></i> 0
+                                </button>
+                                <button class="btn btn-default btn-sm">
+                                    <i class="fa fa-thumbs-down"></i> 0
+                                </button>
+                            @endif
                         </div>
 
-                        @foreach ($wikipedias as $p => $pages)
-                            @if ($p == 2)
-                                <p>{{ $pages[0] }}</p>
-                            @endif
-
-                            @if ($p == 3)
-                                <a href="{{ route('link.external', ['url' => Crypt::encrypt($pages[0])]) }}" target="_blank">{{ $pages[0] }}</a>
-                            @endif
-
-                        @endforeach
-
-
-                        @if (empty($wikipedias))
+                        @if (! empty($word->description))
+                            <h5>@lang('glosarium.word.inWikipedia', [
+                                'title' => $word->description->title
+                            ])</h5>
+                            <p>{{ $word->description->description }}</p>
+                            <a href="{{ $word->description->url }}" target="_blank">{{ $word->description->url }}</a>
+                        @else
                             <p>Deskripsi tidak ditemukan dalam Wikipedia.org.</p>
                         @endif
                     </div>

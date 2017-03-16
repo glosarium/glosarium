@@ -103,7 +103,8 @@ class Word extends Model
 
     /**
      * Hash code and convert it as short URL
-     * @return [type] [description]
+     *
+     * @return string
      */
     public function getShortUrlAttribute()
     {
@@ -121,9 +122,9 @@ class Word extends Model
     /**
      * @return mixed
      */
-    public function descriptions()
+    public function description()
     {
-        return $this->hasMany(\App\Glosarium\Description::class);
+        return $this->hasOne(\App\Glosarium\Description::class);
     }
 
     /**

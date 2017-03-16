@@ -16,7 +16,11 @@ class Description extends Model
      */
     protected $fillable = [
         'word_id',
+        'title',
         'description',
+        'url',
+        'vote_up',
+        'vote_down',
     ];
 
     /**
@@ -28,18 +32,18 @@ class Description extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'vote_up'   => 'integer',
+        'vote_down' => 'integer',
+    ];
+
+    /**
      * @return mixed
      */
     public function word()
     {
         return $this->belongsTo(\App\Glosarium\Word::class);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function type()
-    {
-        return $this->belongsTo(\App\Glosarium\WordType::class);
     }
 }

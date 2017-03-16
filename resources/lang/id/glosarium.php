@@ -18,17 +18,18 @@ return [
     'categoryAll'           => 'Kategori :category',
     'shares'                => 'Bagikan ke Media Sosial',
     'notFound'              => 'Kata tidak ditemukan dalam pangkalan data.',
-    'description'           => 'Arti dari glosari :origin adalah :locale.',
 
     'word'                  => [
-        'create' => 'Tambah Kata',
-        'edit'   => 'Edit Kata :origin',
+        'create'      => 'Tambah Kata',
+        'edit'        => 'Edit Kata :origin',
+        'description' => 'Arti dari glosari :origin adalah :locale.',
+        'inWikipedia' => 'Arti ":title" dalam Wikipedia.org',
 
-        'btn'    => [
+        'btn'         => [
             'create' => 'Tambah Kata',
         ],
 
-        'msg'    => [
+        'msg'         => [
             'created' => 'Kata baru berhasil ditambahkan.',
             'edited'  => 'Kata :origin berhasil diperbarui.',
         ],

@@ -10,6 +10,7 @@
 
 namespace App\Http\Controllers\Glosarium;
 
+use App\Glosarium\Description;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
@@ -78,22 +79,32 @@ class WordController extends Controller
         $totalWord = Word::whereIsPublished(true)->count();
 
         $word = Word::whereSlug($slug)
-            ->with('category', 'descriptions', 'user')
+            ->with('category', 'description', 'user')
             ->firstOrFail();
 
-        // wikipedia page
-        $wikipedia  = new Wikipedia;
-        $wikipedias = $wikipedia->openSearch($word->locale);
-        if (empty($wikipedias)) {
-            $wikipedias = $wikipedia->openSearch($word->origin);
+        // get wikipedia page if description is empty
+        if (empty($word->description)) {
+            $wikipedia  = new Wikipedia;
+            $wikipedias = $wikipedia->openSearch($word->locale);
+            if (empty($wikipedias)) {
+                $wikipedias = $wikipedia->openSearch($word->origin);
+            }
+
+            if (!$wikipedia->isEmpty()) {
+                $word->description = Description::create([
+                    'word_id'     => $word->id,
+                    'title'       => $wikipedia->title(),
+                    'description' => $wikipedia->description(),
+                    'url'         => $wikipedia->url(),
+                ]);
+            }
         }
 
-        // set metadata description
-        $description = null;
-        if (!empty($wikipedias) and isset($wikipedias[2][0])) {
-            $description = $wikipedias[2][0];
+        // set meta description
+        if (!empty($word->description)) {
+            $metaDescription = $word->description->description;
         } else {
-            $description = trans('glosarium.description', [
+            $metaDescription = trans('glosarium.word.description', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,
             ]);
@@ -115,7 +126,7 @@ class WordController extends Controller
             'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'description'))
+        return view('glosariums.words.show', compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
             ->withTitle(trans('glosarium.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,
