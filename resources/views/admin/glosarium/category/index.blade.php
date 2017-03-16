@@ -57,10 +57,10 @@
           </td>
           <td>
             <a href="{{ $category->edit_url }}" class="btn btn-xs btn-info">
-              <i class="fa fa-edit"></i>
+              <i class="fa fa-edit fa-fw"></i>
             </a>
             <a href="" class="btn btn-xs btn-danger">
-              <i class="fa fa-trash"></i>
+              <i class="fa fa-trash fa-fw"></i>
             </a>
           </td>
         </tr>
