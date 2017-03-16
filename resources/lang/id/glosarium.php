@@ -20,6 +20,18 @@ return [
     'notFound'              => 'Kata tidak ditemukan dalam pangkalan data.',
     'description'           => 'Arti dari glosari :origin adalah :locale.',
 
+    'word'                  => [
+        'edit' => 'Edit Kata :origin',
+
+        'msg'  => [
+            'edited' => 'Kata :origin berhasil diperbarui.',
+        ],
+    ],
+
+    'category'              => [
+
+    ],
+
     'mail'                  => [
         'introProposal' => 'Halo, Anda mendapatkan proposal glosari baru dengan kata asal :origin dan arti kata :origin.',
     ],

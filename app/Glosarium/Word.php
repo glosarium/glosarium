@@ -49,6 +49,7 @@ class Word extends Model
         'url',
         'updated_diff',
         'short_url',
+        'edit_url',
     ];
 
     /**
@@ -86,6 +87,11 @@ class Word extends Model
             $this->relations['category']['attributes']['slug'],
             $this->attributes['slug'],
         ]);
+    }
+
+    public function getEditUrlAttribute()
+    {
+        return route('admin.word.edit', [$this->attributes['id']]);
     }
 
     /**

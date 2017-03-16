@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Glosarium\Word;
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WordRequest extends FormRequest
@@ -13,7 +15,7 @@ class WordRequest extends FormRequest
      */
     public function authorize()
     {
-        return \Auth::check();
+        return Auth::check() and Auth()->user()->can('update', Word::class);
     }
 
     /**
@@ -24,11 +26,11 @@ class WordRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'category_id' => 'required|integer',
-            'lang' => 'required|string|max:3',
-            'foreign' => 'required|string',
-            'locale' => 'required|string',
-            'alias' => 'string',
+            'category' => 'required|integer',
+            'lang'     => 'required|string|max:3',
+            'origin'   => 'required|string|max:255',
+            'locale'   => 'required|string|max:255',
+            'publish'  => 'required|boolean',
         ];
 
         return $rules;

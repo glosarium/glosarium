@@ -33,9 +33,9 @@
           <div class="radio">
             <label><input type="radio" name="publish" value="1" checked="{{ $category->is_published == 1 }}">Ya</label>
             </div>
-          <div class="radio">
-            <label><input type="radio" name="publish" value="0">Tidak</label>
-          </div>
+        <div class="radio">
+          <label><input type="radio" name="publish" value="0">Tidak</label>
+        </div>
         </div>
 
         <div class="form-group">

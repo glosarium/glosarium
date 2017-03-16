@@ -40,7 +40,7 @@
                         <th>@lang('glosarium.field.locale')</th>
                         <th>@lang('glosarium.field.category')</th>
                         <th>#</th>
-                        <th>@lang('glosarium.field.actions')</th>
+                        <th width="80">@lang('glosarium.field.actions')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,11 +54,11 @@
                             <td>{{ $word->category->name }}</td>
                             <td><i class="fa fa-{{ $word->is_published ? 'square text-success' : 'square text-danger' }}"></i></td>
                             <td>
-                                <a href="" class="btn btn-xs btn-info">
-                                    <i class="fa fa-edit"></i>
+                                <a href="{{ $word->edit_url }}" class="btn btn-xs btn-info">
+                                    <i class="fa fa-edit fa-fw"></i>
                                 </a>
                                 <a href="" class="btn btn-xs btn-danger">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash fa-fw"></i>
                                 </a>
                             </td>
                         </tr>

@@ -8,7 +8,7 @@
 
         <ul class="list-unstyled">
             @if (auth()->user()->type == 'admin')
-                <li><a href="{{ url('admin/glosarium/word') }}">Glosari</a></li>
+                <li><a href="{{ url('admin/glosarium/word') }}">Kata Glosari</a></li>
                 <li><a href="{{ url('admin/glosarium/category') }}">Kategori</a></li>
                 <li><a href="{{ url('admin/user') }}">Kontributor</a></li>
                 <hr>
