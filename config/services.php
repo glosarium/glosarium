@@ -34,16 +34,4 @@ return [
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-    'rollbar'   => [
-        'access_token' => env('ROLLBAR_TOKEN'),
-        'level'        => env('ROLLBAR_LEVEL'),
-    ],
-    'onesignal' => [
-        'app_id'       => env('ONESIGNAL_APP_ID'),
-        'rest_api_key' => env('ONESIGNAL_APP_KEY'),
-    ],
-    'gsid'      => [
-        'url'   => 'http://gsid.web.id/',
-        'token' => env('GSID_TOKEN'),
-    ],
 ];
