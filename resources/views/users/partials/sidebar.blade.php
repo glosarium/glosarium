@@ -1,14 +1,17 @@
 <div class="col-md-2 col-sm-2">
     <div class="block-section">
-        <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}?s=150" class="img-rounded" alt="{{ auth()->user()->name }}">
+        <div class="text-center">
+            <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}?s=150" class="img-rounded" alt="{{ auth()->user()->name }}">
+        </div>
+
         <div class="white-space-20"></div>
-        <h4 class="text-center">{{ auth()->user()->name }}</h4>
+        <h3 class="text-center">{{ auth()->user()->name }}</h3>
 
         <div class="white-space-20"></div>
 
         <ul class="list-unstyled">
             @if (auth()->user()->type == 'admin')
-                <li><a href="{{ url('admin/glosarium/word') }}">Kata Glosari</a></li>
+                <li><a href="{{ url('admin/glosarium/word') }}">Kata</a></li>
                 <li><a href="{{ url('admin/glosarium/category') }}">Kategori</a></li>
                 <li><a href="{{ url('admin/user') }}">Kontributor</a></li>
                 <hr>

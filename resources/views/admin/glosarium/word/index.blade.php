@@ -7,34 +7,37 @@
 <div class="col-md-10 col-sm-10">
 <!-- Block side right -->
 <div class="block-section box-side-account">
-    <h3 class="no-margin-top">{{ $title }}</h3>
-    <hr>
-
     <div class="row">
         <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ $title }}
+                    <a href="{{ route('admin.word.create') }}" class="pull-right btn btn-sm btn-primary btn-theme">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+                <div class="panel-body">
+
             <!-- form search -->
             <form class="form-search-list" method="get" action="{{ url()->current() }}">
                 <div class="row">
-                    <div class="col-sm-4 col-xs-12 ">
+                    <div class="col-md-10 col-xs-12 ">
                         <div class="form-group">
-                            <input class="form-control" value="{{ request('keyword') }}" name="keyword" placeholder="Cari glosarium..." >
+                            <input class="form-control" value="{{ request('keyword') }}" name="keyword" placeholder="Cari kata dalam glosarium..." >
                         </div>
                     </div>
-                    <div class="col-sm-2 col-xs-12 ">
+                    <div class="col-md-2 col-xs-12 ">
                         <div class="form-group">
-                            <button class="btn btn-block btn-theme  btn-t-primary">@lang('glosarium.btn.search')</button>
-                        </div>
-                    </div>
-                    <div class="col-sm-2 col-xs-12 pull-right">
-                        <div class="form-group">
-                            <a href="{{ route('admin.word.create') }}" class="btn btn-block btn-theme  btn-t-primary">@lang('glosarium.word.btn.create')</a>
+                            <button class="btn btn-block btn-theme  btn-default">
+                                <i class="fa fa-search fa-fw"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </form>
             <!-- form search -->
-        </div>
-    </div>
+
+
 
     @if ($words->total() >= 1)
         <div class="table-responsive">
@@ -79,13 +82,22 @@
         </div>
     @endif
 
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="list-unstyled">
+                </div>
+
+                <div class="panel-footer">
+                    <ul class="list-inline list-unstyled">
                 <li><i class="fa fa-square text-success"></i> Dipublikasikan</li>
                 <li><i class="fa fa-square text-warning"></i> Menunggu Persetujuan</li>
                 <li><i class="fa fa-square text-danger"></i> Belum Dipublikasikan</li>
             </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
         </div>
     </div>
 
