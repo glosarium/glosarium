@@ -23,6 +23,7 @@
 
         <!-- Themes styles-->
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         @stack('css')
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

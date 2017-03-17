@@ -1,87 +1,85 @@
 @extends('layouts.app')
-
 @section('content')
-
 @include('users.partials.sidebar')
-
 <div class="col-md-9 col-sm-9">
 <div class="block-section box-side-account">
-    <h3 v-cloak class="no-margin-top">Notifikasi (@{{ notifications.total }})</h3>
-    <hr/>
-    <div v-if="notifications.data.length >= 1" class="table-responsive">
-        <table class="table" v-cloak>
-            <thead>
-                <tr>
-                    <th>Subjek</th>
-                    <th>Pesan</th>
-                    <th></th>
-                    <th class="text-right">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-            	<tr v-for="(notification, index) in notifications.data">
-                    <td>@{{ notification.data.subject }}</td>
-                    <td>@{{ notification.data.message }}</td>
-                    <td>@{{ notification.updated_diff }}</td>
-                    <td class="text-right">
-                        <a @click.prevent="readNotification(index, notification.read_url)" :href="notification.read_url" class="btn btn-xs btn-default btn-danger">
-                            <i class="fa fa-trash fa-fw"></i>
+   <div class="panel panel-default">
+      <div class="panel-heading">
+          <span v-if="notifications.total >= 1">@{{ notifications.total }} Notifikasi</span>
+          <span v-else>Tidak ada notifikasi</span>
+      </div>
+      <div class="panel-body">
+         <div class="qa-message-list" id="wallmessages">
+            <div v-for="(notification, index) in notifications.data" class="message-item">
+               <div class="message-inner">
+                  <div class="message-head clearfix">
+                     <div class="avatar pull-left">
+                        <a href="#">
+                            <i class="fa fa-globe"></i>
                         </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div v-else class="alert alert-info" v-cloak>
-        Tidak ada notifikasi untuk saat ini.
-    </div>
+                     </div>
+                     <div class="user-detail">
+                        <h5 class="handle">@{{ notification.data.subject }}</h5>
+                        <div class="post-meta">
+                           <div class="asker-meta">
+                              <span class="qa-message-what"></span>
+                              <span class="qa-message-when">
+                              <span class="qa-message-when-data">@{{ notification.updated_diff }}</span>
+                              </span>
+                              <span class="qa-message-who">
+                              <span class="qa-message-who-pad hidden">oleh </span>
+                              <span class="qa-message-who-data hidden"><a href="./index.php?qa=user&qa_1=Oleg+Kolesnichenko">Oleg Kolesnichenko</a></span>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="qa-message-content">
+                     @{{ notification.data.message }}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 
-    <ul class="pagination pagination-theme no-margin" v-cloak>
-        <li v-if="notifications.prev_page_url">
-            <a @click.prevent="unreadNotifications(notifications.prev_page_url)" href="#">@lang('pagination.next')</a>
-        </li>
-        <li v-if="notifications.next_page_url">
-            <a @click.prevent="unreadNotifications(notifications.next_page_url)" href="#">@lang('pagination.next')</a>
-        </li>
-    </ul>
+   <button class="btn btn-block btn-theme btn-t-primary">Muat lebih banyak...</button>
 </div>
 @endsection
-
 @push('js')
-    <script>
-        const notification = {!! json_encode([
-            'paginate' => route('user.notification.paginate')
-        ]) !!}
-    </script>
+<script>
+   const notification = {!! json_encode([
+       'paginate' => route('user.notification.paginate')
+   ]) !!}
+</script>
+<script>
+   new Vue({
+       el: '#app',
+       data: {
+           notifications: []
+       },
 
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                notifications: []
-            },
+       mounted() {
+           this.unreadNotifications(notification.paginate);
+       },
 
-            mounted() {
-                this.unreadNotifications(notification.paginate);
-            },
+       methods: {
 
-            methods: {
+           unreadNotifications(url) {
+               this.$http.get(url).then(response => {
+                   this.notifications = response.body;
+               });
+           },
 
-                unreadNotifications(url) {
-                    this.$http.get(url).then(response => {
-                        this.notifications = response.body;
-                    });
-                },
-
-                readNotification(index, url) {
-                    this.$http.get(url).then(response => {
-                        if (response.body.success) {
-                            this.notifications.data.splice(index, 1);
-                            this.notifications.total--;
-                        }
-                    });
-                }
-            }
-        });
-    </script>
+           readNotification(index, url) {
+               this.$http.get(url).then(response => {
+                   if (response.body.success) {
+                       this.notifications.data.splice(index, 1);
+                       this.notifications.total--;
+                   }
+               });
+           }
+       }
+   });
+</script>
 @endpush
