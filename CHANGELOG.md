@@ -1,5 +1,13 @@
 # Catatan Perubahan Aplikasi
 
+### 17-03-2017
+- Urutkan hasil pencarian berdasarkan kata paling pendek ([2eda2b5](https://github.com/glosarium/glosarium/commit/2eda2b5a362f8c0d0c170a4f019551113b32947b))
+- Tambahkan ikon pada daftar kategori ([856e390](https://github.com/glosarium/glosarium/commit/856e390e7890baa28266f50f70416af3d9eb818b))
+- Perbaikan tampilan untuk notifikasi ([a84a158](https://github.com/glosarium/glosarium/commit/a84a158b901cdb4a41ea92048f735395afecee26))
+- Perbaikan tampilan untuk kategori ([308d29a](https://github.com/glosarium/glosarium/commit/308d29a204d21d0b87eefa069a90a9d4858a7b49))
+- Perbaikan tampilan untuk kata ([bb1484d](https://github.com/glosarium/glosarium/commit/bb1484daca3bdfb489f532a94cb88ca8bfc62678))
+- Artisan console untuk membuat daftar route berbasis JS ([8017071](https://github.com/glosarium/glosarium/commit/80170718a4cb5ff02aac418979b5ad7197861862)) 
+
 ### 16-03-2017
 - Artisan console untuk menduplikasi makna yang sama namun kata berbeda ([c3ac9d5](https://github.com/glosarium/glosarium/commit/c3ac9d587e6192a4bc668b605952364ac6ea5a67))
 - Simpan deskripsi dari Wikipedia ke dalam pangkalan data ([718a06f](https://github.com/glosarium/glosarium/commit/718a06f5b0c2733b50843935b892250bffbdaf1f))
