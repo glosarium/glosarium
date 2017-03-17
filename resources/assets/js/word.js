@@ -31,39 +31,42 @@ new Vue({
         getCategory(url) {
             this.loading = true;
 
-            this.$http.get(url).then(response => {
+            axios.get(url).then(response => {
 
-                this.categories = response.body;
-
-                this.loading = false;
-
-            }, response => {
-                this.alerts = {
-                    type: 'danger',
-                    message: 'Kesalahan Server Internal.'
-                }
+                this.categories = response.data;
 
                 this.loading = false;
+            }).catch(e => {
+
             });
         },
 
         getWord(url) {
-            this.loading = true;
+            this.$Progress.start();
 
-            this.$http.get(url).then(response => {
-                this.words = response.body;
+            axios.get(url).then(response => {
+                this.words = response.data;
 
-                this.loading = false;
+                this.$Progress.finish();
             });
         },
 
         search(keyword) {
+            this.$Progress.start();
+            this.loading = true;
+
             this.keyword = keyword;
             
             const url = words.api.wordIndex + '?keyword=' + keyword;
 
-            this.$http.get(url).then(response => {
-                this.words = response.body;
+            axios.get(url).then(response => {
+                this.words = response.data;
+
+                this.$Progress.finish();
+                this.loading = false;
+            }).catch(e => {
+                this.$Progress.fail();
+                this.loading = false;
             });
         }
     }

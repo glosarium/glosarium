@@ -1,5 +1,7 @@
-// bootstrap select
-window.selectpicker = require('bootstrap-select');
-
-// jQuery easing
-// require('jquery.easing')(jQuery);
+// https://github.com/hilongjw/vue-progressbar
+import VueProgressBar from 'vue-progressbar';
+Vue.use(VueProgressBar, {
+	color: '#ecf0f1',
+	failedColor: '#d9534f',
+	thickness: '4px'
+});

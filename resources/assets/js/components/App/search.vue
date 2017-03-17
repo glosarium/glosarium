@@ -8,13 +8,15 @@
                         <div class="col-sm-10 col-xs-12 ">
                             <div class="form-group">
                                 <label class="color-white">Cari Kata</label>
-                                <input v-model="keyword" class="form-control" :placeholder="placeholder" >
+                                <input :disabled="loading" v-model="keyword" class="form-control" :placeholder="placeholder" >
                             </div>
                         </div>
                         <div class="col-sm-2 col-xs-12 ">
                             <div class="form-group">
                                 <label class="hidden-xs">&nbsp;</label>
-                                <button class="btn btn-block btn-theme  btn-success">Cari</button>
+                                <button :disabled="loading" class="btn btn-block btn-theme  btn-success">
+                                    Cari Kata
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -27,7 +29,7 @@
 
 <script>
     export default {
-        props: ['placeholder'],
+        props: ['placeholder', 'loading'],
 
         data() {
             return {

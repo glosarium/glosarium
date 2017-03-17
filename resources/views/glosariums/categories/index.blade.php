@@ -13,11 +13,14 @@
     <search
         v-on:search="search"
         placeholder="Temukan kategori glosari..."
+        :loading="loading"
         >
     </search>
 @endsection
 
 @section('content')
+<vue-progress-bar></vue-progress-bar>
+
 <div class="row">
     <div class="col-md-9">
         <!-- box listing -->
@@ -30,21 +33,24 @@
             @endif
 
             <!-- desc top -->
-            <div class="row hidden-xs">
+            <div class="row hidden-xs" v-cloak>
                 <div class="col-sm-6 ">
-                    @if (request('keyword'))
-                        <p><strong class="color-black">@lang('category.searchFor', ['keyword' => request('keyword')])</strong></p>
-                    @else
-                        <p><strong class="color-black">{{ $title }}</strong></p>
-                    @endif
+                    <p v-if="keyword" class="color-black">
+                        <strong>Hasil pencarian untuk "@{{ keyword }}"</strong>
+                    </p>
+                    <p v-else class="color-black">{{ $title }}</p>
                 </div>
-                <div class="col-sm-6">
+                <div v-if="categories.total >= 1" class="col-sm-6">
                     <p class="text-right" v-cloak>
                         Menampilkan @{{ categories.from }} sampai @{{ categories.to }} dari total @{{ categories.total }} kategori.
                     </p>
                 </div>
             </div>
             <!-- end desc top -->
+
+            <div v-if="categories.total <= 0" class="alert alert-info" v-cloak>
+                Kategori tidak ditemukan dalam pangkalan data.
+            </div>
 
             <!-- item list -->
             <div class="box-list" v-cloak>

@@ -24,3 +24,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(60),
     ];
 });
+
+$factory->define(App\Blog\Post::class, function (Faker\Generator $faker) {
+    return [
+        'user_id'      => 1,
+        'slug'         => $faker->unique()->slug,
+        'title'        => $faker->sentence,
+        'subtitle'     => $faker->sentence,
+        'content'      => str_repeat($faker->paragraph(3), 5),
+        'is_published' => true,
+    ];
+});

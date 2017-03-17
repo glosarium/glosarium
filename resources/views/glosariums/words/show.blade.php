@@ -11,10 +11,6 @@
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
-@section('heading')
-    @include('glosariums.partials.search', ['totalWord' => $totalWord])
-@endsection
-
 @section('content')
 <div class="row">
     <div class="col-md-9">

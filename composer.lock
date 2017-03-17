@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "284cfceb6dbac74e3c88eda97c750491",
-    "content-hash": "ff017d53f006e24b72a1915c5b966302",
+    "hash": "456952775c82f3f7d692f632138c0eb5",
+    "content-hash": "b726042c0bbae2f7a8a39452132dc6f1",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -3173,6 +3173,48 @@
                 "laravel"
             ],
             "time": "2015-12-31 18:44:32"
+        },
+        {
+            "name": "lubusin/laravel-decomposer",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lubusIN/laravel-decomposer.git",
+                "reference": "b5ea685bde05dc45679d6102eae4230e0c0b6fb9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lubusIN/laravel-decomposer/zipball/b5ea685bde05dc45679d6102eae4230e0c0b6fb9",
+                "reference": "b5ea685bde05dc45679d6102eae4230e0c0b6fb9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.3",
+                "illuminate/support": "~5.3",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "illuminate/http": "~5.3",
+                "illuminate/routing": "~5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lubusin\\Decomposer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Harish Toshniwal",
+                    "email": "harish@lubus.in"
+                }
+            ],
+            "description": "A Laravel package to decompose and list your installed packages and their dependencies",
+            "time": "2017-03-02 13:22:00"
         },
         {
             "name": "mockery/mockery",

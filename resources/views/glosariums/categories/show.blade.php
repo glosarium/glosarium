@@ -14,17 +14,20 @@
     <search
         v-on:search="search"
         placeholder="Cari kata dalam kategori {{ $category->name }}..."
+        :loading="loading"
     ></search>
 @endsection
 
 @section('content')
+<vue-progress-bar></vue-progress-bar>
+
 <div class="row">
     <div class="col-md-9">
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
 
             <!-- desc top -->
-            <div class="row hidden-xs">
+            <div class="row hidden-xs" v-cloak>
                 <div class="col-sm-6  ">
                     <p v-if="keyword">
                         <strong class="color-black">Hasil pencarian untuk "@{{ keyword }}"</strong>

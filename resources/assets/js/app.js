@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('./libraries');
 require('./routes');
 
 /**

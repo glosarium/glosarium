@@ -30,13 +30,11 @@ new Vue({
         getCategory(url) {
             this.loading = true;
 
-            this.$http.get(url).then(response => {
-
-                this.categories = response.body;
+            axios.get(url).then(response => {
+                this.categories = response.data;
 
                 this.loading = false;
-
-            }, response => {
+            }).catch(response => {
                 this.alerts = {
                     type: 'danger',
                     message: 'Kesalahan Server Internal.'
@@ -48,11 +46,15 @@ new Vue({
 
         getWord(url) {
             this.loading = true;
+            this.$Progress.start();
 
-            this.$http.get(url).then(response => {
-                this.words = response.body;
+            axios.get(url).then(response => {
+                this.words = response.data;
 
                 this.loading = false;
+                this.$Progress.finish();
+            }).catch(e => {
+                this.$Progress.fail();
             });
         },
 

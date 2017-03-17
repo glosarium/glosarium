@@ -13,6 +13,8 @@
 @endpush
 
 @section('content')
+<vue-progress-bar></vue-progress-bar>
+
 <h2 class="text-center">{{ trans('contact.heading') }}<br/>
     <small>{{ trans('contact.subheading') }}</small>
 </h2>
@@ -117,22 +119,24 @@
                 },
 
                 send: function(e) {
+                    this.$Progress.start();
                     this.beforeSend();
 
                     let url = '{{ route('contact.form') }}';
 
-                    this.$http.post(url, this.forms).then(response => {
+                    axios.post(url, this.forms).then(response => {
                         this.alerts = {
                             type: 'success',
-                            title: response.body.title,
-                            message: response.body.message
+                            title: response.data.title,
+                            message: response.data.message
                         };
 
+                        this.$Progress.finish();
                         this.afterSend();
 
-                    }, response => {
-                        if (response.status == 422) {
-                            this.errors = response.body;
+                    }).catch(error => {
+                        if (error.response.status == 422) {
+                            this.errors = error.response.data;
                         }
                         else {
                             this.alerts = {
@@ -141,6 +145,7 @@
                             }
                         }
 
+                        this.$Progress.fail();
                         this.loading = false;
                     })
                 }

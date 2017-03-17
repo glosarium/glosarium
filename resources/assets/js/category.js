@@ -8,7 +8,8 @@ var category = new Vue({
         categories: [],
         loading: false,
         words: null,
-        nextUrl: null
+        nextUrl: null,
+        keyword: ''
     },
 
     mounted() {
@@ -21,9 +22,9 @@ var category = new Vue({
         getWord() {
             let url = categories.word.latest;
 
-            this.$http.post(url).then(response => {
+            axios.post(url).then(response => {
 
-                this.words = response.body.words;
+                this.words = response.data.words;
 
                 this.loading = false;
             }, response => {
@@ -33,21 +34,25 @@ var category = new Vue({
         },
 
         getCategory(url) {
-            this.$http.get(url).then(response => {
+            this.$Progress.start();
 
-                this.categories = response.body;
+            axios.get(url).then(response => {
+
+                this.categories = response.data;
 
                 this.loading = false;
+                this.$Progress.finish();
             }, response => {
                 this.loading = false;
+                this.$Progress.fail();
             });
         },
 
         loadMore(url) {
             this.loading = true;
 
-            this.$http.get(url).then(response => {
-                let body = response.body;
+            axios.get(url).then(response => {
+                let body = response.data;
 
                 this.categories = {
                     next_page_url: body.next_page_url,
@@ -62,8 +67,8 @@ var category = new Vue({
                 };
 
                 let index = 0;
-                for(index in response.body.data) {
-                    this.categories.data.push(response.body.data[index]);
+                for(index in response.data.data) {
+                    this.categories.data.push(response.data.data[index]);
                 }
 
                 this.loading = false;
@@ -71,10 +76,21 @@ var category = new Vue({
         },
 
         search(keyword) {
-            const url = categories.api.index + '?keyword=' + keyword;
+            this.keyword = keyword;
+            
+            this.$Progress.start();
+            this.loading = true;
 
-            this.$http.get(url).then(response => {
-                this.categories = response.body;
+            const url = categories.index + '?keyword=' + keyword;
+
+            axios.get(url).then(response => {
+                this.categories = response.data;
+
+                this.$Progress.finish();
+                this.loading = false;
+            }).catch(e => {
+                this.$Progress.fail();
+                this.loading = false;
             });
         }
     }

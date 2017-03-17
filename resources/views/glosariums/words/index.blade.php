@@ -15,17 +15,19 @@
     <search
         v-on:search="search"
         placeholder="Kata asing atau dalam Bahasa Indonesia..."
+        :loading="loading"
         >
     </search>
 @endsection
 
 @section('content')
+<vue-progress-bar></vue-progress-bar>
 <div class="row">
     <div class="col-md-9">
         <!-- box listing -->
         <div class="block-section-sm box-list-area">
 
-            @if (\Agent::isMobile())
+            @if (Agent::isMobile())
                 <div class="row text-center">
                     @include('partials.ads.responsive')
                 </div>
@@ -110,7 +112,7 @@
     <div class="col-md-3">
         <div class="block-section-sm side-right">
 
-            @if (\Agent::isDesktop())
+            @if (Agent::isDesktop())
                 <div class="row text-center">
                     @include('partials.ads.300x250')
                 </div>
