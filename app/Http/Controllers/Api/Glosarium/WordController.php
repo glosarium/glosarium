@@ -30,8 +30,8 @@ class WordController extends Controller
         })
             ->with('category')
             ->whereIsPublished(true)
-            ->orderBy('origin', 'ASC')
             ->filter()
+            ->sort()
             ->paginate();
 
         if (!empty(request())) {
