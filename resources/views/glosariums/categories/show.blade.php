@@ -120,11 +120,14 @@
                     </a>
                 </h5>
 
-                <div v-if="categories" class="collapse in" id="category">
+                <div v-if="categories" class="collapse in" id="category" v-cloak>
                     <div class="list-area">
                         <ul class="list-unstyled">
                             <li v-for="category in categories">
-                                <a :href="category.url">@{{ category.name }} (@{{ category.words_count.toLocaleString('id-Id') }})</a>
+                                <a :href="category.url">
+                                    <i :class="[category.metadata.icon, 'fa-fw']"></i>
+                                    @{{ category.name }} (@{{ category.words_count.toLocaleString('id-Id') }})
+                                </a>
                             </li>
                         </ul>
                     </div>
