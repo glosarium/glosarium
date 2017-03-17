@@ -103,7 +103,7 @@
                 <h5>@lang('glosarium.shares')</h5>
                 <p class="share-btns">
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" class="btn btn-primary"><i class="fa fa-facebook"></i></a>
-                    <a href="https://twitter.com/home?status=Arti kata {{ $word->origin }} pada {{ config('app.name') }} adalah {{ $word->locale }}. {{ url()->current() }}" class="btn btn-info"><i class="fa fa-twitter"></i></a>
+                    <a href="https://twitter.com/intent/tweet?url={{ $word->short_url }}&text=Padanan kata {{ $word->origin }} dalam {{ $word->category->name }} adalah {{ $word->locale }}.&hashtags=padanan,glosarium" class="btn btn-info"><i class="fa fa-twitter"></i></a>
                     <a href="https://plus.google.com/share?url={{ url()->current() }}" class="btn btn-danger"><i class="fa fa-google-plus"></i></a>
                     {{-- <a href="#" class="btn btn-warning"><i class="fa fa-envelope"></i></a> --}}
                 </p>
