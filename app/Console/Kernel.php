@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\Word\Duplicate::class,
+        Commands\Route::class,
     ];
 
     /**
