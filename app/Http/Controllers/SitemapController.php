@@ -25,7 +25,9 @@ class SitemapController extends Controller
         // cache categories
         $rememberFor = \Carbon\Carbon::now()->addDays(30);
         $categories  = \Cache::remember('sitemap.categories', $rememberFor, function () {
-            return Category::orderBy('name', 'ASC')->get();
+            return Category::orderBy('name', 'ASC')
+                ->whereIsPublished(true)
+                ->get();
         });
 
         foreach ($categories as $category) {
