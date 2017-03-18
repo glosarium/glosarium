@@ -18,7 +18,7 @@
                   {{ method_field('put') }}
 
                   <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-3">@lang('user.form.name')</label>
+                     <label class="control-label col-md-3">@lang('user.field.name')</label>
                      <div class="col-md-5">
                         <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control">
                         <span class="label label-danger">{{ $errors->first('name') }}</span>
@@ -26,7 +26,7 @@
                   </div>
 
                   <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-3">@lang('user.form.email')</label>
+                     <label class="control-label col-md-3">@lang('user.field.email')</label>
                      <div class="col-md-5">
                         <input type="text" name="email" readonly="true" value="{{ old('email', $user->email) }}" class="form-control">
                         <span class="label label-danger">{{ $errors->first('email') }}</span>
@@ -34,7 +34,7 @@
                   </div>
 
                   <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-3">@lang('user.form.type')</label>
+                     <label class="control-label col-md-3">@lang('user.field.type')</label>
                      <div class="col-md-5">
                         <div class="radio">
                            <label>
@@ -50,7 +50,7 @@
                   </div>
 
                   <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-3">@lang('user.form.status')</label>
+                     <label class="control-label col-md-3">@lang('user.field.status')</label>
                      <div class="col-md-5">
                         <div class="radio">
                            <label><input type="radio" name="active" value="1" {{ $user->is_active == 1 ? 'checked="true"' : '' }}>Aktif</label>

@@ -19,25 +19,9 @@ return [
     'edit'           => 'Ubah :name',
     'history'        => 'Riwayat Kontributor',
 
-    'form'           => [
-        'name'                 => 'Nama Lengkap',
-        'email'                => 'Pos-el (Pos Elektronik)',
-        'password'             => 'Sandi Lewat',
-        'confirmPassword'      => 'Konfirmasi Sandi Lewat',
-        'remember'             => 'Ingatkan saya',
-        'currentPassword'      => 'Sandi Lewat Sekarang',
-        'newPassword'          => 'Sandi Lewat Baru',
-        'passwordConfirmation' => 'Konfirmasi Sandi Lewat',
-        'updated'              => 'Diperbarui',
-        'created'              => 'Dibuat',
-        'actions'              => 'Aksi',
-        'status'               => 'Status',
-        'type'                 => 'Jenis',
-    ],
-
     'field'          => [
         'name'            => 'Name',
-        'email'           => 'Surel',
+        'email'           => 'Pos-el (Pos Elektronik)',
         'type'            => 'Tipe',
         'status'          => 'Status',
         'actions'         => 'Aksi',
@@ -45,6 +29,7 @@ return [
         'password'        => 'Sandi Lewat',
         'currentPassword' => 'Sandi Lewat Sekarang',
         'confirmPassword' => 'Konfirmasi Sandi Lewat',
+        'remember'        => 'Ingatkan saya!',
     ],
 
     'btn'            => [

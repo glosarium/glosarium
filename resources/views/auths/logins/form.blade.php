@@ -16,12 +16,12 @@
                     {{ csrf_field() }}
 
                     <div v-bind:class="['form-group', errors && errors.email ? 'has-error' : '']">
-                        <label>@lang('user.form.email')</label>
+                        <label>@lang('user.field.email')</label>
                         <input v-model="forms.email" :disabled="loading" name="email" type="email" class="form-control" placeholder="">
                         <span v-if="errors && errors.email" class="label label-danger">@{{ errors.email[0] }} </span>
                     </div>
                     <div v-bind:class="['form-group', errors && errors.password ? 'has-error' : '']">
-                        <label>@lang('user.form.password')</label>
+                        <label>@lang('user.field.password')</label>
                         <input v-model="forms.password" :disabled="loading" name="password" type="password" class="form-control" placeholder="">
                         <span v-if="errors && errors.password" class="label label-danger">@{{ errors.password[0] }} </span>
                     </div>
@@ -32,7 +32,7 @@
                                     <label>
                                     <input v-model="forms.remember" name="remember" type="checkbox" value="1">
                                     <span class="fa fa-check"></span>
-                                    @lang('user.form.remember')
+                                    @lang('user.field.remember')
                                     </label>
                                 </div>
                             </div>
