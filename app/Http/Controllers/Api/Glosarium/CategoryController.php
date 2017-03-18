@@ -29,6 +29,7 @@ class CategoryController extends Controller
         $categories = Category::orderBy('name', 'ASC')
             ->filter()
             ->withCount('words')
+            ->whereIsPublished(true)
             ->paginate(10);
 
         return response()->json($categories);
@@ -44,6 +45,7 @@ class CategoryController extends Controller
         $categories = Cache::remember('glosarium.index', $this->cacheTime, function () {
             return Category::orderBy('name', 'ASC')
                 ->withCount('words')
+                ->whereIsPublished(true)
                 ->get();
         });
 
