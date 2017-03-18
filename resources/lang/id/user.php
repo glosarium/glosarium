@@ -16,10 +16,12 @@ return [
     'notUser'        => 'Bukan terdaftar?',
     'createAccount'  => 'Daftar sebagai Kontributor',
     'notAuthorized'  => 'Anda tidak punya hak untuk mengakses halaman ini.',
+    'edit'           => 'Ubah :name',
+    'history'        => 'Riwayat Kontributor',
 
     'form'           => [
         'name'                 => 'Nama Lengkap',
-        'email'                => 'Surel (Surat Elektronik)',
+        'email'                => 'Pos-el (Pos Elektronik)',
         'password'             => 'Sandi Lewat',
         'confirmPassword'      => 'Konfirmasi Sandi Lewat',
         'remember'             => 'Ingatkan saya',
@@ -29,6 +31,8 @@ return [
         'updated'              => 'Diperbarui',
         'created'              => 'Dibuat',
         'actions'              => 'Aksi',
+        'status'               => 'Status',
+        'type'                 => 'Jenis',
     ],
 
     'field'          => [
@@ -37,6 +41,7 @@ return [
         'type'    => 'Tipe',
         'status'  => 'Status',
         'actions' => 'Aksi',
+        'deleted' => 'Dihapus',
     ],
 
     'btn'            => [
@@ -47,5 +52,8 @@ return [
 
     'msg'            => [
         'passwordUpdated' => 'Sandi lewat berhasil diperbarui.',
+        'updated'         => 'Data kontributor telah diperbarui.',
+        'deleted'         => 'Kontributor telah dihapus.',
+        'restored'        => 'Kontributor dikembalikan sebagai status aktif.',
     ],
 ];

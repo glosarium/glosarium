@@ -10,10 +10,6 @@
    <div class="panel panel-default">
       <div class="panel-heading">
          {{ $title }}
-         <span class="pull-right">
-            <a href="{{ route('admin.user.history') }}" class="btn btn-default btn-sm">
-               <i class="fa fa-fw fa-history"></i>
-            </a>
          </span>
       </div>
       <div class="panel-body">
@@ -46,8 +42,8 @@
                      <th>@lang('user.field.name')</th>
                      <th>@lang('user.field.email')</th>
                      <th>@lang('user.field.type')</th>
-                     <th class="text-center">#</th>
                      <th>@lang('user.field.actions')</th>
+                     <th>@lang('user.field.deleted')</th>
                   </tr>
                </thead>
                <tbody>
@@ -58,13 +54,10 @@
                      </td>
                      <td>{{ $user->email }}</td>
                      <td>{{ ucfirst($user->type) }}</td>
-                     <td class="text-center"><i class="fa fa-{{ $user->is_active ? 'square text-success' : 'square text-danger' }}"></i></td>
+                     <td>{{ $user->deleted_at->format('d, M Y H:i') }}</td>
                      <td>
-                        <a href="{{ route('admin.user.edit', [$user->id]) }}" class="btn btn-xs btn-info">
-                            <i class="fa fa-edit fa-fw"></i>
-                        </a>
-                        <a href="{{ route('admin.user.destroy', [$user->id]) }}" class="delete btn btn-xs btn-danger">
-                            <i class="fa fa-trash fa-fw"></i>
+                        <a href="{{ route('admin.user.restore', [$user->id]) }}" class="btn btn-xs btn-info">
+                            <i class="fa fa-undo fa-fw"></i>
                         </a>
                      </td>
                   </tr>
@@ -80,31 +73,16 @@
          </div>
          @endif
       </div>
-      <div class="panel-footer">
-         <ul class="list-inline">
-            <li><i class="fa fa-square text-success"></i> Aktif</li>
-            <li><i class="fa fa-square text-danger"></i> Tidak Aktif</li>
-         </ul>
-      </div>
    </div>
    {{ $users->links() }}
 </div>
 <!-- end Block side right -->
-
-<form id="delete-form" method="post">
-    {{ csrf_field() }}
-    {{ method_field('delete') }}
-</form>
 @endsection
 
 @push('js')
 <script>
    $(() => {
        $('ul.pagination').addClass('pagination-theme no-margin');
-       $('a.delete').click(function(){
-         $('#delete-form').attr('action', $(this).attr('href')).submit();
-         return false;
-       });
    });
 </script>
 @endpush

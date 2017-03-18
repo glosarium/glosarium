@@ -9,7 +9,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'na
         'only' => ['index', 'edit'],
     ]);
 
+    Route::get('user/history', 'UserController@history')->name('user.history');
+    Route::get('user/{id}/restore', 'UserController@restore')->name('user.restore');
     Route::resource('user', 'UserController', [
-        'only' => ['index'],
+        'only' => ['index', 'edit', 'update', 'destroy'],
     ]);
 });

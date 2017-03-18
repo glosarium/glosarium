@@ -13,7 +13,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return \Auth::check();
     }
 
     /**
@@ -23,8 +23,12 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-
+        $rules = [
+            'name'   => 'required|max:50|string',
+            'type'   => 'required|in:admin,contributor',
+            'active' => 'required|boolean',
         ];
+
+        return $rules;
     }
 }

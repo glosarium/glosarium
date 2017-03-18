@@ -3,6 +3,7 @@
 namespace App;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -10,6 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use Sluggable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +24,15 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
+    ];
+
+    /**
+     * Convert to Carbon object
+     *
+     * @var var
+     */
+    protected $dates = [
+        'deleted_at',
     ];
 
     protected $casts = [
