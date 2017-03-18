@@ -93,9 +93,6 @@
                                         <li><a href="{{ route('user.password.form') }}">Ubah Sandi Lewat</a></li>
                                     </ul>
                                 </li>
-                                @else
-                                <li class="link-btn"><a href="{{ url('login') }}"><span class="btn btn-theme btn-pill btn-xs btn-line">Masuk</span></a></li>
-                                <li class="link-btn"><a href="{{ url('register') }}"><span class="btn btn-theme  btn-pill btn-xs btn-line">Daftar Sebagai Kontributor</span></a></li>
                                 @endif
                             </ul>
                         <a href="#" class="btn-nav-toogle first">
