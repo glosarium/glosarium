@@ -15,9 +15,11 @@ return [
         'descriptionHelp' => 'Tulis rincian, gagasan, atau referensi kata.',
         'inLocale'        => 'Kata dalam Bahasa Indonesia',
         'noDescription'   => 'Deskripsi tidak ditemukan dalam Wikipedia.org.',
+        'forward'         => 'Informasi kata juga dikirim ke :email',
 
         'btn'             => [
-            'create' => 'Tambah Kata',
+            'create'  => 'Tambah Kata',
+            'propose' => 'Ajukan Proposal',
         ],
 
         'field'           => [
@@ -29,6 +31,7 @@ return [
             'pending'     => 'Menunggu Persetujuan',
             'actions'     => 'Aksi',
             'lang'        => 'Bahasa',
+            'description' => 'Deskripsi',
         ],
 
         'msg'             => [
@@ -48,6 +51,7 @@ return [
         'searchResult' => 'Hasil pencarian untuk',
         'notFound'     => 'Kategori tidak ditemukan dalam pangkalan data.',
         'latestWord'   => 'Kata Terbaru',
+        'select'       => 'Select Category',
 
         'field'        => [
             'name'        => 'Nama',
@@ -67,21 +71,5 @@ return [
 
     'mail'     => [
         'introProposal' => 'Halo, Anda mendapatkan proposal glosari baru dengan kata asal :origin dan arti kata :origin.',
-    ],
-
-    'form'     => [
-        'category'    => 'Kategori',
-        'origin'      => 'Kata Asal',
-        'locale'      => 'Kata Translasi',
-        'description' => 'Deskripsi',
-    ],
-
-    'btn'      => [
-        'create' => 'Ajukan Propsal',
-        'search' => 'Cari',
-    ],
-
-    'msg'      => [
-        'created' => 'Terima kasih. Glosari berhasil disimpan dan akan ditinjau terlebih dahulu.',
     ],
 ];
