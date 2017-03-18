@@ -12,6 +12,10 @@
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
+@section('heading')
+    @include('partials.title')
+@endsection
+
 @section('content')
 <vue-progress-bar></vue-progress-bar>
 

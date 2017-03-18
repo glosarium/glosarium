@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('heading')
+  @include('partials.title')
+@stop
+
 @section('content')
 
 @include('users.partials.sidebar')

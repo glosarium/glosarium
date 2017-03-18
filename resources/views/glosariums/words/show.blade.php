@@ -11,6 +11,10 @@
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
+@section('heading')
+    @include('partials.title')
+@stop
+
 @section('content')
 <div class="row">
     <div class="col-md-9">

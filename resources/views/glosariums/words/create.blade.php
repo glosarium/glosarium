@@ -11,7 +11,7 @@
 @endpush
 
 @section('heading')
-	@include('glosariums.partials.title', compact('title'))
+	@include('partials.title', compact('title'))
 @endsection
 
 @section('content')

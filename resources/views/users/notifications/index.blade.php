@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('heading')
+  @include('partials.title')
+@stop
+
 @section('content')
 @include('users.partials.sidebar')
 <div class="col-md-9 col-sm-9">

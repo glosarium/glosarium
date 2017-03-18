@@ -81,6 +81,23 @@
                 <!-- mobile navbar -->
                 <div class="container">
                     <nav class="mobile-nav hidden-md hidden-lg">
+                        <ul class="nav navbar-nav nav-block-left">
+                                @if (auth()->check())
+                                <li class="dropdown">
+                                    <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
+                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Beranda</a></li>
+                                        <li><a href="{{ route('user.notification.index') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
+                                        <li><a href="{{ route('user.password.form') }}">Ubah Sandi Lewat</a></li>
+                                    </ul>
+                                </li>
+                                @else
+                                <li class="link-btn"><a href="{{ url('login') }}"><span class="btn btn-theme btn-pill btn-xs btn-line">Masuk</span></a></li>
+                                <li class="link-btn"><a href="{{ url('register') }}"><span class="btn btn-theme  btn-pill btn-xs btn-line">Daftar Sebagai Kontributor</span></a></li>
+                                @endif
+                            </ul>
                         <a href="#" class="btn-nav-toogle first">
                         <span class="bars"></span>
                         Menu
@@ -105,7 +122,7 @@
 
             <!-- body-content -->
             <div class="body-content clearfix">
-                <div class="bg-color2" id="content">
+                <div class="bg-color1" id="content">
                     <div class="container">
                         @yield('content')
                     </div>
