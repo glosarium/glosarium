@@ -36,12 +36,15 @@ return [
     ],
 
     'field'          => [
-        'name'    => 'Name',
-        'email'   => 'Surel',
-        'type'    => 'Tipe',
-        'status'  => 'Status',
-        'actions' => 'Aksi',
-        'deleted' => 'Dihapus',
+        'name'            => 'Name',
+        'email'           => 'Surel',
+        'type'            => 'Tipe',
+        'status'          => 'Status',
+        'actions'         => 'Aksi',
+        'deleted'         => 'Dihapus',
+        'password'        => 'Sandi Lewat',
+        'currentPassword' => 'Sandi Lewat Sekarang',
+        'confirmPassword' => 'Konfirmasi Sandi Lewat',
     ],
 
     'btn'            => [
