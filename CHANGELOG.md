@@ -1,5 +1,13 @@
 # Catatan Perubahan Aplikasi
 
+### 18-03-2017
+- Perbaikan tampilan untuk akses via mobile, tambah logo untuk setiap heading yang kosong ([80513ca](https://github.com/glosarium/glosarium/commit/80513ca816e3ab05798f57a0bd555fa0fcd5562a))
+- Perbaikan tampilan untuk manajemen kata ([1e7cbce](https://github.com/glosarium/glosarium/commit/1e7cbcea76d9b90a4a63aa17e72cfdd2d78166dd))
+- Perubahan tampilan untuk formulir ubah kategori ([2e1504f](https://github.com/glosarium/glosarium/commit/2e1504fa5460cf62a067c98f697b326a1610d597))
+- Perbaikan beberapa bahasa ([841036d](https://github.com/glosarium/glosarium/commit/841036d7e3cc2d2422f1f5f49004268c3b2fd291))
+- Perbaikan tampilan untuk ubah sandi lewat ([f8f922b](https://github.com/glosarium/glosarium/commit/f8f922b9d0906dec7d3db12d8aa07c9e611fd5b7))
+- User manajemen dari untuk admin ([45a2c81](https://github.com/glosarium/glosarium/commit/45a2c81669170d85eec6e8b02e195cc82882983c))
+
 ### 17-03-2017
 - Urutkan hasil pencarian berdasarkan kata paling pendek ([2eda2b5](https://github.com/glosarium/glosarium/commit/2eda2b5a362f8c0d0c170a4f019551113b32947b))
 - Tambahkan ikon pada daftar kategori ([856e390](https://github.com/glosarium/glosarium/commit/856e390e7890baa28266f50f70416af3d9eb818b))
