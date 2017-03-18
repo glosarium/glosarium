@@ -16,7 +16,7 @@
                   {{ csrf_field() }}
                   {{ method_field('put') }}
                   <div class="form-group {{ $errors->has('category') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-2">Kategori</label>
+                     <label class="control-label col-md-3">@lang('glosarium.word.field.category')</label>
                      <div class="col-md-5">
                         <select name="category" class="form-control">
                         @foreach ($categories as $value => $label)
@@ -27,34 +27,34 @@
                      </div>
                   </div>
                   <div class="form-group {{ $errors->has('lang') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-2">Bahasa Asal</label>
+                     <label class="control-label col-md-3">@lang('glosarium.word.field.lang')</label>
                      <div class="col-md-3">
-                        <input type="text" name="lang" value="{{ old('lang', $word->lang) }}" class="form-control">
+                        <input type="text" name="lang" value="{{ old('lang', $word->lang) }}" class="form-control" placeholder="id, en, ar, ...">
                         <span class="label label-danger">{{ $errors->first('lang') }}</span>
                      </div>
                   </div>
                   <div class="form-group {{ $errors->has('origin') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-2">Kata Asal</label>
+                     <label class="control-label col-md-3">@lang('glosarium.word.field.origin')</label>
                      <div class="col-md-5">
                         <input type="text" name="origin" value="{{ old('name', $word->origin) }}" class="form-control">
                         <span class="label label-danger">{{ $errors->first('origin') }}</span>
                      </div>
                   </div>
                   <div class="form-group {{ $errors->has('locale') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-2">Kata Lokal</label>
+                     <label class="control-label col-md-3">@lang('glosarium.word.field.locale')</label>
                      <div class="col-md-5">
                         <input type="text" name="locale" value="{{ old('locale', $word->locale) }}" class="form-control">
                         <span class="label label-danger">{{ $errors->first('locale') }}</span>
                      </div>
                   </div>
                   <div class="form-group {{ $errors->has('publish') ? 'has-error' : '' }}">
-                     <label class="control-label col-md-2">Dipublikasikan</label>
+                     <label class="control-label col-md-3">@lang('glosarium.word.field.published')</label>
                      <div class="col-md-5">
                         <div class="radio">
-                           <label><input type="radio" name="publish" value="1" {{ $word->is_published == 1 ? 'checked="true"' : '' }}>Ya</label>
+                           <label><input type="radio" name="publish" value="1" {{ $word->is_published == 1 ? 'checked="true"' : '' }}>@lang('global.yes')</label>
                         </div>
                         <div class="radio">
-                           <label><input type="radio" name="publish" value="0" {{ $word->is_published == 0 ? 'checked="true"' : '' }}>Tidak</label>
+                           <label><input type="radio" name="publish" value="0" {{ $word->is_published == 0 ? 'checked="true"' : '' }}>@lang('global.no')</label>
                         </div>
                      </div>
                   </div>

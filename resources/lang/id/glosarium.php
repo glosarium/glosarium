@@ -29,6 +29,17 @@ return [
             'create' => 'Tambah Kata',
         ],
 
+        'field'       => [
+            'origin'      => 'Kata Asal',
+            'locale'      => 'Kata Translasi',
+            'category'    => 'Kategori',
+            'published'   => 'Dipublikasikan',
+            'unpublished' => 'Belum Dipublikasikan',
+            'pending'     => 'Menunggu Persetujuan',
+            'actions'     => 'Aksi',
+            'lang'        => 'Bahasa',
+        ],
+
         'msg'         => [
             'created' => 'Kata baru berhasil ditambahkan.',
             'edited'  => 'Kata :origin berhasil diperbarui.',
@@ -52,14 +63,6 @@ return [
         'origin'      => 'Kata Asal',
         'locale'      => 'Kata Translasi',
         'description' => 'Deskripsi',
-    ],
-
-    'field'                 => [
-        'origin'    => 'Kata Asal',
-        'locale'    => 'Kata Translasi',
-        'category'  => 'Kategori',
-        'published' => 'Dipublikasikan',
-        'actions'   => 'Aksi',
     ],
 
     'btn'                   => [

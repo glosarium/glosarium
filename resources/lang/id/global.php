@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'yes' => 'Ya',
+    'no'  => 'Tidak',
+
     'btn' => [
         'save'   => 'Simpan',
         'create' => 'Buat',
