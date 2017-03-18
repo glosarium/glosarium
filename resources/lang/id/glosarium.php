@@ -36,7 +36,11 @@ return [
     ],
 
     'category'              => [
-
+        'field' => [
+            'name'        => 'Nama',
+            'description' => 'Deskripsi',
+            'published'   => 'Dipublikasikan',
+        ],
     ],
 
     'mail'                  => [
