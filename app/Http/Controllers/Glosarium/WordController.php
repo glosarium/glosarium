@@ -23,6 +23,7 @@ use Cache;
 use Carbon\Carbon;
 use Mail;
 use Notification;
+use Route;
 
 /**
  * Manage glosarium words
@@ -39,12 +40,54 @@ class WordController extends Controller
             'js' => [
                 'route' => \Route::currentRouteName(),
                 'api'   => [
-                    'wordIndex'     => route('api.word.index'),
-                    'categoryIndex' => route('api.category.index'),
-                    'allCategory'   => route('api.category.all'),
+                    'wordIndex'     => route('glosarium.word.paginate'),
+                    'categoryIndex' => route('glosarium.category.paginate'),
+                    'allCategory'   => route('glosarium.category.all'),
                 ],
             ],
         ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function paginate()
+    {
+        $words = Word::filter()
+            ->sort()
+            ->with('category')
+            ->paginate(20);
+
+        if (!empty(request())) {
+            $words->appends(request()->all());
+        }
+
+        return response()->json($words);
+    }
+
+    /**
+     * Filter word by category
+     * @param  integer $categoryId
+     * @return string  json
+     */
+    public function category($categorySlug)
+    {
+        $words = Word::whereHas('category', function ($category) use ($categorySlug) {
+            return $category->whereSlug($categorySlug);
+        })
+            ->with('category')
+            ->whereIsPublished(true)
+            ->filter()
+            ->sort()
+            ->paginate();
+
+        if (!empty(request())) {
+            $words->appends(request()->all());
+        }
+
+        return response()->json($words);
     }
 
     /**
@@ -54,17 +97,13 @@ class WordController extends Controller
      */
     public function index()
     {
-        $totalWord = Cache::get('glosarium.total', function () {
-            return Word::whereIsPublished(true)->count();
-        });
-
         // generate image for index
         $image = new Image;
         $image->addText(config('app.name'), 50, 400, 200);
         $imagePath = $image->render('images/pages', 'home')->path();
 
-        return view('glosariums.words.index', compact('totalWord', 'imagePath'))
-            ->withTitle(trans('glosarium.index'));
+        return view(Route::currentRouteName(), compact('totalWord', 'imagePath'))
+            ->withTitle(trans('glosarium.word.index'));
     }
 
     /**
@@ -126,7 +165,7 @@ class WordController extends Controller
             'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
-        return view('glosariums.words.show', compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
+        return view(Route::currentRouteName(), compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
             ->withTitle(trans('glosarium.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,
@@ -158,7 +197,7 @@ class WordController extends Controller
      */
     public function total()
     {
-        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+        abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $cacheTime = \Carbon\Carbon::now()->addDays(7);
         $total     = Cache::remember('glosarium.total', $cacheTime, function () {
@@ -181,13 +220,13 @@ class WordController extends Controller
         // create image
         $image = new Image;
 
-        $image->addText(trans('glosarium.create'), 40, 400, 200)
+        $image->addText($title = trans('glosarium.word.create'), 40, 400, 200)
             ->render('images/pages', 'create-glossary');
 
         $imagePath = $image->path();
 
-        return view('glosariums.words.create', compact('imagePath'))
-            ->withTitle(trans('glosarium.create'));
+        return view(Route::currentRouteName(), compact('imagePath'))
+            ->withTitle($title);
     }
 
     /**
@@ -219,8 +258,8 @@ class WordController extends Controller
                 'glosarium' => $glosarium,
                 'alerts'    => [
                     'type'    => 'success',
-                    'title'   => trans('glosarium.success'),
-                    'message' => trans('glosarium.msg.created'),
+                    'title'   => trans('global.success'),
+                    'message' => trans('glosarium.word.msg.created'),
                 ],
             ]);
 
@@ -241,7 +280,7 @@ class WordController extends Controller
      */
     public function latest()
     {
-        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+        abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $words = Word::orderBy('created_at', 'DESC')
             ->with('category')

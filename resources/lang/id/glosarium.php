@@ -1,35 +1,26 @@
 <?php
 
 return [
-    'title'                 => 'Glosarium',
-    'index'                 => 'Indeks Glosari',
-    'categoryTitle'         => 'Kategori :name',
-    'create'                => 'Tambah Glosari',
-    'inLocale'              => 'Kata dalam Bahasa Indonesia',
-    'forward'               => 'Proposal juga akan dikirim ke surel: :email',
-    'selectCategory'        => 'Pilih salah satu kategori',
-    'contribute'            => 'Berkontribusi menambahkan glosari pada aplikasi.',
-    'success'               => 'Berhasil!',
-    'notFound'              => 'Glosari tidak ditemukan.',
-    'categoryNotFound'      => 'Kategori glosarium tidak ditemukan.',
-    'category'              => 'Kategori Glosarium',
-    'noCategoryDescription' => 'Belum ada deskripsi untuk kategori :name.',
-    'show'                  => 'Arti Glosari :origin Adalah :locale',
-    'categoryAll'           => 'Kategori :category',
-    'shares'                => 'Bagikan ke Media Sosial',
-    'notFound'              => 'Kata tidak ditemukan dalam pangkalan data.',
+    'word'     => [
+        'glossary'        => 'Glosari',
+        'index'           => 'Indeks Kata',
+        'create'          => 'Tambah Kata',
+        'edit'            => 'Edit Kata :origin',
+        'description'     => 'Arti dari glosari :origin adalah :locale.',
+        'inWikipedia'     => 'Arti ":title" dalam Wikipedia.org',
+        'searchResult'    => 'Hasil pencarian untuk',
+        'notFound'        => 'Kata tidak ditemukan dalam pangkalan data.',
+        'contribute'      => 'Berkontribusi menambahkan glosari pada aplikasi.',
+        'loginFirst'      => 'Anda belum masuk atau terdaftar sebagai kontributor. Untuk menambahkan glosari, silakan <a href=":login" class="alert-link">masuk</a> atau <a href=":register" class="alert-link">registrasi</a> terlebih dahulu.',
+        'descriptionHelp' => 'Tulis rincian, gagasan, atau referensi kata.',
+        'inLocale'        => 'Kata dalam Bahasa Indonesia',
+        'noDescription'   => 'Deskripsi tidak ditemukan dalam Wikipedia.org.',
 
-    'word'                  => [
-        'create'      => 'Tambah Kata',
-        'edit'        => 'Edit Kata :origin',
-        'description' => 'Arti dari glosari :origin adalah :locale.',
-        'inWikipedia' => 'Arti ":title" dalam Wikipedia.org',
-
-        'btn'         => [
+        'btn'             => [
             'create' => 'Tambah Kata',
         ],
 
-        'field'       => [
+        'field'           => [
             'origin'      => 'Kata Asal',
             'locale'      => 'Kata Translasi',
             'category'    => 'Kategori',
@@ -40,37 +31,57 @@ return [
             'lang'        => 'Bahasa',
         ],
 
-        'msg'         => [
+        'msg'             => [
             'created' => 'Kata baru berhasil ditambahkan.',
             'edited'  => 'Kata :origin berhasil diperbarui.',
         ],
+
+        'placeholder'     => [
+            'search' => 'Kata asing atau dalam Bahasa Indonesia...',
+        ],
     ],
 
-    'category'              => [
-        'field' => [
+    'category' => [
+        'index'        => 'Kategori',
+        'category'     => 'Kategori',
+        'inCategory'   => 'Dalam Kategori',
+        'searchResult' => 'Hasil pencarian untuk',
+        'notFound'     => 'Kategori tidak ditemukan dalam pangkalan data.',
+        'latestWord'   => 'Kata Terbaru',
+
+        'field'        => [
             'name'        => 'Nama',
             'description' => 'Deskripsi',
             'published'   => 'Dipublikasikan',
         ],
+
+        'btn'          => [
+            'load' => 'Muat Lebih Banyak',
+        ],
+
+        'placeholder'  => [
+            'search'   => 'Temukan kategori glosari...',
+            'searchIn' => 'Cari kata dalam kategori :name...',
+        ],
     ],
 
-    'mail'                  => [
+    'mail'     => [
         'introProposal' => 'Halo, Anda mendapatkan proposal glosari baru dengan kata asal :origin dan arti kata :origin.',
     ],
 
-    'form'                  => [
+    'form'     => [
         'category'    => 'Kategori',
         'origin'      => 'Kata Asal',
         'locale'      => 'Kata Translasi',
         'description' => 'Deskripsi',
     ],
 
-    'btn'                   => [
+    'btn'      => [
         'create' => 'Ajukan Propsal',
         'search' => 'Cari',
     ],
 
-    'msg'                   => [
+    'msg'      => [
         'created' => 'Terima kasih. Glosari berhasil disimpan dan akan ditinjau terlebih dahulu.',
     ],
 ];

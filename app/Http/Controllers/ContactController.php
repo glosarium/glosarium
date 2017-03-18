@@ -21,6 +21,7 @@ use App\User;
 use Auth;
 use Mail;
 use Notification;
+use Route;
 
 /**
  * Send message from guest via form
@@ -39,7 +40,7 @@ class ContactController extends Controller
         $image->addText(trans('contact.heading'), 30, 400, 250);
         $imagePath = $image->render('images/pages/', 'kontak')->path();
 
-        return view('contacts.form', compact('imagePath'))
+        return view(Route::currentRouteName(), compact('imagePath'))
             ->withTitle(trans('contact.title'));
     }
 

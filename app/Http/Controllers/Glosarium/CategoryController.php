@@ -34,15 +34,48 @@ class CategoryController extends Controller
 
         view()->share([
             'js' => [
-                'route' => \Route::currentRouteName(),
-                'index' => route('api.category.index'),
-                'all'   => route('api.category.all'),
+                'route' => Route::currentRouteName(),
+                'index' => route('glosarium.category.paginate'),
+                'all'   => route('glosarium.category.all'),
                 'word'  => [
-                    'category' => url('api/glosarium/word/category'),
+                    'category' => url('word/category'),
                     'latest'   => route('glosarium.word.latest'),
                 ],
             ],
         ]);
+    }
+
+    /**
+     * Show all categories
+     *
+     * @return string json
+     */
+    public function all()
+    {
+        $categories = Cache::remember('glosarium.category.index', $this->cacheTime, function () {
+            return Category::orderBy('name', 'ASC')
+                ->withCount('words')
+                ->whereIsPublished(true)
+                ->get();
+        });
+
+        return response()->json($categories);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function paginate()
+    {
+        $categories = Category::orderBy('name', 'ASC')
+            ->filter()
+            ->withCount('words')
+            ->whereIsPublished(true)
+            ->paginate(10);
+
+        return response()->json($categories);
     }
 
     /**
@@ -56,30 +89,12 @@ class CategoryController extends Controller
 
         // create image
         $image     = new Image;
-        $imagePath = $image->addText(trans('glosarium.categoryTitle'), 50, 400, 200)
+        $imagePath = $image->addText(trans('glosarium.category.index'), 50, 400, 200)
             ->render('images/pages', 'category')
             ->path();
 
-        return view('glosariums.categories.index', compact('imagePath', 'totalWord'))
-            ->withTitle(trans('category.title'));
-    }
-
-    /**
-     * Get all categories
-     *
-     * @return string JSON
-     */
-    public function all()
-    {
-        $categories = Cache::remember('glosarium.index', $this->cacheTime, function () {
-            return Category::orderBy('name', 'ASC')
-                ->withCount('words')
-                ->get();
-        });
-
-        return response()->json([
-            'categories' => $categories,
-        ]);
+        return view(Route::currentRouteName(), compact('imagePath', 'totalWord'))
+            ->withTitle(trans('glosarium.category.index'));
     }
 
     /**
@@ -96,7 +111,7 @@ class CategoryController extends Controller
                 ->first();
         });
 
-        abort_if(empty($category), 404, trans('glosarium.categoryNotFound'));
+        abort_if(empty($category), 404, trans('glosarium.category.notFound'));
 
         // create header image
         $image     = new Image;
@@ -104,13 +119,13 @@ class CategoryController extends Controller
             ->render('images/glosariums/categories', $category->slug)
             ->path();
 
-        return view('glosariums.categories.show', compact('category', 'imagePath'))
-            ->withTitle(trans('glosarium.categoryTitle', ['name' => $category->name]));
+        return view(Route::currentRouteName(), compact('category', 'imagePath'))
+            ->withTitle(trans('glosarium.category.index', ['name' => $category->name]));
     }
 
     public function total()
     {
-        abort_if(!request()->ajax(), 404, 'Halaman tidak ditemukan.');
+        abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $cacheTime = \Carbon\Carbon::now()->addDays(30);
         $total     = Cache::remember('category.total', $cacheTime, function () {
@@ -128,7 +143,7 @@ class CategoryController extends Controller
         $category = Category::whereSlug($slug)->firstOrFail();
 
         return view(Route::currentRouteName(), compact('category'))
-            ->withTitle(trans('category.edit', [
+            ->withTitle(trans('glosarium.category.edit', [
                 'name' => $category->name,
             ]));
     }

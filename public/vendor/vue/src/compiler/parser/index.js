@@ -6,36 +6,38 @@ import { parseText } from './text-parser'
 import { parseFilters } from './filter-parser'
 import { cached, no, camelize } from 'shared/util'
 import { isIE, isServerRendering } from 'core/util/env'
+
 import {
-  pluckModuleFunction,
-  getAndRemoveAttr,
   addProp,
   addAttr,
+  baseWarn,
   addHandler,
   addDirective,
   getBindingAttr,
-  baseWarn
+  getAndRemoveAttr,
+  pluckModuleFunction
 } from '../helpers'
 
+export const onRE = /^@|^v-on:/
 export const dirRE = /^v-|^@|^:/
 export const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/
 export const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/
-const bindRE = /^:|^v-bind:/
-const onRE = /^@|^v-on:/
+
 const argRE = /:(.*)$/
+const bindRE = /^:|^v-bind:/
 const modifierRE = /\.[^.]+/g
 
 const decodeHTMLCached = cached(decode)
 
 // configurable state
 let warn
-let platformGetTagNamespace
-let platformMustUseProp
-let platformIsPreTag
-let preTransforms
-let transforms
-let postTransforms
 let delimiters
+let transforms
+let preTransforms
+let postTransforms
+let platformIsPreTag
+let platformMustUseProp
+let platformGetTagNamespace
 
 /**
  * Convert HTML string to AST.
@@ -52,6 +54,7 @@ export function parse (
   transforms = pluckModuleFunction(options.modules, 'transformNode')
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode')
   delimiters = options.delimiters
+
   const stack = []
   const preserveWhitespace = options.preserveWhitespace !== false
   let root
@@ -59,7 +62,26 @@ export function parse (
   let inVPre = false
   let inPre = false
   let warned = false
+
+  function warnOnce (msg) {
+    if (!warned) {
+      warned = true
+      warn(msg)
+    }
+  }
+
+  function endPre (element) {
+    // check pre state
+    if (element.pre) {
+      inVPre = false
+    }
+    if (platformIsPreTag(element.tag)) {
+      inPre = false
+    }
+  }
+
   parseHTML(template, {
+    warn,
     expectHTML: options.expectHTML,
     isUnaryTag: options.isUnaryTag,
     shouldDecodeNewlines: options.shouldDecodeNewlines,
@@ -131,19 +153,17 @@ export function parse (
       }
 
       function checkRootConstraints (el) {
-        if (process.env.NODE_ENV !== 'production' && !warned) {
+        if (process.env.NODE_ENV !== 'production') {
           if (el.tag === 'slot' || el.tag === 'template') {
-            warned = true
-            warn(
+            warnOnce(
               `Cannot use <${el.tag}> as component root element because it may ` +
-              'contain multiple nodes:\n' + template
+              'contain multiple nodes.'
             )
           }
           if (el.attrsMap.hasOwnProperty('v-for')) {
-            warned = true
-            warn(
+            warnOnce(
               'Cannot use v-for on stateful component root element because ' +
-              'it renders multiple elements:\n' + template
+              'it renders multiple elements.'
             )
           }
         }
@@ -161,11 +181,9 @@ export function parse (
             exp: element.elseif,
             block: element
           })
-        } else if (process.env.NODE_ENV !== 'production' && !warned) {
-          warned = true
-          warn(
-            `Component template should contain exactly one root element:` +
-            `\n\n${template}\n\n` +
+        } else if (process.env.NODE_ENV !== 'production') {
+          warnOnce(
+            `Component template should contain exactly one root element. ` +
             `If you are using v-if on multiple elements, ` +
             `use v-else-if to chain them instead.`
           )
@@ -176,7 +194,7 @@ export function parse (
           processIfConditions(element, currentParent)
         } else if (element.slotScope) { // scoped slot
           currentParent.plain = false
-          const name = element.slotTarget || 'default'
+          const name = element.slotTarget || '"default"'
           ;(currentParent.scopedSlots || (currentParent.scopedSlots = {}))[name] = element
         } else {
           currentParent.children.push(element)
@@ -186,6 +204,8 @@ export function parse (
       if (!unary) {
         currentParent = element
         stack.push(element)
+      } else {
+        endPre(element)
       }
       // apply post-transforms
       for (let i = 0; i < postTransforms.length; i++) {
@@ -197,28 +217,27 @@ export function parse (
       // remove trailing whitespace
       const element = stack[stack.length - 1]
       const lastNode = element.children[element.children.length - 1]
-      if (lastNode && lastNode.type === 3 && lastNode.text === ' ') {
+      if (lastNode && lastNode.type === 3 && lastNode.text === ' ' && !inPre) {
         element.children.pop()
       }
       // pop stack
       stack.length -= 1
       currentParent = stack[stack.length - 1]
-      // check pre state
-      if (element.pre) {
-        inVPre = false
-      }
-      if (platformIsPreTag(element.tag)) {
-        inPre = false
-      }
+      endPre(element)
     },
 
     chars (text: string) {
       if (!currentParent) {
-        if (process.env.NODE_ENV !== 'production' && !warned && text === template) {
-          warned = true
-          warn(
-            'Component template requires a root element, rather than just text:\n\n' + template
-          )
+        if (process.env.NODE_ENV !== 'production') {
+          if (text === template) {
+            warnOnce(
+              'Component template requires a root element, rather than just text.'
+            )
+          } else if ((text = text.trim())) {
+            warnOnce(
+              `text "${text}" outside root element will be ignored.`
+            )
+          }
         }
         return
       }
@@ -242,8 +261,8 @@ export function parse (
             expression,
             text
           })
-        } else if (text !== ' ' || children[children.length - 1].text !== ' ') {
-          currentParent.children.push({
+        } else if (text !== ' ' || !children.length || children[children.length - 1].text !== ' ') {
+          children.push({
             type: 3,
             text
           })
@@ -417,7 +436,7 @@ function processComponent (el) {
 
 function processAttrs (el) {
   const list = el.attrsList
-  let i, l, name, rawName, value, arg, modifiers, isProp
+  let i, l, name, rawName, value, modifiers, isProp
   for (i = 0, l = list.length; i < l; i++) {
     name = rawName = list[i].name
     value = list[i].value
@@ -455,7 +474,8 @@ function processAttrs (el) {
         name = name.replace(dirRE, '')
         // parse arg
         const argMatch = name.match(argRE)
-        if (argMatch && (arg = argMatch[1])) {
+        const arg = argMatch && argMatch[1]
+        if (arg) {
           name = name.slice(0, -(arg.length + 1))
         }
         addDirective(el, name, rawName, value, arg, modifiers)

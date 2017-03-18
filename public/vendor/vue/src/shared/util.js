@@ -211,7 +211,12 @@ export function looseEqual (a: mixed, b: mixed): boolean {
   const isObjectA = isObject(a)
   const isObjectB = isObject(b)
   if (isObjectA && isObjectB) {
-    return JSON.stringify(a) === JSON.stringify(b)
+    try {
+      return JSON.stringify(a) === JSON.stringify(b)
+    } catch (e) {
+      // possible circular reference
+      return a === b
+    }
   } else if (!isObjectA && !isObjectB) {
     return String(a) === String(b)
   } else {
@@ -224,4 +229,17 @@ export function looseIndexOf (arr: Array<mixed>, val: mixed): number {
     if (looseEqual(arr[i], val)) return i
   }
   return -1
+}
+
+/**
+ * Ensure a function is called only once.
+ */
+export function once (fn: Function): Function {
+  let called = false
+  return () => {
+    if (!called) {
+      called = true
+      fn()
+    }
+  }
 }

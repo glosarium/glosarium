@@ -199,7 +199,7 @@ describe('framework APIs', () => {
     expect(root).toMatch(/not found/)
   })
 
-  it('reveiveTasks: fireEvent', (done) => {
+  it('receiveTasks: fireEvent', (done) => {
     const instance = new Instance(runtime)
     framework.createInstance(instance.id, `
       new Vue({
@@ -254,7 +254,7 @@ describe('framework APIs', () => {
     })
   })
 
-  it('reveiveTasks: callback', (done) => {
+  it('receiveTasks: callback', (done) => {
     framework.registerModules({
       foo: ['a', 'b', 'c']
     })
@@ -608,8 +608,6 @@ describe('framework APIs', () => {
       type: 'div',
       children: [{ type: 'text', attr: { value: 'Hello' }}]
     })
-    // ensure base Vue is unaffected
-    expect(framework.Vue.options.components.test).toBeUndefined()
   })
 
   it('adding prototype methods', () => {
@@ -632,8 +630,6 @@ describe('framework APIs', () => {
       type: 'div',
       children: [{ type: 'text', attr: { value: 'Hello' }}]
     })
-    // ensure base Vue is unaffected
-    expect(framework.Vue.prototype.$test).toBeUndefined()
   })
 
   it('using global mixins', () => {
@@ -662,9 +658,5 @@ describe('framework APIs', () => {
       type: 'div',
       children: [{ type: 'text', attr: { value: 'Hello' }}]
     })
-    const vm = new framework.Vue({
-      data: { test: false }
-    })
-    expect(vm.test).toBe(false)
   })
 })

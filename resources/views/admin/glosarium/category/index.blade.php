@@ -38,11 +38,11 @@
                   <table class="table table-bordered">
                      <thead>
                         <tr>
-                           <th>@lang('category.field.name')</th>
-                           <th>@lang('category.field.description')</th>
-                           <th>@lang('category.field.totalWord')</th>
-                           <th>@lang('category.field.published')</th>
-                           <th>@lang('category.field.actions')</th>
+                           <th>@lang('glosarium.category.field.name')</th>
+                           <th>@lang('glosarium.category.field.description')</th>
+                           <th>@lang('glosarium.category.field.totalWord')</th>
+                           <th>@lang('glosarium.category.field.published')</th>
+                           <th>@lang('glosarium.category.field.actions')</th>
                         </tr>
                      </thead>
                      <tbody>

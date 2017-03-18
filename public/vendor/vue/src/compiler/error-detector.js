@@ -1,15 +1,23 @@
 /* @flow */
 
-import { dirRE } from './parser/index'
+import { dirRE, onRE } from './parser/index'
 
-// operators like typeof, instanceof and in are allowed
+// these keywords should not appear inside expressions, but operators like
+// typeof, instanceof and in are allowed
 const prohibitedKeywordRE = new RegExp('\\b' + (
   'do,if,for,let,new,try,var,case,else,with,await,break,catch,class,const,' +
   'super,throw,while,yield,delete,export,import,return,switch,default,' +
   'extends,finally,continue,debugger,function,arguments'
 ).split(',').join('\\b|\\b') + '\\b')
+
+// these unary operators should not be used as property/method names
+const unaryOperatorsRE = new RegExp('\\b' + (
+  'delete,typeof,void'
+).split(',').join('\\s*\\([^\\)]*\\)|\\b') + '\\s*\\([^\\)]*\\)')
+
 // check valid identifier for v-for
 const identRE = /[A-Za-z_$][\w$]*/
+
 // strip strings in expressions
 const stripStringRE = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*\$\{|\}(?:[^`\\]|\\.)*`|`(?:[^`\\]|\\.)*`/g
 
@@ -30,6 +38,8 @@ function checkNode (node: ASTNode, errors: Array<string>) {
         if (value) {
           if (name === 'v-for') {
             checkFor(node, `v-for="${value}"`, errors)
+          } else if (onRE.test(name)) {
+            checkEvent(value, `${name}="${value}"`, errors)
           } else {
             checkExpression(value, `${name}="${value}"`, errors)
           }
@@ -46,6 +56,17 @@ function checkNode (node: ASTNode, errors: Array<string>) {
   }
 }
 
+function checkEvent (exp: string, text: string, errors: Array<string>) {
+  const keywordMatch = exp.replace(stripStringRE, '').match(unaryOperatorsRE)
+  if (keywordMatch) {
+    errors.push(
+      `avoid using JavaScript unary operator as property name: ` +
+      `"${keywordMatch[0]}" in expression ${text.trim()}`
+    )
+  }
+  checkExpression(exp, text, errors)
+}
+
 function checkFor (node: ASTElement, text: string, errors: Array<string>) {
   checkExpression(node.for || '', text, errors)
   checkIdentifier(node.alias, 'v-for alias', text, errors)
@@ -55,7 +76,7 @@ function checkFor (node: ASTElement, text: string, errors: Array<string>) {
 
 function checkIdentifier (ident: ?string, type: string, text: string, errors: Array<string>) {
   if (typeof ident === 'string' && !identRE.test(ident)) {
-    errors.push(`- invalid ${type} "${ident}" in expression: ${text}`)
+    errors.push(`invalid ${type} "${ident}" in expression: ${text.trim()}`)
   }
 }
 
@@ -66,11 +87,11 @@ function checkExpression (exp: string, text: string, errors: Array<string>) {
     const keywordMatch = exp.replace(stripStringRE, '').match(prohibitedKeywordRE)
     if (keywordMatch) {
       errors.push(
-        `- avoid using JavaScript keyword as property name: ` +
-        `"${keywordMatch[0]}" in expression ${text}`
+        `avoid using JavaScript keyword as property name: ` +
+        `"${keywordMatch[0]}" in expression ${text.trim()}`
       )
     } else {
-      errors.push(`- invalid expression: ${text}`)
+      errors.push(`invalid expression: ${text.trim()}`)
     }
   }
 }

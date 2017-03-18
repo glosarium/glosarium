@@ -82,6 +82,133 @@ describe('Component keep-alive', () => {
     }).then(done)
   })
 
+  it('should invoke hooks on the entire sub tree', done => {
+    one.template = '<two/>'
+    one.components = { two }
+
+    const vm = new Vue({
+      template: `
+        <div>
+          <keep-alive>
+            <one v-if="ok"/>
+          </keep-alive>
+        </div>
+      `,
+      data: {
+        ok: true
+      },
+      components
+    }).$mount()
+
+    expect(vm.$el.textContent).toBe('two')
+    assertHookCalls(one, [1, 1, 1, 0, 0])
+    assertHookCalls(two, [1, 1, 1, 0, 0])
+    vm.ok = false
+    waitForUpdate(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 1, 1, 0])
+      assertHookCalls(two, [1, 1, 1, 1, 0])
+      vm.ok = true
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('two')
+      assertHookCalls(one, [1, 1, 2, 1, 0])
+      assertHookCalls(two, [1, 1, 2, 1, 0])
+      vm.ok = false
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 2, 2, 0])
+      assertHookCalls(two, [1, 1, 2, 2, 0])
+    }).then(done)
+  })
+
+  it('should handle nested keep-alive hooks properly', done => {
+    one.template = '<keep-alive><two v-if="ok" /></keep-alive>'
+    one.data = () => ({ ok: true })
+    one.components = { two }
+
+    const vm = new Vue({
+      template: `
+        <div>
+          <keep-alive>
+            <one v-if="ok" ref="one" />
+          </keep-alive>
+        </div>
+      `,
+      data: {
+        ok: true
+      },
+      components
+    }).$mount()
+
+    var oneInstance = vm.$refs.one
+    expect(vm.$el.textContent).toBe('two')
+    assertHookCalls(one, [1, 1, 1, 0, 0])
+    assertHookCalls(two, [1, 1, 1, 0, 0])
+    vm.ok = false
+    waitForUpdate(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 1, 1, 0])
+      assertHookCalls(two, [1, 1, 1, 1, 0])
+    }).then(() => {
+      vm.ok = true
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('two')
+      assertHookCalls(one, [1, 1, 2, 1, 0])
+      assertHookCalls(two, [1, 1, 2, 1, 0])
+    }).then(() => {
+      // toggle sub component when activated
+      oneInstance.ok = false
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 2, 1, 0])
+      assertHookCalls(two, [1, 1, 2, 2, 0])
+    }).then(() => {
+      oneInstance.ok = true
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('two')
+      assertHookCalls(one, [1, 1, 2, 1, 0])
+      assertHookCalls(two, [1, 1, 3, 2, 0])
+    }).then(() => {
+      vm.ok = false
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 2, 2, 0])
+      assertHookCalls(two, [1, 1, 3, 3, 0])
+    }).then(() => {
+      // toggle sub component when parent is deactivated
+      oneInstance.ok = false
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 2, 2, 0])
+      assertHookCalls(two, [1, 1, 3, 3, 0]) // should not be affected
+    }).then(() => {
+      oneInstance.ok = true
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 2, 2, 0])
+      assertHookCalls(two, [1, 1, 3, 3, 0]) // should not be affected
+    }).then(() => {
+      vm.ok = true
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('two')
+      assertHookCalls(one, [1, 1, 3, 2, 0])
+      assertHookCalls(two, [1, 1, 4, 3, 0])
+    }).then(() => {
+      oneInstance.ok = false
+      vm.ok = false
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 3, 3, 0])
+      assertHookCalls(two, [1, 1, 4, 4, 0])
+    }).then(() => {
+      vm.ok = true
+    }).then(() => {
+      expect(vm.$el.textContent).toBe('')
+      assertHookCalls(one, [1, 1, 4, 3, 0])
+      assertHookCalls(two, [1, 1, 4, 4, 0]) // should remain inactive
+    }).then(done)
+  })
+
   function sharedAssertions (vm, done) {
     expect(vm.$el.textContent).toBe('one')
     assertHookCalls(one, [1, 1, 1, 0, 0])
@@ -253,7 +380,7 @@ describe('Component keep-alive', () => {
   })
 
   // #4237
-  it('should update latest props/listners for a re-activated component', done => {
+  it('should update latest props/listeners for a re-activated component', done => {
     const one = {
       props: ['prop'],
       template: `<div>one {{ prop }}</div>`

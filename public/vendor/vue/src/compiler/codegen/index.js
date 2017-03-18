@@ -5,9 +5,9 @@ import { baseWarn, pluckModuleFunction } from '../helpers'
 import baseDirectives from '../directives/index'
 import { camelize, no } from 'shared/util'
 
-type TransformFunction = (el: ASTElement, code: string) => string
-type DataGenFunction = (el: ASTElement) => string
-type DirctiveFunction = (el: ASTElement, dir: ASTDirective, warn: Function) => boolean
+type TransformFunction = (el: ASTElement, code: string) => string;
+type DataGenFunction = (el: ASTElement) => string;
+type DirectiveFunction = (el: ASTElement, dir: ASTDirective, warn: Function) => boolean;
 
 // configurable state
 let warn
@@ -144,6 +144,19 @@ function genFor (el: any): string {
   const alias = el.alias
   const iterator1 = el.iterator1 ? `,${el.iterator1}` : ''
   const iterator2 = el.iterator2 ? `,${el.iterator2}` : ''
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    maybeComponent(el) && el.tag !== 'slot' && el.tag !== 'template' && !el.key
+  ) {
+    warn(
+      `<${el.tag} v-for="${alias} in ${exp}">: component lists rendered with ` +
+      `v-for should have explicit keys. ` +
+      `See https://vuejs.org/guide/list.html#key for more info.`,
+      true /* tip */
+    )
+  }
+
   el.forProcessed = true // avoid recursion
   return `_l((${exp}),` +
     `function(${alias}${iterator1}${iterator2}){` +
@@ -205,6 +218,16 @@ function genData (el: ASTElement): string {
   if (el.scopedSlots) {
     data += `${genScopedSlots(el.scopedSlots)},`
   }
+  // component v-model
+  if (el.model) {
+    data += `model:{value:${
+      el.model.value
+    },callback:${
+      el.model.callback
+    },expression:${
+      el.model.expression
+    }},`
+  }
   // inline-template
   if (el.inlineTemplate) {
     const inlineTemplate = genInlineTemplate(el)
@@ -229,7 +252,7 @@ function genDirectives (el: ASTElement): string | void {
   for (i = 0, l = dirs.length; i < l; i++) {
     dir = dirs[i]
     needRuntime = true
-    const gen: DirctiveFunction = platformDirectives[dir.name] || baseDirectives[dir.name]
+    const gen: DirectiveFunction = platformDirectives[dir.name] || baseDirectives[dir.name]
     if (gen) {
       // compile-time directive that manipulates AST.
       // returns true if it also needs a runtime counterpart.
@@ -269,17 +292,17 @@ function genInlineTemplate (el: ASTElement): ?string {
 }
 
 function genScopedSlots (slots: { [key: string]: ASTElement }): string {
-  return `scopedSlots:{${
+  return `scopedSlots:_u([${
     Object.keys(slots).map(key => genScopedSlot(key, slots[key])).join(',')
-  }}`
+  }])`
 }
 
 function genScopedSlot (key: string, el: ASTElement) {
-  return `${key}:function(${String(el.attrsMap.scope)}){` +
+  return `[${key},function(${String(el.attrsMap.scope)}){` +
     `return ${el.tag === 'template'
       ? genChildren(el) || 'void 0'
       : genElement(el)
-  }}`
+  }}]`
 }
 
 function genChildren (el: ASTElement, checkSkip?: boolean): string | void {
@@ -293,11 +316,9 @@ function genChildren (el: ASTElement, checkSkip?: boolean): string | void {
         el.tag !== 'slot') {
       return genElement(el)
     }
-    const normalizationType = getNormalizationType(children)
+    const normalizationType = checkSkip ? getNormalizationType(children) : 0
     return `[${children.map(genNode).join(',')}]${
-      checkSkip
-        ? normalizationType ? `,${normalizationType}` : ''
-        : ''
+      normalizationType ? `,${normalizationType}` : ''
     }`
   }
 }

@@ -1,14 +1,84 @@
 /* @flow */
 
 import VNode from './vnode'
-import { resolveConstructorOptions } from '../instance/init'
-import { activeInstance, callHook } from '../instance/lifecycle'
-import { resolveSlots } from '../instance/render'
 import { createElement } from './create-element'
-import { warn, isObject, hasOwn, hyphenate, validateProp } from '../util/index'
+import { resolveConstructorOptions } from '../instance/init'
+import { resolveSlots } from '../instance/render-helpers/resolve-slots'
 
-const hooks = { init, prepatch, insert, destroy }
-const hooksToMerge = Object.keys(hooks)
+import {
+  warn,
+  isObject,
+  hasOwn,
+  hyphenate,
+  validateProp,
+  formatComponentName
+} from '../util/index'
+
+import {
+  callHook,
+  activeInstance,
+  updateChildComponent,
+  activateChildComponent,
+  deactivateChildComponent
+} from '../instance/lifecycle'
+
+// hooks to be invoked on component VNodes during patch
+const componentVNodeHooks = {
+  init (
+    vnode: VNodeWithData,
+    hydrating: boolean,
+    parentElm: ?Node,
+    refElm: ?Node
+  ): ?boolean {
+    if (!vnode.componentInstance || vnode.componentInstance._isDestroyed) {
+      const child = vnode.componentInstance = createComponentInstanceForVnode(
+        vnode,
+        activeInstance,
+        parentElm,
+        refElm
+      )
+      child.$mount(hydrating ? vnode.elm : undefined, hydrating)
+    } else if (vnode.data.keepAlive) {
+      // kept-alive components, treat as a patch
+      const mountedNode: any = vnode // work around flow
+      componentVNodeHooks.prepatch(mountedNode, mountedNode)
+    }
+  },
+
+  prepatch (oldVnode: MountedComponentVNode, vnode: MountedComponentVNode) {
+    const options = vnode.componentOptions
+    const child = vnode.componentInstance = oldVnode.componentInstance
+    updateChildComponent(
+      child,
+      options.propsData, // updated props
+      options.listeners, // updated listeners
+      vnode, // new parent vnode
+      options.children // new children
+    )
+  },
+
+  insert (vnode: MountedComponentVNode) {
+    if (!vnode.componentInstance._isMounted) {
+      vnode.componentInstance._isMounted = true
+      callHook(vnode.componentInstance, 'mounted')
+    }
+    if (vnode.data.keepAlive) {
+      activateChildComponent(vnode.componentInstance, true /* direct */)
+    }
+  },
+
+  destroy (vnode: MountedComponentVNode) {
+    if (!vnode.componentInstance._isDestroyed) {
+      if (!vnode.data.keepAlive) {
+        vnode.componentInstance.$destroy()
+      } else {
+        deactivateChildComponent(vnode.componentInstance, true /* direct */)
+      }
+    }
+  }
+}
+
+const hooksToMerge = Object.keys(componentVNodeHooks)
 
 export function createComponent (
   Ctor: Class<Component> | Function | Object | void,
@@ -56,6 +126,11 @@ export function createComponent (
   resolveConstructorOptions(Ctor)
 
   data = data || {}
+
+  // transform component v-model data into props & events
+  if (data.model) {
+    transformModel(Ctor.options, data)
+  }
 
   // extract props
   const propsData = extractProps(data, Ctor)
@@ -151,63 +226,6 @@ export function createComponentInstanceForVnode (
   return new vnodeComponentOptions.Ctor(options)
 }
 
-function init (
-  vnode: VNodeWithData,
-  hydrating: boolean,
-  parentElm: ?Node,
-  refElm: ?Node
-): ?boolean {
-  if (!vnode.componentInstance || vnode.componentInstance._isDestroyed) {
-    const child = vnode.componentInstance = createComponentInstanceForVnode(
-      vnode,
-      activeInstance,
-      parentElm,
-      refElm
-    )
-    child.$mount(hydrating ? vnode.elm : undefined, hydrating)
-  } else if (vnode.data.keepAlive) {
-    // kept-alive components, treat as a patch
-    const mountedNode: any = vnode // work around flow
-    prepatch(mountedNode, mountedNode)
-  }
-}
-
-function prepatch (
-  oldVnode: MountedComponentVNode,
-  vnode: MountedComponentVNode
-) {
-  const options = vnode.componentOptions
-  const child = vnode.componentInstance = oldVnode.componentInstance
-  child._updateFromParent(
-    options.propsData, // updated props
-    options.listeners, // updated listeners
-    vnode, // new parent vnode
-    options.children // new children
-  )
-}
-
-function insert (vnode: MountedComponentVNode) {
-  if (!vnode.componentInstance._isMounted) {
-    vnode.componentInstance._isMounted = true
-    callHook(vnode.componentInstance, 'mounted')
-  }
-  if (vnode.data.keepAlive) {
-    vnode.componentInstance._inactive = false
-    callHook(vnode.componentInstance, 'activated')
-  }
-}
-
-function destroy (vnode: MountedComponentVNode) {
-  if (!vnode.componentInstance._isDestroyed) {
-    if (!vnode.data.keepAlive) {
-      vnode.componentInstance.$destroy()
-    } else {
-      vnode.componentInstance._inactive = true
-      callHook(vnode.componentInstance, 'deactivated')
-    }
-  }
-}
-
 function resolveAsyncComponent (
   factory: Function,
   baseCtor: Class<Component>,
@@ -269,6 +287,21 @@ function extractProps (data: VNodeData, Ctor: Class<Component>): ?Object {
   if (attrs || props || domProps) {
     for (const key in propOptions) {
       const altKey = hyphenate(key)
+      if (process.env.NODE_ENV !== 'production') {
+        const keyInLowerCase = key.toLowerCase()
+        if (
+          key !== keyInLowerCase &&
+          attrs && attrs.hasOwnProperty(keyInLowerCase)
+        ) {
+          warn(
+            `Prop "${keyInLowerCase}" is not declared in component ` +
+            `${formatComponentName(Ctor)}. Note that HTML attributes are ` +
+            `case-insensitive and camelCased props need to use their kebab-case ` +
+            `equivalents when using in-DOM templates. You should probably use ` +
+            `"${altKey}" instead of "${key}".`
+          )
+        }
+      }
       checkProp(res, props, key, altKey, true) ||
       checkProp(res, attrs, key, altKey) ||
       checkProp(res, domProps, key, altKey)
@@ -309,7 +342,7 @@ function mergeHooks (data: VNodeData) {
   for (let i = 0; i < hooksToMerge.length; i++) {
     const key = hooksToMerge[i]
     const fromParent = data.hook[key]
-    const ours = hooks[key]
+    const ours = componentVNodeHooks[key]
     data.hook[key] = fromParent ? mergeHook(ours, fromParent) : ours
   }
 }
@@ -318,5 +351,19 @@ function mergeHook (one: Function, two: Function): Function {
   return function (a, b, c, d) {
     one(a, b, c, d)
     two(a, b, c, d)
+  }
+}
+
+// transform component v-model info (value and callback) into
+// prop and event handler respectively.
+function transformModel (options, data: any) {
+  const prop = (options.model && options.model.prop) || 'value'
+  const event = (options.model && options.model.event) || 'input'
+  ;(data.props || (data.props = {}))[prop] = data.model.value
+  const on = data.on || (data.on = {})
+  if (on[event]) {
+    on[event] = [data.model.callback].concat(on[event])
+  } else {
+    on[event] = data.model.callback
   }
 }
