@@ -45,7 +45,8 @@ class SitemapController extends Controller
                 route('glosarium.category.show', [$category->slug]),
                 $category->updated_at->toIso8601String(),
                 '0.9',
-                'monthly'
+                'monthly',
+                asset(sprintf('images/glosariums/categories/%s', $category->slug))
             );
         }
 
