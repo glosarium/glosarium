@@ -52,7 +52,7 @@ class CategoryController extends Controller
      */
     public function all()
     {
-        $categories = Cache::remember('glosarium.category.index', $this->cacheTime, function () {
+        $categories = Cache::remember('glosarium.category.all', $this->cacheTime, function () {
             return Category::orderBy('name', 'ASC')
                 ->withCount('words')
                 ->whereIsPublished(true)

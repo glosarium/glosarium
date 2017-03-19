@@ -84,11 +84,14 @@
             <h5 class="no-margin-top font-bold margin-b-20 " ><a href="#same-words" data-toggle="collapse" >@lang('glosarium.category.inCategory') <i class="fa ic-arrow-toogle fa-angle-right pull-right"></i> </a></h5>
             <ul v-cloak v-if="categories" class="list-unstyled" id="same-words">
                <li v-for="word in categories">
-                  <a :href="word.url">@{{ word.category.name }}</a>
+                  <a :href="word.url">
+                    <i :class="[word.category.metadata.icon, 'fa-fw']"></i>
+                    @{{ word.category.name }}
+                  </a>
                </li>
             </ul>
             <hr>
-            <h5>@lang('glosarium.shares')</h5>
+            <h5>@lang('glosarium.word.shares')</h5>
             <p class="share-btns">
                <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" class="btn btn-primary"><i class="fa fa-facebook"></i></a>
                <a href="https://twitter.com/intent/tweet?url={{ $word->short_url }}&text=Padanan kata {{ $word->origin }} dalam {{ $word->category->name }} adalah {{ $word->locale }}.&hashtags=padanan,glosarium" class="btn btn-info"><i class="fa fa-twitter"></i></a>
@@ -103,48 +106,12 @@
 
 @push('js')
 <script>
-   $(function(){
-       $('li.glosarium').addClass('active')
-   });
-
    const words = {!! json_encode([
        'locale' => $word->locale,
        'origin' => $word->origin,
        'lang' => $word->lang
-   ]) !!}
-
-   let glosarium = new Vue({
-       el: '#content',
-       data: {
-           total: 0,
-           words: words,
-           categories: null
-       },
-
-       mounted() {
-           this.sameCategory();
-       },
-
-       methods: {
-
-           total() {
-               let url = '{{ route('glosarium.word.total') }}';
-
-               this.$http.get(url).then(response => {
-                   this.total = response.body.total;
-               });
-           },
-
-           sameCategory() {
-               let url = '{{ route('glosarium.word.same') }}';
-
-               this.$http.post(url, {origin: this.words.origin}).then(response => {
-                   this.categories = response.body.words;
-               }, response => {
-
-               });
-           }
-       }
-   });
+   ]) !!};
 </script>
+
+<script src="{{ asset('js/glosarium/word.show.js') }}"></script>
 @endpush

@@ -13,6 +13,8 @@ require('laravel-elixir-vue-2');
  |
  */
 
+process.env.DISABLE_NOTIFIER = true;
+
 elixir(mix => {
 	mix.sass('app.scss', 'public/bootstrap.css');
     mix.less('theme.less', 'public/css/theme.css');
@@ -22,7 +24,15 @@ elixir(mix => {
     mix.webpack('app.js', 'public/js/app.js');
 
     mix.browserify('theme.js', 'public/js/theme.js');
-    mix.browserify('category.js', 'public/js/category.js');
-    mix.browserify('showCategory.js', 'public/js/showCategory.js');
-    mix.browserify('word.js', 'public/js/word.js');
+
+    // glosarium
+    mix.browserify('glosarium/category/index.js', 'public/js/glosarium/category.index.js');
+    mix.browserify('glosarium/category/show.js', 'public/js/glosarium/category.show.js');
+
+    mix.browserify('glosarium/word/index.js', 'public/js/glosarium/word.index.js');
+    mix.browserify('glosarium/word/create.js', 'public/js/glosarium/word.create.js');
+    mix.browserify('glosarium/word/show.js', 'public/js/glosarium/word.show.js');
+
+    // contact
+    mix.browserify('contact/form.js', 'public/js/contact.form.js');
 });

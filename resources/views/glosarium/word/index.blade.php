@@ -139,5 +139,5 @@
 <script>
    window.words = {!! json_encode($js) !!};
 </script>
-<script src="{{ asset('js/word.js') }}"></script>
+<script src="{{ asset('js/glosarium/word.index.js') }}"></script>
 @endpush

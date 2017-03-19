@@ -3,6 +3,7 @@
 @push('metadata')
 <meta name="author" content="{{ config('app.name') }}">
 <meta name="description" content="{{ ! empty($category->description) ? $category->description : config('app.description') }}">
+
 <meta property="og:title" content="{{ $category->name }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:description" content="{{ ! empty($category->description) ? $category->description : config('app.description') }}">
@@ -141,5 +142,6 @@
    window.categories = {!! json_encode($js) !!};
    window.category = {!! json_encode($category) !!};
 </script>
-<script src="{{ asset('js/showCategory.js') }}"></script>
+
+<script src="{{ asset('js/glosarium/category.show.js') }}"></script>
 @endpush

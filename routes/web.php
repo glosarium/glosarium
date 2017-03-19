@@ -12,8 +12,8 @@
  */
 Auth::routes();
 
-Route::get('/kontak', 'ContactController@form')->name('contact.form');
-Route::post('/kontak', 'ContactController@send')->name('contact.post');
+Route::get('/contact', 'ContactController@form')->name('contact.form');
+Route::post('/contact/send', 'ContactController@send')->name('contact.post');
 
 Route::get('/external', 'LinkController@external')->name('link.external');
 

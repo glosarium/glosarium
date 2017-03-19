@@ -21,8 +21,9 @@
    <div class="col-md-6 col-md-offset-3">
       <hr>
       <alert :show="alerts.message" :title="alerts.title" :type="alerts.type">
-         @{{ alerts.message }}
+         <p>@{{ alerts.message }}</p>
       </alert>
+
       @if (!auth()->check())
       <div class="alert alert-info">
          <strong>@lang('global.hello'),</strong>
@@ -88,114 +89,6 @@
 <script>
    window.words = {!! json_encode($js) !!};
 </script>
-<script>
-   $(() => {
-   	$('#content').removeClass('bg-color2')
-   		.addClass('bg-color1');
 
-   	$('li.create-glosarium').addClass('active');
-   });
-
-   new Vue({
-   	el: '#content',
-   	data: {
-   		auth: Laravel.auth,
-   		loading: false,
-   		categories: null,
-   		alerts: {
-   			type: null,
-   			title: null,
-   			message: null
-   		},
-   		errors: {
-   			category: null,
-   			origin: null,
-   			locale: null,
-   			description: null
-   		},
-   		forms: {
-   			category: '',
-   			origin: null,
-   			locale: null,
-   			description: null
-   		}
-   	},
-
-   	mounted() {
-   		if (Laravel.auth) {
-   			this.getCategory(words.api.allCategory);
-   		}
-   	},
-
-   	methods: {
-
-   		pre() {
-   			this.loading = true;
-
-   			this.alerts = {
-   				type: null,
-   				title: null,
-   				message: null
-   			};
-   		},
-
-   		post() {
-   			this.loading = false;
-   		},
-
-   		error() {
-   			this.alerts = {
-   				type: 'danger',
-   				title: 'Ups!',
-   				message: 'Terjadi kesalahan internal'
-   			};
-   		},
-
-   		getCategory(url) {
-   			this.$http.get(url).then(response => {
-   				this.categories = response.body;
-
-   			}, response => {
-   				this.error(response);
-   			});
-   		},
-
-   		create(e) {
-   			this.pre();
-
-   			this.$http.post(e.target.action, this.forms).then(response => {
-
-   				this.alerts = response.body.alerts;
-
-   				this.forms = {
-   					category: '',
-   					origin: null,
-   					locale: null,
-   					description: null
-   				};
-
-   				this.errors = {
-   					category: null,
-   					origin: null,
-   					locale: null,
-   					description: null
-   				};
-
-   				this.post();
-
-   			}, response => {
-   				if (response.status == 422) {
-   					this.errors = response.body;
-   				}
-   				else {
-   					this.error();
-   				}
-
-   				this.post();
-   			});
-   		}
-
-   	}
-   });
-</script>
+<script src="{{ asset('js/glosarium/word.create.js') }}"></script>
 @endpush

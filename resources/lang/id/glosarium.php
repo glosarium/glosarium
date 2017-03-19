@@ -5,6 +5,7 @@ return [
         'glossary'        => 'Glosari',
         'index'           => 'Indeks Kata',
         'create'          => 'Tambah Kata',
+        'show'            => 'Arti dari glosari :origin adalah :locale',
         'edit'            => 'Edit Kata :origin',
         'description'     => 'Arti dari glosari :origin adalah :locale.',
         'inWikipedia'     => 'Arti ":title" dalam Wikipedia.org',
@@ -16,6 +17,7 @@ return [
         'inLocale'        => 'Kata dalam Bahasa Indonesia',
         'noDescription'   => 'Deskripsi tidak ditemukan dalam Wikipedia.org.',
         'forward'         => 'Informasi kata juga dikirim ke :email',
+        'shares'          => 'Bagikan',
 
         'btn'             => [
             'create'  => 'Tambah Kata',

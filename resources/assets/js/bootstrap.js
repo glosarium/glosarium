@@ -39,6 +39,7 @@ Vue.http.interceptors.push((request, next) => {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
+	'baseURL': Laravel.url + '/',
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest'
 };

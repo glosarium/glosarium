@@ -166,7 +166,7 @@ class WordController extends Controller
         ]);
 
         return view(Route::currentRouteName(), compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
-            ->withTitle(trans('glosarium.show', [
+            ->withTitle(trans('glosarium.word.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,
             ]));
@@ -177,17 +177,14 @@ class WordController extends Controller
      *
      * @return string JSON
      */
-    public function sameWord()
+    public function similar()
     {
         // find similar category
         $words = Word::whereOrigin(request('origin'))
             ->with('category')
             ->get();
 
-        return response()->json([
-            'words' => $words,
-        ]);
-
+        return response()->json($words);
     }
 
     /**

@@ -44,7 +44,7 @@ class Route extends Command
         foreach (RouteCollection::getRoutes() as $route) {
             if (!empty($route->getName())) {
                 $name          = camel_case(str_replace('.', '_', $route->getName()));
-                $routes[$name] = $route->getPath();
+                $routes[$name] = '/' . $route->getPath();
             }
         }
 

@@ -23,7 +23,7 @@
    <div class="col-md-9">
       <!-- box listing -->
       <div class="block-section-sm box-list-area">
-         @if (\Agent::isMobile())
+         @if (Agent::isMobile())
          <div class="row">
             @include('partials.ads.responsive')
          </div>
@@ -108,5 +108,6 @@
 <script>
    window.categories = {!! json_encode($js) !!};
 </script>
-<script src="{{ asset('js/category.js') }}"></script>
+
+<script src="{{ asset('js/glosarium/category.index.js') }}"></script>
 @endpush

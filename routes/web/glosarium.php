@@ -14,12 +14,15 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
 
     // word
     Route::get('/', 'WordController@index')->name('word.index');
-    Route::get('paginate', 'WordController@paginate')->name('word.paginate');
-    Route::get('total', 'WordController@total')->name('word.total');
-    Route::get('create', 'WordController@create')->name('word.create');
-    Route::post('store', 'WordController@store')->name('word.store');
-    Route::post('sama', 'WordController@sameWord')->name('word.same');
-    Route::post('terbaru', 'WordController@latest')->name('word.latest');
+    Route::get('word/paginate', 'WordController@paginate')->name('word.paginate');
+    Route::get('word/total', 'WordController@total')->name('word.total');
+
+    // contribute new word
+    Route::get('word/propose', 'WordController@create')->name('word.create');
+    Route::post('word/store', 'WordController@store')->name('word.store');
+
+    Route::post('word/similar', 'WordController@similar')->name('word.similar');
+    Route::post('word/latest', 'WordController@latest')->name('word.latest');
     Route::get('word/category/{slug}', 'WordController@category')->name('word.category');
     Route::get('/{category}/{slug}', 'WordController@show')->name('word.show');
 });
