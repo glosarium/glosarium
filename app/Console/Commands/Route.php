@@ -43,11 +43,12 @@ class Route extends Command
 
         foreach (RouteCollection::getRoutes() as $route) {
             if (!empty($route->getName())) {
-                $routes[$route->getName()] = $route->getPath();
+                $name          = camel_case(str_replace('.', '_', $route->getName()));
+                $routes[$name] = $route->getPath();
             }
         }
 
-        $line = sprintf('var routes = %s;', json_encode($routes));
+        $line = sprintf('window.routes = %s;', json_encode($routes));
 
         $created = File::put($file = base_path('resources/assets/js/routes.js'), $line);
         if ($created) {
