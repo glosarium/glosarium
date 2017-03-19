@@ -1,22 +1,24 @@
 <?php
 
+/**
+ * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
+ * kamus nasional dan kamus bahasa daerah.
+ *
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright Glosarium - 2017
+ *
+ * @link https://github.com/glosarium/glosarium
+ */
+
 namespace App\Http\Controllers;
 
 use App\Glosarium\Category;
 use App\Glosarium\Word;
 
-/**
- * @author Yugo <dedy.yugo.purwanto@gmail.com>
- * @copyright 2016 - Glosarium
- *
- * @link https://github.com/arvernester/glosarium
- */
 class SitemapController extends Controller
 {
     /**
      * Create sitemap index.
-     *
-     * @author Yugo <dedy.yugo.purwanto@gmail.com>
      */
     public function index()
     {
@@ -42,8 +44,6 @@ class SitemapController extends Controller
 
     /**
      * Generate sitemap grouped by category.
-     *
-     * @author Yugo <dedy.yugo.purwanto@gmail.com>
      *
      * @param $category
      */

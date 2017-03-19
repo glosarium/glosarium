@@ -1,10 +1,10 @@
 <?php
 
-// sitemap
-Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
-Route::get('sitemap/{slug}.xml', 'SitemapController@category')->name('sitemap.category');
-
 Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
+    // sitemap
+    Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
+    Route::get('sitemap/{slug}.xml', 'SitemapController@category')->name('sitemap.category');
+
     // category
     Route::get('category', 'CategoryController@index')->name('category.index');
     Route::get('category/total', 'CategoryController@total')->name('category.total');
