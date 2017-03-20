@@ -12,6 +12,7 @@
 
 namespace App\Libraries;
 
+use App\Wikipedia as Model;
 use GuzzleHttp\Client;
 
 class Wikipedia
@@ -66,6 +67,15 @@ class Wikipedia
 
         if ($response->getStatusCode() == 200) {
             $this->content = json_decode((string) $response->getBody());
+
+            $now = \Carbon\Carbon::now();
+
+            Model::insert([
+                'url'        => $this->url(),
+                'response'   => json_encode($this->content),
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
         }
 
         return $this;
