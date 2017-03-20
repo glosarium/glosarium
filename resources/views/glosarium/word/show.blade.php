@@ -24,48 +24,68 @@
             @include('partials.ads.responsive')
          </div>
          @endif
-         <div class="panel panel-default" style="margin-top: -15px;">
+
+         <div class="panel panel-default" style="margin-top: -15px;" v-cloak>
             <div class="panel-body">
                <div class="col-md-6" style="border-right: 1px solid #ddd; margin-top: 10px">
                   <h3 class="">{{ $word->origin }}</h3>
-                  <span class="label label-default">{{ $word->lang }}</span>
+                  <span class="label label-default">@{{ word.lang }}</span>
                </div>
+
                <div class="col-md-6" style="margin-top:10px">
-                  <h3>{{ $word->locale }}</h3>
+                  <h3>@{{ word.locale }}</h3>
                   <span class="label label-default">{{ config('app.locale') }}</span>
                </div>
+
                <div class="col-md-12">
                   <hr>
                   <div class="btn-group" style="margin-bottom: 20px;">
                      <button class="btn btn-default btn-sm">
-                     <i class="fa fa-heart"></i> 0
+                        <i class="fa fa-heart"></i> 0
                      </button>
-                     @if (! empty($word->description))
-                     <button class="btn btn-default btn-sm">
-                     <i class="fa fa-thumbs-up"></i> 0
+                     <button @click="vote('up')" v-if="word.description" class="btn btn-default btn-sm">
+                        <i class="fa fa-thumbs-up text-success"></i>
+                        @{{ word.description.vote_up }}
                      </button>
-                     <button class="btn btn-default btn-sm">
-                     <i class="fa fa-thumbs-down"></i> 0
+                     <button @click="vote('down')" v-if="word.description" class="btn btn-default btn-sm">
+                        <i class="fa fa-thumbs-down text-danger"></i>
+                        @{{ word.description.vote_down }}
                      </button>
-                     @endif
                   </div>
-                  @if (! empty($word->description))
-                  <h5>@lang('glosarium.word.inWikipedia', [
-                     'title' => $word->description->title
-                     ])
-                  </h5>
-                  <p>{{ $word->description->description }}</p>
-                  <a href="{{ $word->description->url }}" target="_blank">{{ $word->description->url }}</a>
-                  @else
-                  <p>@lang('glosarium.word.noDescription')</p>
-                  @endif
+
+                  <alert :show="loginAlert" type="info" title="Halo, Orang Asing!">
+                     <p>@lang('glosarium.word.loginAlert')</p>
+                  </alert>
+
+                  <alert :show="totalVote < 0" type="warning" title="Pemberitahuan!">
+                     <p>@lang('glosarium.word.wrongDescription') "@{{ word.locale }}".</p>
+                  </alert>
+
+
+                  <div v-if="word.description">
+                     <p>@{{ word.description.description }}</p>
+                     <a :href="word.description.url" target="_blank" class="text-truncate">
+                        @{{ word.description.url }}
+                     </a>
+                  </div>
+                  <div v-else>
+                     <p>@lang('glosarium.word.noDescription')</p>
+                  </div>
                </div>
             </div>
          </div>
          <div class="job-meta">
             <ul class="list-inline {{ Agent::isMobile() ? 'text-center' : '' }}">
-               <li><i class="{{ $word->category->metadata['icon'] }}"></i> {{ $word->category->name }}</li>
-               <li><i class="fa fa-link"></i> <a href="{{ route('link.redirect', $link->hash) }}" class="">{{ route('link.redirect', $link->hash) }}</a></li>
+               <li>
+                  <i :class="word.category.metadata.icon"></i>
+                  @{{ word.category.name }}
+               </li>
+               <li>
+                  <i class="fa fa-link"></i>
+                  <a :href="word.short_url" class="">
+                     @{{ word.short_url }}
+                  </a>
+               </li>
             </ul>
          </div>
          @include('partials.disqus', ['slug' => $word->slug])
@@ -106,6 +126,8 @@
 
 @push('js')
 <script>
+   const word = {!! json_encode($word) !!};
+
    const words = {!! json_encode([
        'locale' => $word->locale,
        'origin' => $word->origin,

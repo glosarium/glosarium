@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
  * kamus nasional dan kamus bahasa daerah.
@@ -115,10 +114,8 @@ class WordController extends Controller
      */
     public function show($category, $slug)
     {
-        $totalWord = Word::whereIsPublished(true)->count();
-
         $word = Word::whereSlug($slug)
-            ->with('category', 'description', 'user')
+            ->with('category', 'description')
             ->firstOrFail();
 
         // get wikipedia page if description is empty

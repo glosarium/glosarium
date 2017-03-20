@@ -2,29 +2,31 @@
 
 return [
     'word'     => [
-        'glossary'        => 'Glosari',
-        'index'           => 'Indeks Kata',
-        'create'          => 'Tambah Kata',
-        'show'            => 'Arti dari glosari :origin adalah :locale',
-        'edit'            => 'Edit Kata :origin',
-        'description'     => 'Arti dari glosari :origin adalah :locale.',
-        'inWikipedia'     => 'Arti ":title" dalam Wikipedia.org',
-        'searchResult'    => 'Hasil pencarian untuk',
-        'notFound'        => 'Kata tidak ditemukan dalam pangkalan data.',
-        'contribute'      => 'Berkontribusi menambahkan glosari pada aplikasi.',
-        'loginFirst'      => 'Anda belum masuk atau terdaftar sebagai kontributor. Untuk menambahkan glosari, silakan <a href=":login" class="alert-link">masuk</a> atau <a href=":register" class="alert-link">registrasi</a> terlebih dahulu.',
-        'descriptionHelp' => 'Tulis rincian, gagasan, atau referensi kata.',
-        'inLocale'        => 'Kata dalam Bahasa Indonesia',
-        'noDescription'   => 'Deskripsi tidak ditemukan dalam Wikipedia.org.',
-        'forward'         => 'Informasi kata juga dikirim ke :email',
-        'shares'          => 'Bagikan',
+        'glossary'         => 'Glosari',
+        'index'            => 'Indeks Kata',
+        'create'           => 'Tambah Kata',
+        'show'             => 'Arti dari glosari :origin adalah :locale',
+        'edit'             => 'Edit Kata :origin',
+        'description'      => 'Arti dari glosari :origin adalah :locale.',
+        'inWikipedia'      => 'Arti ":title" dalam Wikipedia.org',
+        'searchResult'     => 'Hasil pencarian untuk',
+        'notFound'         => 'Kata tidak ditemukan dalam pangkalan data.',
+        'contribute'       => 'Berkontribusi menambahkan glosari pada aplikasi.',
+        'loginFirst'       => 'Anda belum masuk atau terdaftar sebagai kontributor. Untuk menambahkan glosari, silakan <a href=":login" class="alert-link">masuk</a> atau <a href=":register" class="alert-link">registrasi</a> terlebih dahulu.',
+        'loginAlert'       => 'Anda harus masuk atau mendaftar terlebih dahulu untuk memberikan pilihan.',
+        'descriptionHelp'  => 'Tulis rincian, gagasan, atau referensi kata.',
+        'inLocale'         => 'Kata dalam Bahasa Indonesia',
+        'noDescription'    => 'Deskripsi tidak ditemukan dalam Wikipedia.org.',
+        'forward'          => 'Informasi kata juga dikirim ke :email',
+        'shares'           => 'Bagikan',
+        'wrongDescription' => 'Sehubungan dengan banyaknya respon negatif, deskripsi di bawah bisa jadi tidak sesuai dengan arti kata ',
 
-        'btn'             => [
+        'btn'              => [
             'create'  => 'Tambah Kata',
             'propose' => 'Ajukan Proposal',
         ],
 
-        'field'           => [
+        'field'            => [
             'origin'      => 'Kata Asal',
             'locale'      => 'Kata Translasi',
             'category'    => 'Kategori',
@@ -36,12 +38,12 @@ return [
             'description' => 'Deskripsi',
         ],
 
-        'msg'             => [
+        'msg'              => [
             'created' => 'Kata baru berhasil ditambahkan.',
             'edited'  => 'Kata :origin berhasil diperbarui.',
         ],
 
-        'placeholder'     => [
+        'placeholder'      => [
             'search' => 'Kata asing atau dalam Bahasa Indonesia...',
         ],
     ],

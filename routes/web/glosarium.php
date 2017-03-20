@@ -5,6 +5,10 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
     Route::get('sitemap/{slug}.xml', 'SitemapController@category')->name('sitemap.category');
 
+    // description
+    Route::post('description/up', 'DescriptionController@up')->name('description.up');
+    Route::post('description/down', 'DescriptionController@down')->name('description.down');
+
     // category
     Route::get('category', 'CategoryController@index')->name('category.index');
     Route::get('category/total', 'CategoryController@total')->name('category.total');
