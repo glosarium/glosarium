@@ -1,5 +1,12 @@
 # Catatan Perubahan Aplikasi
 
+### 20-03-2017
+- Vote untuk deskripsi yang sesuai ([9557a34](https://github.com/glosarium/glosarium/commit/9557a3412d81b8e9d74e19b80731b4138a6dcaec))
+
+### 19-03-2017
+- Perbaikan sitemap glosarium ([de8bfab](https://github.com/glosarium/glosarium/commit/de8bfab3bcfbfc7d49d4edeb107da117bb5efb29))
+- Struktur ulang tampilan dan JavaScript ([aecf3b1](https://github.com/glosarium/glosarium/commit/aecf3b106b8ba5ed0e34d857afd03402f54c4df2))
+
 ### 18-03-2017
 - Perbaikan tampilan untuk akses via mobile, tambah logo untuk setiap heading yang kosong ([80513ca](https://github.com/glosarium/glosarium/commit/80513ca816e3ab05798f57a0bd555fa0fcd5562a))
 - Perbaikan tampilan untuk manajemen kata ([1e7cbce](https://github.com/glosarium/glosarium/commit/1e7cbcea76d9b90a4a63aa17e72cfdd2d78166dd))
