@@ -98,7 +98,7 @@ class Wikipedia
      */
     public function title(): string
     {
-        if (!empty($this->content)) {
+        if (!empty($this->content) and !empty($this->content[1])) {
             return $this->content[1][0];
         }
 
@@ -112,7 +112,7 @@ class Wikipedia
      */
     public function description(): string
     {
-        if (!empty($this->content)) {
+        if (!empty($this->content) and !empty($this->content[2])) {
             return $this->content[2][0];
         }
         return '';
@@ -125,7 +125,7 @@ class Wikipedia
      */
     public function url(): string
     {
-        if (!empty($this->content)) {
+        if (!empty($this->content) and !empty($this->content[3])) {
             return $this->content[3][0];
         }
 
