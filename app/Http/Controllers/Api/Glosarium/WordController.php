@@ -14,10 +14,18 @@ namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Word;
 use App\Http\Controllers\Api\ApiController;
+use Cache;
 use Validator;
 
 class WordController extends ApiController
 {
+    private $lifetime;
+
+    public function __construct()
+    {
+        $this->lifetime = \Carbon\Carbon::now()->addDays(30);
+    }
+
     public function index()
     {
         $validator = Validator::make(request()->all(), [
@@ -29,9 +37,13 @@ class WordController extends ApiController
             return response()->json($validator->fails(), 422);
         }
 
-        $words = Word::with('category', 'description')
-            ->orderBy('origin', request('sort', 'ASC'))
-            ->paginate(request('limit', 20));
+        $key = sprintf('api.glosarium.index.%s', request('page', 0));
+
+        $words = Cache::remember($key, $this->lifetime, function () {
+            return $words = Word::with('category', 'description')
+                ->orderBy('origin', request('sort', 'ASC'))
+                ->paginate(request('limit', 20));
+        });
 
         return response()
             ->json($words)
@@ -40,9 +52,13 @@ class WordController extends ApiController
 
     public function show($slug)
     {
-        $word = Word::whereSlug($slug)
-            ->with('category', 'description')
-            ->first();
+        $key = sprintf('api.glosarium.word.%s', $slug);
+
+        $word = Cache::remember($key, $this->lifetime, function () use ($slug) {
+            return Word::whereSlug($slug)
+                ->with('category', 'description')
+                ->first();
+        });
 
         if (empty($word)) {
             return response()->json([], 404);
