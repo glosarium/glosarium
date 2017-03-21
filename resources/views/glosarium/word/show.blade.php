@@ -19,11 +19,6 @@
    <div class="col-md-9">
       <!-- box item details -->
       <div class="block-section box-item-details">
-         @if (Agent::isMobile())
-         <div class="row">
-            @include('partials.ads.responsive')
-         </div>
-         @endif
 
          <div class="panel panel-default" style="margin-top: -15px;" v-cloak>
             <div class="panel-body">

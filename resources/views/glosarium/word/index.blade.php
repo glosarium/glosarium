@@ -26,11 +26,6 @@
    <div class="col-md-9">
       <!-- box listing -->
       <div class="block-section-sm box-list-area">
-         @if (Agent::isMobile())
-         <div class="row text-center">
-            @include('partials.ads.responsive')
-         </div>
-         @endif
          <!-- desc top -->
          <div class="row hidden-xs">
             <div class="col-sm-6" v-cloak>

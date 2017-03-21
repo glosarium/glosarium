@@ -23,11 +23,6 @@
    <div class="col-md-9">
       <!-- box listing -->
       <div class="block-section-sm box-list-area">
-         @if (Agent::isMobile())
-         <div class="row">
-            @include('partials.ads.responsive')
-         </div>
-         @endif
          <!-- desc top -->
          <div class="row hidden-xs" v-cloak>
             <div class="col-sm-6 ">
