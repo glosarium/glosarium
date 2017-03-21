@@ -25,6 +25,9 @@ elixir(mix => {
 
     mix.browserify('theme.js', 'public/js/theme.js');
 
+    // highlight.js
+    mix.copy('node_modules/highlight.js/styles/monokai.css', 'public/css/');
+
     // glosarium
     mix.browserify('glosarium/category/index.js', 'public/js/glosarium/category.index.js');
     mix.browserify('glosarium/category/show.js', 'public/js/glosarium/category.show.js');
@@ -35,4 +38,8 @@ elixir(mix => {
 
     // contact
     mix.browserify('contact/form.js', 'public/js/contact.form.js');
+
+    mix.browserSync({
+        proxy: 'glosarium.dev'
+    })
 });
