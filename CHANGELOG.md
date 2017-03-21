@@ -1,6 +1,6 @@
 # Catatan Perubahan Aplikasi
 
-###
+### 21-03-2017
 - Kata favorit untuk pengguna terdaftar ([655f6eb](https://github.com/glosarium/glosarium/commit/655f6eb11685eeb40efdd735cbbb15a08247c001))
 - Tambahkan penanda kata tidak punya deskripsi, untuk mengurangi akses ke API Wikipedia dan peningkatan performa ([4f86485](https://github.com/glosarium/glosarium/commit/4f8648539c6e9e03d62aa94a1f07475cef40f5f3))
 
