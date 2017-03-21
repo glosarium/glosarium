@@ -13,10 +13,10 @@
 namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Word;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Validator;
 
-class WordController extends Controller
+class WordController extends ApiController
 {
     public function index()
     {
@@ -33,19 +33,13 @@ class WordController extends Controller
             ->orderBy('origin', request('sort', 'ASC'))
             ->paginate(request('limit', 20));
 
-        return response()->json($words);
+        return response()
+            ->json($words)
+            ->withHeaders($this->headers);
     }
 
     public function show($slug)
     {
-        $validator = Validator::make(request()->all(), [
-            // 'slug' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
         $word = Word::whereSlug($slug)
             ->with('category', 'description')
             ->first();
@@ -54,7 +48,9 @@ class WordController extends Controller
             return response()->json([], 404);
         }
 
-        return response()->json($word);
+        return response()
+            ->json($word)
+            ->withHeaders($this->headers);
     }
 
     public function search()
@@ -75,7 +71,9 @@ class WordController extends Controller
 
         $words->appends(request()->all());
 
-        return response()->json($words);
+        return response()
+            ->json($words)
+            ->withHeaders($this->headers);
     }
 
     public function propose()
@@ -91,6 +89,8 @@ class WordController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        return response()->json(request()->all());
+        return response()
+            ->json(request()->all())
+            ->withHeaders($this->headers);
     }
 }

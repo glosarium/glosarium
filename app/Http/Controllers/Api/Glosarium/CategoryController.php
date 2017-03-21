@@ -13,11 +13,11 @@
 namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Category;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
 use Validator;
 
-class CategoryController extends Controller
+class CategoryController extends ApiController
 {
     public function index()
     {
@@ -33,7 +33,9 @@ class CategoryController extends Controller
         $categories = Category::orderBy('name', request('sort', 'ASC'))
             ->paginate(request('limit', 20));
 
-        return response()->json($categories);
+        return response()
+            ->json($categories)
+            ->withHeaders($this->headers);
     }
 
     public function show($slug)
@@ -46,7 +48,9 @@ class CategoryController extends Controller
             return response()->json([], 404);
         }
 
-        return response()->json($category);
+        return response()
+            ->json($category)
+            ->withHeaders($this->headers);
     }
 
     public function search()
@@ -65,6 +69,8 @@ class CategoryController extends Controller
             ->sort(request('sort', 'ASC'))
             ->paginate(request('limit', 20));
 
-        return response()->json($categories);
+        return response()
+            ->json($categories)
+            ->withHeaders($this->headers);
     }
 }

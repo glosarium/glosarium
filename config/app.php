@@ -183,6 +183,9 @@ return [
 
         Jenssegers\Agent\AgentServiceProvider::class,
 
+        // https://github.com/dingo/api
+        Dingo\Api\Provider\LaravelServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
