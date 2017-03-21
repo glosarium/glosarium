@@ -40,15 +40,16 @@
                <div class="col-md-12">
                   <hr>
                   <div class="btn-group" style="margin-bottom: 20px;">
-                     <button class="btn btn-default btn-sm">
-                        <i class="fa fa-heart"></i> 0
+                     <button @click="favorite" class="btn btn-default btn-sm">
+                        <i :class="['fa fa-heart', word.favorites_count >= 1 ? 'text-danger' : '']"></i>
+                        @{{ word.favorites_count }}
                      </button>
                      <button @click="vote('up')" v-if="word.description" class="btn btn-default btn-sm">
-                        <i class="fa fa-thumbs-up text-success"></i>
+                        <i :class="['fa fa-thumbs-up', word.description.vote_up >= 1 ? 'text-success' : '']"></i>
                         @{{ word.description.vote_up }}
                      </button>
                      <button @click="vote('down')" v-if="word.description" class="btn btn-default btn-sm">
-                        <i class="fa fa-thumbs-down text-danger"></i>
+                        <i :class="['fa fa-thumbs-down', word.description.vote_down >= 1 ? 'text-warning' : '']"></i>
                         @{{ word.description.vote_down }}
                      </button>
                   </div>
@@ -74,7 +75,7 @@
                </div>
             </div>
          </div>
-         <div class="job-meta">
+         <div class="job-meta" v-cloak>
             <ul class="list-inline {{ Agent::isMobile() ? 'text-center' : '' }}">
                <li>
                   <i :class="word.category.metadata.icon"></i>

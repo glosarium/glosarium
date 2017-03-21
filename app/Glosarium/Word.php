@@ -129,17 +129,14 @@ class Word extends Model
         return $this->hasOne(\App\Glosarium\Description::class);
     }
 
-    /**
-     * @return mixed
-     */
-    public function views()
-    {
-        return $this->hasMany(\App\Glosarium\WordView::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(\App\User::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 
     /**

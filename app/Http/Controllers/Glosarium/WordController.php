@@ -116,6 +116,7 @@ class WordController extends Controller
     {
         $word = Word::whereSlug($slug)
             ->with('category', 'description')
+            ->withCount('favorites')
             ->firstOrFail();
 
         // get wikipedia page if description is empty

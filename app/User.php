@@ -62,6 +62,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Glosarium\Word::class);
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(\App\Glosarium\Favorite::class);
+    }
+
     public function scopeFilter($query)
     {
         $keyword = request('keyword');

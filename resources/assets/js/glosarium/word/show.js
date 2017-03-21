@@ -54,5 +54,17 @@ new Vue({
         });
       }
     },
+
+    favorite() {
+      axios.post(routes.glosariumFavoritePost, {slug: this.word.slug}).then(response => {
+        if (response.data.success == true) {
+          this.word.favorites_count += 1;
+        }
+      }).catch(error => {
+        if (error.response.status == 401) {
+          this.loginAlert = true;
+        }
+      });
+    },
   }
 })
