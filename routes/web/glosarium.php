@@ -5,6 +5,9 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
     Route::get('sitemap/{slug}.xml', 'SitemapController@category')->name('sitemap.category');
 
+    // favorite
+    Route::post('favorite', 'FavoriteController@favorite')->name('favorite.post');
+
     // description
     Route::post('description/up', 'DescriptionController@up')->name('description.up');
     Route::post('description/down', 'DescriptionController@down')->name('description.down');
