@@ -12,6 +12,8 @@
  */
 Auth::routes();
 
+Route::get('api', 'ApiController@index')->name('api.index');
+
 Route::get('/contact', 'ContactController@form')->name('contact.form');
 Route::post('/contact/send', 'ContactController@send')->name('contact.post');
 

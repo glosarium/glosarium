@@ -5,3 +5,6 @@ Vue.use(VueProgressBar, {
 	failedColor: '#d9534f',
 	thickness: '4px'
 });
+
+// highlight js
+window.hljs = require('highlight.js');

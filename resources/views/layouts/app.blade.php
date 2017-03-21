@@ -135,6 +135,7 @@
                             <ul class="list-inline link-footer text-center-xs">
                                 <li><a href="{{ route('glosarium.word.index') }}">Beranda</a></li>
                                 <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
+                                <li><a href="{{ route('api.index') }}">API</a></li>
                             </ul>
                         </div>
                         <div class="col-sm-6 ">
