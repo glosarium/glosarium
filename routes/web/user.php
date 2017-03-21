@@ -9,10 +9,6 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
     // password
     Route::get('user/password', 'PasswordController@form')->name('password.form');
     Route::post('user/password', 'PasswordController@update')->name('password.update');
-
-    Route::group(['prefix' => 'user/glosarium', 'namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
-        Route::put('update/field', 'CategoryController@updateField')->name('category.updateField');
-    });
 });
 
 // user
