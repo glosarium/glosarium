@@ -28,6 +28,7 @@ class Word extends Model
         'pronounce',
         'is_standard',
         'is_published',
+        'has_description',
     ];
 
     protected $hidden = [
@@ -54,10 +55,11 @@ class Word extends Model
      * @var array
      */
     protected $casts = [
-        'user_id'      => 'integer',
-        'category_id'  => 'integer',
-        'is_standard'  => 'boolean',
-        'is_published' => 'boolean',
+        'user_id'         => 'integer',
+        'category_id'     => 'integer',
+        'is_standard'     => 'boolean',
+        'is_published'    => 'boolean',
+        'has_description' => 'boolean',
     ];
 
     public function getRouteKeyName()

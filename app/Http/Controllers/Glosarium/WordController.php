@@ -119,20 +119,26 @@ class WordController extends Controller
             ->firstOrFail();
 
         // get wikipedia page if description is empty
-        if (empty($word->description)) {
-            $wikipedia  = new Wikipedia;
-            $wikipedias = $wikipedia->openSearch($word->locale);
-            if (empty($wikipedias)) {
-                $wikipedias = $wikipedia->openSearch($word->origin);
-            }
+        if ($word->has_description) {
+            if (empty($word->description)) {
+                $wikipedia  = new Wikipedia;
+                $wikipedias = $wikipedia->openSearch($word->locale);
+                if (empty($wikipedias)) {
+                    $wikipedias = $wikipedia->openSearch($word->origin);
+                }
 
-            if (!$wikipedia->isEmpty()) {
-                $word->description = Description::create([
-                    'word_id'     => $word->id,
-                    'title'       => $wikipedia->title(),
-                    'description' => $wikipedia->description(),
-                    'url'         => $wikipedia->url(),
-                ]);
+                if (!$wikipedia->isEmpty()) {
+                    $word->description = Description::create([
+                        'word_id'     => $word->id,
+                        'title'       => $wikipedia->title(),
+                        'description' => $wikipedia->description(),
+                        'url'         => $wikipedia->url(),
+                    ]);
+                } else {
+                    // flag word has no description
+                    $word->has_description = false;
+                    $word->save();
+                }
             }
         }
 
