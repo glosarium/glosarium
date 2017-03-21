@@ -13,7 +13,7 @@ return [
     |
     | Supported: "apc", "array", "database", "file", "memcached", "redis"
     |
-    */
+     */
 
     'default' => env('CACHE_DRIVER', 'file'),
 
@@ -26,50 +26,50 @@ return [
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
     |
-    */
+     */
 
-    'stores' => [
+    'stores'  => [
 
-        'apc' => [
+        'apc'       => [
             'driver' => 'apc',
         ],
 
-        'array' => [
+        'array'     => [
             'driver' => 'array',
         ],
 
-        'database' => [
-            'driver' => 'database',
-            'table' => 'cache',
+        'database'  => [
+            'driver'     => 'database',
+            'table'      => 'cache',
             'connection' => null,
         ],
 
-        'file' => [
+        'file'      => [
             'driver' => 'file',
-            'path' => storage_path('framework/cache'),
+            'path'   => storage_path('framework/cache'),
         ],
 
         'memcached' => [
-            'driver' => 'memcached',
+            'driver'        => 'memcached',
             'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
-            'sasl' => [
+            'sasl'          => [
                 env('MEMCACHED_USERNAME'),
                 env('MEMCACHED_PASSWORD'),
             ],
-            'options' => [
+            'options'       => [
                 // Memcached::OPT_CONNECT_TIMEOUT  => 2000,
             ],
-            'servers' => [
+            'servers'       => [
                 [
-                    'host' => env('MEMCACHED_HOST', '127.0.0.1'),
-                    'port' => env('MEMCACHED_PORT', 11211),
+                    'host'   => env('MEMCACHED_HOST', '127.0.0.1'),
+                    'port'   => env('MEMCACHED_PORT', 11211),
                     'weight' => 100,
                 ],
             ],
         ],
 
-        'redis' => [
-            'driver' => 'redis',
+        'redis'     => [
+            'driver'     => 'redis',
             'connection' => 'default',
         ],
 
@@ -84,8 +84,8 @@ return [
     | be other applications utilizing the same cache. So, we'll specify a
     | value to get prefixed to all our keys so we can avoid collisions.
     |
-    */
+     */
 
-    'prefix' => 'laravel',
+    'prefix'  => 'glosarium',
 
 ];
