@@ -11,6 +11,8 @@
 |
  */
 
+Route::post('auth', 'Api\AuthController@authenticate');
+
 Route::group(['prefix' => 'glosarium', 'namespace' => 'Api\Glosarium'], function () {
     // category
     Route::get('category', 'CategoryController@index');

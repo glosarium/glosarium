@@ -183,8 +183,7 @@ return [
 
         Jenssegers\Agent\AgentServiceProvider::class,
 
-        // https://github.com/dingo/api
-        Dingo\Api\Provider\LaravelServiceProvider::class,
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
 
         /*
          * Application Service Providers...
@@ -246,6 +245,9 @@ return [
         'Image'        => Intervention\Image\Facades\Image::class,
         'Debugbar'     => Barryvdh\Debugbar\Facade::class,
         'Agent'        => Jenssegers\Agent\Facades\Agent::class,
+
+        'JWTAuth'      => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory'   => 'Tymon\JWTAuth\Facades\JWTFactory',
     ],
 
 ];

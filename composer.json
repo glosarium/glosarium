@@ -14,7 +14,8 @@
         "roumen/sitemap": "^2.6",
         "sastrawi/sastrawi": "^1.2",
         "jenssegers/agent": "^2.5",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "tymon/jwt-auth": "^0.5.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
