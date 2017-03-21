@@ -47,12 +47,13 @@
                   <a href="#intro" id="intro"><i class="fa fa-link"></i></a>
               </small>
           </h3>
-          <p>Glosarium menyediakan Antarmuka Pemrograman Aplikasi (<i>Application Interface Programming</i>/API) untuk memberikan kemudahan bagi pengembang yang ingin membuat perangkat lunak baru di plantar yang berbeda.</p>
-          <p>Saat ini fitur yang disediakan pada APA hanya sebatas baca data, khususnya bagian kata dan kategori (bidang glosarium).</p>
-          <p>Untuk dapat mengakses APA Glosarium, pengembang diharuskan mendaftar sebagai anggota terlebih dahulu di aplikasi web Glosarium. Adapaun halaman registrasi dapat diakses melalui <a href="/register">tautan ini</a>.</p>
+          <p>Glosarium menyediakan Antarmuka Pemrograman Aplikasi (<i>Application Programming Interface</i>/API) untuk memberikan kemudahan bagi pengembang yang ingin membuat perangkat lunak baru di pelantar yang berbeda. Seperti perangkat bergerak misalnya.</p>
+
+          <p>Saat ini fitur yang disediakan pada APA Glosarium hanya sebatas baca data, khususnya bagian kata dan kategori (bidang).</p>
+          <p>Untuk dapat mengakses APA Glosarium, pengembang diharuskan mendaftar terlebih dahulu sebagai kontributor di aplikasi web Glosarium. Adapaun halaman registrasi dapat diakses melalui <a href="{{ url('register') }}">tautan ini</a>.</p>
 
           <div class="alert alert-info">
-              Hampir sebagian besar contoh skrip menggunakan Bahasa Pemrograman PHP dan librari <a href="https://mdref.m6w6.name/http" class="alert-link">HTTP Client</a> versi 2.
+              Hampir sebagian besar contoh skrip pada dokumentasi ini menggunakan bahasa pemrograman PHP dan librari <a href="https://mdref.m6w6.name/http" class="alert-link">HTTP Client</a> versi 2.
           </div>
       </div>
 
@@ -161,8 +162,8 @@ Content-Type: application/vnd.glosarium.api.v1+json
     "per_page": 20,
     "current_page": 2,
     "last_page": 3,
-    "next_page_url": "http:\/\/glosarium.dev\/api\/glosarium\/category?page=3",
-    "prev_page_url": "http:\/\/glosarium.dev\/api\/glosarium\/category?page=1",
+    "next_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/category?page=3",
+    "prev_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/category?page=1",
     "from": 21,
     "to": 40,
     "data": [
@@ -174,7 +175,7 @@ Content-Type: application/vnd.glosarium.api.v1+json
             "metadata": {
                 "icon": "fa fa-flask"
             },
-            "url": "http:\/\/glosarium.dev\/category\/kimia",
+            "url": "http:\/\/glosarium.web.id\/category\/kimia",
             "updated_diff": "3 bulan yang lalu"
         },
         {
@@ -185,7 +186,7 @@ Content-Type: application/vnd.glosarium.api.v1+json
             "metadata": {
                 "icon": "fa fa-comments"
             },
-            "url": "http:\/\/glosarium.dev\/category\/komunikasi-massa",
+            "url": "http:\/\/glosarium.web.id\/category\/komunikasi-massa",
             "updated_diff": "3 bulan yang lalu"
         }
     ]
@@ -201,7 +202,7 @@ $request = new http\Client\Request;
 
 $token = 'your-token';
 
-$request->setRequestUrl('http://glosarium.dev/api/glosarium/category');
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/category');
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString(array(
   'token' => $token,
@@ -259,7 +260,7 @@ Content-Type: application/vnd.glosarium.api.v1+json
         "icon": "fa fa-moon-o"
     },
     "words_count": 3542,
-    "url": "http:\/\/glosarium.dev\/category\/agama-islam",
+    "url": "http:\/\/glosarium.web.id\/category\/agama-islam",
     "updated_diff": "3 bulan yang lalu"
 }
               </code>
@@ -275,7 +276,7 @@ $request = new http\Client\Request;
 $token = 'your-token';
 $slug = 'agama-islam';
 
-$request->setRequestUrl('http://glosarium.dev/api/glosarium/category/'. $slug);
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/category/'. $slug);
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString(array(
   'token' => $token
@@ -355,7 +356,7 @@ Content-Type: application/vnd.glosarium.api.v1+json
             "metadata": {
                 "icon": "fa fa-desktop"
             },
-            "url": "http:\/\/glosarium.dev\/category\/teknologi-informasi",
+            "url": "http:\/\/glosarium.web.id\/category\/teknologi-informasi",
             "updated_diff": "3 bulan yang lalu"
         }
     ]
@@ -381,7 +382,7 @@ $request = new http\Client\Request;
 
 $token = 'your-token';
 
-$request->setRequestUrl('http://glosarium.dev/api/glosarium/word');
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/word');
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString(array(
   'token' => $token,
@@ -414,7 +415,7 @@ $request = new http\Client\Request;
 $token = 'your-token';
 $slug = 'data';
 
-$request->setRequestUrl('http://glosarium.dev/api/glosarium/word/'. $slug);
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/word/'. $slug);
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString(array(
   'token' => $token
@@ -445,7 +446,7 @@ $request = new http\Client\Request;
 
 $token = 'your-token';
 
-$request->setRequestUrl('http://glosarium.dev/api/glosarium/word/search');
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/word/search');
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString(array(
   'token' => $token,
@@ -483,7 +484,7 @@ $body->addForm(array(
   'locale' => 'Tetikus' // word in locale
 ), NULL);
 
-$request->setRequestUrl('http://glosarium.dev/api/glosarium/word');
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/word');
 $request->setRequestMethod('POST');
 $request->setBody($body);
 
@@ -511,15 +512,16 @@ echo $response->getBody();
 </div>
 @endsection
 
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/monokai.css') }}">
+@endpush
+
 @push('js')
     <script>
         $(function(){
             $('#content').addClass('block-section line-bottom');
-            $('pre code').each(function(i, block) {
-                hljs.highlightBlock(block);
-              });
         });
 
-        // hljs.initHighlightingOnLoad();
+        hljs.initHighlightingOnLoad();
     </script>
 @endpush

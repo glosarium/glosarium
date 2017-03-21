@@ -14,6 +14,6 @@ class ApiController extends Controller
         $imagePath = $image->render('images/pages/', 'api')->path();
 
         return view('api.index', compact('imagePath'))
-            ->withTitle('Antarmuka Pemrograman Aplikasi');
+            ->withTitle(trans('api.title'));
     }
 }
