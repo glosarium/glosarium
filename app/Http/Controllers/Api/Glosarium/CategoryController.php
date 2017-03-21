@@ -14,11 +14,19 @@ namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Category;
 use App\Http\Controllers\Api\ApiController;
+use Cache;
 use Illuminate\Http\Request;
 use Validator;
 
 class CategoryController extends ApiController
 {
+    private $lifetime;
+
+    public function __construct()
+    {
+        $this->lifetime = \Carbon\Carbon::now()->addDays(30);
+    }
+
     public function index()
     {
         $validator = Validator::make(request()->all(), [
@@ -27,11 +35,17 @@ class CategoryController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()
+                ->json($validator->errors(), 422)
+                ->withHeaders($this->headers);
         }
 
-        $categories = Category::orderBy('name', request('sort', 'ASC'))
-            ->paginate(request('limit', 20));
+        $key = sprintf('api.glosarium.category.index.%s', request('page', 0));
+
+        $categories = Cache::remember($key, $this->lifetime, function () {
+            return Category::orderBy('name', request('sort', 'ASC'))
+                ->paginate(request('limit', 20));
+        });
 
         return response()
             ->json($categories)
@@ -40,12 +54,18 @@ class CategoryController extends ApiController
 
     public function show($slug)
     {
-        $category = Category::whereSlug(trim($slug))
-            ->withCount('words')
-            ->first();
+        $key = sprintf('api.glosarium.category.%s', $slug);
+
+        $category = Cache::remember($key, $this->lifetime, function () use ($slug) {
+            return Category::whereSlug(trim($slug))
+                ->withCount('words')
+                ->first();
+        });
 
         if (empty($category)) {
-            return response()->json([], 404);
+            return response()
+                ->json(['error' => trans('glosarium.category.notFound')], 404)
+                ->withHeaders($this->headers);
         }
 
         return response()
