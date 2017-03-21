@@ -83,7 +83,7 @@ class Category extends Model
     /**
      * Filter category based on keyword value
      *
-     * @param  string     $query
+     * @param  object     $query Eloquent
      * @return Eloquent
      */
     public function scopeFilter($query)
@@ -95,5 +95,16 @@ class Category extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * Sort category by name
+     * @param  object $query     Eloquent
+     * @param  string $order
+     * @return object Eloquent
+     */
+    public function scopeSort($query, $order = 'ASC')
+    {
+        return $query->orderBy('name', $order);
     }
 }
