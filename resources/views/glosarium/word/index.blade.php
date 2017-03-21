@@ -82,6 +82,11 @@
                         </small>
                      </h3>
                      <h5><span class="color-black">@{{ word.locale }}</span> - <span><a :href="word.category.url" class="color-white-mute">@{{ word.category.name }}</a></span></h5>
+
+                     <p v-if="word.description" class="text-description">
+                        @{{ word.description.description }}
+                     </p>
+
                      <div>
                         <span class="color-white-mute">@{{ word.updated_diff }}</span>
                      </div>

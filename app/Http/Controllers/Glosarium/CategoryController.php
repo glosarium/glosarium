@@ -85,8 +85,6 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $totalWord = Word::whereIsPublished(true)->count();
-
         // create image
         $image     = new Image;
         $imagePath = $image->addText(trans('glosarium.category.index'), 50, 400, 200)
@@ -104,9 +102,9 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
-        $cacheTime = Carbon::now()->addDays(7);
+        $this->cacheTime = Carbon::now()->addDays(7);
 
-        $category = Cache::remember($slug, $cacheTime, function () use ($slug) {
+        $category = Cache::remember($slug, $this->cacheTime, function () use ($slug) {
             return Category::whereSlug($slug)
                 ->first();
         });

@@ -56,7 +56,7 @@ class WordController extends Controller
     {
         $words = Word::filter()
             ->sort()
-            ->with('category')
+            ->with('category', 'description')
             ->paginate(20);
 
         if (!empty(request())) {
@@ -76,7 +76,7 @@ class WordController extends Controller
         $words = Word::whereHas('category', function ($category) use ($categorySlug) {
             return $category->whereSlug($categorySlug);
         })
-            ->with('category')
+            ->with('category', 'description')
             ->whereIsPublished(true)
             ->filter()
             ->sort()
