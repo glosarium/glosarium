@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-{{ debug($exception)}}
+@section('heading')
+	@include('partials.title')
+@endsection
 
 @section('content')
 <div class="row">
