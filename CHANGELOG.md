@@ -1,6 +1,7 @@
 # Catatan Perubahan Aplikasi
 
 ### 21-03-2017
+- Informasi token pengguna dari halaman akun ([3ad2491](https://github.com/glosarium/glosarium/commit/3ad2491d30d1da4135efc192e4b4f182fe082eff))
 - Perbaikan dan perapihan dokumentasi untuk APA/API ([235ec97](https://github.com/glosarium/glosarium/commit/235ec97b808cb260f7e9519ac3ca30ed4b124150))
 
 ### 21-03-2017
