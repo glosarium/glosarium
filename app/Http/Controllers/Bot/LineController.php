@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Bot;
 use App\Bot\LINE\Line;
 use App\Bot\LINE\Text;
 use App\Http\Controllers\Controller;
-use File;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 
@@ -20,11 +19,14 @@ class LineController extends Controller
 
     public function hook()
     {
-        $hooks = json_decode(File::get(storage_path('bot/line-hook.json')));
+        $signature = $_SERVER["HTTP_" . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
+        $body      = file_get_contents("php://input");
 
-        \DB::transaction(function () use ($hooks) {
+        $events = $bot->parseEventRequest($body, $signature);
 
-            foreach ($hooks->events as $event) {
+        \DB::transaction(function () use ($events) {
+
+            foreach ($events as $event) {
                 $fields = [
                     'user'   => 'userId',
                     'group'  => 'groupId',
@@ -41,6 +43,12 @@ class LineController extends Controller
                     'user'      => $event->source->userId,
                 ];
 
+                if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
+                    $reply_token = $event->getReplyToken();
+                    $text        = $event->getText();
+                    $bot->replyText($reply_token, $text);
+                }
+
                 $line = Line::create($line);
 
                 if (!empty($event->message) and $event->message->type == 'text') {
@@ -49,8 +57,6 @@ class LineController extends Controller
                         'text_id'      => $event->message->id,
                         'text_message' => $event->message->text,
                     ]);
-
-                    $this->reply($line->token);
                 }
             }
 
