@@ -1,6 +1,10 @@
 # Catatan Perubahan Aplikasi
 
 ### 21-03-2017
+- Perbaikan dan perapihan dokumentasi untuk APA/API ([235ec97](https://github.com/glosarium/glosarium/commit/235ec97b808cb260f7e9519ac3ca30ed4b124150))
+
+### 21-03-2017
+- Dokumentasi untuk APA/API ([f8b5859](https://github.com/glosarium/glosarium/commit/f8b58596861d2d62efe1cc027869d2fdb0bf280f))
 - API untuk kata dan kategori ([b75b612](https://github.com/glosarium/glosarium/commit/b75b612e30451a4f26799be4bf407d17bad59fe3))
 - Kata favorit untuk pengguna terdaftar ([655f6eb](https://github.com/glosarium/glosarium/commit/655f6eb11685eeb40efdd735cbbb15a08247c001))
 - Tambahkan penanda kata tidak punya deskripsi, untuk mengurangi akses ke API Wikipedia dan peningkatan performa ([4f86485](https://github.com/glosarium/glosarium/commit/4f8648539c6e9e03d62aa94a1f07475cef40f5f3))
