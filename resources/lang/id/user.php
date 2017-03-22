@@ -18,6 +18,8 @@ return [
     'notAuthorized'  => 'Anda tidak punya hak untuk mengakses halaman ini.',
     'edit'           => 'Ubah :name',
     'history'        => 'Riwayat Kontributor',
+    'tokenTitle'     => 'Token untuk Antarmuka Pemrograman Aplikasi',
+    'token'          => 'Token',
 
     'field'          => [
         'name'            => 'Name',
@@ -30,6 +32,7 @@ return [
         'currentPassword' => 'Sandi Lewat Sekarang',
         'confirmPassword' => 'Konfirmasi Sandi Lewat',
         'remember'        => 'Ingatkan saya!',
+        'token'           => 'Token',
     ],
 
     'btn'            => [

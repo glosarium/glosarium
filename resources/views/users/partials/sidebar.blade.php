@@ -17,6 +17,8 @@
                 <hr>
             @endif
 
+            <li><a href="{{ route('user.account.token') }}">@lang('user.token')</a></li>
+
             <li><a href="{{ route('user.notification.index') }}"> Notifikasi ({{ auth()->user()->unreadNotifications->count() }})</a></li>
             <li><a href="{{ route('user.password.form') }}"> Ubah Sandi Lewat</a></li>
         </ul>

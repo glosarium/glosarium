@@ -71,7 +71,7 @@
           </ol>
 
           <h5>1. Halaman Profil</h5>
-          <p>Untuk mendapatkan token dari halaman profil, pengembang harus masuk atau mendaftar terlebih dahulu pada web Glosarium. Kemudian, akses halaman berikut untuk melihat token yang sudah diaktifkan.</p>
+          <p>Untuk mendapatkan token dari halaman profil, pengembang harus masuk atau mendaftar terlebih dahulu pada web Glosarium. Kemudian, akses <a href="{{ route('user.account.token') }}"><strong>halaman berikut</strong></a> untuk melihat token yang sudah diaktifkan.</p>
 
           <h5>2. Melalui Autentikasi APA Glosarium</h5>
           <p>Cara kedua, token juga bisa didapatkan dengan cara melakukan permintaan ke APA Glosarium. Permintaan ini mengharuskan penggunaan data pos-el dan sandi lewat yang terdaftar sebagai kontributor di aplikasi web.</p>
