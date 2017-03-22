@@ -15,7 +15,8 @@
         "sastrawi/sastrawi": "^1.2",
         "jenssegers/agent": "^2.5",
         "guzzlehttp/guzzle": "^6.2",
-        "tymon/jwt-auth": "^0.5.10"
+        "tymon/jwt-auth": "^0.5.10",
+        "linecorp/line-bot-sdk": "^1.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

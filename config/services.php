@@ -34,4 +34,9 @@ return [
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+
+    'line'      => [
+        'channel' => env('LINE_CHANNEL'),
+        'secret'  => env('LINE_SECRET'),
+    ],
 ];
