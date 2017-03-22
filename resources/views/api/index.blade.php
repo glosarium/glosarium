@@ -2,11 +2,11 @@
 
 @push('metadata')
     <meta name="author" content="{{ config('app.name') }}">
-    <meta name="description" content="{{ config('app.description') }}">
+    <meta name="description" content="{{ trans('api.description') }}">
 
     <meta property="og:title" content="{{ config('app.name') }}">
-    <meta property="og:description" content="{{ config('app.description') }}">
-    <meta property="og:url" content="{{ route('glosarium.word.index') }}">
+    <meta property="og:description" content="{{ trans('api.description') }}">
+    <meta property="og:url" content="{{ route('api.index') }}">
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
@@ -65,15 +65,50 @@
             </small>
           </h3>
           <p>Sebelum aplikasi dapat berkomunikasi dengan APA Glosarium, pengembang terlebih dahulu menyiapkan token yang disediakan oleh Glosarium. Ada dua cara untuk mendapatkan token.</p>
-          <ul>
+          <ol>
               <li>Melalui halaman profil kontributor.</li>
               <li>Mengakses APA Glosarium dengan metode POST.</li>
-          </ul>
+          </ol>
+
+          <h5>1. Halaman Profil</h5>
+          <p>Untuk mendapatkan token dari halaman profil, pengembang harus masuk atau mendaftar terlebih dahulu pada web Glosarium. Kemudian, akses halaman berikut untuk melihat token yang sudah diaktifkan.</p>
+
+          <h5>2. Melalui Autentikasi APA Glosarium</h5>
+          <p>Cara kedua, token juga bisa didapatkan dengan cara melakukan permintaan ke APA Glosarium. Permintaan ini mengharuskan penggunaan data pos-el dan sandi lewat yang terdaftar sebagai kontributor di aplikasi web.</p>
 
           <p>Adapun contoh untuk mendapatkan token melalui APA adalah sebagai berikut:</p>
 
-          <pre>
-              <code>
+          <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#auth-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#auth-data" aria-controls="messages" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#auth-php" aria-controls="profile" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="auth-response">
+      <pre>
+        <code>
+POST /api/auth HTTP/1.1
+Host: glosarium.web.id
+Content-Type: application/vnd.glosarium.api.v1+json
+
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+}
+        </code>
+      </pre>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="auth-data">
+      <p><div class="alert alert-info">Tidak ada ada yang perlu dikirim.</div></p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="auth-php">
+      <pre>
+        <code>
 $client = new http\Client;
 $request = new http\Client\Request;
 
@@ -96,22 +131,22 @@ $response = $client->getResponse();
 $body = json_decode($response->getBody());
 
 echo $body->token;
-            </code>
-          </pre>
+        </code>
+      </pre>
+    </div>
+  </div>
 
-          <p>Responnya akan mengembalikan informasi token sesuai dengan akun dan sandi lewat yang telah dikirim. Pastikan untuk menyimpan token ke dalam media yang aman dan mudah diakses, karena token ini akan selalu disertakan setiap kali melakukan permintaan data ke APA Glosarium.</p>
+</div>
+
+          <p>Responnya akan mengembalikan informasi token sesuai dengan akun dan sandi lewat yang telah dikirim. Pastikan untuk menyimpan token ke dalam media yang aman dan mudah diakses.</p>
+
+          <p>Token akan selalu disertakan dalam query pada saat melakukan permintaan data ke APA Glosarium, semisal dengan tautan berikut:</p>
 
           <pre>
-              <code>
-POST /api/auth HTTP/1.1
-Host: glosarium.web.id
-Content-Type: application/vnd.glosarium.api.v1+json
-
-{
-  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-}
-              </code>
+            <code>http://www.glosarium.com/api/glosarium?token=secret-token</code>
           </pre>
+
+
       </div>
 
       <div class="show-grid">
@@ -122,38 +157,23 @@ Content-Type: application/vnd.glosarium.api.v1+json
               </small>
           </h3>
 
-          <p>Untuk mendapatkan indeks kategori, dapat mengirimkan beberapa data dengan metode GET.</p>
+          <p>Untuk mendapatkan indeks kategori, dapat mengirimkan beberapa data dengan metode GET. Respon dari indeks kategori menampilkan informasi total kategori, tautan halaman, dan data kategori itu sendiri.</p>
 
-          <table class="table">
-              <thead>
-                  <th>Nama</th>
-                  <th>Jenis Data</th>
-                  <th>Keterangan</th>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>limit</td>
-                      <td>integer</td>
-                      <td>Jumlah data yang ingin ditampilkan</td>
-                  </tr>
-                  <tr>
-                      <td>page</td>
-                      <td>integer</td>
-                      <td>Indeks halaman yang dituju</td>
-                  </tr>
-                  <tr>
-                      <td>sort</td>
-                      <td>string</td>
-                      <td>Pilihan data: asc, desc</td>
-                  </tr>
-              </tbody>
-          </table>
+          <div>
 
-          <p>Hasil respon untuk permintaan indeks kategori adalah sebagai berikut.</p>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#category-index-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#category-index-data" aria-controls="messages" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#category-index-php" aria-controls="profile" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
 
-          <pre>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="category-index-response">
+      <pre>
               <code>
-GET /api/glosarium HTTP/1.1
+GET /api/glosarium/category?token=your-token HTTP/1.1
 Host: glosarium.web.id
 Content-Type: application/vnd.glosarium.api.v1+json
 
@@ -162,8 +182,8 @@ Content-Type: application/vnd.glosarium.api.v1+json
     "per_page": 20,
     "current_page": 2,
     "last_page": 3,
-    "next_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/category?page=3",
-    "prev_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/category?page=1",
+    "next_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/category?&amp;token=your-token&amp;page=3",
+    "prev_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/category?&amp;token=your-token&amp;page=1",
     "from": 21,
     "to": 40,
     "data": [
@@ -193,9 +213,37 @@ Content-Type: application/vnd.glosarium.api.v1+json
 }
               </code>
           </pre>
+    </div>
 
-          <p>Contoh skrip untuk mendapatkan indeks kategori pada APA Glosarium.</p>
-          <pre>
+    <div role="tabpanel" class="tab-pane" id="category-index-data">
+      <table class="table">
+              <thead>
+                  <th>Nama</th>
+                  <th>Jenis Data</th>
+                  <th>Keterangan</th>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>limit</td>
+                      <td>integer</td>
+                      <td>Jumlah data yang akan ditampikan, antara 1 sampai 25 data</td>
+                  </tr>
+                  <tr>
+                      <td>page</td>
+                      <td>integer</td>
+                      <td>Indeks halaman yang dituju</td>
+                  </tr>
+                  <tr>
+                      <td>sort</td>
+                      <td>string</td>
+                      <td>Urutkan kata berdasar, asc atau desc</td>
+                  </tr>
+              </tbody>
+          </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="category-index-php">
+
+    <pre>
               <code>
 $client = new http\Client;
 $request = new http\Client\Request;
@@ -215,6 +263,11 @@ $response = $client->getResponse();
 echo $response->getBody();
               </code>
           </pre>
+    </div>
+  </div>
+
+</div>
+
       </div>
 
       <div class="show-grid">
@@ -227,27 +280,21 @@ echo $response->getBody();
 
           <p>Dari daftar indeks kategori yang didapat, pengembang dapat melakukan permintaan rincian kategori. Parameter yang akan digunakan untuk melakukan permintaan adalah slug.</p>
 
-          <table class="table">
-              <thead>
-                  <th>Nama</th>
-                  <th>Jenis Data</th>
-                  <th>Keterangan</th>
-              </thead>
+          <div>
 
-              <tbody>
-                  <tr>
-                      <td>slug</td>
-                      <td>string</td>
-                      <td></td>
-                  </tr>
-              </tbody>
-          </table>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#category-show-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#category-show-data" aria-controls="messages" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#category-show-php" aria-controls="profile" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
 
-          <p>Contoh kembalian respon apabila permintaan berhasil diproses.</p>
-
-          <pre>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="category-show-response">
+      <pre>
               <code>
-POST /api/glosarium/agama-islam HTTP/1.1
+POST /api/glosarium/category/agama-islam?token=your-token HTTP/1.1
 Host: glosarium.web.id
 Content-Type: application/vnd.glosarium.api.v1+json
 
@@ -265,10 +312,29 @@ Content-Type: application/vnd.glosarium.api.v1+json
 }
               </code>
           </pre>
+    </div>
 
-          <p>Untuk contoh permintaan dapat dipelajari dari potongan skrip di bawah.</p>
 
-          <pre>
+    <div role="tabpanel" class="tab-pane" id="category-show-data">
+      <table class="table">
+              <thead>
+                  <th>Nama</th>
+                  <th>Jenis Data</th>
+                  <th>Keterangan</th>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>slug</td>
+                      <td>string</td>
+                      <td></td>
+                  </tr>
+              </tbody>
+          </table>
+    </div>
+
+    <div role="tabpanel" class="tab-pane active" id="category-show-php">
+<pre>
               <code>
 $client = new http\Client;
 $request = new http\Client\Request;
@@ -288,6 +354,11 @@ $response = $client->getResponse();
 echo $response->getBody();
               </code>
           </pre>
+    </div>
+
+  </div>
+
+</div>
 
       </div>
 
@@ -299,42 +370,23 @@ echo $response->getBody();
               </small>
           </h3>
 
-          <p>Pengembang juga dapat melakukan pencarian kategori berdasarkan kata kunci. Permintaanya tidak jauh berbeda dengan indeks kategori, hanya dibutuhkan tambahan query berupa keyword.</p>
+          <p>Pengembang juga dapat melakukan pencarian kategori berdasarkan kata kunci. Permintaanya tidak jauh berbeda dengan indeks kategori, hanya dibutuhkan tambahan query berupa keyword. Jumlah data pencarian bukan hanya satu, tapi banyak, dan formatnya tidak jauh berbeda dengan indeks kategori.</p>
 
-          <table class="table">
-              <thead>
-                  <th>Nama</th>
-                  <th>Jenis Data</th>
-                  <th>Keterangan</th>
-              </thead>
+          <div>
 
-              <tbody>
-                  <tr>
-                      <td>keyword</td>
-                      <td>string</td>
-                      <td>Harus diisi saat melakukan permintaan</td>
-                  </tr>
-                  <tr>
-                      <td>limit</td>
-                      <td>integer</td>
-                      <td>Jumlah data yang ingin ditampilkan</td>
-                  </tr>
-                  <tr>
-                      <td>page</td>
-                      <td>integer</td>
-                      <td>Indeks halaman yang dituju</td>
-                  </tr>
-                  <tr>
-                      <td>sort</td>
-                      <td>string</td>
-                      <td>Pilihan data: asc, desc</td>
-                  </tr>
-              </tbody>
-          </table>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#category-search-respon" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#category-search-data" aria-controls="messages" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#category-search-php" aria-controls="profile" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
 
-          <pre>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="category-search-respon">
+      <pre>
               <code>
-POST /api/glosarium/search?keyword=tekno HTTP/1.1
+POST /api/glosarium/category/search?keyword=tekno&amp;token=your-token HTTP/1.1
 Host: glosarium.web.id
 Content-Type: application/vnd.glosarium.api.v1+json
 
@@ -363,6 +415,66 @@ Content-Type: application/vnd.glosarium.api.v1+json
 }
               </code>
           </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="category-search-data">
+      <table class="table">
+              <thead>
+                  <th>Nama</th>
+                  <th>Jenis Data</th>
+                  <th>Keterangan</th>
+              </thead>
+
+              <tbody>
+                  <tr>
+                      <td>keyword</td>
+                      <td>string</td>
+                      <td>Kata kunci pencarian</td>
+                  </tr>
+                  <tr>
+                      <td>limit</td>
+                      <td>integer</td>
+                      <td>Jumlah data yang akan ditampikan, antara 1 sampai 25 data</td>
+                  </tr>
+                  <tr>
+                      <td>page</td>
+                      <td>integer</td>
+                      <td>Indeks halaman yang dituju</td>
+                  </tr>
+                  <tr>
+                      <td>sort</td>
+                      <td>string</td>
+                      <td>Urutkan kata berdasar, asc atau desc</td>
+                  </tr>
+              </tbody>
+          </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="category-search-php">
+      <pre>
+        <code>
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$token = 'your-token';
+$keyword = 'tekno';
+
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/category/search');
+$request->setRequestMethod('GET');
+$request->setQuery(new http\QueryString(array(
+  'token' => $token,
+  'keyword' => $keyword
+)));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+        </code>
+      </pre>
+    </div>
+  </div>
+
+</div>
+
       </div>
 
         <div class="show-grid">
@@ -375,7 +487,118 @@ Content-Type: application/vnd.glosarium.api.v1+json
 
             <p>Pengembang dapat menggunakan APA indeks kata untuk menampilkan semua kata yang dipecah ke dalam beberapa halaman.</p>
 
-            <pre>
+            <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#word-index-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#word-index-data" aria-controls="profile" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#word-index-php" aria-controls="messages" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="word-index-response">
+      <pre>
+        <code>
+GET /api/glosarium/word?page=1&amp;limit=1&amp;token=your-token HTTP/1.1
+Host: glosarium.web.id
+Content-Type: application/vnd.glosarium.api.v1+json
+
+{
+  "total": 209341,
+  "per_page": "2",
+  "current_page": 1,
+  "last_page": 104671,
+  "next_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/word?page=2",
+  "prev_page_url": null,
+  "from": 1,
+  "to": 2,
+  "data": [
+    {
+      "slug": "transmisi-akustik",
+      "origin": " Acoustic Transmission",
+      "locale": "Transmisi Akustik",
+      "lang": "en",
+      "spell": null,
+      "has_description": false,
+      "url": "http:\/\/glosarium.web.id\/fisika\/transmisi-akustik",
+      "updated_diff": "19 jam yang lalu",
+      "short_url": "http:\/\/glosarium.web.id\/3xpkt",
+      "edit_url": "http:\/\/glosarium.web.id\/admin\/glosarium\/word\/216925\/edit",
+      "category": {
+        "id": 3,
+        "slug": "fisika",
+        "name": "Fisika",
+        "description": "Fisika (bahasa Yunani: φυσικός (fysikós)...",
+        "metadata": {
+          "icon": "fa fa-bookmark"
+        },
+        "url": "http:\/\/glosarium.web.id\/category\/fisika",
+        "updated_diff": "3 bulan yang lalu"
+      },
+      "description": null
+    },
+    {
+      "slug": "momentum-pemeliharaan",
+      "origin": " Maintaining Momentum",
+      "locale": "Momentum Pemeliharaan",
+      "lang": "en",
+      "spell": "",
+      "has_description": false,
+      "url": "http:\/\/glosarium.web.id\/pendidikan\/momentum-pemeliharaan",
+      "updated_diff": "23 jam yang lalu",
+      "short_url": "http:\/\/glosarium.web.id\/2l6ms",
+      "edit_url": "http:\/\/glosarium.web.id\/admin\/glosarium\/word\/173904\/edit",
+      "category": {
+        "id": 31,
+        "slug": "pendidikan",
+        "name": "Pendidikan",
+        "description": "Pendidikan adalah pembelajaran pengetahuan...",
+        "metadata": {
+          "icon": "fa fa-graduation-cap"
+        },
+        "url": "http:\/\/glosarium.web.id\/category\/pendidikan",
+        "updated_diff": "3 bulan yang lalu"
+      },
+      "description": null
+    }
+  ]
+}
+        </code>
+      </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-index-data">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Jenis</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>Jumlah data yang akan ditampikan, antara 1 sampai 25 data</td>
+          </tr>
+          <tr>
+            <td>sort</td>
+            <td>string</td>
+            <td>Urutkan kata berdasar, asc atau desc</td>
+          </tr>
+          <tr>
+            <td>page</td>
+            <td>integer</td>
+            <td>Indeks halaman</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-index-php">
+      <pre>
                 <code>
 $client = new http\Client;
 $request = new http\Client\Request;
@@ -395,6 +618,12 @@ $response = $client->getResponse();
 echo $response->getBody();
                 </code>
             </pre>
+    </div>
+  </div>
+
+</div>
+
+
         </div>
 
         <div class="show-grid">
@@ -405,9 +634,67 @@ echo $response->getBody();
                 </small>
             </h3>
 
-            <p>Setiap indeks kata, dilengkapi dengan informasi slug. Slug ini dapat digunakan untuk mendapatkan rincian tiap kata.</p>
+            <p>Setiap indeks kata, dilengkapi dengan informasi slug. Slug ini dapat digunakan untuk mendapatkan rincian tiap kata. Setiap respon berhasil akan mengembalikan satu data kata. Sedangkan apanila permintaan gagal, APA akan mengembalikan data kosong dengan status 404.</p>
 
-            <pre>
+            <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#word-show-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#word-show-data" aria-controls="profile" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#word-show-php" aria-controls="messages" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="word-show-response">
+      <pre>
+        <code>
+GET /api/glosarium/word/data?token=your-token HTTP/1.1
+Host: glosarium.web.id
+Content-Type: application/vnd.glosarium.api.v1+json
+
+{
+  "slug": "data",
+  "origin": "Data",
+  "locale": "Data",
+  "lang": "en",
+  "spell": "\/da-ta\/",
+  "has_description": true,
+  "url": "http:\/\/glosarium.web.id\/teknologi-informasi\/data",
+  "updated_diff": "3 bulan yang lalu",
+  "short_url": "http:\/\/glosarium.web.id\/2in",
+  "edit_url": "http:\/\/glosarium.web.id\/admin\/glosarium\/word\/833\/edit",
+  "category": {
+    "id": 1,
+    "slug": "teknologi-informasi",
+    "name": "Teknologi Informasi",
+    "description": "Teknologi Informasi (TI), atau...",
+    "metadata": {
+      "icon": "fa fa-desktop"
+    },
+    "url": "http:\/\/glosarium.web.id\/category\/teknologi-informasi",
+    "updated_diff": "3 bulan yang lalu"
+  },
+  "description": {
+    "id": 10,
+    "word_id": 833,
+    "title": "Data",
+    "description": "Data adalah catatan atas kumpulan fakta...,
+    "vote_up": 1,
+    "vote_down": 0
+  }
+}
+        </code>
+      </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-show-data">
+      <p>
+        <div class="alert alert-info">Tidak ada data yang dikirim pada permintaan ini.</div>
+      </p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-show-php">
+      <pre>
                 <code>
 $client = new http\Client;
 $request = new http\Client\Request;
@@ -427,11 +714,17 @@ $response = $client->getResponse();
 echo $response->getBody();
                 </code>
             </pre>
+    </div>
+  </div>
+
+</div>
+
+
         </div>
 
         <div class="show-grid">
             <h3>
-                Pencarain Kata
+                Pencarian Kata
                 <small>
                     <a href="#word-search" id="word-search"><i class="fa fa-link"></i></a>
                 </small>
@@ -439,7 +732,98 @@ echo $response->getBody();
 
             <p>Sama halnya dengan kategori, kata juga dapat dicari dengan menyertakan kata kunci dalam permintaan.</p>
 
-            <pre>
+            <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#word-search-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#word-search-data" aria-controls="profile" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#word-search-php" aria-controls="messages" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="word-search-response">
+      <pre>
+        <code>
+GET /api/glosarium/word/search?keyword=data&amp;token=your-token HTTP/1.1
+Host: glosarium.web.id
+Content-Type: application/vnd.glosarium.api.v1+json
+
+{
+  "total": 785,
+  "per_page": "2",
+  "current_page": 1,
+  "last_page": 393,
+  "next_page_url": "http:\/\/glosarium.web.id\/api\/glosarium\/word\/search?keyword=data&amp;limit=2&amp;token=your-token&amp;page=2",
+  "prev_page_url": null,
+  "from": 1,
+  "to": 2,
+  "data": [
+    {
+      "slug": "data-4",
+      "origin": "Data",
+      "locale": "Data",
+      "lang": "en",
+      "spell": "\/da-ta\/",
+      "has_description": true,
+      "url": null,
+      "updated_diff": "3 bulan yang lalu",
+      "short_url": "http:\/\/glosarium.web.id\/2kts2",
+      "edit_url": "http:\/\/glosarium.web.id\/admin\/glosarium\/word\/171776\/edit"
+    },
+    {
+      "slug": "data-6",
+      "origin": "Data",
+      "locale": "Data",
+      "lang": "en",
+      "spell": null,
+      "has_description": true,
+      "url": null,
+      "updated_diff": "2 bulan yang lalu",
+      "short_url": "http:\/\/glosarium.web.id\/3xb61",
+      "edit_url": "http:\/\/glosarium.web.id\/admin\/glosarium\/word\/214289\/edit"
+    }
+  ]
+}
+
+
+        </code>
+      </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-search-data">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Jenis</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>keyword</td>
+            <td>string</td>
+            <td>Kata kunci pencarian</td>
+          </tr>
+
+          <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>Jumlah data yang akan ditampikan, antara 1 sampai 25 data</td>
+          </tr>
+
+          <tr>
+            <td>sort</td>
+            <td>string</td>
+            <td>Urutkan kata berdasar, asc atau desc</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-search-php">
+      <pre>
                 <code>
 $client = new http\Client;
 $request = new http\Client\Request;
@@ -459,6 +843,12 @@ $response = $client->getResponse();
 echo $response->getBody();
                 </code>
             </pre>
+    </div>
+  </div>
+
+</div>
+
+
         </div>
 
         <div class="show-grid">
@@ -494,6 +884,9 @@ $response = $client->getResponse();
 echo $response->getBody();
                 </code>
             </pre>
+
+            <h5>Bagaimana dengn deskripsi kata?</h5>
+            <p>Glosarium menggunakan APA dari Wikipedia untuk mendapatkan deskripsi dari kata yang ditampilkan. Jadi, kontributor tidak perlu menambahkan deskripsi secara manual.</p>
         </div>
 
         <hr>
