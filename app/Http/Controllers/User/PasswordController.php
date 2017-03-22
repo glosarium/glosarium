@@ -6,6 +6,7 @@
  *
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
  * @copyright Glosarium - 2017
+ *
  * @link https://github.com/glosarium/glosarium
  */
 
@@ -22,7 +23,7 @@ class PasswordController extends Controller
 {
     public function form()
     {
-        return view('users.passwords.form')
+        return view('user.password.form')
             ->withTitle('Ubah Sandi Lewat');
     }
 

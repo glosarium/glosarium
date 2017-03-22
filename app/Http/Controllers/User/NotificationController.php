@@ -19,7 +19,7 @@ class NotificationController extends Controller
 
     public function index()
     {
-        return view('users.notifications.index')
+        return view('user.notification.index')
             ->withTitle('Notifikasi');
     }
 
