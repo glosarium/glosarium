@@ -102,6 +102,7 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
+    'valid_name'           => 'Penggunaan :attribute tidak diizinkan.',
 
     /*
     |---------------------------------------------------------------------------------------

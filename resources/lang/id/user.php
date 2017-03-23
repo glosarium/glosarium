@@ -20,6 +20,12 @@ return [
     'history'        => 'Riwayat Kontributor',
     'tokenTitle'     => 'Token untuk Antarmuka Pemrograman Aplikasi',
     'token'          => 'Token',
+    'emailExists'    => 'Pos-el sudah digunakan.',
+
+    'mail'           => [
+        'register'     => 'Pendaftaran kontributor baru.',
+        'userRegister' => 'Kontributor baru dengan nama :name telah mendaftar dalam sistem. Jangan lupa ucapkan selamat!',
+    ],
 
     'field'          => [
         'name'            => 'Name',

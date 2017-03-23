@@ -10,7 +10,26 @@
 | to using a Closure or controller method. Build something great!
 |
  */
-Auth::routes();
+
+Route::get('/group', function () {
+    $words = \App\Glosarium\Word::select('origin', 'locale', 'category_id')
+        ->where('origin', 'LIKE', request('q') . '%')
+        ->orWhere('locale', 'LIKE', request('q') . '%')
+    // ->sort(request('q'))
+        ->with('category')
+        ->groupBy('locale')
+        ->take(10)
+        ->get();
+
+    $words->makeHidden('url')
+        ->makeHidden('short_url')
+        ->makeHidden('edit_url')
+        ->makeHidden('updated_diff');
+
+    return $words;
+
+    return view('user.password.form')->withTitle('ok');
+});
 
 Route::get('api', 'ApiController@index')->name('api.index');
 

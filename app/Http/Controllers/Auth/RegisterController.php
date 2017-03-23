@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\User\ActivationMail;
 use App\Notifications\User\RegistrationNotification;
 use App\User;
 use Illuminate\Auth\Events\Registered;
@@ -86,18 +85,18 @@ class RegisterController extends Controller
                 'is_active' => true,
             ]);
 
-            // send user email
-            \Mail::to($user)->send(new ActivationMail($user));
-
             // notif admin
-            $users = User::whereType('admin')->whereIsActive(true)->get();
+            $users = User::whereType('admin')
+                ->whereIsActive(true)
+                ->get();
             Notification::send($users, new RegistrationNotification($user));
+
         } catch (Exception $e) {
             if (request()->ajax()) {
                 return response()->json([
                     'isSuccess' => false,
-                    'message'   => 'Terjadi kesalahan sistem.',
-                ]);
+                    'message'   => trans('global.internalError'),
+                ], 500);
             }
 
             abort(500, $e->getMessage());
@@ -120,17 +119,14 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        $registered = $this->registered($request, $user)
-        ?: redirect($this->redirectPath());
-
         if (request()->ajax()) {
             return response()->json([
                 'isSuccess' => true,
                 'url'       => route('glosarium.word.index'),
             ]);
+        } else {
+            return redirect($this->redirectPath());
         }
-
-        return $registered;
     }
 
     /**
@@ -142,5 +138,19 @@ class RegisterController extends Controller
     {
         return view('auths.registers.form', compact('image'))
             ->withTitle(trans('user.register'));
+    }
+
+    public function email()
+    {
+        $user = User::whereEmail(request('email'))->first();
+
+        if (!empty($user)) {
+            return response()->json([
+                'success' => false,
+                'message' => trans('user.emailExists'),
+            ], 422);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

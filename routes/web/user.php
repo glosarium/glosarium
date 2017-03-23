@@ -1,5 +1,8 @@
 <?php
 
+Auth::routes();
+Route::post('user/email', 'Auth\RegisterController@email')->name('user.email');
+
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
     // notification
     Route::get('notification', 'NotificationController@index')->name('notification.index');

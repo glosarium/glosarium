@@ -36,6 +36,9 @@ elixir(mix => {
     mix.browserify('glosarium/word/create.js', 'public/js/glosarium/word.create.js');
     mix.browserify('glosarium/word/show.js', 'public/js/glosarium/word.show.js');
 
+    // user
+    mix.browserify('user/register.js', 'public/js/user.register.js');
+
     // contact
     mix.browserify('contact/form.js', 'public/js/contact.form.js');
 
