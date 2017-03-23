@@ -93,7 +93,9 @@
       <div class="block-section-sm side-right">
          @if (Agent::isDesktop())
          <div class="row text-center">
-            @include('partials.ads.300x250')
+            <a href="https://line.me/R/ti/p/%40ola9657y">
+               <img src="{{ asset('images/line.jpg') }}">
+            </a>
          </div>
          @endif
          <div class="result-filter">
