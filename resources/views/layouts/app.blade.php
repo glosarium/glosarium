@@ -145,7 +145,7 @@
                                 <a href="https://facebook.com/arvernester"><i class="fa fa-facebook"></i></a>
                                 <a href="https://twitter.com/arvernester"><i class="fa fa-twitter"></i></a>
                                 <a href="https://id.linkedin.com/in/arvernester"><i class="fa fa-linkedin"></i></a>
-                                <a href="https://instagram.com/arvernester"><i class="fa fa-instagram"></i></a>
+                                <a href="https://instagram.com/glosariumid"><i class="fa fa-instagram"></i></a>
                                 <a href="http://yugo.my.id"><i class="fa fa-rss"></i></a>
                             </div>
                         </div>
