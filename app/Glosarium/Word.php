@@ -169,10 +169,10 @@ class Word extends Model
      * @param  object $query     Eloquent query
      * @return object Eloquent
      */
-    public function scopeSort($query)
+    public function scopeSort($query, $keyword = null)
     {
         // is on search?
-        if (request('keyword')) {
+        if (request('keyword', $keyword)) {
             $query->orderBy(\DB::raw('LENGTH(origin)'), 'ASC')
                 ->orderBy(\DB::raw('LENGTH(locale)'), 'ASC');
         }
