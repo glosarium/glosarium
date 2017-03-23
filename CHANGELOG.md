@@ -1,6 +1,13 @@
 # Catatan Perubahan Aplikasi
 
-### 21-03-2017
+### 23-03-2017
+- Fitur kategori dan kata acak di APA/API ([ddc73cd](https://github.com/glosarium/glosarium/commit/ddc73cd11eca83fbe107d0ad453ac95febcfe81d))
+- Tampilkan pesan khusus apabila pesan menggunakan Stiker dalam LINE ([d8d30a3](https://github.com/glosarium/glosarium/commit/d8d30a38b8202d1f04ddbb14f91e7932f33a114a))
+- Perbaikan formulir registrasi ([905a7bd](https://github.com/glosarium/glosarium/commit/905a7bd207cbeef9593dd214ce74860f7223d5b8))
+- Perbaikan beberapa fitur di bot LINE ([995addb](https://github.com/glosarium/glosarium/commit/995addb27689f3bf2b5a94cf1183229634da46ab))
+
+### 22-03-2017
+- Bot LINE ([12b6c6b](https://github.com/glosarium/glosarium/commit/12b6c6b57a81bd03e2f6c61262057bf53344663a))
 - Informasi token pengguna dari halaman akun ([3ad2491](https://github.com/glosarium/glosarium/commit/3ad2491d30d1da4135efc192e4b4f182fe082eff))
 - Perbaikan dan perapihan dokumentasi untuk APA/API ([235ec97](https://github.com/glosarium/glosarium/commit/235ec97b808cb260f7e9519ac3ca30ed4b124150))
 
