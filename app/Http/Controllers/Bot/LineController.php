@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Bot;
 
 use App\Bot\LINE\Line;
-use App\Bot\LINE\Text;
 use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use LINE\LINEBot;
@@ -35,7 +34,6 @@ class LineController extends Controller
 
                 $words = Word::where('origin', 'LIKE', '%' . $event->getText() . '%')
                     ->orWhere('locale', 'LIKE', '%' . $event->getText() . '%')
-                //->groupBy('origin')
                     ->with('category')
                     ->sort($event->getText())
                     ->take(5)
@@ -54,8 +52,6 @@ class LineController extends Controller
                         $content .= sprintf('%d. %s = %s (%s)', ++$count, $word->origin, $word->locale, $word->category->name) . PHP_EOL;
                     }
 
-                    $content .= PHP_EOL . 'Selengkapnya dapat dilihat di www.glosarium.web.id';
-
                     $message = new TextMessageBuilder($content);
 
                 } else {
@@ -63,23 +59,14 @@ class LineController extends Controller
 
                 }
 
-                $resp = $bot->replyMessage($event->getReplyToken(), $message);
-                \Log::debug($resp->getRawBody());
+                $response = $bot->replyMessage($event->getReplyToken(), $message);
+            } elseif ($event instanceof \LINE\LINEBot\Event\MessageEvent\StickerMessage) {
+                $response->replyText(
+                    $event->getReplyToken(),
+                    'Hai, mohon maaf, kami tidak bisa menerjemahkan berdasar Sticker.'
+                );
             }
         }
 
-    }
-
-    public function reply($token)
-    {
-        $line = Line::whereToken($token)
-            ->with('text')
-            ->first();
-
-        $bot = new LINEBot($this->client, [
-            'channelSecret' => config('services.line.secret'),
-        ]);
-
-        $response = $bot->replyText($line->token, $line->text->text_message);
     }
 }
