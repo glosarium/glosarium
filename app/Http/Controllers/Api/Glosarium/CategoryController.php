@@ -93,4 +93,13 @@ class CategoryController extends ApiController
             ->json($categories)
             ->withHeaders($this->headers);
     }
+
+    public function random()
+    {
+        $category = Category::inRandomOrder()
+            ->withCount('words')
+            ->first();
+
+        return response()->json($category);
+    }
 }

@@ -92,6 +92,15 @@ class WordController extends ApiController
             ->withHeaders($this->headers);
     }
 
+    public function random()
+    {
+        $word = Word::inRandomOrder()
+            ->with('category', 'description')
+            ->first();
+
+        return response()->json($word);
+    }
+
     public function propose()
     {
         $validator = Validator::make(request()->all(), [

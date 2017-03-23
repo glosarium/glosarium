@@ -136,6 +136,7 @@
                                 <li><a href="{{ route('glosarium.word.index') }}">Beranda</a></li>
                                 <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
                                 <li><a href="{{ route('api.index') }}">API</a></li>
+                                <li><a href="http://s.id/glosariumLINE">LINE@</a></li>
                             </ul>
                         </div>
                         <div class="col-sm-6 ">
@@ -145,7 +146,7 @@
                                 <a href="https://twitter.com/arvernester"><i class="fa fa-twitter"></i></a>
                                 <a href="https://id.linkedin.com/in/arvernester"><i class="fa fa-linkedin"></i></a>
                                 <a href="https://instagram.com/arvernester"><i class="fa fa-instagram"></i></a>
-                                <a href="https://yugo.my.id"><i class="fa fa-rss"></i></a>
+                                <a href="http://yugo.my.id"><i class="fa fa-rss"></i></a>
                             </div>
                         </div>
                     </div>

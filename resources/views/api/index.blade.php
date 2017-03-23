@@ -27,11 +27,13 @@
             <li><a href="#category-index" class="link-innerpage">Indeks Kategori</a></li>
             <li><a href="#category-show" class="link-innerpage">Rincian Kategori</a></li>
             <li><a href="#category-search" class="link-innerpage">Pencarian Kategori</a></li>
+            <li><a href="#category-random" class="link-innerpage">Kategori Acak</a></li>
 
             <hr>
             <li><a href="#word-index" class="link-innerpage">Indeks Kata</a></li>
             <li><a href="#word-show" class="link-innerpage">Rincian Kata</a></li>
             <li><a href="#word-search" class="link-innerpage">Pencarian Kata</a></li>
+            <li><a href="#word-random" class="link-innerpage">Kata Acak</a></li>
             <li><a href="#word-propose" class="link-innerpage">Proposal Baru untuk Kata</a></li>
           </ul>
 
@@ -104,7 +106,9 @@ Content-Type: application/vnd.glosarium.api.v1+json
     </div>
 
     <div role="tabpanel" class="tab-pane" id="auth-data">
-      <p><div class="alert alert-info">Tidak ada ada yang perlu dikirim.</div></p>
+      <p>
+        <div class="alert alert-info">Tidak ada data yang dikirim pada permintaan ini.</div>
+      </p>
     </div>
     <div role="tabpanel" class="tab-pane" id="auth-php">
       <pre>
@@ -146,6 +150,11 @@ echo $body->token;
             <code>http://www.glosarium.com/api/glosarium?token=secret-token</code>
           </pre>
 
+          <p>Selain melalui Query String, token juga dapat disertakan dalam header dengan format sebagai berikut.</p>
+
+          <pre>
+            <code>Authorization: Bearer {token}</code>
+          </pre>
 
       </div>
 
@@ -476,6 +485,80 @@ echo $response->getBody();
 </div>
 
       </div>
+
+        <div class="show-grid">
+          <h3>
+            Kategori Acak
+            <small>
+              <a href="#category-random" id="category-random"><i class="fa fa-link"></i></a>
+            </small>
+          </h3>
+
+          <p>Pengembang juga bisa mendapatkan kategori secara acak. Respo data yang dikembalikan hanya satu data. Formanya sama dengan rincian kategori.</p>
+
+          <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#category-random-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#category-random-data" aria-controls="profile" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#category-random-php" aria-controls="messages" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="category-random-response">
+      <pre>
+        <code>
+GET /api/glosarium/category/random?token=your-token HTTP/1.1
+Host: glosarium.web.id
+Content-Type: application/vnd.glosarium.api.v1+json
+
+{
+  "id": 21,
+  "slug": "antropologi",
+  "name": "Antropologi",
+  "description": "Antropologi adalah ilmu tentang manusia...",
+  "metadata": {
+    "icon": "fa fa-bookmark"
+  },
+  "words_count": 3703,
+  "url": "http:\/\/glosarium.web.id\/category\/antropologi",
+  "updated_diff": "3 bulan yang lalu"
+}
+        </code>
+      </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="category-random-data">
+      <p>
+        <div class="alert alert-info">Tidak ada data yang dikirim pada permintaan ini.</div>
+      </p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="category-random-php">
+    <pre>
+      <code>
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$token = 'your-token';
+
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/category/random');
+$request->setRequestMethod('GET');
+$request->setQuery(new http\QueryString(array(
+  'token' => $token
+)));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+      </code>
+    </pre>
+    </div>
+  </div>
+
+</div>
+        </div>
 
         <div class="show-grid">
             <h3>
@@ -849,6 +932,90 @@ echo $response->getBody();
 </div>
 
 
+        </div>
+
+        <div class="show-grid">
+          <h3>
+            Kata Acak
+            <small>
+              <a href="#word-random" id="word-random"><i class="fa fa-link"></i></a>
+            </small>
+          </h3>
+
+          <p>Pengembang juga bisa mendapatkan kategori secara acak. Respo data yang dikembalikan hanya satu data. Formanya sama dengan rincian kategori.</p>
+
+          <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#word-random-response" aria-controls="home" role="tab" data-toggle="tab">Respon</a></li>
+    <li role="presentation"><a href="#word-random-data" aria-controls="profile" role="tab" data-toggle="tab">Data</a></li>
+    <li role="presentation"><a href="#word-random-php" aria-controls="messages" role="tab" data-toggle="tab">PHP</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="word-random-response">
+      <pre>
+        <code>
+GET /api/glosarium/word/random?token=your-token HTTP/1.1
+Host: glosarium.web.id
+Content-Type: application/vnd.glosarium.api.v1+json
+
+{
+  "slug": "asam-lemak-1",
+  "origin": "Fatty Acid",
+  "locale": "Asam Lemak",
+  "lang": "en",
+  "spell": "",
+  "has_description": true,
+  "url": "http:\/\/glosarium.web.id\/biologi\/asam-lemak-1",
+  "updated_diff": "3 bulan yang lalu",
+  "short_url": "http:\/\/glosarium.web.id\/f3vk",
+  "edit_url": "http:\/\/glosarium.web.id\/admin\/glosarium\/word\/48234\/edit",
+  "category": {
+    "id": 5,
+    "slug": "biologi",
+    "name": "Biologi",
+    "description": "Biologi adalah kajian tentang kehidupan...",
+    "metadata": {
+      "icon": "fa fa-bug"
+    },
+    "url": "http:\/\/glosarium.web.id\/category\/biologi",
+    "updated_diff": "3 bulan yang lalu"
+  },
+  "description": null
+}
+        </code>
+      </pre>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-random-data">
+      <div class="alert alert-info">Tidak ada data yang dikirim pada permintaan ini.</div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="word-random-php">
+      <pre>
+        <code>
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$token = 'your-token';
+
+$request->setRequestUrl('http://glosarium.web.id/api/glosarium/word/random');
+$request->setRequestMethod('GET');
+$request->setQuery(new http\QueryString(array(
+  'token' => $token
+)));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+        </code>
+      </pre>
+    </div>
+  </div>
+
+</div>
         </div>
 
         <div class="show-grid">

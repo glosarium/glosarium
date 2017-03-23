@@ -17,10 +17,12 @@ Route::group(['prefix' => 'glosarium', 'namespace' => 'Api\Glosarium'], function
     // category
     Route::get('category', 'CategoryController@index');
     Route::get('category/search', 'CategoryController@search');
+    Route::get('category/random', 'CategoryController@random');
     Route::get('category/{slug}', 'CategoryController@show');
 
     // word
     Route::get('word', 'WordController@index');
     Route::get('word/search', 'WordController@search');
+    Route::get('word/random', 'WordController@random');
     Route::get('word/{slug}', 'WordController@show');
 });
