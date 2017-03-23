@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Bot;
 
 use App\Bot\LINE\Line;
 use App\Bot\LINE\Text;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class LineController extends Controller
 {
@@ -22,45 +24,50 @@ class LineController extends Controller
         $signature = $_SERVER["HTTP_" . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
         $body      = file_get_contents("php://input");
 
+        $bot = new LINEBot($this->client, [
+            'channelSecret' => config('services.line.secret'),
+        ]);
+
         $events = $bot->parseEventRequest($body, $signature);
 
-        \DB::transaction(function () use ($events) {
+        foreach ($events as $event) {
+            if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
 
-            foreach ($events as $event) {
-                $fields = [
-                    'user'   => 'userId',
-                    'group'  => 'groupId',
-                    'roomId' => 'roomId',
-                ];
+                $words = Word::where('origin', 'LIKE', '%' . $event->getText() . '%')
+                    ->orWhere('locale', 'LIKE', '%' . $event->getText() . '%')
+                //->groupBy('origin')
+                    ->with('category')
+                    ->sort($event->getText())
+                    ->take(5)
+                    ->distinct()
+                    ->get(['origin', 'locale', 'category_id']);
 
-                $source = $fields[$event->source->type];
+                $words->makeHidden('url')
+                    ->makeHidden('short_url')
+                    ->makeHidden('edit_url')
+                    ->makeHidden('updated_diff');
 
-                $line = [
-                    'token'     => $event->replyToken,
-                    'type'      => $event->type,
-                    'timestamp' => $event->timestamp,
-                    'source'    => $event->source->$source,
-                    'user'      => $event->source->userId,
-                ];
+                if ($words->count() >= 1) {
+                    $content = sprintf('Ditemukan %s kata dalam pangkalan data:', $words->count()) . PHP_EOL;
 
-                if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-                    $reply_token = $event->getReplyToken();
-                    $text        = $event->getText();
-                    $bot->replyText($reply_token, $text);
+                    foreach ($words as $count => $word) {
+                        $content .= sprintf('%d. %s = %s (%s)', ++$count, $word->origin, $word->locale, $word->category->name) . PHP_EOL;
+                    }
+
+                    $content .= PHP_EOL . 'Selengkapnya dapat dilihat di www.glosarium.web.id';
+
+                    $message = new TextMessageBuilder($content);
+
+                } else {
+                    $message = new TextMessageBuilder('Kata tidak ditemukan dalam pangkalan data.');
+
                 }
 
-                $line = Line::create($line);
-
-                if (!empty($event->message) and $event->message->type == 'text') {
-                    $text = Text::create([
-                        'line_id'      => $line->id,
-                        'text_id'      => $event->message->id,
-                        'text_message' => $event->message->text,
-                    ]);
-                }
+                $resp = $bot->replyMessage($event->getReplyToken(), $message);
+                \Log::debug($resp->getRawBody());
             }
+        }
 
-        });
     }
 
     public function reply($token)
