@@ -1,5 +1,9 @@
 # Catatan Perubahan Aplikasi
 
+### 25-03-2017
+- Penambahan opsi katagori pada APA kata acak ([f2a3ddc](https://github.com/glosarium/glosarium/commit/f2a3ddc0f015b4eae835ddf5caf92ce7654cfda4))
+- Perbaikan autentikasi untuk APA ([64650f3](https://github.com/glosarium/glosarium/commit/64650f330318bbb9e671a82d2b8ac7fe9fced624))
+
 ### 23-03-2017
 - Fitur kategori dan kata acak di APA/API ([ddc73cd](https://github.com/glosarium/glosarium/commit/ddc73cd11eca83fbe107d0ad453ac95febcfe81d))
 - Tampilkan pesan khusus apabila pesan menggunakan Stiker dalam LINE ([d8d30a3](https://github.com/glosarium/glosarium/commit/d8d30a38b8202d1f04ddbb14f91e7932f33a114a))
