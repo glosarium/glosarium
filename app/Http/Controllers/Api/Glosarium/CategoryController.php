@@ -14,8 +14,10 @@ namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Category;
 use App\Http\Controllers\Api\ApiController;
+use App\Jobs\Glosarium\ApiRequest;
 use Cache;
 use Illuminate\Http\Request;
+use JWTAuth;
 use Validator;
 
 class CategoryController extends ApiController
@@ -25,6 +27,10 @@ class CategoryController extends ApiController
     public function __construct()
     {
         $this->lifetime = \Carbon\Carbon::now()->addDays(30);
+
+        if (JWTAuth::getToken()) {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        }
     }
 
     public function index()
@@ -47,6 +53,14 @@ class CategoryController extends ApiController
                 ->paginate(request('limit', 20));
         });
 
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
+            'method'   => 'get',
+            'headers'  => $this->headers,
+            'response' => $categories,
+        ]));
+
         return response()
             ->json($categories)
             ->withHeaders($this->headers);
@@ -67,6 +81,13 @@ class CategoryController extends ApiController
                 ->json(['error' => trans('glosarium.category.notFound')], 404)
                 ->withHeaders($this->headers);
         }
+
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path(),
+            'headers'  => $this->headers,
+            'response' => $category,
+        ]));
 
         return response()
             ->json($category)
@@ -89,6 +110,13 @@ class CategoryController extends ApiController
             ->sort(request('sort', 'ASC'))
             ->paginate(request('limit', 20));
 
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
+            'headers'  => $this->headers,
+            'response' => $categories,
+        ]));
+
         return response()
             ->json($categories)
             ->withHeaders($this->headers);
@@ -99,6 +127,13 @@ class CategoryController extends ApiController
         $category = Category::inRandomOrder()
             ->withCount('words')
             ->first();
+
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
+            'headers'  => $this->headers,
+            'response' => $category,
+        ]));
 
         return response()->json($category);
     }

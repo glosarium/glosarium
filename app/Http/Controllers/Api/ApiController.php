@@ -11,9 +11,4 @@ class ApiController extends Controller
     ];
 
     protected $user;
-
-    public function __construct()
-    {
-        $this->middleware('jwt.auth');
-    }
 }

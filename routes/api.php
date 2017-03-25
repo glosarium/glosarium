@@ -13,7 +13,7 @@
 
 Route::post('auth', 'Api\AuthController@authenticate');
 
-Route::group(['prefix' => 'glosarium', 'namespace' => 'Api\Glosarium'], function () {
+Route::group(['prefix' => 'glosarium', 'namespace' => 'Api\Glosarium', 'middleware' => 'jwt.auth'], function () {
     // category
     Route::get('category', 'CategoryController@index');
     Route::get('category/search', 'CategoryController@search');

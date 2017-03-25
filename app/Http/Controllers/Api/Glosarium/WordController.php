@@ -14,7 +14,9 @@ namespace App\Http\Controllers\Api\Glosarium;
 
 use App\Glosarium\Word;
 use App\Http\Controllers\Api\ApiController;
+use App\Jobs\Glosarium\ApiRequest;
 use Cache;
+use JWTAuth;
 use Validator;
 
 class WordController extends ApiController
@@ -24,6 +26,10 @@ class WordController extends ApiController
     public function __construct()
     {
         $this->lifetime = \Carbon\Carbon::now()->addDays(30);
+
+        if (JWTAuth::getToken()) {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        }
     }
 
     public function index()
@@ -45,6 +51,13 @@ class WordController extends ApiController
                 ->paginate(request('limit', 20));
         });
 
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
+            'headers'  => $this->headers,
+            'response' => $words,
+        ]));
+
         return response()
             ->json($words)
             ->withHeaders($this->headers);
@@ -63,6 +76,13 @@ class WordController extends ApiController
         if (empty($word)) {
             return response()->json([], 404);
         }
+
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path(),
+            'headers'  => $this->headers,
+            'response' => $word,
+        ]));
 
         return response()
             ->json($word)
@@ -87,6 +107,13 @@ class WordController extends ApiController
 
         $words->appends(request()->all());
 
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
+            'headers'  => $this->headers,
+            'response' => $words,
+        ]));
+
         return response()
             ->json($words)
             ->withHeaders($this->headers);
@@ -96,7 +123,21 @@ class WordController extends ApiController
     {
         $word = Word::inRandomOrder()
             ->with('category', 'description')
+            ->whereHas('category', function ($query) {
+                if (request('category')) {
+                    return $query->whereSlug(request('category'));
+                }
+
+                return $query;
+            })
             ->first();
+
+        dispatch(new ApiRequest([
+            'user_id'  => $this->user->id,
+            'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
+            'headers'  => $this->headers,
+            'response' => $word,
+        ]));
 
         return response()->json($word);
     }
