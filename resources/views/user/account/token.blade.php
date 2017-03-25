@@ -24,7 +24,7 @@
 
       <hr>
 
-      <p>Untuk penggunakan Antarmuka Pemrograman Aplikasi yang disediakan oleh Glosarium, pengembang dapat mempelajarinya pada halaman <a href="{{ route('api.index') }}">dokumentasi APA</a>. </p>
+      <p>Untuk penggunakan Antarmuka Pemrograman Aplikasi yang disediakan oleh Glosarium, pengembang dapat mempelajarinya pada halaman <a href="{{ route('page.api.index') }}">dokumentasi APA</a>. </p>
    </div>
 </div>
 <!-- end Block side right -->

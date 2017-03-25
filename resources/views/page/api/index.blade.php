@@ -6,7 +6,7 @@
 
     <meta property="og:title" content="{{ config('app.name') }}">
     <meta property="og:description" content="{{ trans('api.description') }}">
-    <meta property="og:url" content="{{ route('api.index') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ $imagePath }}">
 @endpush
 
@@ -990,7 +990,23 @@ Content-Type: application/vnd.glosarium.api.v1+json
       </pre>
     </div>
     <div role="tabpanel" class="tab-pane" id="word-random-data">
-      <div class="alert alert-info">Tidak ada data yang dikirim pada permintaan ini.</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Jenis</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>category</td>
+            <td>string</td>
+            <td>Masukkan slug kategori untuk kata acak pada kategori tertentu</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div role="tabpanel" class="tab-pane" id="word-random-php">
       <pre>
@@ -1003,7 +1019,8 @@ $token = 'your-token';
 $request->setRequestUrl('http://glosarium.web.id/api/glosarium/word/random');
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString(array(
-  'token' => $token
+  'token' => $token,
+  'category' => 'teknologi-informasi'
 )));
 
 $client->enqueue($request)->send();
