@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers\Bot;
 
+// Models
 use App\Bot\LINE\Line;
 use App\Glosarium\Word;
+
+// Controllers
 use App\Http\Controllers\Controller;
+
+// Job classes
+use App\Jobs\Bot\LINE\Text as TextJob;
+use App\Jobs\Bot\LINE\Sticker;
+
+// LINE SDK
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
@@ -33,7 +42,10 @@ class LineController extends Controller
             if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
                 $keyword = trim($event->getText());
                 if (!preg_match('/^[\w]+$/', $keyword)) {
-                    $bot->replyText($event->getReplyToken(), 'Hai, format yang kamu masukkan tidak sesuai.');
+                    $response = $bot->replyText($event->getReplyToken(), 'Hai, format yang kamu masukkan tidak sesuai.');
+
+                    dispatch(new TextJob($event, $response));
+
                     return response()->json(['status' => false], 500);
                 }
 
@@ -67,15 +79,21 @@ class LineController extends Controller
                 } else {
                     $message = new TextMessageBuilder('Kata tidak ditemukan dalam pangkalan data.');
 
-                }
+          	}
 
                 $response = $bot->replyMessage($event->getReplyToken(), $message);
+
+		\Log::error(json_encode($response));
+
+		dispatch(new TextJob($event, $response));
             } elseif ($event instanceof \LINE\LINEBot\Event\MessageEvent\StickerMessage) {
                 if ($event->getStickerId() == 13 and $event->getPackageId() == 1) {
                     $response = $bot->replyText(
                         $event->getReplyToken(),
                         'Sama-sama, terima kasih juga telah menggunakan Glosarium.'
                     );
+
+			dispatch(new Sticker($event, $response));
                     return response()->json(['success' => true]);
                 }
 
@@ -83,9 +101,12 @@ class LineController extends Controller
                     $event->getReplyToken(),
                     'Hai, mohon maaf, kami tidak bisa menerjemahkan berdasar Sticker.'
                 );
+
+		dispatch(new Sticker($event, $response));
             }
         }
 
         return response()->json(['sucess' => true]);
     }
 }
+
