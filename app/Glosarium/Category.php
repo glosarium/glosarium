@@ -25,6 +25,8 @@ class Category extends Model
     protected $appends = [
         'url',
         'updated_diff',
+        'edit_url',
+        'destroy_url',
     ];
 
     protected $hidden = [
@@ -63,7 +65,12 @@ class Category extends Model
 
     public function getEditUrlAttribute()
     {
-        return route('glosarium.category.edit', [$this->attributes['slug']]);
+        return route('admin.category.edit', [$this->attributes['slug']]);
+    }
+
+    public function getDestryUrlAttribute()
+    {
+        return route('admin.category.destroy', [$this->attributes['slug']]);
     }
 
     public function getUpdatedDiffAttribute()

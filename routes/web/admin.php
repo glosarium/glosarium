@@ -6,7 +6,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'na
     ]);
 
     Route::resource('glosarium/category', 'Glosarium\CategoryController', [
-        'only' => ['index', 'edit'],
+        'only' => ['index', 'edit', 'update', 'destroy'],
     ]);
 
     Route::get('user/history', 'UserController@history')->name('user.history');

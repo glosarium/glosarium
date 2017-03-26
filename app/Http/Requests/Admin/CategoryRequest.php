@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CategoryRequest extends FormRequest
@@ -13,7 +14,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check() and Auth::user()->type == 'admin';
     }
 
     /**
@@ -23,8 +24,12 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-
+        $rules = [
+            'name'        => 'required',
+            'description' => 'required',
+            'publish'     => 'required',
         ];
+
+        return $rules;
     }
 }

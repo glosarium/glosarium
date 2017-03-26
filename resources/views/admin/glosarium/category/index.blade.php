@@ -41,7 +41,7 @@
                            <th>@lang('glosarium.category.field.name')</th>
                            <th>@lang('glosarium.category.field.description')</th>
                            <th>@lang('glosarium.category.field.totalWord')</th>
-                           <th>@lang('glosarium.category.field.published')</th>
+                           <th>#</th>
                            <th>@lang('glosarium.category.field.actions')</th>
                         </tr>
                      </thead>
@@ -66,10 +66,10 @@
                            </td>
                            <td>
                               <a href="{{ $category->edit_url }}" class="btn btn-xs btn-info">
-                              <i class="fa fa-edit fa-fw"></i>
+                                 <i class="fa fa-edit fa-fw"></i>
                               </a>
-                              <a href="" class="btn btn-xs btn-danger">
-                              <i class="fa fa-trash fa-fw"></i>
+                              <a href="{{ $category->destroy_url }}" class="btn btn-xs btn-danger">
+                                 <i class="fa fa-trash fa-fw"></i>
                               </a>
                            </td>
                         </tr>

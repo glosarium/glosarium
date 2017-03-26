@@ -61,6 +61,8 @@ return [
             'name'        => 'Nama',
             'description' => 'Deskripsi',
             'published'   => 'Dipublikasikan',
+            'totalWord'   => 'Jumlah Kata',
+            'actions'     => 'Aksi',
         ],
 
         'btn'          => [
@@ -70,6 +72,10 @@ return [
         'placeholder'  => [
             'search'   => 'Temukan kategori glosari...',
             'searchIn' => 'Cari kata dalam kategori :name...',
+        ],
+
+        'msg'          => [
+            'edited' => 'Kategori :name berhasil diperbarui.',
         ],
     ],
 
