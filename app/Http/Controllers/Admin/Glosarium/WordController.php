@@ -12,10 +12,17 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
+// Models
 use App\Glosarium\Category;
 use App\Glosarium\Word;
+
+// Controllers
 use App\Http\Controllers\Controller;
+
+// Form requests
 use App\Http\Requests\Admin\WordRequest;
+
+// Facades
 use Auth;
 
 class WordController extends Controller
@@ -36,7 +43,7 @@ class WordController extends Controller
         }
 
         return view('admin.glosarium.word.index', compact('words'))
-            ->withTitle(trans('glosarium.index'));
+            ->withTitle(trans('glosarium.word.index'));
     }
 
     public function create()
@@ -70,6 +77,7 @@ class WordController extends Controller
         Auth::user()->can('create', Word::class);
 
         $word = Word::create([
+            'user_id'      => Auth::id(),
             'category_id'  => $request->category,
             'lang'         => $request->lang,
             'origin'       => $request->origin,
