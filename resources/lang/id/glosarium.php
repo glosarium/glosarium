@@ -20,6 +20,7 @@ return [
         'forward'          => 'Informasi kata juga dikirim ke :email',
         'shares'           => 'Bagikan',
         'wrongDescription' => 'Sehubungan dengan banyaknya respon negatif, deskripsi di bawah bisa jadi tidak sesuai dengan arti kata ',
+        'moderation'       => 'Moderasi Kata',
 
         'btn'              => [
             'create'  => 'Tambah Kata',
@@ -36,6 +37,9 @@ return [
             'actions'     => 'Aksi',
             'lang'        => 'Bahasa',
             'description' => 'Deskripsi',
+            'created'     => 'Dibuat',
+            'updated'     => 'Diperbarui',
+            'user'        => 'Kontributor',
         ],
 
         'msg'              => [

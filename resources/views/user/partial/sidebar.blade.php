@@ -11,9 +11,14 @@
 
         <ul class="list-unstyled">
             @if (auth()->user()->type == 'admin')
-                <li><a href="{{ url('admin/glosarium/word') }}">Kata</a></li>
-                <li><a href="{{ url('admin/glosarium/category') }}">Kategori</a></li>
-                <li><a href="{{ url('admin/user') }}">Kontributor</a></li>
+                <li><a href="{{ route('admin.word.index') }}">Kata</a></li>
+                <li><a href="{{ route('admin.word.moderation') }}">Moderasi Kata</a>
+                @if (isset($totalModeration))
+                <span class="badge badge-default">{{ $totalModeration }}</span>
+                @endif
+                </li>
+                <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
+                <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
                 <hr>
             @endif
 

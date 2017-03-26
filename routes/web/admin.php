@@ -1,6 +1,7 @@
 <?php
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'namespace' => 'Admin'], function () {
+    Route::get('glosarium/word/moderation', 'Glosarium\WordController@moderation')->name('word.moderation');
     Route::resource('glosarium/word', 'Glosarium\WordController', [
         'only' => ['index', 'edit', 'update', 'create', 'store'],
     ]);

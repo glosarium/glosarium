@@ -46,6 +46,7 @@ class Word extends Model
 
     protected $appends = [
         'url',
+        'created_diff',
         'updated_diff',
         'short_url',
         'edit_url',
@@ -91,6 +92,11 @@ class Word extends Model
     public function getEditUrlAttribute()
     {
         return route('admin.word.edit', [$this->attributes['id']]);
+    }
+
+    public function getCreatedDiffAttribute()
+    {
+        return Carbon::parse($this->attributes['created_at'])->diffForHumans();
     }
 
     /**
@@ -158,6 +164,18 @@ class Word extends Model
                     'keyword' => strtolower(trim(request('keyword'))),
                 ]);
             }
+        }
+
+        return $query;
+    }
+
+    public function scopeFilterPending($query, $keyword = null)
+    {
+        $keyword = trim(request('keyword', $keyword));
+
+        if (!empty($keyword)) {
+            $query->where('origin', 'like', '%' . $keyword . '%')
+                ->orWhere('locale', 'like', '%' . $keyword . '%');
         }
 
         return $query;

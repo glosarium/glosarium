@@ -68,7 +68,7 @@ class Category extends Model
         return route('admin.category.edit', [$this->attributes['slug']]);
     }
 
-    public function getDestryUrlAttribute()
+    public function getDestroyUrlAttribute()
     {
         return route('admin.category.destroy', [$this->attributes['slug']]);
     }

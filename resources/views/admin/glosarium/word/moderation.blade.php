@@ -45,7 +45,8 @@
                            <th>@lang('glosarium.word.field.origin')</th>
                            <th>@lang('glosarium.word.field.locale')</th>
                            <th>@lang('glosarium.word.field.category')</th>
-                           <th>#</th>
+                           <th>@lang('glosarium.word.field.created')</th>
+                           <th>@lang('glosarium.word.field.user')</th>
                            <th width="80">@lang('glosarium.word.field.actions')</th>
                         </tr>
                      </thead>
@@ -53,21 +54,26 @@
                         @foreach ($words as $word)
                         <tr>
                            <td>
-                              <span class=" col-md-1 label label-default">{{ $word->lang }}</span>
-                              <span class="col-md-11"><a href="{{ $word->url }}">{{ $word->origin }}</a></span>
+                              <span class="col-md-2 label label-default">{{ $word->lang }}</span>
+                              <span class="col-md-10">{{ $word->origin }}</span>
                            </td>
                            <td>
-                              <span class="col-md-1 label label-default">id</span>
-                              <span class="col-md-11">{{ $word->locale }}</span>
+                              <span class="col-md-2 label label-default">id</span>
+                              <span class="col-md-10">{{ $word->locale }}</span>
                            </td>
                            <td>{{ $word->category->name }}</td>
-                           <td><i class="fa fa-{{ $word->is_published ? 'square text-success' : 'square text-danger' }}"></i></td>
+                           <td>{{ $word->created_diff }}</td>
+                           <td>
+                              @if( ! empty($word->user))
+                                 <a href="#">{{ $word->user->name }}</a>
+                              @endif
+                           </td>
                            <td>
                               <a href="{{ $word->edit_url }}" class="btn btn-xs btn-info">
-                              <i class="fa fa-edit fa-fw"></i>
+                              <i class="fa fa-check fa-fw"></i>
                               </a>
-                              <a href="" class="btn btn-xs btn-danger">
-                              <i class="fa fa-trash fa-fw"></i>
+                              <a href="" class="btn btn-xs btn-warning">
+                              <i class="fa fa-times fa-fw"></i>
                               </a>
                            </td>
                         </tr>
@@ -82,13 +88,6 @@
                   </div>
                </div>
                @endif
-            </div>
-            <div class="panel-footer">
-               <ul class="list-inline list-unstyled">
-                  <li><i class="fa fa-square text-success"></i> @lang('glosarium.word.field.published')</li>
-                  <li><i class="fa fa-square text-warning"></i> @lang('glosarium.word.field.pending')</li>
-                  <li><i class="fa fa-square text-danger"></i> @lang('glosarium.word.field.unpublished')</li>
-               </ul>
             </div>
          </div>
       </div>

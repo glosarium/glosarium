@@ -46,6 +46,22 @@ class WordController extends Controller
             ->withTitle(trans('glosarium.word.index'));
     }
 
+    public function moderation()
+    {
+        $words = Word::whereIsPublished(false)
+            ->with('user', 'category')
+            ->orderBy('created_at', 'ASC')
+            ->filterPending()
+            ->paginate();
+
+        if (request('keyword')) {
+            $words->appends(request()->all());
+        }
+
+        return view('admin.glosarium.word.moderation', compact('words'))
+            ->withTitle(trans('glosarium.word.moderation'));
+    }
+
     public function create()
     {
         Auth::user()->can('create', Word::class);
