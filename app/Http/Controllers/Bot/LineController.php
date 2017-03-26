@@ -95,19 +95,30 @@ class LineController extends Controller
 
             } elseif ($event instanceof \LINE\LINEBot\Event\MessageEvent\StickerMessage) {
                 if ($event->getStickerId() == 13 and $event->getPackageId() == 1) {
+
+                    $messages = collect([
+                        'Sama-sama, terima kasih juga telah menggunakan Glosarium.',
+                        'Terima kasih juga. Jangan ragu untuk menggunakan Glosarium kembali.',
+                        'Sama-sama. Bantu kami berkembang ya dengan menyebarkan Glosarium ke teman-teman kamu!',
+                        'Terima kasih juga. Jika ada sesuatu, bisa kamu sampaikan pada tautan berikut: ' . route('contact.form'),
+                        'Terima kasih kembali',
+                        ';)',
+                    ]);
+
                     $response = $bot->replyText(
                         $event->getReplyToken(),
-                        'Sama-sama, terima kasih juga telah menggunakan Glosarium.'
+                        $messages->random()
                     );
 
                     dispatch(new Sticker($event, $response));
+
                     return response()->json(['success' => true]);
                 }
 
                 $messages = collect([
                     'Hai, mohon maaf, kami tidak bisa menerjemahkan berdasar Sticker.',
                     'Hmm, apa ya artinya? Kami belum bisa menerjemahkan kata berdasar Sticker.',
-                    'Bisakah menggukan huruf latin saja? Nampaknya kami belum pandai memahami Sticker.',
+                    'Bisakah menggunakan huruf latin saja? Nampaknya kami belum pandai memahami Sticker.',
                     'Kami kebingungan memahami pesan Sticker.',
                     'Kami tak punya ide bagaimana menerjemahkannya.',
                     'Saat ini hanya huruf latin yang bisa kami cari padanan katanya.',
