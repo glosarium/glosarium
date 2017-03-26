@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
+ * kamus nasional dan kamus bahasa daerah.
+ *
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright Glosarium - 2017
+ *
+ * @link https://github.com/glosarium/glosarium
+ */
+
 namespace App\Http\Controllers\Bot;
 
 // Models
@@ -27,6 +37,13 @@ class LineController extends Controller
         $this->client = new CurlHTTPClient(config('services.line.channel'));
     }
 
+    /**
+     * Webhook for line
+     *
+     * @link https://devdocs.line.me/en/#webhooks
+     *
+     * @return string json
+     */
     public function hook()
     {
         $signature = $_SERVER["HTTP_" . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
@@ -101,7 +118,7 @@ class LineController extends Controller
                         'Terima kasih juga. Jangan ragu untuk menggunakan Glosarium kembali.',
                         'Sama-sama. Bantu kami berkembang ya dengan menyebarkan Glosarium ke teman-teman kamu!',
                         'Terima kasih juga. Jika ada sesuatu, bisa kamu sampaikan pada tautan berikut: ' . route('contact.form'),
-                        'Terima kasih kembali',
+                        'Terima kasih kembali.',
                         ';)',
                     ]);
 
