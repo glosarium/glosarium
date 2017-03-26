@@ -16,7 +16,7 @@ class UserController extends Controller
         }
 
         $users = User::orderBy('name')
-            ->withCount('glosariums')
+            ->withCount('glosariumWords')
             ->filter()
             ->paginate();
 

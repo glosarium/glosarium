@@ -39,6 +39,8 @@ return [
         'confirmPassword' => 'Konfirmasi Sandi Lewat',
         'remember'        => 'Ingatkan saya!',
         'token'           => 'Token',
+        'created'         => 'Dibuat',
+        'contribute'      => 'Kontribusi',
     ],
 
     'btn'            => [

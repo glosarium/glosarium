@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,6 +40,11 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    protected $appends = [
+        'created_diff',
+        'updated_diff',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -57,7 +63,22 @@ class User extends Authenticatable
         ];
     }
 
+    public function getCreatedDiffAttribute()
+    {
+        return Carbon::parse($this->attributes['created_at'])->diffForHumans();
+    }
+
+    public function getUpdatedDiffAttribute()
+    {
+        return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
+    }
+
     public function glosariums()
+    {
+        return $this->hasMany(\App\Glosarium\Word::class);
+    }
+
+    public function glosariumWords()
     {
         return $this->hasMany(\App\Glosarium\Word::class);
     }

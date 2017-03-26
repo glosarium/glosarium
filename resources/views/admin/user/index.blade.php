@@ -50,8 +50,10 @@
                      <th>@lang('user.field.name')</th>
                      <th>@lang('user.field.email')</th>
                      <th>@lang('user.field.type')</th>
+                     <th>@lang('user.field.created')</th>
+                     <th>@lang('user.field.contribute')</th>
                      <th class="text-center">#</th>
-                     <th>@lang('user.field.actions')</th>
+                     <th width="80">@lang('user.field.actions')</th>
                   </tr>
                </thead>
                <tbody>
@@ -62,6 +64,8 @@
                      </td>
                      <td>{{ $user->email }}</td>
                      <td>{{ ucfirst($user->type) }}</td>
+                     <td>{{ $user->created_diff }}</td>
+                     <td class="text-right">{{ number_format($user->glosarium_words_count, 0, ',', '.') }}</td>
                      <td class="text-center"><i class="fa fa-{{ $user->is_active ? 'square text-success' : 'square text-danger' }}"></i></td>
                      <td>
                         <a href="{{ route('admin.user.edit', [$user->id]) }}" class="btn btn-xs btn-info">
