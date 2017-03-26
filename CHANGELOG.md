@@ -1,5 +1,10 @@
 # Catatan Perubahan Aplikasi
 
+### 26-03-2017
+- Moderasi kata dari kontributor ([201b0a3](https://github.com/glosarium/glosarium/commit/201b0a398f826b5de0491daf8c408351f05ca519))
+- Perbaikan manajemen kategori ([19f3d19](https://github.com/glosarium/glosarium/commit/19f3d19b442278fdd385be2eeb93cacd16a5ac22))
+- Tambahkan informasi kontributor apabila menambahkan kata dari halaman administrasi ([558ff7a](https://github.com/glosarium/glosarium/commit/558ff7aa19bcb841911b870f614c226259339e79))
+
 ### 25-03-2017
 - Penambahan opsi katagori pada APA kata acak ([f2a3ddc](https://github.com/glosarium/glosarium/commit/f2a3ddc0f015b4eae835ddf5caf92ce7654cfda4))
 - Perbaikan autentikasi untuk APA ([64650f3](https://github.com/glosarium/glosarium/commit/64650f330318bbb9e671a82d2b8ac7fe9fced624))
