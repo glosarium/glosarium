@@ -76,7 +76,7 @@ class LineController extends Controller
                         ->orderBy('keyword', 'ASC')
                         ->get();
 
-                    $helps = [];
+                    $helps = ['Hai, berikut katakunci yang bisa kamu gunakan.' . PHP_EOL];
                     foreach ($keywords as $keyword) {
                         $helps[] = sprintf('%s = %s.', $keyword->keyword, $keyword->description);
                     }
@@ -91,15 +91,21 @@ class LineController extends Controller
                     return response()->json(['success' => true]);
                 }
 
-                if (str_contains(strtolower($keyword), ['/bantu', '/bantuan', '/help'])) {
-                    $bot->replyText(
+                // find information based on special keyword
+                if (starts_with($keyword, '/')) {
+                    $specialKeyword = Keyword::whereKeyword(strtolower($keyword))->first();
+
+                    $response = $bot->replyText(
                         $event->getReplyToken(),
-                        'Untuk bantuan lengkap, kamu bisa mengunjungi laman berikut: https://www.glosarium.web.id/help.'
+                        ucfirst($specialKeyword->description) . '.'
                     );
 
-                    return response()->json(['status' => true]);
+                    dispatch(new TextJob($event, $response));
+
+                    return response()->json(['success' => true]);
                 }
 
+                // find all words in glosarium
                 $words = Word::where('origin', 'LIKE', '%' . $keyword . '%')
                     ->orWhere('locale', 'LIKE', '%' . $keyword . '%')
                     ->with('category')
