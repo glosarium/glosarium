@@ -13,6 +13,10 @@
 
 Route::post('auth', 'Api\AuthController@authenticate');
 
+// user
+Route::post('user/register', 'Api\UserController@register');
+Route::post('user/login', 'Api\UserController@login');
+
 Route::group(['prefix' => 'glosarium', 'namespace' => 'Api\Glosarium', 'middleware' => 'jwt.auth'], function () {
     // category
     Route::get('category', 'CategoryController@index');
