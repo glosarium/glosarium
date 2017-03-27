@@ -13,6 +13,7 @@
 namespace App\Http\Controllers\Bot;
 
 // Models
+use App\Bot\Keyword;
 use App\Bot\LINE\Line;
 use App\Glosarium\Word;
 
@@ -69,19 +70,25 @@ class LineController extends Controller
                     return response()->json(['status' => false], 500);
                 }
 
-                if (str_contains(strtolower($keyword), ['/katakunci', '/keyword'])) {
-                    $helps = [
-                        '/bantu = untuk panduan singkat',
-                        '/katakunci = melihat daftar katakunci',
-                        '/cari = mencari kata, atau bisa langsung mengetikkan kata',
-                        '/tentang = informasi pengembang',
-                        '/versi = informasi versi aplikasi',
-                    ];
+                // find all keywords
+                if (str_contains(strtolower($keyword), ['/katakunci'])) {
+                    $keywords = Keyword::where('keyword', 'like', '/%')
+                        ->orderBy('keyword', 'ASC')
+                        ->get();
+
+                    $helps = [];
+                    foreach ($keywords as $keyword) {
+                        $helps[] = sprintf('%s = %s.', $keyword->keyword, $keyword->description);
+                    }
 
                     $response = $bot->replyText(
                         $event->getReplyToken(),
                         implode(PHP_EOL, $helps)
                     );
+
+                    dispatch(new TextJob($event, $response));
+
+                    return response()->json(['success' => true]);
                 }
 
                 if (str_contains(strtolower($keyword), ['/bantu', '/bantuan', '/help'])) {
