@@ -95,10 +95,17 @@ class LineController extends Controller
                 if (starts_with($keyword, '/')) {
                     $specialKeyword = Keyword::whereKeyword(strtolower($keyword))->first();
 
-                    $response = $bot->replyText(
-                        $event->getReplyToken(),
-                        ucfirst($specialKeyword->message)
-                    );
+                    if (!empty($specialKeyword)) {
+                        $response = $bot->replyText(
+                            $event->getReplyToken(),
+                            ucfirst($specialKeyword->message)
+                        );
+                    } else {
+                        $response = $bot->replyText(
+                            $event->getReplyToken(),
+                            'Katakunci tidak ditemukan dalam pangkalan data. Ketik "/katakunci" untuk melihat semua daftar katakunci.'
+                        );
+                    }
 
                     dispatch(new TextJob($event, $response));
 
