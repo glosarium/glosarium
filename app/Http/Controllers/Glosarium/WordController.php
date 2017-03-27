@@ -15,11 +15,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
 use App\Libraries\Image;
 use App\Libraries\Wikipedia;
+use App\Notifications\Glosarium\WordCreatedNotification;
 use App\User;
 use Auth;
 use Cache;
 use Carbon\Carbon;
 use Mail;
+use Notification;
 use Route;
 
 /**
@@ -250,7 +252,7 @@ class WordController extends Controller
 
             // send notifications
             $users = User::whereType('admin')->get();
-            Notification::send($users, new WordCreatedNotification($glosarium));
+            Notification::send($users, new WordCreatedNotification($glosarium, Auth::user()->name));
 
             return response()->json([
                 'isSuccess' => true,
