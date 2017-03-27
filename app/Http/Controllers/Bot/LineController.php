@@ -113,11 +113,12 @@ class LineController extends Controller
                 }
 
                 // find all words in glosarium
+                $limit = 5;
                 $words = Word::where('origin', 'LIKE', '%' . $keyword . '%')
                     ->orWhere('locale', 'LIKE', '%' . $keyword . '%')
                     ->with('category')
-                    ->sort($event->getText())
-                    ->take(5)
+                    ->sort($keyword)
+                    ->take($limit)
                     ->get(['origin', 'locale', 'category_id']);
 
                 $words->makeHidden('url')
@@ -130,6 +131,14 @@ class LineController extends Controller
 
                     foreach ($words as $count => $word) {
                         $content .= sprintf('%d. %s = %s (%s)', ++$count, $word->origin, $word->locale, $word->category->name) . PHP_EOL;
+                    }
+
+                    $count = Word::where('origin', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('locale', 'LIKE', '%' . $keyword . '%')
+                        ->count();
+
+                    if ($count > $limit) {
+                        $content .= 'Untuk daftar kata lengkap dapat menuju tautan berikut: https://glosarium.web.id?keyword=' . $keyword;
                     }
 
                     $message = new TextMessageBuilder($content);
