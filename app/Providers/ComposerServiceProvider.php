@@ -30,6 +30,11 @@ class ComposerServiceProvider extends ServiceProvider
             $totalModeration = \App\Glosarium\Word::whereIsPublished(false)->count();
             $view->with('totalModeration', $totalModeration);
         });
+
+        view()->composer('*', function ($view) {
+            $laravel = app();
+            $view->with('version', $laravel::VERSION);
+        });
     }
 
     /**
