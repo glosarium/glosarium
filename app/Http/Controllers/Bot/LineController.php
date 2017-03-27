@@ -138,7 +138,7 @@ class LineController extends Controller
                         ->count();
 
                     if ($count > $limit) {
-                        $content .= sprintf('%sUntuk daftar kata lengkap dapat menuju tautan berikut: https://glosarium.web.id?keyword=%s.', PHP_EOL, $keyword);
+                        $content .= sprintf('%sDitemukan %s kata untuk padanan %s. Untuk melihat daftar kata lengkap dapat menuju tautan berikut: https://glosarium.web.id?keyword=%s.', PHP_EOL, $count, $keyword, $keyword);
                     }
 
                     $message = new TextMessageBuilder($content);
