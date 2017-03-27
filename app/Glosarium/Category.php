@@ -36,7 +36,8 @@ class Category extends Model
     ];
 
     protected $casts = [
-        'metadata' => 'json',
+        'metadata'     => 'json',
+        'is_published' => 'boolean',
     ];
 
     /**

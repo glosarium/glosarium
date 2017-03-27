@@ -12,9 +12,19 @@
 
 namespace App\Http\Controllers\Api\Glosarium;
 
+// Models
 use App\Glosarium\Word;
+
+// Controllers
 use App\Http\Controllers\Api\ApiController;
+
+// Transformers
 use App\Jobs\Glosarium\ApiRequest;
+
+// Requests
+use App\Transformers\Glosarium\WordTransformer;
+
+// Facades
 use Cache;
 use JWTAuth;
 use Validator;
@@ -58,8 +68,11 @@ class WordController extends ApiController
             'response' => $words,
         ]));
 
+        // transform word
+        $wordTranform = fractal($words, new WordTransformer())->toArray();
+
         return response()
-            ->json($words)
+            ->json($wordTranform)
             ->withHeaders($this->headers);
     }
 
@@ -84,8 +97,11 @@ class WordController extends ApiController
             'response' => $word,
         ]));
 
+        // transform word
+        $wordTranform = fractal($word, new WordTransformer)->toArray();
+
         return response()
-            ->json($word)
+            ->json($wordTranform)
             ->withHeaders($this->headers);
     }
 
@@ -114,8 +130,11 @@ class WordController extends ApiController
             'response' => $words,
         ]));
 
+        // transform word
+        $wordTranform = fractal($words, new WordTransformer)->toArray();
+
         return response()
-            ->json($words)
+            ->json($wordTranform)
             ->withHeaders($this->headers);
     }
 
@@ -139,7 +158,10 @@ class WordController extends ApiController
             'response' => $word,
         ]));
 
-        return response()->json($word);
+        // transform word
+        $wordTranform = fractal($word, new WordTransformer)->toArray();
+
+        return response()->json($wordTranform);
     }
 
     public function propose()

@@ -12,9 +12,17 @@
 
 namespace App\Http\Controllers\Api\Glosarium;
 
+// Models
 use App\Glosarium\Category;
 use App\Http\Controllers\Api\ApiController;
+
+// Controllers
 use App\Jobs\Glosarium\ApiRequest;
+
+// Transformers
+use App\Transformers\Glosarium\CategoryTranformer;
+
+// Facades
 use Cache;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -50,6 +58,7 @@ class CategoryController extends ApiController
 
         $categories = Cache::remember($key, $this->lifetime, function () {
             return Category::orderBy('name', request('sort', 'ASC'))
+                ->withCount('words')
                 ->paginate(request('limit', 20));
         });
 
@@ -61,8 +70,11 @@ class CategoryController extends ApiController
             'response' => $categories,
         ]));
 
+        // transform category
+        $categoryTransform = fractal($categories, new CategoryTranformer)->toArray();
+
         return response()
-            ->json($categories)
+            ->json($categoryTransform)
             ->withHeaders($this->headers);
     }
 
@@ -89,8 +101,11 @@ class CategoryController extends ApiController
             'response' => $category,
         ]));
 
+        // transform category
+        $categoryTransform = fractal($category, new CategoryTranformer)->toArray();
+
         return response()
-            ->json($category)
+            ->json($categoryTransform)
             ->withHeaders($this->headers);
     }
 
@@ -117,8 +132,11 @@ class CategoryController extends ApiController
             'response' => $categories,
         ]));
 
+        // category transform
+        $categoryTransform = fractal($categories, new CategoryTranformer)->toArray();
+
         return response()
-            ->json($categories)
+            ->json($categoryTransform)
             ->withHeaders($this->headers);
     }
 
@@ -128,6 +146,12 @@ class CategoryController extends ApiController
             ->withCount('words')
             ->first();
 
+        if (empty($category)) {
+            return response()->json([
+                'error' => trans('glosarium.category.notFound'),
+            ], 404);
+        }
+
         dispatch(new ApiRequest([
             'user_id'  => $this->user->id,
             'uri'      => request()->path() . '?' . http_build_query(request()->except('token')),
@@ -135,6 +159,9 @@ class CategoryController extends ApiController
             'response' => $category,
         ]));
 
-        return response()->json($category);
+        // transform category
+        $categoryTransform = fractal($category, new CategoryTranformer)->toArray();
+
+        return response()->json($categoryTransform);
     }
 }

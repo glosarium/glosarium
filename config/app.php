@@ -183,6 +183,9 @@ return [
 
         Jenssegers\Agent\AgentServiceProvider::class,
 
+        // https://github.com/spatie/laravel-fractal
+        Spatie\Fractal\FractalServiceProvider::class,
+
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
 
         /*
@@ -246,6 +249,8 @@ return [
         'Image'        => Intervention\Image\Facades\Image::class,
         'Debugbar'     => Barryvdh\Debugbar\Facade::class,
         'Agent'        => Jenssegers\Agent\Facades\Agent::class,
+
+        'Fractal'      => Spatie\Fractal\FractalFacade::class,
 
         'JWTAuth'      => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory'   => 'Tymon\JWTAuth\Facades\JWTFactory',
