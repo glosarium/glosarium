@@ -2,7 +2,6 @@
 
 ### 27-03-2017
 - Pencarian kata otomatis jika katakunci "keyword" tersedia ([cdf7f57](https://github.com/glosarium/glosarium/commit/cdf7f5737cd4369aefdc22c9c9555aa2904b7dea))
-
 - Perbaikan format balasan bot LINE ([02f6af2](https://github.com/glosarium/glosarium/commit/02f6af2ccf93a990bee488c7638aeb4011915053), [5974c7e](https://github.com/glosarium/glosarium/commit/5974c7e8fa53f31e001bff5e2d1abc63645a02f5), [5500db8](https://github.com/glosarium/glosarium/commit/5500db8d08e5bdeb59effdc60f78cd19282f6ae7), dst)
 - Katakunci spesial bot LINE ([76abd02](https://github.com/glosarium/glosarium/commit/76abd02dcae7f0f2250c684c5d7266f3c6a9c4e3))
 - Manajemen katakunci untuk bot ([6ca7793](https://github.com/glosarium/glosarium/commit/6ca779329f7e2a71a9e8990a56bef4aebcc59a39)) 
