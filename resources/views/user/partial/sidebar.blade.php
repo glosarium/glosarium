@@ -26,7 +26,7 @@
 
             <li><a href="{{ route('user.account.token') }}">@lang('user.token')</a></li>
 
-            <li><a href="{{ route('user.notification.index') }}"> Notifikasi ({{ auth()->user()->unreadNotifications->count() }})</a></li>
+            <li><a href="{{ route('user.notification.index') }}"> Notifikasi <span class="badge badge-warning">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
             <li><a href="{{ route('user.password.form') }}"> Ubah Sandi Lewat</a></li>
         </ul>
         <div class="white-space-20"></div>
