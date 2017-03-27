@@ -19,6 +19,8 @@
                 </li>
                 <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
                 <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
+                <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
+                <li></li>
                 <hr>
             @endif
 

@@ -58,7 +58,7 @@ class LineController extends Controller
         foreach ($events as $event) {
             if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
                 $keyword = trim($event->getText());
-                if (!preg_match('/^[\w]+$/', $keyword)) {
+                if (!preg_match('/^[\w *\/]+$/', $keyword)) {
                     $response = $bot->replyText(
                         $event->getReplyToken(),
                         'Hai, format yang kamu masukkan tidak sesuai.'
@@ -69,7 +69,22 @@ class LineController extends Controller
                     return response()->json(['status' => false], 500);
                 }
 
-                if (str_contains(strtolower($keyword), ['bantu', 'bantuan', 'help'])) {
+                if (str_contains(strtolower($keyword), ['/katakunci', '/keyword'])) {
+                    $helps = [
+                        '/bantu = untuk panduan singkat',
+                        '/katakunci = melihat daftar katakunci',
+                        '/cari = mencari kata, atau bisa langsung mengetikkan kata',
+                        '/tentang = informasi pengembang',
+                        '/versi = informasi versi aplikasi',
+                    ];
+
+                    $response = $bot->replyText(
+                        $event->getReplyToken(),
+                        implode(PHP_EOL, $helps)
+                    );
+                }
+
+                if (str_contains(strtolower($keyword), ['/bantu', '/bantuan', '/help'])) {
                     $bot->replyText(
                         $event->getReplyToken(),
                         'Untuk bantuan lengkap, kamu bisa mengunjungi laman berikut: https://www.glosarium.web.id/help.'

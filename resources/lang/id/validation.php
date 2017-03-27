@@ -126,6 +126,7 @@ return [
         'email'                => 'surel',
         'password'             => 'sandi lewat',
         'passwordConfirmation' => 'konfirmasi sandi lewat',
+        'keyword'              => 'katakunci',
     ],
 
 ];

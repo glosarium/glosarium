@@ -15,4 +15,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'na
     Route::resource('user', 'UserController', [
         'only' => ['index', 'edit', 'update', 'destroy'],
     ]);
+
+    Route::resource('bot/keyword', 'Bot\KeywordController', [
+        'except' => ['show'],
+    ]);
 });
