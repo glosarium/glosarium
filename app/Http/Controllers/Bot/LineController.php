@@ -97,7 +97,7 @@ class LineController extends Controller
 
                     $response = $bot->replyText(
                         $event->getReplyToken(),
-                        ucfirst($specialKeyword->message) . '.'
+                        ucfirst($specialKeyword->message)
                     );
 
                     dispatch(new TextJob($event, $response));
