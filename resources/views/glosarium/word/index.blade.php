@@ -138,6 +138,7 @@
 @push('js')
 <script>
    window.words = {!! json_encode($js) !!};
+   window.keyword = '{{ request('keyword') }}';
 </script>
 <script src="{{ asset('js/glosarium/word.index.js') }}"></script>
 @endpush

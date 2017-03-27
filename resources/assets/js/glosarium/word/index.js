@@ -21,7 +21,12 @@ new Vue({
     mounted() {
         this.getCategory(routes.glosariumCategoryAll);
 
-        this.getWord(routes.glosariumWordPaginate);
+        let url = routes.glosariumWordPaginate;
+        if (keyword) {
+            url = routes.glosariumWordPaginate + '?keyword=' + keyword;
+        }
+
+        this.getWord(url);
     },
 
     methods: {
