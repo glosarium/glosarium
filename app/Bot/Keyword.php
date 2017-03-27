@@ -51,6 +51,7 @@ class Keyword extends Model
 
         if ($keyword) {
             $query->where('keyword', 'like', '%' . $keyword . '%')
+                ->orWhere('message', 'like', '%' . $keyword . '%')
                 ->orWhere('description', 'like', '%' . $keyword . '%');
         }
 

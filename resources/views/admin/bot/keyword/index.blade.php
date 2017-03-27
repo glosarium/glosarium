@@ -77,7 +77,7 @@
          @else
          <div class="row">
             <div class="col-md-12">
-               <div class="alert alert-info">@lang('bot.notFound')</div>
+               <div class="alert alert-info">@lang('bot.keyword.notFound')</div>
             </div>
          </div>
          @endif
