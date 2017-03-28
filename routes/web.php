@@ -11,7 +11,7 @@
 |
  */
 
-Route::get('api', 'PageController@api')->name('page.api.index');
+Route::get('api/version/{version?}', 'PageController@api')->name('page.api.index');
 
 Route::get('/contact', 'ContactController@form')->name('contact.form');
 Route::post('/contact/send', 'ContactController@send')->name('contact.post');

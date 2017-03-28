@@ -135,10 +135,10 @@
                             <ul class="list-inline link-footer text-center-xs">
                                 <li><a href="{{ route('glosarium.word.index') }}">Beranda</a></li>
                                 <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
-                                <li><a href="{{ route('page.api.index') }}">API</a></li>
+                                <li><a href="{{ route('page.api.index', ['beta']) }}">API (Beta)</a></li>
                                 <li><a href="http://s.id/glosariumLINE">LINE@</a></li>
                                 @if (app()->environment('local'))
-                                    <li><a href="https://www.laravel.com">Laravel {{ $version }}</a></li>
+                                    <li><a href="https://www.laravel.com">Laravel {{ $laravelVersion }}</a></li>
                                 @endif
                             </ul>
                         </div>

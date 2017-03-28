@@ -13,6 +13,7 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\Image;
+use Parsedown;
 
 class PageController extends Controller
 {
@@ -25,14 +26,25 @@ class PageController extends Controller
         return view('page.index', compact('total', 'imagePath'));
     }
 
-    public function api()
+    public function api($version = null)
     {
+        $latestApi = 'beta';
+
+        $view = 'page.api.' . $version;
+
+        if (!view()->exists($view)) {
+            abort(404, trans('global.notFound'));
+        }
+
         $image = new Image;
         $image->addText('APA/API', 100, 400, 150);
         $image->addText('Dokumentasi dan Implementasi', 30, 400, 250);
         $imagePath = $image->render('images/pages/', 'api')->path();
 
-        return view('page.api.index', compact('imagePath'))
+        // Markdown parser
+        $parsedown = new Parsedown;
+
+        return view($view, compact('imagePath', 'parsedown', 'version', 'latestApi'))
             ->withTitle(trans('api.title'));
     }
 }

@@ -24,6 +24,7 @@ elixir((mix) => {
     mix.webpack('app.js', 'public/js/app.js');
 
     mix.browserify('theme.js', 'public/js/theme.js');
+    mix.browserify('api.js', 'public/js/api.js');
 
     // highlight.js
     mix.copy('node_modules/highlight.js/styles/monokai.css', 'public/css/');

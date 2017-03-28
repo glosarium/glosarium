@@ -20,6 +20,8 @@
       <div class="col-lg-3">
         <!-- nav afix -->
         <div class="nav-left-sh hidden-md hidden-sm hidden-xs">
+          @include('page.api.version')
+
           <ul class="list-unstyled">
             <li><a href="#intro" class="link-innerpage">Pengenalan</a></li>
             <li><a href="#auth" class="link-innerpage">Autentikasi Aplikasi</a></li>
@@ -34,7 +36,6 @@
             <li><a href="#word-show" class="link-innerpage">Rincian Kata</a></li>
             <li><a href="#word-search" class="link-innerpage">Pencarian Kata</a></li>
             <li><a href="#word-random" class="link-innerpage">Kata Acak</a></li>
-            <li><a href="#word-propose" class="link-innerpage">Proposal Baru untuk Kata</a></li>
           </ul>
 
 
@@ -43,6 +44,13 @@
       </div>
       <div class="col-lg-9">
         <div class="show-grid">
+
+        @if ($version != $latestApi)
+        <div class="alert alert-warning">
+          Anda sedang membaca dokumentasi API versi {{ ucfirst($version) }}, yang mana dokumentasi API terbaru adalah versi {{ ucfirst($latestApi) }}.
+        </div>
+        @endif
+
           <h3 class="no-margin-top">
               Pengenalan
               <small>
@@ -1034,57 +1042,6 @@ echo $response->getBody();
 
 </div>
         </div>
-
-        <div class="show-grid">
-            <h3>
-                Proposal Baru untuk Kata
-                <small>
-                    <a href="#word-propose" id="word-propose"><i class="fa fa-link"></i></a>
-                </small>
-            </h3>
-
-            <p>Layaknya pada fitur aplikasi web, pengembang yang berstatus kontributor dapat mengirimkan proposal kata baru. Kata baru nantinya akan masuk ke dalam moderasi sebelum tayang di aplikasi atau di APA Glosarium.</p>
-
-            <pre>
-                <code>
-$client = new http\Client;
-$request = new http\Client\Request;
-
-$body = new http\Message\Body;
-$body->addForm(array(
-  'category_id' => '1', // category id
-  'lang' => 'en', // word lang: en, es, ar, etc
-  'origin' => 'Mouse', // origin word
-  'locale' => 'Tetikus' // word in locale
-), NULL);
-
-$request->setRequestUrl('http://glosarium.web.id/api/glosarium/word');
-$request->setRequestMethod('POST');
-$request->setBody($body);
-
-$client->enqueue($request)->send();
-$response = $client->getResponse();
-
-echo $response->getBody();
-                </code>
-            </pre>
-
-            <h5>Bagaimana dengn deskripsi kata?</h5>
-            <p>Glosarium menggunakan APA dari Wikipedia untuk mendapatkan deskripsi dari kata yang ditampilkan. Jadi, kontributor tidak perlu menambahkan deskripsi secara manual.</p>
-        </div>
-
-        <hr>
-
-        <div class="text-center">
-            <strong class="text-uppercase">Bantuan</strong>
-            <h2>Butuh bantuan seputar penggunaan APA?</h2>
-            <div class="white-space-20"></div>
-            <a href="{{ route('contact.form') }}" class="btn btn-t-primary  btn-theme">Hubungi Kami</a>
-          </div>
-
-    </div>
-
-
   </div>
 </div>
 @endsection
@@ -1094,11 +1051,5 @@ echo $response->getBody();
 @endpush
 
 @push('js')
-    <script>
-        $(function(){
-            $('#content').addClass('block-section line-bottom');
-        });
-
-        hljs.initHighlightingOnLoad();
-    </script>
+    <script src="{{ asset('js/api.js') }}"></script>
 @endpush
