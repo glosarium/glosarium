@@ -10,11 +10,11 @@
  * @link https://github.com/glosarium/glosarium
  */
 
-namespace App\Http\Controllers\Api\Glosarium;
+namespace App\Http\Controllers\Api\Beta\Glosarium;
 
 use App\Glosarium\Category;
 use App\Glosarium\Word;
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\Beta\ApiController;
 use App\Jobs\Glosarium\ApiRequest;
 use App\Notifications\Glosarium\WordCreatedNotification;
 use App\Transformers\Glosarium\WordTransformer;

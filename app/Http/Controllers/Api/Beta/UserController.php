@@ -10,11 +10,12 @@
  * @link https://github.com/glosarium/glosarium
  */
 
-namespace App\Http\Controllers\Api;
-
-use App\Http\Controllers\Api\ApiController;
+namespace App\Http\Controllers\Api\Beta;
 
 // Controllers
+use App\Http\Controllers\Api\Beta\ApiController;
+
+// Transformer
 use App\Transformers\UserTransformer;
 
 // Models

@@ -10,11 +10,11 @@
  * @link https://github.com/glosarium/glosarium
  */
 
-namespace App\Http\Controllers\Api\Glosarium;
+namespace App\Http\Controllers\Api\Beta\Glosarium;
 
 // Models
 use App\Glosarium\Category;
-use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\Beta\ApiController;
 
 // Controllers
 use App\Jobs\Glosarium\ApiRequest;
