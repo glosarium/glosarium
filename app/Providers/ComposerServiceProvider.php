@@ -33,7 +33,7 @@ class ComposerServiceProvider extends ServiceProvider
 
         view()->composer('*', function ($view) {
             $laravel = app();
-            $view->with('version', $laravel::VERSION);
+            $view->with('laravelVersion', $laravel::VERSION);
         });
     }
 
