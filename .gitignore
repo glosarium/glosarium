@@ -6,6 +6,7 @@ Homestead.json
 Homestead.yaml
 .env
 public/image
+public/hot
 storage/debugbar
 composer.lock
 storage/ad
@@ -14,10 +15,9 @@ storage/index
 public/sitemap.xml
 database/db.sql
 storage/worker.log
-.env.production
 Envoy.blade.php
 public/images/dictionaries
 public/images/users/
 public/images/pages/
 public/images/glosariums
-.env.prod
+/storage/*.key

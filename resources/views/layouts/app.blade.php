@@ -137,6 +137,9 @@
                                 <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
                                 <li><a href="{{ route('page.api.index') }}">API</a></li>
                                 <li><a href="http://s.id/glosariumLINE">LINE@</a></li>
+                                @if (app()->environment('local'))
+                                    <li><a href="https://www.laravel.com">Laravel {{ $version }}</a></li>
+                                @endif
                             </ul>
                         </div>
                         <div class="col-sm-6 ">

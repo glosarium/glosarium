@@ -13,14 +13,18 @@ class WordCreatedNotification extends Notification
 
     private $word;
 
+    private $user;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Word $word)
+    public function __construct(Word $word, $user)
     {
         $this->word = $word;
+
+        $this->user = $user;
     }
 
     /**
@@ -62,7 +66,7 @@ class WordCreatedNotification extends Notification
         return [
             'type'    => 'info',
             'subject' => 'Kata Baru',
-            'message' => sprintf('Sebuah kata baru %s dari %s.', $this->word->origin, $notifiable->name),
+            'message' => sprintf('Sebuah kata baru %s dari %s.', $this->word->origin, $this->user),
             'data'    => [
                 'origin' => $this->word->origin,
                 'locale' => $this->word->locale,

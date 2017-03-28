@@ -11,6 +11,9 @@
 |
  */
 
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -25,6 +28,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory
+ */
 $factory->define(App\Blog\Post::class, function (Faker\Generator $faker) {
     return [
         'user_id'      => 1,

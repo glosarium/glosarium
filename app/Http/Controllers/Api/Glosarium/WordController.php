@@ -12,21 +12,16 @@
 
 namespace App\Http\Controllers\Api\Glosarium;
 
-// Models
+use App\Glosarium\Category;
 use App\Glosarium\Word;
-
-// Controllers
 use App\Http\Controllers\Api\ApiController;
-
-// Transformers
 use App\Jobs\Glosarium\ApiRequest;
-
-// Requests
+use App\Notifications\Glosarium\WordCreatedNotification;
 use App\Transformers\Glosarium\WordTransformer;
-
-// Facades
+use App\User;
 use Cache;
 use JWTAuth;
+use Notification;
 use Validator;
 
 class WordController extends ApiController
@@ -69,10 +64,10 @@ class WordController extends ApiController
         ]));
 
         // transform word
-        $wordTranform = fractal($words, new WordTransformer())->toArray();
+        $wordTransform = fractal($words, new WordTransformer())->toArray();
 
         return response()
-            ->json($wordTranform)
+            ->json($wordTransform)
             ->withHeaders($this->headers);
     }
 
@@ -98,10 +93,10 @@ class WordController extends ApiController
         ]));
 
         // transform word
-        $wordTranform = fractal($word, new WordTransformer)->toArray();
+        $wordTransform = fractal($word, new WordTransformer)->toArray();
 
         return response()
-            ->json($wordTranform)
+            ->json($wordTransform)
             ->withHeaders($this->headers);
     }
 
@@ -131,10 +126,10 @@ class WordController extends ApiController
         ]));
 
         // transform word
-        $wordTranform = fractal($words, new WordTransformer)->toArray();
+        $wordTransform = fractal($words, new WordTransformer)->toArray();
 
         return response()
-            ->json($wordTranform)
+            ->json($wordTransform)
             ->withHeaders($this->headers);
     }
 
@@ -159,26 +154,49 @@ class WordController extends ApiController
         ]));
 
         // transform word
-        $wordTranform = fractal($word, new WordTransformer)->toArray();
+        $wordTransform = fractal($word, new WordTransformer)->toArray();
 
-        return response()->json($wordTranform);
+        return response()->json($wordTransform);
     }
 
     public function propose()
     {
         $validator = Validator::make(request()->all(), [
-            'category_id' => 'required|integer|exists:glosarium_categories,id',
-            'lang'        => 'required|max:3|string',
-            'origin'      => 'required|string',
-            'locale'      => 'required|string',
+            'category' => 'required|string|exists:glosarium_categories,slug',
+            'lang'     => 'required|max:3|string',
+            'origin'   => 'required|string',
+            'locale'   => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
+        // find category
+        $category = Category::whereSlug(request('category'))->first();
+        if (empty($category)) {
+            return response()->json(['error' => trans('glosarium.category.notFound')], 404);
+        }
+
+        $word = Word::create([
+            'user_id'      => $this->user->id,
+            'category_id'  => $category->id,
+            'lang'         => request('lang'),
+            'origin'       => request('origin'),
+            'locale'       => request('locale'),
+            'is_published' => false,
+            'is_standard'  => false,
+        ]);
+
+        // transform word
+        $wordTransform = fractal($word, new WordTransformer)->toArray();
+
+        // send notifications
+        $users = User::whereType('admin')->get();
+        Notification::send($users, new WordCreatedNotification($word, $this->user->name));
+
         return response()
-            ->json(request()->all())
+            ->json($wordTransform)
             ->withHeaders($this->headers);
     }
 }

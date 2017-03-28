@@ -28,5 +28,6 @@ Route::group(['prefix' => 'glosarium', 'namespace' => 'Api\Glosarium', 'middlewa
     Route::get('word', 'WordController@index');
     Route::get('word/search', 'WordController@search');
     Route::get('word/random', 'WordController@random');
+    Route::post('word/propose', 'WordController@propose');
     Route::get('word/{slug}', 'WordController@show');
 });
