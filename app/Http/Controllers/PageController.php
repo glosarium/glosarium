@@ -26,6 +26,11 @@ class PageController extends Controller
         return view('page.index', compact('total', 'imagePath'));
     }
 
+    public function redirectApi()
+    {
+        return redirect()->route('page.api.index', ['beta']);
+    }
+
     public function api($version = null)
     {
         $latestApi = 'beta';
