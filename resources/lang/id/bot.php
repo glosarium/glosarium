@@ -23,6 +23,7 @@ return [
         'msg'         => [
             'created' => 'Katakunci ":keyword" berhasil ditambahkan.',
             'updated' => 'Katakunci ":keyword" berhasil diperbarui.',
+            'deleted' => 'Katakunci ":keyword" berhasil dihapus.',
         ],
     ],
 

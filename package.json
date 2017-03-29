@@ -9,11 +9,15 @@
   },
   "devDependencies": {
     "axios": "^0.15.3",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap": "^3.3.7",
     "cross-env": "^3.2.3",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
+    "jquery.easing": "^1.4.1",
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
+    "magnific-popup": "^1.1.0",
+    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
     "vue": "^2.1.10"
   },
   "dependencies": {

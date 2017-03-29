@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\User;
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -13,7 +15,11 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return \Auth::check();
+        if (request()->isMethod('post')) {
+            return Auth::user()->can('create', User::class);
+        }
+
+        return Auth::check() and Auth::user()->type == 'admin';
     }
 
     /**

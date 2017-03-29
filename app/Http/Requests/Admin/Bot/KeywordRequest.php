@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Bot;
 
+use App\Bot\Keyword;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,6 +15,10 @@ class KeywordRequest extends FormRequest
      */
     public function authorize()
     {
+        if (request()->isMethod('post')) {
+            return Auth::user()->can('create', Keyword::class);
+        }
+
         return Auth::check() and Auth::user()->type == 'admin';
     }
 
@@ -25,7 +30,6 @@ class KeywordRequest extends FormRequest
     public function rules()
     {
         $rules = [
-
             'message'     => 'required|max:500',
             'description' => 'required|max:500',
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Glosarium\Word;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,7 +15,11 @@ class WordRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        if (request()->isMethod('post')) {
+            return Auth::user()->can('create', Word::class);
+        }
+
+        return Auth::check() and Auth::user()->type == 'admin';
     }
 
     /**

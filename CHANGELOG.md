@@ -1,5 +1,17 @@
 # Catatan Perubahan Aplikasi
 
+### 29-03-2017
+- Perbaikan hak akses untuk kontributor ([f607134](https://github.com/glosarium/glosarium/commit/f607134da6baf554635213da69956383ed042245))
+- Perbaikan hak akses untuk kategori kata ([5540c3d](https://github.com/glosarium/glosarium/commit/5540c3dfd1e7c70d44f7088810081f8b27d35629))
+- Perbaikan hak akses untuk kata ([e6a1d63](https://github.com/glosarium/glosarium/commit/e6a1d63e51d0da4d77e0b586f1f833a134ffb488))
+- Perbaikan hak akses untuk katakunci bot ([6563c3e](https://github.com/glosarium/glosarium/commit/6563c3e2a0859e305e9ade21f25bc55561309533))
+- Tambah template untuk status 403 ([f564b1f](https://github.com/glosarium/glosarium/commit/f564b1ffda28dd29fac84d9f2785414abc2b6928))
+- Hapus middleware Cors ([95a73f8](https://github.com/glosarium/glosarium/commit/95a73f875cbd9fc8d9e1b47820ffb16d95807e49))
+
+### 28-03-2017
+- Upgrade ke Laravel versi 5.4 ([8fa7267](https://github.com/glosarium/glosarium/commit/8fa7267c2b8ed3c4b485679ffad15b21102ff1aa))
+- Rilis aplikasi APA/API untuk versi beta ([3050acc](https://github.com/glosarium/glosarium/commit/3050acc20b511ba286f737786fe369ad7e68459a))
+
 ### 27-03-2017
 - Pencarian kata otomatis jika katakunci "keyword" tersedia ([cdf7f57](https://github.com/glosarium/glosarium/commit/cdf7f5737cd4369aefdc22c9c9555aa2904b7dea))
 - Perbaikan format balasan bot LINE ([02f6af2](https://github.com/glosarium/glosarium/commit/02f6af2ccf93a990bee488c7638aeb4011915053), [5974c7e](https://github.com/glosarium/glosarium/commit/5974c7e8fa53f31e001bff5e2d1abc63645a02f5), [5500db8](https://github.com/glosarium/glosarium/commit/5500db8d08e5bdeb59effdc60f78cd19282f6ae7), dst)

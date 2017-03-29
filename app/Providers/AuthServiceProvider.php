@@ -15,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\User::class               => \App\Policies\UserPolicy::class,
         \App\Glosarium\Word::class     => \App\Policies\Glosarium\WordPolicy::class,
         \App\Glosarium\Category::class => \App\Policies\Glosarium\CategoryPolicy::class,
+        \App\Bot\Keyword::class        => \App\Policies\Bot\KeywordPolicy::class,
     ];
 
     /**

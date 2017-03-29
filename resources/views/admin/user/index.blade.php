@@ -83,7 +83,7 @@
          @else
          <div class="row">
             <div class="col-md-12">
-               <div class="alert alert-info">@lang('glosarium.notFound')</div>
+               <div class="alert alert-info">@lang('user.notFound')</div>
             </div>
          </div>
          @endif

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
+ * kamus nasional dan kamus bahasa daerah.
+ *
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @copyright Glosarium - 2017
+ *
+ * @link https://github.com/glosarium/glosarium
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -9,11 +19,14 @@ use Auth;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        if (!Auth::user()->can('show', User::class)) {
-            abort(403, trans('user.notAuthorized'));
-        }
+        abort_if(!Auth::user()->can('show', User::class), 403, trans('global.http.403'));
 
         $users = User::orderBy('name')
             ->withCount('glosariumWords')
@@ -28,8 +41,15 @@ class UserController extends Controller
             ->withTitle(trans('user.index'));
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function history()
     {
+        abort_if(!Auth::user()->can('history', User::class), 403, trans('global.http.403'));
+
         $users = User::onlyTrashed()
             ->orderBy('name', 'ASC')
             ->filter()
@@ -45,6 +65,8 @@ class UserController extends Controller
 
     public function restore($id)
     {
+        abort_if(!Auth::user()->can('restore', User::class), 403, trans('global.http.403'));
+
         $user = User::whereId($id)
             ->onlyTrashed()
             ->restore();
@@ -57,6 +79,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        abort_if(!Auth::user()->can('edit', $user), 403, trans('global.http.403'));
+
         return view('admin.user.edit', compact('user'))
             ->withTitle(trans('user.edit', ['name' => $user->name]));
     }
@@ -64,6 +88,8 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
+
+        abort_if(!Auth::user()->can('edit', $user), 403, trans('global.http.403'));
 
         $user->name      = $request->name;
         $user->is_active = $request->active;
@@ -76,7 +102,11 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+
+        abort_if(!Auth::user()->can('delete', $user), 403, trans('global.http.403'));
+
+        $deleted = $user->delete();
 
         return redirect()->route('admin.user.index')
             ->with('success', trans('user.msg.deleted'));
