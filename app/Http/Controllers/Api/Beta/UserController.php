@@ -12,9 +12,6 @@
 
 namespace App\Http\Controllers\Api\Beta;
 
-// Controllers
-use App\Http\Controllers\Api\Beta\ApiController;
-
 // Transformer
 use App\Transformers\UserTransformer;
 
