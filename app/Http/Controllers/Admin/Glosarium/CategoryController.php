@@ -12,25 +12,21 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
-// Models
 use App\Glosarium\Category;
-
-// Controllers
 use App\Http\Controllers\Controller;
-
-// Requests
 use App\Http\Requests\Admin\CategoryRequest;
-
-// Facades
 use Auth;
 
 class CategoryController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        if (!Auth::user()->can('show', Category::class)) {
-            abort(403, trans('user.notAuthorized'));
-        }
+        abort_if(!Auth::user()->can('show', Category::class), 403, trans('global.http.403'));
 
         $categories = Category::orderBy('name', 'ASC')
             ->withCount('words')
@@ -45,14 +41,28 @@ class CategoryController extends Controller
             ->withTitle(trans('glosarium.category.index'));
     }
 
+    /**
+     * Show pending words from contributors
+     *
+     * @return Illuminate\Http\Response $response
+     */
     public function edit(Category $category)
     {
+        abort_if(!Auth::user()->can('edit', $category), 403, trans('global.http.403'));
+
         return view('admin.glosarium.category.edit', compact('category'))
             ->withTitle(trans('glosarium.category.edit'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function update(CategoryRequest $request, Category $category)
     {
+        abort_if(!Auth()->user()->can('edit', $category), 403, trans('global.http.403'));
+
         $category->name         = $category->name;
         $category->description  = $category->description;
         $category->is_published = $category->publish;

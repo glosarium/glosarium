@@ -22,7 +22,10 @@
             </li>
             @endif
 
-            <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
+            @can('show', \App\Glosarium\Category::class)
+                <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
+            @endcan
+
             <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
 
             @can('show', \App\Bot\Keyword::class)
