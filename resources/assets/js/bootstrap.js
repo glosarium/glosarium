@@ -9,6 +9,8 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 
+require('bootstrap-sass');
+
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
@@ -16,19 +18,6 @@ window.$ = window.jQuery = require('jquery');
  */
 
 window.Vue = require('vue');
-require('vue-resource');
-
-/**
- * We'll register a HTTP interceptor to attach the "CSRF" header to each of
- * the outgoing requests issued by this application. The CSRF middleware
- * included with Laravel will automatically verify the header's value.
- */
-
-Vue.http.interceptors.push((request, next) => {
-    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
-
-    next();
-});
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -39,7 +28,6 @@ Vue.http.interceptors.push((request, next) => {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
-	'baseURL': Laravel.url + '/',
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest'
 };
@@ -50,7 +38,9 @@ window.axios.defaults.headers.common = {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from "laravel-echo"
+// import Echo from 'laravel-echo'
+
+// window.Pusher = require('pusher-js');
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',

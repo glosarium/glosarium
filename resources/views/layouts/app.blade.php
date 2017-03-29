@@ -13,17 +13,16 @@
         <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
 
         <!-- bootstrap -->
-        <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
         <!-- Icons -->
-        <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
 
         <!-- lightbox -->
-        <link href="{{ asset('vendor/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/magnific-popup.css') }}" rel="stylesheet">
 
         <!-- Themes styles-->
         <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         @stack('css')
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -171,13 +170,13 @@
         <script src="{{ asset('js/app.js') }}"></script>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.easing.js') }}"></script>
 
         <!-- jQuery Bootstrap -->
-        <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
 
         <!-- Lightbox -->
-        <script src="{{ asset('vendor/magnific-popup/dist/jquery.magnific-popup.min.js') }}"></script>
+        <script src="{{ asset('js/magnific-popup.js') }}"></script>
 
         <!-- Theme JS -->
         <script src="{{ asset ('js/theme.js') }}"></script>
