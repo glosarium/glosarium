@@ -32,6 +32,27 @@ Lihat aplikasi pada [Glosarium Indonesia](http://glosarium.web.id).
 
 Terakhir, akses aplikasi web melalui peramban dengan tautan ```http://localhost:8000```.
 
+## Kompilasi Aset (JS, CSS, LESS, SASS, dst)
+Secara bawaan, aplikasi web Glosarium didistribusikan dengan aset yang sudah terkompilasi. Namun, Anda dapat mengkompilasi ulang aset apabila ada perubahan, baik itu perubahan pada aset yang sudah ada, maupun perubahan dengan menambahkan paket librari baru.
+
+Instal terlebih dahulu NodeJS dan NPM.
+
+```
+sudo apt install node npm
+```
+
+Untuk mengkompilasi ulang, jalankan perintah berikut.
+
+```
+npm run dev
+```
+
+Sebelum aset didistribusikan, aset harus dikompilasi ulang dalam bentuk aset produksi.
+
+```
+npm run production
+```
+
 ## Pengembang
 - Dedy Yugo Purwanto ([@arvernester](https://twitter.com/arvernester)).
 
