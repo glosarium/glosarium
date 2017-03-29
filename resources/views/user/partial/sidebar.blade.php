@@ -24,8 +24,10 @@
 
             <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
             <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
-            <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
-            <li></li>
+
+            @can('show', \App\Bot\Keyword::class)
+                <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
+            @endcan
             <hr>
 
             <li><a href="{{ route('user.account.token') }}">@lang('user.token')</a></li>

@@ -27,7 +27,7 @@ class KeywordController extends Controller
      */
     public function index()
     {
-        abort_if(!Auth::user()->can('view', Keyword::class), 401, trans('global.http.401'));
+        abort_if(!Auth::user()->can('view', Keyword::class), 403, trans('global.http.403'));
 
         $keywords = Keyword::orderBy('keyword', 'ASC')
             ->filter()
@@ -48,7 +48,7 @@ class KeywordController extends Controller
      */
     public function create()
     {
-        abort_if(!Auth::user()->can('create', Keyword::class), 401, trans('global.http.401'));
+        abort_if(!Auth::user()->can('create', Keyword::class), 403, trans('global.http.403'));
 
         return view('admin.bot.keyword.create')
             ->withTitle(trans('bot.keyword.create'));
@@ -82,7 +82,7 @@ class KeywordController extends Controller
      */
     public function edit(Keyword $keyword)
     {
-        abort_if(!Auth::user()->can('update', $keyword), 401, trans('global.http.401'));
+        abort_if(!Auth::user()->can('update', $keyword), 403, trans('global.http.403'));
 
         return view('admin.bot.keyword.edit', compact('keyword'))
             ->withTitle(trans('bot.keyword.edit', [
@@ -99,7 +99,7 @@ class KeywordController extends Controller
      */
     public function update(KeywordRequest $request, Keyword $keyword)
     {
-        abort_if(!Auth::user()->can('update', $keyword), 401, trans('global.http.401'));
+        abort_if(!Auth::user()->can('update', $keyword), 403, trans('global.http.403'));
 
         $keyword->message     = $request->message;
         $keyword->description = $request->description;
@@ -119,7 +119,7 @@ class KeywordController extends Controller
      */
     public function destroy(Keyword $keyword)
     {
-        abort_if(!Auth::user()->can('delete', $keyword), 401, trans('global.http.401'));
+        abort_if(!Auth::user()->can('delete', $keyword), 403, trans('global.http.403'));
 
         $keyword->delete();
 
