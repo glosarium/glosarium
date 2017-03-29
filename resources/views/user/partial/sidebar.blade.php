@@ -10,19 +10,23 @@
         <div class="white-space-20"></div>
 
         <ul class="list-unstyled">
-            @if (auth()->user()->type == 'admin')
+            @can('show', \App\Glosarium\Word::class)
                 <li><a href="{{ route('admin.word.index') }}">Kata</a></li>
+            @endcan
+
+            @can('moderation', \App\Glosarium\Word::class)
                 <li><a href="{{ route('admin.word.moderation') }}">Moderasi Kata</a>
                 @if (isset($totalModeration))
                 <span class="badge badge-default">{{ $totalModeration }}</span>
                 @endif
-                </li>
-                <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
-                <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
-                <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
-                <li></li>
-                <hr>
+            </li>
             @endif
+
+            <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
+            <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
+            <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
+            <li></li>
+            <hr>
 
             <li><a href="{{ route('user.account.token') }}">@lang('user.token')</a></li>
 

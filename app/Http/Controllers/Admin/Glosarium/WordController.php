@@ -12,26 +12,22 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
-// Models
 use App\Glosarium\Category;
 use App\Glosarium\Word;
-
-// Controllers
 use App\Http\Controllers\Controller;
-
-// Form requests
 use App\Http\Requests\Admin\WordRequest;
-
-// Facades
 use Auth;
 
 class WordController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        if (!Auth::user()->can('show', Word::class)) {
-            abort(403, trans('user.notAuthorized'));
-        }
+        abort_if(!Auth::user()->can('show', Word::class), 403, trans('global.http.403'));
 
         $words = Word::with('category')
             ->filter()
@@ -46,8 +42,15 @@ class WordController extends Controller
             ->withTitle(trans('glosarium.word.index'));
     }
 
+    /**
+     * Show pending words from contributors
+     *
+     * @return Illuminate\Http\Response $response
+     */
     public function moderation()
     {
+        abort_if(!Auth::user()->can('moderation', Word::class), 403, trans('global.http.403'));
+
         $words = Word::whereIsPublished(false)
             ->with('user', 'category')
             ->orderBy('created_at', 'ASC')
@@ -62,9 +65,14 @@ class WordController extends Controller
             ->withTitle(trans('glosarium.word.moderation'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        Auth::user()->can('create', Word::class);
+        abort_if(!Auth::user()->can('create', Word::class), 403, trans('global.http.403'));
 
         $categories = Category::orderBy('name', 'ASC')
             ->pluck('name', 'id');
@@ -73,24 +81,15 @@ class WordController extends Controller
             ->withTitle(trans('glosarium.word.create'));
     }
 
-    public function edit($id)
-    {
-        $word = Word::findOrFail($id);
-
-        Auth::user()->can('update', $word);
-
-        $categories = Category::orderBy('name', 'ASC')
-            ->pluck('name', 'id');
-
-        return view('admin.glosarium.word.edit', compact('word', 'categories'))
-            ->withTitle(trans('glosarium.word.edit', [
-                'origin' => $word->origin,
-            ]));
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request    $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(WordRequest $request)
     {
-        Auth::user()->can('create', Word::class);
+        abort_if(!Auth::user()->can('create', Word::class), 403, trans('global.http.403'));
 
         $word = Word::create([
             'user_id'      => Auth::id(),
@@ -106,11 +105,39 @@ class WordController extends Controller
             ->with('success', trans('glosarium.word.msg.created'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int                         $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $word = Word::findOrFail($id);
+
+        abort_if(!Auth::user()->can('update', $word), 403, trans('global.http.403'));
+
+        $categories = Category::orderBy('name', 'ASC')
+            ->pluck('name', 'id');
+
+        return view('admin.glosarium.word.edit', compact('word', 'categories'))
+            ->withTitle(trans('glosarium.word.edit', [
+                'origin' => $word->origin,
+            ]));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request    $request
+     * @param  int                         $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(WordRequest $request, $id)
     {
         $word = Word::findOrFail($id);
 
-        Auth::user()->can('update', $word);
+        abort_if(!Auth::user()->can('update', $word), 403, trans('global.http.403'));
 
         $word->category_id  = $request->category;
         $word->lang         = $request->lang;
@@ -124,5 +151,24 @@ class WordController extends Controller
             ->with('success', trans('glosarium.word.msg.edited', [
                 'origin' => $word->origin,
             ]));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int                         $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Word $word)
+    {
+        abort_if(!Auth::user()->can('delete', $word), 403, trans('global.http.403'));
+
+        $deleted = $word->delete();
+
+        return response()->json([
+            'success' => $deleted,
+            'title'   => trans('global.success'),
+            'message' => trans('glosarium.word.deleted'),
+        ]);
     }
 }

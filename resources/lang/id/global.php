@@ -12,6 +12,7 @@ return [
     'http'          => [
         '404' => 'Halaman tidak ditemukan.',
         '401' => 'Anda tidak punya akses untuk membuka laman ini.',
+        '403' => 'Anda tidak punya akses untuk membuka laman ini.',
     ],
 
     'btn'           => [

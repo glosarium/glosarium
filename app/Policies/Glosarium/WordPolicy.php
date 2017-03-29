@@ -15,6 +15,11 @@ class WordPolicy
         return $user->type == 'admin';
     }
 
+    public function moderation(User $user, Word $word)
+    {
+        # code...
+    }
+
     /**
      * Determine whether the user can view the word.
      *
