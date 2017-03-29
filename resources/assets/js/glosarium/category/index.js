@@ -7,6 +7,7 @@ var category = new Vue({
     data: {
         categories: [],
         loading: false,
+        loadingWord: false,
         words: null,
         nextUrl: null,
         keyword: ''
@@ -20,14 +21,16 @@ var category = new Vue({
     methods: {
 
         getWord(url) {
-            axios.post(url).then(response => {
+            this.loadingWord = true;
+
+            axios.post(url, {limit: 15}).then(response => {
 
                 this.words = response.data.words;
 
-                this.loading = false;
+                this.loadingWord = false;
             }, response => {
 
-                this.loading = false;
+                this.loadingWord = false;
             });
         },
 

@@ -42,7 +42,7 @@
 
                     <div class="white-space-10"></div>
                     <div class="form-group no-margin">
-                        <button v-bind:disabled="disabled" class="btn btn-theme btn-lg btn-t-primary btn-block">Daftar <i v-if="loading" class="fa fa-spinner fa-spin"></i></button>
+                        <button v-bind:disabled="disabled" class="btn btn-theme btn-lg btn-t-primary btn-block">@lang('user.btn.register') <loader :show="loading"></loader></button>
                     </div>
                 </form>
                 <!-- form login -->

@@ -15,12 +15,45 @@ require('./routes');
  * the application, or feel free to tweak this setup for your needs.
  */
 
+
 // Bootstarap components
 Vue.component('alert', require('./components/Bootstrap/alert.vue'));
 Vue.component('loader', require('./components/Bootstrap/loader.vue'));
+Vue.component('pagination', require('./components/Bootstrap/pagination.vue'));
+Vue.component('button-edit', require('./components/Bootstrap/Button/edit.vue'));
+Vue.component('button-delete', require('./components/Bootstrap/Button/delete.vue'));
 
 // App components
 Vue.component('search', require('./components/App/search.vue'));
+Vue.component('admin-search', require('./components/App/admin-search.vue'));
+Vue.component('user-index', require('./components/App/User/index.vue'));
+Vue.component('user-create', require('./components/App/User/create.vue'));
+Vue.component('user-notification', require('./components/App/User/notification.vue'));
+
+// Glosarium
+Vue.component('glosarium-category-index', require('./components/App/Glosarium/Category/index.vue'));
+Vue.component('glosarium-word-latest', require('./components/App/Glosarium/Word/latest.vue'));
+
+/*
+ * By extending the Vue prototype with a new '$bus' property
+ * we can easily access our global event bus from any child component.
+ *
+ * @link https://laracasts.com/discuss/channels/vue/use-a-global-event-bus
+ */
+Object.defineProperty(Vue.prototype, '$bus', {
+    get() {
+        return this.$root.bus;
+    }
+});
+
+window.bus = new Vue({});
+
+window.app = new Vue({
+	el: '#content',
+	data: {
+		bus: bus // Here we bind our event bus to our $root Vue model.
+	}
+});
 
 /**
  * jQuery handler

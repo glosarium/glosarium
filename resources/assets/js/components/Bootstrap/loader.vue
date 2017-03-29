@@ -1,9 +1,11 @@
 <template>
-	<i v-if="show" class="fa fa-spin fa-spinner"></i>
+	<i v-if="show" class="fa fa-spin fa-circle-o-notch"></i>
 </template>
 
 <script>
 	export default {
-		props: ['show']
+		props: {
+			show: false
+		}
 	}
 </script>

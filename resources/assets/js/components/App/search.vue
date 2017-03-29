@@ -29,7 +29,10 @@
 
 <script>
     export default {
-        props: ['placeholder', 'loading'],
+        props: {
+            placeholder: String,
+            loading: Boolean
+        },
 
         data() {
             return {
@@ -39,7 +42,8 @@
 
         methods: {
             search() {
-                this.$emit('search', this.keyword)
+                this.$emit('search', this.keyword);
+                this.$bus.$emit('search', this.keyword);
             }
         }
     }

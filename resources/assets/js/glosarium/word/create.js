@@ -62,7 +62,6 @@ new Vue({
 		},
 
 		create(e) {
-         this.$Progress.start();
 			this.pre();
 
 			axios.post(e.target.action, this.forms).then(response => {
@@ -79,7 +78,6 @@ new Vue({
 				this.errors = [];
 
 				this.post();
-            this.$Progress.finish();
 
 			}).catch(error => {
 				if (error.response.status == 422) {
@@ -90,7 +88,6 @@ new Vue({
 				}
 
 				this.post();
-            this.$Progress.fail();
 			});
 		}
 

@@ -21,6 +21,7 @@ return [
         'shares'           => 'Bagikan',
         'wrongDescription' => 'Sehubungan dengan banyaknya respon negatif, deskripsi di bawah bisa jadi tidak sesuai dengan arti kata ',
         'moderation'       => 'Moderasi Kata',
+        'back'             => 'Kembali ke indeks kata',
 
         'btn'              => [
             'create'  => 'Tambah Kata',

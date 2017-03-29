@@ -286,7 +286,7 @@ class WordController extends Controller
         $words = Word::orderBy('created_at', 'DESC')
             ->with('category')
             ->whereIsPublished(true)
-            ->limit(20)
+            ->limit(request('limit', 20))
             ->get();
 
         return response()->json([
