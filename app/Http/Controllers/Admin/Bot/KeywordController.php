@@ -12,14 +12,10 @@
 
 namespace App\Http\Controllers\Admin\Bot;
 
-// Models
 use App\Bot\Keyword;
-
-// Controllers
 use App\Http\Controllers\Controller;
-
-// Requests
 use App\Http\Requests\Admin\Bot\KeywordRequest;
+use Auth;
 use Illuminate\Http\Request;
 
 class KeywordController extends Controller
@@ -31,6 +27,8 @@ class KeywordController extends Controller
      */
     public function index()
     {
+        abort_if(!Auth::user()->can('view', Keyword::class), 401, trans('global.http.401'));
+
         $keywords = Keyword::orderBy('keyword', 'ASC')
             ->filter()
             ->paginate();
@@ -50,6 +48,8 @@ class KeywordController extends Controller
      */
     public function create()
     {
+        abort_if(!Auth::user()->can('create', Keyword::class), 401, trans('global.http.401'));
+
         return view('admin.bot.keyword.create')
             ->withTitle(trans('bot.keyword.create'));
     }
@@ -82,6 +82,8 @@ class KeywordController extends Controller
      */
     public function edit(Keyword $keyword)
     {
+        abort_if(!Auth::user()->can('update', $keyword), 401, trans('global.http.401'));
+
         return view('admin.bot.keyword.edit', compact('keyword'))
             ->withTitle(trans('bot.keyword.edit', [
                 'keyword' => $keyword->keyword,
@@ -97,6 +99,8 @@ class KeywordController extends Controller
      */
     public function update(KeywordRequest $request, Keyword $keyword)
     {
+        abort_if(!Auth::user()->can('update', $keyword), 401, trans('global.http.401'));
+
         $keyword->message     = $request->message;
         $keyword->description = $request->description;
         $keyword->save();
@@ -113,8 +117,15 @@ class KeywordController extends Controller
      * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Keyword $keyword)
     {
-        //
+        abort_if(!Auth::user()->can('delete', $keyword), 401, trans('global.http.401'));
+
+        $keyword->delete();
+
+        return redirect()->route('bot.keyword.index')
+            ->with('success', trans('bot.keyword.msg.deleted', [
+                'keyword' => $keyword->keyword,
+            ]));
     }
 }

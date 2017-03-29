@@ -9,6 +9,11 @@ return [
     'yes'           => 'Ya',
     'no'            => 'Tidak',
 
+    'http'          => [
+        '404' => 'Halaman tidak ditemukan.',
+        '401' => 'Anda tidak punya akses untuk membuka laman ini.',
+    ],
+
     'btn'           => [
         'save'   => 'Simpan',
         'create' => 'Buat',
