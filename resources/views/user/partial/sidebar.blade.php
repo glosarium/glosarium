@@ -26,12 +26,17 @@
                 <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
             @endcan
 
-            <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
+            @can('show', \App\User::class)
+                <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
+            @endcan
 
             @can('show', \App\Bot\Keyword::class)
                 <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
             @endcan
-            <hr>
+
+            @if (auth()->user()->type == 'admin')
+                <hr>
+            @endif
 
             <li><a href="{{ route('user.account.token') }}">@lang('user.token')</a></li>
 

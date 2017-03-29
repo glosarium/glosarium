@@ -21,6 +21,7 @@ return [
     'tokenTitle'     => 'Token untuk Antarmuka Pemrograman Aplikasi',
     'token'          => 'Token',
     'emailExists'    => 'Pos-el sudah digunakan.',
+    'notFound'       => 'Kontributor tidak ditemukan.',
 
     'mail'           => [
         'register'     => 'Pendaftaran kontributor baru.',

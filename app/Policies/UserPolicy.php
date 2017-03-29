@@ -14,6 +14,16 @@ class UserPolicy
         return $self->type == 'admin';
     }
 
+    public function restore(User $self)
+    {
+        # code...
+    }
+
+    public function history(User $self)
+    {
+        # code...
+    }
+
     /**
      * Determine whether the user can view the user.
      *

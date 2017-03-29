@@ -20,6 +20,7 @@
 
          @include('partials.message')
 
+         @if ($users->total() >= 1)
          <!-- form search -->
          <form class="form-search-list" method="get" action="{{ url()->current() }}">
             <div class="row">
@@ -38,7 +39,7 @@
             </div>
          </form>
          <!-- form search -->
-         @if ($users->total() >= 1)
+
          <div class="table-responsive">
             <table class="table table-bordered">
                <thead>
@@ -72,7 +73,7 @@
          @else
          <div class="row">
             <div class="col-md-12">
-               <div class="alert alert-info">@lang('glosarium.notFound')</div>
+               <div class="alert alert-info">@lang('user.notFound')</div>
             </div>
          </div>
          @endif
