@@ -165,8 +165,8 @@
                 'url' => env('APP_URL'),
                 'auth' => auth()->check(),
                 'user' => [
-                    'email' => auth()->user()->email,
-                    'name' => auth()->user()->name,
+                    'email' => auth()->check() ? auth()->user()->email : null,
+                    'name' => auth()->check() ? auth()->user()->name : null,
                 ]
             ]) !!}
         </script>
