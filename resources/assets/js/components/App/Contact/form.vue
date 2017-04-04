@@ -37,11 +37,7 @@
 	        return {
                 auth: false,
 	        	loading: false,
-		        errors: {
-		            subject: null,
-		            email: null,
-		            message: null
-		        },
+		        errors: [],
 		        state: {
                     email: '',
                     subject: '',
@@ -79,12 +75,8 @@
 	        },
 
 	        afterSend: function() {
-	            this.forms = forms;
-	            this.errors = {
-	                email: null,
-	                subject: null,
-	                message: null
-	            };
+	            this.state = forms;
+	            this.errors = [];
 
 	            this.loading = false;
 	        },
@@ -93,7 +85,7 @@
 	            this.$Progress.start();
 	            this.beforeSend();
 
-	            axios.post(e.target.action, this.forms).then(response => {
+	            axios.post(e.target.action, this.state).then(response => {
 	                this.alerts = {
 	                    type: 'success',
 	                    title: response.data.title,
@@ -102,7 +94,6 @@
 
 	                this.$Progress.finish();
 	                this.afterSend();
-
 	            }).catch(error => {
 	                if (error.response.status == 422) {
 	                    this.errors = error.response.data;
