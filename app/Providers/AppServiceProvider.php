@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Carbon\Carbon::setLocale(config('app.locale'));
+        \Carbon\Carbon::setLocale(config('app.locale', 'id'));
     }
 
     /**
@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        if ($this->app->environment('local')) {
+            $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
+        }
     }
 }

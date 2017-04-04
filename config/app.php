@@ -178,9 +178,6 @@ return [
         // https://github.com/cviebrock/eloquent-sluggable
         Cviebrock\EloquentSluggable\ServiceProvider::class,
 
-        // https://github.com/barryvdh/laravel-debugbar
-        Barryvdh\Debugbar\ServiceProvider::class,
-
         // https://github.com/RoumenDamianoff/laravel-sitemap
         Roumen\Sitemap\SitemapServiceProvider::class,
 
