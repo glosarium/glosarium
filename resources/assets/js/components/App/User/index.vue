@@ -1,6 +1,9 @@
 <template>
 	<div class="table-responsive">
-		<table class="table table-bordered">
+		<div v-if="users.total <= 0" class="alert alert-info">
+			Kontributor tidak ditemukan.
+		</div>		
+		<table v-else class="table table-bordered">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -28,6 +31,10 @@
 
 <script>
 	export default {
+		props: {
+			limit: Number
+		},
+
 		data() {
 			return {
 				loading: false,
@@ -36,7 +43,11 @@
 		},
 
 		mounted() {
-			axios.get(routes.adminUserPaginate).then(response => {
+			let defaultParams = {
+				limit: this.limit
+			};
+
+			axios.get(routes.adminUserPaginate, {defaultParams}).then(response => {
 				this.users = response.data;
 
 				this.$bus.$emit('pagination', this.users);

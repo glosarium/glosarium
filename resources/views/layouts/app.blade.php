@@ -163,7 +163,11 @@
                 'locale' => config('app.locale'),
                 'csrfToken' => csrf_token(),
                 'url' => env('APP_URL'),
-                'auth' => auth()->check()
+                'auth' => auth()->check(),
+                'user' => [
+                    'email' => auth()->user()->email,
+                    'name' => auth()->user()->name,
+                ]
             ]) !!}
         </script>
 

@@ -29,31 +29,11 @@ Vue.component('admin-search', require('./components/App/admin-search.vue'));
 Vue.component('user-index', require('./components/App/User/index.vue'));
 Vue.component('user-create', require('./components/App/User/create.vue'));
 Vue.component('user-notification', require('./components/App/User/notification.vue'));
+Vue.component('contact-form', require('./components/App/Contact/form.vue'));
 
 // Glosarium
 Vue.component('glosarium-category-index', require('./components/App/Glosarium/Category/index.vue'));
 Vue.component('glosarium-word-latest', require('./components/App/Glosarium/Word/latest.vue'));
-
-/*
- * By extending the Vue prototype with a new '$bus' property
- * we can easily access our global event bus from any child component.
- *
- * @link https://laracasts.com/discuss/channels/vue/use-a-global-event-bus
- */
-Object.defineProperty(Vue.prototype, '$bus', {
-    get() {
-        return this.$root.bus;
-    }
-});
-
-window.bus = new Vue({});
-
-window.app = new Vue({
-	el: '#content',
-	data: {
-		bus: bus // Here we bind our event bus to our $root Vue model.
-	}
-});
 
 /**
  * jQuery handler

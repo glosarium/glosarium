@@ -32,3 +32,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/bus.js') }}"></script>
+@endpush

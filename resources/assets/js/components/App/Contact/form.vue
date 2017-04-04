@@ -1,50 +1,52 @@
 <template>
 	<form @submit.prevent="send" :action="action" method="post">
-        {{ csrf_field() }}
 
-        <div v-bind:class="['form-group', errors.email ? 'has-error' : '']">
-            <label>{{ trans('contact.form.email') }}</label>
-            @if (auth()->check())
-                <input disabled="" type="email" name="email" class="form-control disabled" value="{{ auth()->user()->email }}">
-            @else
-                <input v-model="forms.email" :disabled="loading" name="email" type="email" class="form-control" value="{{ old('email') }}">
-            @endif
-
-            <span v-if="errors.email" class="label label-danger">@{{ errors.email[0] }}</span>
+        <div :class="['form-group', errors.email ? 'has-error' : '']">
+            <label>Pos-El (Pos Elektronik)</label>
+            <input :disabled="auth" v-model="state.email" type="text" class="form-control">
+            <span v-if="errors.email" class="label label-danger">{{ getError(errors.email) }}</span>
         </div>
 
-        <div v-bind:class="['form-group', errors.subject ? 'has-error' : '']">
-            <label>{{ trans('contact.form.subject') }}</label>
-            <input v-model="forms.subject" :disabled="loading" name="subject" type="text" class="form-control" value="{{ old('subject') }}">
+        <div :class="['form-group', errors.subject ? 'has-error' : '']">
+            <label>Subjek</label>
+            <input v-model="state.subject" :disabled="loading" type="text" class="form-control">
 
-            <span v-if="errors.subject" class="label label-danger">@{{ errors.subject[0] }}</span>
+            <span v-if="errors.subject" class="label label-danger">{{ getError(errors.subject) }}</span>
         </div>
 
-        <div v-bind:class="['form-group', errors.message ? 'has-error' : '']">
-            <label>{{ trans('contact.form.message') }}</label>
-            <textarea v-model="forms.message" :disabled="loading" name="message" class="form-control" rows="6" value="{{ old('message') }}"></textarea>
+        <div :class="['form-group', errors.message ? 'has-error' : '']">
+            <label>Pesan</label>
+            <textarea v-model="state.message" :disabled="loading" class="form-control" rows="6"></textarea>
 
-            <span v-if="errors.message" class="label label-danger">@{{ errors.message[0] }}</span>
+            <span v-if="errors.message" class="label label-danger">{{ getError(errors.message) }}</span>
         </div>
 
         <div class="form-group text-center">
             <div class="white-space-10"></div>
-            <button :disabled="loading" type="submit" class="btn btn-theme btn-lg btn-long btn-t-primary btn-pill">{{ trans('contact.btn.send') }} <loader :show="loading"></loader></button>
+            <button :disabled="loading" type="submit" class="btn btn-theme btn-lg btn-long btn-t-primary btn-pill">Kirim Pesan <loader :show="loading"></loader></button>
         </div>
     </form>
 </template>
 
 <script>
 	export default {
+		props: {
+			action: String
+		},
 		data() {
 	        return {
+                auth: false,
 	        	loading: false,
 		        errors: {
 		            subject: null,
 		            email: null,
 		            message: null
 		        },
-		        forms: forms,
+		        state: {
+                    email: '',
+                    subject: '',
+                    message: ''
+                },
 		        alerts: {
 		            type: null,
 		            title: null,
@@ -53,7 +55,19 @@
 	        }
 	    },
 
+        mounted() {
+            this.auth = Laravel.auth;
+
+            if (Laravel.auth) {
+                this.state.email = Laravel.user.email;
+            }
+        },
+
 	    methods: {
+
+            getError(object) {
+                return _.head(object);
+            },
 
 	        beforeSend: function() {
 	            this.loading = true;

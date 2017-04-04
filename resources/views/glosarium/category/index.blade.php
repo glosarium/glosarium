@@ -10,9 +10,7 @@
 
 @section('heading')
 <search
-   v-on:search="search"
    placeholder="@lang('glosarium.category.placeholder.search')"
-   :loading="loading"
    >
 </search>
 @endsection
@@ -22,7 +20,7 @@
 <div class="row">
    <div class="col-md-9">
       <!-- box listing -->
-      <glosarium-category-index limit="10"></glosarium-category-index>
+      <glosarium-category-index :limit="10"></glosarium-category-index>
       <!-- end box listing -->
    </div>
    <div class="col-md-3">
@@ -33,9 +31,13 @@
          </div>
          @endif
          <div class="result-filter">
-            <glosarium-word-latest limit="10"></glosarium-word-latest>
+            <glosarium-word-latest :limit="10"></glosarium-word-latest>
          </div>
       </div>
    </div>
 </div>
 @endsection
+
+@push('js')
+   <script src="{{ asset('js/bus.js') }}"></script>
+@endpush

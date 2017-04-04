@@ -27,7 +27,7 @@
           placeholder="Cari kontributor..."
         ></admin-search>
 
-        <user-index></user-index>
+        <user-index :limit="20"></user-index>
 
       </div>
       <div class="panel-footer">
@@ -40,21 +40,18 @@
    <pagination></pagination>
 </div>
 <!-- end Block side right -->
-
-<form id="delete-form" method="post">
-    {{ csrf_field() }}
-    {{ method_field('delete') }}
-</form>
 @endsection
 
 @push('js')
 <script>
-   $(() => {
-       $('ul.pagination').addClass('pagination-theme no-margin');
+  $(function(){
+    $('ul.pagination').addClass('pagination-theme no-margin');
        $('a.delete').click(function(){
          $('#delete-form').attr('action', $(this).attr('href')).submit();
          return false;
        });
-   });
+  });
 </script>
+
+<script src="{{ asset('js/bus.js') }}"></script>
 @endpush

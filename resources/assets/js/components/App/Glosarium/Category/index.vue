@@ -4,7 +4,7 @@
          <div class="row hidden-xs" v-cloak>
             <div class="col-sm-6 ">
                <p v-if="keyword" class="color-black">
-                  <strong>@lang('glosarium.category.searchResult') "{{ keyword }}"</strong>
+                  <strong>Hasil pencarian untuk "{{ keyword }}"</strong>
                </p>
                <p v-else class="color-black">Indeks Kategori</p>
             </div>
@@ -16,7 +16,7 @@
          </div>
          <!-- end desc top -->
          <div v-if="categories.total <= 0" class="alert alert-info" v-cloak>
-            @lang('glosarium.category.notFound')
+            Kategori glosarium tidak ditemukan.
          </div>
          <!-- item list -->
          <div class="box-list" v-cloak>
@@ -43,7 +43,7 @@
          </div>
          <nav v-if="categories.next_page_url">
             <button :disabled="loading" @click.prevent="loadMore(categories.next_page_url)" class="btn btn-t-primary btn-theme btn-block">
-            @lang('glosarium.category.btn.load') <loader :show="loading"></loader>
+            Muat lebih banyak... <loader :show="loading"></loader>
             </button>
          </nav>
       </div>
@@ -76,11 +76,56 @@
             this.categories = response.data;
 
             this.loading = false;
-         })
+         });
+
+         this.$bus.$on('search', keyword => {
+            this.getCategory(routes.glosariumCategoryPaginate, {
+               keyword: keyword
+            });
+         });
       },
 
       methods: {
+         getCategory(url, params = {}) {
+            this.$Progress.start();
+            axios.get(url, {params}).then(response => {
+                this.categories = response.data;
+                this.loading = false;
 
+                this.$Progress.finish();
+            }, response => {
+                this.loading = false;
+
+                this.$Progress.fail();
+            });
+         },
+
+         loadMore(url) {
+            this.loading = true;
+
+            axios.get(url).then(response => {
+                let body = response.data;
+
+                this.categories = {
+                    next_page_url: body.next_page_url,
+                    prev_page_url: body.prev_page_url,
+                    from: body.from,
+                    to: body.to,
+                    per_page: body.per_page,
+                    current_page: body.current_page,
+                    last_page: body.last_page,
+                    total: body.total,
+                    data: this.categories.data
+                };
+
+                let index = 0;
+                for(index in response.data.data) {
+                    this.categories.data.push(response.data.data[index]);
+                }
+
+                this.loading = false;
+            });
+        }
       }
    }
 </script>
