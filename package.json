@@ -18,7 +18,8 @@
     "lodash": "^4.17.4",
     "magnific-popup": "^1.1.0",
     "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
-    "vue": "^2.1.10"
+    "vue": "^2.1.10",
+    "vue-router": "^2.3.1"
   },
   "dependencies": {
     "highlight.js": "^9.10.0",

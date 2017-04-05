@@ -23,25 +23,24 @@
             @endif
 
             @can('show', \App\Glosarium\Category::class)
-                <li><a href="{{ route('admin.category.index') }}">Kategori</a></li>
+                <li><router-link :to="{ name: 'glosarium.category' }">Kategori</router-link></li>
             @endcan
 
             @can('show', \App\User::class)
-                <li><a href="{{ route('admin.user.index') }}">Kontributor</a></li>
+                <li><router-link :to="{ name: 'contributor' }">Kontributor</router-link></li>
             @endcan
 
             @can('show', \App\Bot\Keyword::class)
-                <li><a href="{{ route('admin.keyword.index') }}">@lang('bot.keyword.title')</a></li>
+            <li><router-link :to="{ name: 'bot.keyword' }">Katakunci Bot</router-link></li>
             @endcan
 
             @if (auth()->user()->type == 'admin')
                 <hr>
             @endif
 
-            <li><a href="{{ route('user.account.token') }}">@lang('user.token')</a></li>
-
-            <li><a href="{{ route('user.notification.index') }}"> Notifikasi <span class="badge badge-warning">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
-            <li><a href="{{ route('user.password.form') }}"> Ubah Sandi Lewat</a></li>
+            <li><router-link :to="{ name: 'user.dashboard' }">Dasbor</router-link></li>
+            <li><router-link :to="{ name: 'user.notification' }">Notifikasi</router-link></li>
+            <li><router-link :to="{ name: 'user.password' }">Ubah Sandi Lewat</router-link></li>
         </ul>
         <div class="white-space-20"></div>
         <a href="{{ route('glosarium.word.create') }}" class="btn  btn-line soft btn-theme btn-pill btn-block">Tambah Glosari</a>

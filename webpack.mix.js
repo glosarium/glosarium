@@ -40,6 +40,9 @@ mix.js('resources/assets/js/bus.js', 'public/js/bus.js');
 mix.js('resources/assets/js/theme.js', 'public/js/theme.js');
 mix.js('resources/assets/js/api.js', 'public/js/api.js');
 
+// routers
+mix.js('resources/assets/js/routers/user.js', 'public/js/router/user.js');
+
 // glosarium
 mix.js('resources/assets/js/glosarium/category/index.js', 'public/js/glosarium/category.index.js');
 mix.js('resources/assets/js/glosarium/category/show.js', 'public/js/glosarium/category.show.js');

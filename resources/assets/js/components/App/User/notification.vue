@@ -1,5 +1,8 @@
 <template>
-	<div class="notifications">
+	<div class="panel panel-default">
+		<div class="panel-heading">Notifikasi</div>
+		<div class="panel-body">
+			<div class="notifications">
 	    <ul class="notification-list">
 	        <li>
 	            <div class="media">
@@ -37,6 +40,8 @@
 	            </div>
 	        </li>
 	    </ul>
+	</div>
+		</div>
 	</div>
 </template>
 

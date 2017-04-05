@@ -6,6 +6,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'na
         'only' => ['index', 'edit', 'update', 'create', 'store'],
     ]);
 
+    Route::get('glosarium/category/paginate', 'Glosarium\CategoryController@paginate')->name('glosarium.category.paginate');
     Route::resource('glosarium/category', 'Glosarium\CategoryController', [
         'only' => ['index', 'edit', 'update', 'destroy'],
     ]);
@@ -17,6 +18,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'as' => 'admin.', 'na
         'only' => ['index', 'edit', 'update', 'destroy'],
     ]);
 
+    Route::get('bot/keyword/paginate', 'Bot\KeywordController@paginate')->name('bot.keyword.paginate');
     Route::resource('bot/keyword', 'Bot\KeywordController', [
         'except' => ['show'],
     ]);

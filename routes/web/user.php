@@ -3,6 +3,10 @@
 Auth::routes();
 Route::post('user/email', 'Auth\RegisterController@email')->name('user.email');
 
+Route::any('user', 'UserController@index')
+    ->name('user')
+    ->middleware('auth');
+
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
     // notification
     Route::get('notification', 'NotificationController@index')->name('notification.index');

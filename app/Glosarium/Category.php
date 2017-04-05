@@ -27,6 +27,7 @@ class Category extends Model
         'updated_diff',
         'edit_url',
         'destroy_url',
+        'summary',
     ];
 
     protected $hidden = [
@@ -78,6 +79,11 @@ class Category extends Model
     {
         $updatedAt = Carbon::parse($this->attributes['updated_at']);
         return $updatedAt->diffForHumans();
+    }
+
+    public function getSummaryAttribute()
+    {
+        return str_limit($this->attributes['description'], 50);
     }
 
     /**
