@@ -8,6 +8,12 @@ use JWTAuth;
 
 class AccountController extends Controller
 {
+    public function dashboard()
+    {
+        return view('user.account.dashboard')
+            ->withTitle(trans('user.dashboard'));
+    }
+
     public function token()
     {
         $token = JWTAuth::fromUser(Auth::user());

@@ -28,8 +28,8 @@ class PasswordRequest extends FormRequest
         });
 
         return [
-            'current_password' => 'required|password',
-            'password' => 'required|min:6',
+            'current_password'      => 'required|password',
+            'password'              => 'required|min:6',
             'password_confirmation' => 'required|min:6',
         ];
     }

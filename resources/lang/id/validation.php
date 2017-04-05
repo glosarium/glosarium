@@ -103,6 +103,7 @@ return [
         ],
     ],
     'valid_name'           => 'Penggunaan :attribute tidak diizinkan.',
+    'password'             => ':attribute tidak cocok.',
 
     /*
     |---------------------------------------------------------------------------------------
@@ -116,17 +117,18 @@ return [
      */
 
     'attributes'           => [
-        'origin'               => 'kata asal',
-        'locale'               => 'kata lokal',
-        'category'             => 'kategori',
-        'description'          => 'deskripsi',
-        'subject'              => 'subjek',
-        'message'              => 'pesan',
-        'name'                 => 'nama',
-        'email'                => 'surel',
-        'password'             => 'sandi lewat',
-        'passwordConfirmation' => 'konfirmasi sandi lewat',
-        'keyword'              => 'katakunci',
+        'origin'          => 'kata asal',
+        'locale'          => 'kata lokal',
+        'category'        => 'kategori',
+        'description'     => 'deskripsi',
+        'subject'         => 'subjek',
+        'message'         => 'pesan',
+        'name'            => 'nama',
+        'email'           => 'surel',
+        'currentPassword' => 'sandi lewat sekarang',
+        'password'        => 'sandi lewat',
+        'confirmPassword' => 'konfirmasi sandi lewat',
+        'keyword'         => 'katakunci',
     ],
 
 ];

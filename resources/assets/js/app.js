@@ -26,6 +26,7 @@ Vue.component('button-delete', require('./components/Bootstrap/Button/delete.vue
 // App components
 Vue.component('search', require('./components/App/search.vue'));
 Vue.component('admin-search', require('./components/App/admin-search.vue'));
+Vue.component('user-password', require('./components/App/User/change-password.vue'));
 Vue.component('user-index', require('./components/App/User/index.vue'));
 Vue.component('user-create', require('./components/App/User/create.vue'));
 Vue.component('user-notification', require('./components/App/User/notification.vue'));

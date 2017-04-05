@@ -59,10 +59,10 @@
                                 @if (auth()->check())
                                 <li class="dropdown">
                                     <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
-                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} <b class="caret"></b>
+                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} ({{ auth()->user()->role_name }}) <b class="caret"></b>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Beranda</a></li>
+                                        <li><a href="{{ route('user.account.dashboard') }}">@lang('user.dashboard')</a></li>
                                         <li><a href="{{ route('user.notification.index') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
                                         <li><a href="{{ route('user.password.form') }}">Ubah Sandi Lewat</a></li>
                                     </ul>
