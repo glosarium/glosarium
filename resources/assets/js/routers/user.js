@@ -15,43 +15,53 @@ window.bus = new Vue({});
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+/**
+ * Asynchronously load view (Webpack Lazy loading compatible)
+ * @param  {string}   name     the filename (basename) of the view to load.
+ */
+function view(name) {
+    return function(resolve) {
+        require(['../components/app/' + name + '.vue'], resolve);
+    }
+};
+
 const routes = [
 	// user self management
 	{
 		path: '/dashboard',
 		name: 'user.dashboard',
-		component: require('../components/App/User/dashboard.vue')
+		component: view('user/dashboard')
 	},
 	{
 		path: '/notification',
 		name: 'user.notification',
-		component: require('../components/App/User/notification.vue')
+		component: view('user/notification')
 	},
 	{
 		path: '/password',
 		name: 'user.password',
-		component: require('../components/App/User/change-password.vue')
+		component: view('user/change-password')
 	},
 
 	// glosarium
 	{
 		path: '/glosarium/category',
 		name: 'glosarium.category',
-		component: require('../components/App/Glosarium/Category/table.vue')
+		component: view('glosarium/category/table')
 	},
 
 	// users
 	{
 		path: '/contributor',
 		name: 'contributor',
-		component: require('../components/App/User/index.vue')
+		component: view('user/index')
 	},
 
 	// BOT
 	{
 		path: '/bot/keyword',
 		name: 'bot.keyword',
-		component: require('../components/App/Bot/Keyword/table.vue')
+		component: view('bot/keyword/table')
 	}
 ];
 

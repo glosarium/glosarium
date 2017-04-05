@@ -17,24 +17,20 @@ require('./routes');
 
 
 // Bootstarap components
-Vue.component('alert', require('./components/Bootstrap/alert.vue'));
-Vue.component('loader', require('./components/Bootstrap/loader.vue'));
-Vue.component('pagination', require('./components/Bootstrap/pagination.vue'));
-Vue.component('button-edit', require('./components/Bootstrap/Button/edit.vue'));
-Vue.component('button-delete', require('./components/Bootstrap/Button/delete.vue'));
+Vue.component('alert', require('./components/bootstrap/alert.vue'));
+Vue.component('loader', require('./components/bootstrap/loader.vue'));
+Vue.component('pagination', require('./components/bootstrap/pagination.vue'));
+Vue.component('button-edit', require('./components/bootstrap/button/edit.vue'));
+Vue.component('button-delete', require('./components/bootstrap/button/delete.vue'));
 
-// App components
-Vue.component('search', require('./components/App/search.vue'));
-Vue.component('admin-search', require('./components/App/admin-search.vue'));
-Vue.component('user-password', require('./components/App/User/change-password.vue'));
-Vue.component('user-index', require('./components/App/User/index.vue'));
-Vue.component('user-create', require('./components/App/User/create.vue'));
-Vue.component('user-notification', require('./components/App/User/notification.vue'));
-Vue.component('contact-form', require('./components/App/Contact/form.vue'));
+// app components
+Vue.component('search', require('./components/app/search.vue'));
+Vue.component('admin-search', require('./components/app/admin-search.vue'));
+Vue.component('contact-form', require('./components/app/contact/form.vue'));
 
 // Glosarium
-Vue.component('glosarium-category-index', require('./components/App/Glosarium/Category/index.vue'));
-Vue.component('glosarium-word-latest', require('./components/App/Glosarium/Word/latest.vue'));
+Vue.component('glosarium-category-index', require('./components/app/glosarium/category/index.vue'));
+Vue.component('glosarium-word-latest', require('./components/app/glosarium/word/latest.vue'));
 
 /**
  * jQuery handler
