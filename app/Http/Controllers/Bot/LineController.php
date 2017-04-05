@@ -47,7 +47,13 @@ class LineController extends Controller
      */
     public function hook()
     {
+        // post request only
         abort_if(!request()->isMethod('post'), 404, trans('global.http.404'));
+
+        // line signature is not defined
+        if (!isset($_SERVER["HTTP_" . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE])) {
+            abort(401, trans('global.http.401'));
+        }
 
         $signature = $_SERVER["HTTP_" . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
         $body = file_get_contents("php://input");
