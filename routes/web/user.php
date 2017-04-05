@@ -10,11 +10,12 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
     Route::get('notification/read', 'NotificationController@read')->name('notification.read');
 
     // account
+    Route::get('dashboard', 'AccountController@dashboard')->name('account.dashboard');
     Route::get('account/token', 'AccountController@token')->name('account.token');
 
     // password
     Route::get('user/password', 'PasswordController@form')->name('password.form');
-    Route::post('user/password', 'PasswordController@update')->name('password.update');
+    Route::put('user/password', 'PasswordController@update')->name('password.update');
 });
 
 // user
