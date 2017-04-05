@@ -47,8 +47,10 @@ class LineController extends Controller
      */
     public function hook()
     {
+        abort_if(!request()->isMethod('post'), 404, trans('global.http.404'));
+
         $signature = $_SERVER["HTTP_" . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
-        $body      = file_get_contents("php://input");
+        $body = file_get_contents("php://input");
 
         $bot = new LINEBot($this->client, [
             'channelSecret' => config('services.line.secret'),
@@ -60,9 +62,16 @@ class LineController extends Controller
             if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
                 $keyword = trim($event->getText());
                 if (!preg_match('/^[\w *\/]+$/', $keyword)) {
+                    $messages = collect([
+                        'Hai, format yang kamu masukkan tidak sesuai.',
+                        'Format pencarian yang kamu masukkan tidak diizinkan.',
+                        'Mungkin bisa diketik ulang katakunci pencariannya?',
+                        'Saat ini, kami hanya bisa melakukan pencarian dengan katakunci huruf latin.',
+                        'Cobalah untuk tidak menggunakan simbol-simbol dalam katakunci pencarian.',
+                    ]);
                     $response = $bot->replyText(
                         $event->getReplyToken(),
-                        'Hai, format yang kamu masukkan tidak sesuai.'
+                        $messages->random()
                     );
 
                     dispatch(new TextJob($event, $response));
