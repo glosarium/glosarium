@@ -11,6 +11,16 @@ const { mix } = require('laravel-mix');
  |
  */
 
+ mix.webpackConfig({
+    output: {
+    	/**
+    	 * Base path for async components
+    	 * @link http://router.vuejs.org/en/advanced/lazy-loading.html
+    	 */ 
+        publicPath: "/" // 
+    }
+});
+
 // bootstrap
 mix.less('node_modules/bootstrap/less/bootstrap.less', 'public/css/bootstrap.css');
 mix.js('node_modules/bootstrap/dist/js/npm.js', 'public/js/bootstrap.js');
@@ -53,6 +63,3 @@ mix.js('resources/assets/js/glosarium/word/show.js', 'public/js/glosarium/word.s
 
 // user
 mix.js('resources/assets/js/user/register.js', 'public/js/user.register.js');
-
-// contact
-mix.js('resources/assets/js/contact/form.js', 'public/js/contact.form.js');
