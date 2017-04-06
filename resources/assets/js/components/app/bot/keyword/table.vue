@@ -3,7 +3,7 @@
       <div class="panel-heading">Katakunci Bot</div>
       <div class="panel-body">
          <div class="table-responsive">
-            <table class="table">
+            <table class="table table-bordered">
                <thead>
                   <tr>
                      <th>No.</th>
