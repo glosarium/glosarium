@@ -19,7 +19,6 @@ require('./routes');
 // Bootstarap components
 Vue.component('alert', require('./components/bootstrap/alert.vue'));
 Vue.component('loader', require('./components/bootstrap/loader.vue'));
-Vue.component('pagination', require('./components/bootstrap/pagination.vue'));
 Vue.component('button-edit', require('./components/bootstrap/button/edit.vue'));
 Vue.component('button-delete', require('./components/bootstrap/button/delete.vue'));
 

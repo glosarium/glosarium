@@ -8,6 +8,12 @@ Route::any('user', 'UserController@index')
     ->middleware('auth');
 
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
+    // glosarium
+    Route::group(['prefix' => 'user/glosarium', 'namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
+        Route::get('word/paginate', 'WordController@paginate')->name('word.paginate');
+        Route::get('word/moderation', 'WordController@moderation')->name('word.moderation');
+    });
+
     // notification
     Route::get('notification', 'NotificationController@index')->name('notification.index');
     Route::get('notification/paginate', 'NotificationController@paginate')->name('notification.paginate');

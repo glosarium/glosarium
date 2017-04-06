@@ -11,15 +11,16 @@
 
         <ul class="list-unstyled">
             @can('show', \App\Glosarium\Word::class)
-                <li><a href="{{ route('admin.word.index') }}">Kata</a></li>
+                <li><router-link :to="{ name: 'glosarium.word' }">Kata</router-link></li>
             @endcan
 
             @can('moderation', \App\Glosarium\Word::class)
-                <li><a href="{{ route('admin.word.moderation') }}">Moderasi Kata</a>
-                @if (isset($totalModeration))
-                <span class="badge badge-default">{{ $totalModeration }}</span>
-                @endif
-            </li>
+                <li>
+                    <router-link :to="{ name: 'glosarium.word.moderation' }">
+                        Moderasi Kata
+                        <span class="badge badge-default">{{ $totalModeration }}</span>
+                    </router-link>
+                </li>
             @endif
 
             @can('show', \App\Glosarium\Category::class)
@@ -42,7 +43,5 @@
             <li><router-link :to="{ name: 'user.notification' }">Notifikasi</router-link></li>
             <li><router-link :to="{ name: 'user.password' }">Ubah Sandi Lewat</router-link></li>
         </ul>
-        <div class="white-space-20"></div>
-        <a href="{{ route('glosarium.word.create') }}" class="btn  btn-line soft btn-theme btn-pill btn-block">Tambah Glosari</a>
     </div>
 </div>

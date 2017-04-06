@@ -3,10 +3,10 @@
       <div class="panel-heading">Kategori</div>
       <div class="panel-body">
          <div class="table-responsive">
-            <table class="table">
+            <table class="table table-bordered">
                <thead>
                   <tr>
-                     <th>No.</th>
+                     <th>#</th>
                      <th>Kategori</th>
                      <th>Deskripsi</th>
                      <th>Aksi</th>
