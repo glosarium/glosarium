@@ -1,11 +1,11 @@
 {
   "/js/app.js": "/js/app.js",
   "/js/bootstrap.js": "/js/bootstrap.js",
+  "/js/router/user.js": "/js/router/user.js",
   "/mix.js": "/mix.js",
   "/css/bootstrap.css": "/css/bootstrap.css",
   "/css/font-awesome.css": "/css/font-awesome.css",
   "/css/theme.css": "/css/theme.css",
-  "/js/router/user.js": "/js/router/user.js",
   "/js/user.register.js": "/js/user.register.js",
   "/js/theme.js": "/js/theme.js",
   "/js/glosarium/word.show.js": "/js/glosarium/word.show.js",
