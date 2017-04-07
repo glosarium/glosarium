@@ -1,10 +1,3 @@
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
-Vue.component('pagination', require('../components/bootstrap/pagination.vue'));
-
 /*
  * By extending the Vue prototype with a new '$bus' property
  * we can easily access our global event bus from any child component.
@@ -57,6 +50,11 @@ const routes = [
 		component: view('glosarium/category/table')
 	},
 	{
+		path: '/glosarium/category/:slug/edit',
+		name: 'glosarium.category.edit',
+		component: view('glosarium/category/edit')
+	},
+	{
 		path: '/glosarium/word',
 		name: 'glosarium.word',
 		component: view('glosarium/word/table')
@@ -70,6 +68,11 @@ const routes = [
 		path: '/glosarium/word/create',
 		name: 'glosarium.word.create',
 		component: view('glosarium/word/create')
+	},
+	{
+		path: '/glosarium/word/:slug/edit',
+		name: 'glosarium.word.edit',
+		component: view('glosarium/word/edit')
 	},
 
 	// users
@@ -90,8 +93,8 @@ const routes = [
 const router = new VueRouter({ routes });
 
 const app = new Vue({
-	router
+	router,
+	data: {
+		bus: bus
+	}
 }).$mount('.body-content');
-
-// bus event
-app.bus = bus;

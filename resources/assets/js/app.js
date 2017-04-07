@@ -19,12 +19,12 @@ require('./routes');
 // Bootstarap components
 Vue.component('alert', require('./components/bootstrap/alert.vue'));
 Vue.component('loader', require('./components/bootstrap/loader.vue'));
+Vue.component('pagination', require('./components/bootstrap/pagination.vue'));
 Vue.component('button-edit', require('./components/bootstrap/button/edit.vue'));
 Vue.component('button-delete', require('./components/bootstrap/button/delete.vue'));
 
 // app components
 Vue.component('search', require('./components/app/search.vue'));
-Vue.component('admin-search', require('./components/app/admin-search.vue'));
 Vue.component('contact-form', require('./components/app/contact/form.vue'));
 
 // Glosarium

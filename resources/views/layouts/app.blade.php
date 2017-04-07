@@ -112,7 +112,9 @@
                 </div>
                 <!-- mobile navbar -->
                 <!-- form search area-->
-                @yield('heading')
+                <div class="container">
+                    @yield('heading')
+                </div>
             </header>
             <!-- end main-header -->
 

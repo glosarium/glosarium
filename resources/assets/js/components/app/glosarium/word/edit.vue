@@ -9,7 +9,11 @@
          </span>
       </div>
       <div class="panel-body">
-         <form @submit.prevent="store" action="/user/glosarium/word/store" method="post">
+         <alert :show="alert.message" :type="alert.type">
+            {{ alert.message }}
+         </alert>
+
+         <form @submit.prevent="update" action="/user/glosarium/word/update" method="post">
 
             <div class="row">
                <div :class="['form-group col-md-6', errors.category ? 'has-error' : '']">
@@ -51,7 +55,7 @@
             <div class="row">
                <div class="col-md-12">
                   <button :disabled="loading" type="submit" class="btn btn-theme btn-t-primary">
-                     Simpan Kata
+                     Perbarui Kata
                      <loader :show="loading"></loader>
                   </button>
                   <router-link :to="{ name: 'glosarium.word' }" tag="button" class="btn btn-default btn-theme">
@@ -68,6 +72,7 @@
    export default {
       data() {
          return {
+            alert: {},
             loading: false,
             errors: [],
             categories: [],
@@ -81,27 +86,32 @@
       },
 
       mounted() {
-         axios.get('/user/glosarium/category/all').then(response => {
-            this.categories = response.data;
+         const url = '/user/glosarium/word/' + this.$route.params.slug;
+         axios.get(url).then(response => {
+            console.log(response.data);
+            this.state = response.data;
+
+            // get category
+            axios.get('/user/glosarium/category/all').then(response => {
+               this.categories = response.data;
+            });
          });
       },
 
       methods: {
-         store(e) {
+         update(e) {
             this.loading = true;
 
-            axios.post(e.target.action, this.state).then(response => {
+            axios.put(e.target.action, this.state).then(response => {
                if (response.data.status == true) {
+                  this.alert = {
+                     type: 'success',
+                     message: response.data.message
+                  };
+
                   this.errors = [];
-
-                  this.state = {
-                     category: '',
-                     lang: '',
-                     origin: '',
-                     locale: ''
-                  }
                }
-
+               
                this.loading = false;
             }).catch(error => {
                if (! _.isEmpty(error)) {
@@ -109,7 +119,7 @@
                      this.errors = error.response.data;
                   }
                }
-
+               
                this.loading = false;
             });
          }

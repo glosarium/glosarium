@@ -44,8 +44,8 @@ return [
         ],
 
         'msg'              => [
-            'created' => 'Kata baru berhasil ditambahkan.',
-            'edited'  => 'Kata :origin berhasil diperbarui.',
+            'created' => 'Kata baru :origin (:locale) berhasil ditambahkan.',
+            'updated' => 'Kata :origin (:locale) berhasil diperbarui.',
         ],
 
         'placeholder'      => [

@@ -1,8 +1,13 @@
 <template>
    <div class="panel panel-default">
-      <div class="panel-heading">Kategori</div>
+      <div class="panel-heading">
+         Kategori <loader :show="loading"></loader>
+      </div>
       <div class="panel-body">
-         <div class="table-responsive">
+
+         <search placeholder="Cari kategori..."></search>
+
+         <div v-if="categories" class="table-responsive">
             <table class="table table-bordered">
                <thead>
                   <tr>
@@ -18,7 +23,12 @@
                      <td>{{ categories.from + index }}</td>
                      <td>{{ category.name }}</td>
                      <td>{{ category.summary }}</td>
-                     <td></td>
+                     <td>
+                        <router-link :to="{ name: 'glosarium.category.edit', params: { slug: category.slug }}" class="btn btn-info btn-xs">
+                           <i class="fa fa-edit fa-fw"></i>
+                        </router-link>
+                        <button-delete :url="categories.delete_url"></button-delete>
+                     </td>
                   </tr>
                </tbody>
             </table>
@@ -31,6 +41,8 @@
    export default {
       data() {
          return {
+            loading: false,
+            alert: {},
             url: '/admin/glosarium/category/paginate',
             categories: []
          }
@@ -42,8 +54,12 @@
 
       methods: {
          paginate(url) {
+            this.loading = true;
+
             axios.get(url).then(response => {
                this.categories = response.data
+
+               this.loading = false;
             });
          }
       }

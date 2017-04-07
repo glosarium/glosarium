@@ -1,7 +1,7 @@
 <template>
    <div class="panel panel-default">
       <div class="panel-heading">
-         Kata
+         Kata <loader :show="loading"></loader>
          <span class="pull-right">
             <router-link :to="{ name: 'glosarium.word.create' }" class="btn btn-default btn-sm">
                <i class="fa fa-plus fa-fw"></i>
@@ -9,7 +9,9 @@
          </span>
       </div>
       <div class="panel-body">
-         <div class="tabel-responsive">
+         <search placeholder="Cari kata..."></search>
+
+         <div v-if="words" class="tabel-responsive">
             <table class="table table-bordered">
                <thead>
                   <tr>
@@ -26,7 +28,11 @@
                      <td>{{ word.category.name }}</td>
                      <td>{{ word.origin }}</td>
                      <td>{{ word.locale }}</td>
-                     <td></td>
+                     <td>
+                        <router-link :to="{ name: 'glosarium.word.edit', params: {slug: word.slug} }" class="btn btn-xs btn-info">
+                           <i class="fa fa-edit fa-fw"></i>
+                        </router-link>
+                     </td>
                   </tr>
                </tbody>
             </table>
@@ -40,6 +46,7 @@
    export default {
       data() {
          return {
+            loading: false,
             url: '/user/glosarium/word/paginate',
             words: []
          }
@@ -47,12 +54,27 @@
 
       mounted() {
          this.paginate(this.url);
+
+         // on search
+         this.$bus.$on('search', keyword => {
+            const params = {
+               keyword: keyword
+            }
+            this.paginate(this.url, params);
+         });
+
+         // on pagination
+         this.$bus.$on('pagination', url => {
+            this.paginate(url);
+         });
       },
 
       methods: {
          paginate(url, params = {}) {
-            axios.get(url, params).then(response => {
+            this.loading = true;
+            axios.get(url, {params}).then(response => {
                this.words = response.data;
+               this.loading = false;
             });
          }
       }
