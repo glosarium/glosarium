@@ -86,7 +86,7 @@ class CategoryController extends Controller
     public function index()
     {
         // create image
-        $image     = new Image;
+        $image = new Image;
         $imagePath = $image->addText(trans('glosarium.category.index'), 50, 400, 200)
             ->render('images/pages', 'category')
             ->path();
@@ -112,7 +112,7 @@ class CategoryController extends Controller
         abort_if(empty($category), 404, trans('glosarium.category.notFound'));
 
         // create header image
-        $image     = new Image;
+        $image = new Image;
         $imagePath = $image->addText($category->name, 50, 400, 200)
             ->render('images/glosariums/categories', $category->slug)
             ->path();
@@ -126,7 +126,7 @@ class CategoryController extends Controller
         abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $cacheTime = \Carbon\Carbon::now()->addDays(30);
-        $total     = Cache::remember('category.total', $cacheTime, function () {
+        $total = Cache::remember('category.total', $cacheTime, function () {
             return \App\Glosarium\Category::count();
         });
 
@@ -150,8 +150,8 @@ class CategoryController extends Controller
     {
         $category = Category::whereSlug($slug)->firstOrFail();
 
-        $category->name         = $request->name;
-        $category->description  = $request->description;
+        $category->name = $request->name;
+        $category->description = $request->description;
         $category->is_published = $request->publish;
         $category->save();
 
