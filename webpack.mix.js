@@ -52,14 +52,7 @@ mix.js('resources/assets/js/api.js', 'public/js/api.js');
 
 // routers
 mix.js('resources/assets/js/routers/user.js', 'public/js/router/user.js');
-
-// glosarium
-mix.js('resources/assets/js/glosarium/category/index.js', 'public/js/glosarium/category.index.js');
-mix.js('resources/assets/js/glosarium/category/show.js', 'public/js/glosarium/category.show.js');
-
-mix.js('resources/assets/js/glosarium/word/index.js', 'public/js/glosarium/word.index.js');
-mix.js('resources/assets/js/glosarium/word/create.js', 'public/js/glosarium/word.create.js');
-mix.js('resources/assets/js/glosarium/word/show.js', 'public/js/glosarium/word.show.js');
+mix.js('resources/assets/js/routers/glosarium.js', 'public/js/router/glosarium.js');
 
 // user
 mix.js('resources/assets/js/user/register.js', 'public/js/user.register.js');
