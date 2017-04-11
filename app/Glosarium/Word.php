@@ -179,6 +179,13 @@ class Word extends Model
             }
         }
 
+        // filter by category
+        if (request('category')) {
+            $query->whereHas('category', function ($category) {
+                return $category->whereSlug(request('category'));
+            });
+        }
+
         return $query;
     }
 
