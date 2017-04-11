@@ -100,14 +100,19 @@ class CategoryController extends Controller
      * @param  string                     $slug
      * @return Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show()
     {
         $this->cacheTime = Carbon::now()->addDays(7);
 
+        $slug = request('slug');
         $category = Cache::remember($slug, $this->cacheTime, function () use ($slug) {
             return Category::whereSlug($slug)
                 ->first();
         });
+
+        if (request()->ajax()) {
+            return response()->json($category);
+        }
 
         abort_if(empty($category), 404, trans('glosarium.category.notFound'));
 
