@@ -5,10 +5,10 @@
           <div class="list-area">
              <ul class="list-unstyled">
                 <li v-for="word in words">
-                   <a :href="word.url">
-                   <i v-if="word.category.metadata" :class="[word.category.metadata.icon, 'fa-fw']"></i>
-                   {{ word.origin }} ({{ word.locale }})
-                   </a>
+                   <router-link :to="word | url">
+                   	<i v-if="word.category.metadata" :class="[word.category.metadata.icon, 'fa-fw']"></i>
+                   	{{ word.origin }} ({{ word.locale }})
+                   </router-link>
                 </li>
              </ul>
           </div>
@@ -39,6 +39,18 @@
 			axios.post(routes.glosariumWordLatest, params).then(response => {
 				this.words = response.data.words;
 			})
-		}
+		},
+
+        filters: {
+            url(word) {
+                return {
+                    name: 'glosarium.word.show',
+                    params: {
+                        category: word.category.slug,
+                        word: word.slug
+                    }
+                }
+            }
+        }
 	}
 </script>

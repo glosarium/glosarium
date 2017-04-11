@@ -1,4 +1,7 @@
 <template>
+   <div class="row">
+      <div class="col-md-9">
+
 	<div class="block-section-sm box-list-area">
          <!-- desc top -->
          <div class="row hidden-xs" v-cloak>
@@ -29,7 +32,9 @@
                   </div>
                   <div class="col-md-11">
                      <h3 class="no-margin-top">
-                        <a :href="category.url" class="">{{ category.name }}</a>
+                        <router-link :to="category | url">
+                          {{ category.name }}
+                        </router-link>
                         <a href="#"><i class="fa fa-link color-white-mute font-1x"></i></a>
                      </h3>
                      <h5><span class="color-black">{{ category.words_count.toLocaleString('id-ID') }} kata</span></h5>
@@ -47,10 +52,21 @@
             </button>
          </nav>
       </div>
+      </div>
+      <div class="col-md-3">
+         <div class="block-section-sm side-right">
+            <div class="result-filter">
+               <glosarium-word-latest :limit="10"></glosarium-word-latest>
+            </div>
+         </div>
+      </div>
+   </div>
 </template>
 
 <script>
    export default {
+      name: 'glosariumCategoryIndex',
+      
       props: {
          limit: {
             type: Number,
@@ -67,6 +83,9 @@
       },
 
       mounted() {
+        // enable search form
+        this.$root.$data.app.search = true;
+
          const params = {
             limit: this.limit
          }
@@ -125,6 +144,17 @@
 
                 this.loading = false;
             });
+        }
+      },
+
+      filters: {
+        url(category) {
+          return {
+            name: 'glosarium.category.show',
+            params: {
+              slug: category.slug
+            }
+          }
         }
       }
    }

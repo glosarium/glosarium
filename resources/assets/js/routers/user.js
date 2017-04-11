@@ -97,4 +97,4 @@ const app = new Vue({
 	data: {
 		bus: bus
 	}
-}).$mount('.body-content');
+}).$mount('#app');
