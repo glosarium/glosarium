@@ -14,20 +14,20 @@
                   </p>
                </div>
                <div class="col-sm-6" v-cloak>
-                  <p v-if="! words.data" class="text-right">
+                  <p v-if="words.data" class="text-right">
                      Menampilkan {{ words.from }} sampai {{ words.to }} dari total {{ words.total}} kata.
                   </p>
                </div>
             </div>
             <!-- end desc top -->
-            <div v-if="! words.data && keyword" class="row" v-cloak>
+            <div v-if="words.total <= 0" class="row" v-cloak>
                <div class="col-md-12">
                   <div class="alert alert-info">
                      Kata tidak ditemukan dalam pencarian.
                   </div>
                </div>
             </div>
-
+            
             <pagination :data="words"></pagination>
 
             <!-- item list -->
@@ -62,7 +62,7 @@
                </div>
             </div>
 
-            <pagination :data="words"></pagination>
+            <pagination :loading="loading" :data="words"></pagination>
 
          </div>
          <!-- end box listing -->
@@ -101,19 +101,35 @@
          // enable search form
          this.$root.$data.app.search = true;
          this.paginate(this.url);
+
+         // event on pagination clicked
+         this.$bus.$on('pagination', url => {
+            this.paginate(url);
+         });
+
+         // event on searched
+         this.$bus.$on('search', keyword => {
+            const params = {
+               keyword: keyword
+            }
+            this.paginate(this.url, params);
+         });
       },
 
       methods: {
 
          paginate(url, params = {}) {
             this.$Progress.start();
+            this.loading = true;
 
-            axios.get(url).then(response => {
+            axios.get(url, {params}).then(response => {
                this.words = response.data;
 
                this.$Progress.finish();
+               this.loading = false;
             }).catch(error => {
                this.$Progress.fail();
+               this.loading = false;
             });
          }
       },
