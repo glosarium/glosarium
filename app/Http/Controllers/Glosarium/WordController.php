@@ -112,9 +112,12 @@ class WordController extends Controller
      * @param  string                     $slug
      * @return Illuminate\Http\Response
      */
-    public function show($category, $slug)
+    public function show()
     {
-        $word = Word::whereSlug($slug)
+        $word = Word::whereSlug(request('word'))
+            ->whereHas('category', function ($category) {
+                return $category->whereSlug(request('category'));
+            })
             ->with('category', 'description')
             ->withCount('favorites')
             ->firstOrFail();
@@ -141,6 +144,10 @@ class WordController extends Controller
                     $word->save();
                 }
             }
+        }
+
+        if (request()->ajax()) {
+            return response()->json($word);
         }
 
         // set meta description
