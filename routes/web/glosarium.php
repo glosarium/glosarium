@@ -31,5 +31,5 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::post('word/similar', 'WordController@similar')->name('word.similar');
     Route::post('word/latest', 'WordController@latest')->name('word.latest');
     Route::get('word/category/{slug}', 'WordController@category')->name('word.category');
-    Route::get('/{category}/{slug}', 'WordController@show')->name('word.show');
+    Route::post('word/show', 'WordController@show')->name('word.show');
 });

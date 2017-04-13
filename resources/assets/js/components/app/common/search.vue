@@ -5,9 +5,9 @@
          <div class="col-md-12">
             <div id="custom-search-input">
                <div class="input-group col-md-12">
-                  <input @keyup="search" v-model="state.keyword" type="text" class="form-control" :placeholder="placeholder" />
+                  <input :disabled="loading" v-model="state.keyword" type="text" class="form-control" :placeholder="placeholder" />
                   <span class="input-group-btn">
-                     <button class="btn btn-info btn-lg" type="button">
+                     <button :disabled="loading" class="btn btn-info btn-lg" type="button">
                         <i class="glyphicon glyphicon-search"></i>
                      </button>
                   </span>
@@ -23,6 +23,7 @@
    export default {
       name: 'AppSearch',
       props: {
+         loading: false,
          placeholder: String
       },
 

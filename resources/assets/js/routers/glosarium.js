@@ -29,7 +29,8 @@ function view(name) {
     }
 };
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'index',
         component: view('glosarium/word/index')
@@ -63,7 +64,8 @@ const app = new Vue({
     data: {
         bus: bus,
         app: {
-            search: false
+            search: false,
+            auth: Laravel.auth
         }
     }
 }).$mount('#app');
