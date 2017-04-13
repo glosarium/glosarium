@@ -8,13 +8,22 @@ use Tests\DuskTestCase;
 class LoginTest extends DuskTestCase
 {
     /**
-     * Login form
+     * Test login with user
      */
-    public function testLoginForm()
+    public function testLogin()
     {
+        $user = factory(\App\User::class)->make([
+            'name'     => 'Browser Test',
+            'email'    => 'test@email.com',
+            'password' => bcrypt('secret'),
+        ]);
+
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                ->assertSee('Masuk');
+                ->type('email', 'test@email.com')
+                ->type('password', 'secret')
+                ->press('Login')
+                ->assertPathIs('/');
         });
     }
 }
