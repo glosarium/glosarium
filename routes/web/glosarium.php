@@ -17,7 +17,7 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('category/total', 'CategoryController@total')->name('category.total');
     Route::get('category/all', 'CategoryController@all')->name('category.all');
     Route::get('category/paginate', 'CategoryController@paginate')->name('category.paginate');
-    Route::get('category/{slug}', 'CategoryController@show')->name('category.show');
+    Route::get('category/show', 'CategoryController@show')->name('category.show');
 
     // word
     Route::get('/', 'WordController@index')->name('word.index');

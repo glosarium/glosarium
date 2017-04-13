@@ -40,7 +40,7 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
 
-        $this->redirectTo = route('glosarium.word.index');
+        $this->redirectTo = route('user.account.dashboard');
     }
 
     /**

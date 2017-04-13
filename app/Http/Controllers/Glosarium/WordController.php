@@ -122,7 +122,7 @@ class WordController extends Controller
         // get wikipedia page if description is empty
         if ($word->has_description) {
             if (empty($word->description)) {
-                $wikipedia  = new Wikipedia;
+                $wikipedia = new Wikipedia;
                 $wikipedias = $wikipedia->openSearch($word->locale);
                 if (empty($wikipedias)) {
                     $wikipedias = $wikipedia->openSearch($word->origin);
@@ -201,7 +201,7 @@ class WordController extends Controller
         abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $cacheTime = \Carbon\Carbon::now()->addDays(7);
-        $total     = Cache::remember('glosarium.total', $cacheTime, function () {
+        $total = Cache::remember('glosarium.total', $cacheTime, function () {
             return \App\Glosarium\Word::count();
         });
 
@@ -286,7 +286,7 @@ class WordController extends Controller
         $words = Word::orderBy('created_at', 'DESC')
             ->with('category')
             ->whereIsPublished(true)
-            ->limit(20)
+            ->limit(request('limit', 20))
             ->get();
 
         return response()->json([

@@ -4,6 +4,7 @@ return [
     'title'          => 'Kontributor',
     'index'          => 'Daftar Kontributor',
     'login'          => 'Masuk',
+    'dashboard'      => 'Dasbor',
     'loginFacebook'  => 'Masuk dengan Facebook',
     'loginGoogle'    => 'Masuk dengan Google',
     'register'       => 'Daftar',
@@ -22,6 +23,11 @@ return [
     'token'          => 'Token',
     'emailExists'    => 'Pos-el sudah digunakan.',
     'notFound'       => 'Kontributor tidak ditemukan.',
+
+    'role'           => [
+        'admin'       => 'Administrator',
+        'contributor' => 'Kontributor',
+    ],
 
     'mail'           => [
         'register'     => 'Pendaftaran kontributor baru.',

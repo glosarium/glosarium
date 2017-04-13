@@ -76,7 +76,7 @@
          @endif
          <div class="form-group ">
             <button :disabled="loading || ! auth" class="btn btn-t-primary btn-theme">
-            @lang('glosarium.word.btn.propose') <i v-if="loading" class="fa fa-spinner fa-spin"></i>
+            @lang('glosarium.word.btn.propose') <loader :show="loading"></loader>
             </button>
          </div>
       </form>

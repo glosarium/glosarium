@@ -88,6 +88,7 @@ class ContactController extends Controller
         } catch (Exception $e) {
             if (request()->ajax()) {
                 return response()->json([
+                    'status'  => false,
                     'message' => trans('contact.msg.failed'),
                 ]);
             }
@@ -99,6 +100,7 @@ class ContactController extends Controller
 
         if (request()->ajax()) {
             return response()->json([
+                'status'  => true,
                 'title'   => trans('contact.msg.thank'),
                 'message' => $message,
             ]);

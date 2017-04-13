@@ -188,6 +188,9 @@ return [
 
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
 
+        Laravel\Scout\ScoutServiceProvider::class,
+        ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
+
         /*
          * Application Service Providers...
          */

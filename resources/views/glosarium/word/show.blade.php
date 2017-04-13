@@ -12,6 +12,16 @@
 
 @section('heading')
 @include('partials.title')
+
+<div class="bg-color2 block-section-xs line-bottom">
+ <div class="container">
+   <div class="row">
+     <div class="col-sm-12">
+       <div class="text-right"><a href="{{ route('glosarium.word.index') }}">&laquo; @lang('glosarium.word.back')</a></div>
+     </div>
+   </div>
+ </div>
+</div>
 @endsection
 
 @section('content')

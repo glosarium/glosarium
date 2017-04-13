@@ -15,12 +15,17 @@ require('./routes');
  * the application, or feel free to tweak this setup for your needs.
  */
 
+
 // Bootstarap components
-Vue.component('alert', require('./components/Bootstrap/alert.vue'));
-Vue.component('loader', require('./components/Bootstrap/loader.vue'));
+Vue.component('alert', require('./components/bootstrap/alert.vue'));
+Vue.component('loader', require('./components/bootstrap/loader.vue'));
+Vue.component('pagination', require('./components/bootstrap/pagination.vue'));
+Vue.component('button-edit', require('./components/bootstrap/button/edit.vue'));
+Vue.component('button-delete', require('./components/bootstrap/button/delete.vue'));
 
 // App components
-Vue.component('search', require('./components/App/search.vue'));
+Vue.component('app-search', require('./components/app/common/search.vue'));
+Vue.component('app-title', require('./components/app/common/title.vue'));
 
 /**
  * jQuery handler
