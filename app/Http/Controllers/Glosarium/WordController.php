@@ -38,10 +38,10 @@ class WordController extends Controller
         view()->share([
             'js' => [
                 'route' => \Route::currentRouteName(),
-                'api'   => [
-                    'wordIndex'     => route('glosarium.word.paginate'),
+                'api' => [
+                    'wordIndex' => route('glosarium.word.paginate'),
                     'categoryIndex' => route('glosarium.category.paginate'),
-                    'allCategory'   => route('glosarium.category.all'),
+                    'allCategory' => route('glosarium.category.all'),
                 ],
             ],
         ]);
@@ -133,10 +133,10 @@ class WordController extends Controller
 
                 if (!$wikipedia->isEmpty()) {
                     $word->description = Description::create([
-                        'word_id'     => $word->id,
-                        'title'       => $wikipedia->title(),
+                        'word_id' => $word->id,
+                        'title' => $wikipedia->title(),
                         'description' => $wikipedia->description(),
-                        'url'         => $wikipedia->url(),
+                        'url' => $wikipedia->url(),
                     ]);
                 } else {
                     // flag word has no description
@@ -147,7 +147,14 @@ class WordController extends Controller
         }
 
         if (request()->ajax()) {
-            return response()->json($word);
+            if (!empty($word)) {
+                return response()->json($word);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Kata tidak ditemukan.',
+            ], 404);
         }
 
         // set meta description
@@ -173,7 +180,7 @@ class WordController extends Controller
         $link = \App\Link::firstOrCreate([
             'hash' => $hash,
             'type' => 'glosarium',
-            'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
+            'url' => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
         return view(Route::currentRouteName(), compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
@@ -214,7 +221,7 @@ class WordController extends Controller
 
         return response()->json([
             'isSuccess' => true,
-            'total'     => number_format($total, 0, ',', '.'),
+            'total' => number_format($total, 0, ',', '.'),
         ]);
     }
 
@@ -247,14 +254,14 @@ class WordController extends Controller
     {
         try {
             $glosarium = Word::create([
-                'user_id'      => Auth::id(),
-                'category_id'  => $request->category,
-                'origin'       => $request->origin,
-                'locale'       => $request->locale,
-                'lang'         => 'en',
+                'user_id' => Auth::id(),
+                'category_id' => $request->category,
+                'origin' => $request->origin,
+                'locale' => $request->locale,
+                'lang' => 'en',
                 'is_published' => Auth::user()->type == 'admin',
-                'is_standard'  => false,
-                'retry_count'  => 0,
+                'is_standard' => false,
+                'retry_count' => 0,
             ]);
 
             // send notifications
@@ -264,9 +271,9 @@ class WordController extends Controller
             return response()->json([
                 'isSuccess' => true,
                 'glosarium' => $glosarium,
-                'alerts'    => [
-                    'type'    => 'success',
-                    'title'   => trans('global.success'),
+                'alerts' => [
+                    'type' => 'success',
+                    'title' => trans('global.success'),
                     'message' => trans('glosarium.word.msg.created'),
                 ],
             ]);
@@ -274,7 +281,7 @@ class WordController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'isSuccess' => false,
-                'message'   => $e->getMessage(),
+                'message' => $e->getMessage(),
             ]);
 
             abort(500, $e->getMessage());
