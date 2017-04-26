@@ -36,21 +36,21 @@
 			const params = {
 				limit: this.limit
 			}
-			axios.post(routes.glosariumWordLatest, params).then(response => {
+			axios.get('/glosarium/word/latest', {params}).then(response => {
 				this.words = response.data.words;
-			})
+			});
 		},
 
-        filters: {
-            url(word) {
-                return {
-                    name: 'glosarium.word.show',
-                    params: {
-                        category: word.category.slug,
-                        word: word.slug
-                    }
-                }
-            }
+    filters: {
+      url(word) {
+        return {
+          name: 'glosarium.word.show',
+          params: {
+            category: word.category.slug,
+            word: word.slug
+          }
         }
+      }
+    }
 	}
 </script>

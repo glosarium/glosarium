@@ -116,7 +116,7 @@
 
       data() {
          return {
-            url: '/word/show',
+            url: '/glosarium/word/show',
             loginAlert: false,
             totalVote: 0,
             word: {},
@@ -133,14 +133,14 @@
             category: this.$route.params.category,
             word: this.$route.params.word
          }
-         axios.post(this.url, params).then(response => {
+         axios.get(this.url, {params}).then(response => {
             this.word = response.data;      
 
             // in same category
             const params = {
                origin: this.word.origin
             }
-            axios.post('/word/similar', params).then(response => {
+            axios.get('/glosarium/word/similar', {params}).then(response => {
                this.words = response.data;
             });
          }).catch(error => {

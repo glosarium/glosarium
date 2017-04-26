@@ -65,7 +65,7 @@
 
 <script>
    export default {
-      name: 'glosariumCategoryIndex',
+      name: 'GlosariumCategoryIndex',
       
       props: {
          limit: {
@@ -91,7 +91,7 @@
          }
 
          this.loading = true;
-         axios.get(routes.glosariumCategoryPaginate, {params}).then(response => {
+         axios.get('/glosarium/category/paginate', {params}).then(response => {
             this.categories = response.data;
 
             this.loading = false;

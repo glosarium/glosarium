@@ -5,7 +5,7 @@
 	</a>
 </router-link>
 
-<router-link :to="{ name: 'glosarium.category' }" tag="li" active-class="active">
+<router-link :to="{ name: 'glosarium.category.index' }" tag="li" active-class="active">
 	<a href="#">
 		Kategori
 	</a>

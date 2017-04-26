@@ -153,9 +153,6 @@
         <!-- Theme JS -->
         <script src="{{ asset ('js/theme.js') }}"></script>
 
-        <!-- Router -->
-        <script src="{{ asset('js/router/glosarium.js') }}"></script>
-
         @stack('js')
     </body>
 </html>

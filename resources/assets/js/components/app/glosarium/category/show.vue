@@ -46,7 +46,15 @@
                      </div>
                      <div class="col-md-11">
                         <h3 class="no-margin-top">
-                           <a :href="word.url" class="">{{ word.origin }}</a>
+                           <router-link :to="{
+                                 name: 'glosarium.word.show',
+                                 params: {
+                                    category: word.category.slug,
+                                    word: word.slug
+                                 }
+                              }">
+                              {{ word.origin }}
+                           </router-link>
                            <small>
                               <a :href="word.short_url" class="color-white-mute"><i class="fa fa-link"></i></a>
                            </small>
@@ -93,7 +101,7 @@
          return {
             loading: false,
             keyword: '',
-            url: '/category/show',
+            url: '/glosarium/category/show',
             category: {},
             words: []
          }
@@ -108,7 +116,7 @@
             this.category = response.data;
 
             // get words
-            this.paginate('/word/paginate', {
+            this.paginate('/glosarium/word/paginate', {
                category: this.category.slug
             });
          });

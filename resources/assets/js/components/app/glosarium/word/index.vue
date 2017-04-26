@@ -86,12 +86,12 @@
 
 <script>
    export default {
-      name: 'glosariumWordIndex',
+      name: 'GlosariumWordIndex',
 
       data() {
          return {
             loading: false,
-            url: '/word/paginate/',
+            url: '/glosarium/word/paginate/',
             keyword: '',
             words: []
          }
