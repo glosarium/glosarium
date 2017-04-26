@@ -45,14 +45,7 @@ mix.copy('node_modules/highlight.js/styles/monokai.css', 'public/css/');
 mix.scripts('node_modules/jquery.easing/jquery.easing.min.js', 'public/js/jquery.easing.js');
 
 // theme script
+mix.js('resources/assets/js/theme.js', 'public/js/theme.js');
 mix.js('resources/assets/js/app.js', 'public/js/app.js');
 mix.js('resources/assets/js/bus.js', 'public/js/bus.js');
-mix.js('resources/assets/js/theme.js', 'public/js/theme.js');
 mix.js('resources/assets/js/api.js', 'public/js/api.js');
-
-// routers
-mix.js('resources/assets/js/routers/user.js', 'public/js/router/user.js');
-mix.js('resources/assets/js/routers/glosarium.js', 'public/js/router/glosarium.js');
-
-// user
-mix.js('resources/assets/js/user/register.js', 'public/js/user.register.js');
