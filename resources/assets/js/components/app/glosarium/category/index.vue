@@ -64,8 +64,35 @@
 </template>
 
 <script>
+   const title = 'Indeks Kategori';
+   const description = 'Indeks kategori dalam glosarium bahasa Indonesia.';
+
    export default {
       name: 'GlosariumCategoryIndex',
+
+      head: {
+         title: {
+            inner: title
+         },
+         meta: [
+            {
+               name: 'description',
+               content: description
+            },
+            {
+               name: 'twitter:title',
+               content: title
+            },
+            {
+               property: 'og:title',
+               content: title
+            },
+            {
+               property: 'og:description',
+               content: description
+            }
+         ]
+      },
       
       props: {
          limit: {

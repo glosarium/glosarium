@@ -78,7 +78,7 @@ class User extends Authenticatable
     public function getRoleNameAttribute()
     {
         $roles = [
-            'admin'       => trans('user.role.admin'),
+            'admin' => trans('user.role.admin'),
             'contributor' => trans('user.role.contributor'),
         ];
 

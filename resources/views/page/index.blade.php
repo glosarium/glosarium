@@ -33,11 +33,20 @@
 
 @push('js')
 <script>
+    hljs.initHighlightingOnLoad();
+
     $(function(){
         $('#content').removeClass('bg-color2')
             .addClass('block-section bg-color1');
 
         $('li.index').addClass('active');
+
+        $('#content').addClass('block-section line-bottom');
+        $('select.version').change(function(){
+            if ($(this).val() != '') {
+                window.location = _.replace(routes.pageApiIndex, '{version?}', $(this).val());
+            }
+        });
     });
 
     var home = new Vue({
@@ -85,4 +94,3 @@
         }
     });
 </script>
-@endpush

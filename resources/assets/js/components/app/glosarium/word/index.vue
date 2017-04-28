@@ -85,8 +85,24 @@
 </template>
 
 <script>
+   const title = 'Indeks Kata';
+   const description = 'Indeks kata dalam Glosarium bahasa Indonesia.';
+   
    export default {
       name: 'GlosariumWordIndex',
+
+      head: {
+         title: {
+            inner: title
+         },
+
+         meta: [
+            {
+               name: 'title',
+               content: description
+            }
+         ]
+      },
 
       data() {
          return {

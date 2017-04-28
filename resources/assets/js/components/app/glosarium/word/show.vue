@@ -66,11 +66,10 @@
                         {{ word.category.name }}
                      </router-link>
                   </li>
-                  <li>
-                     <i class="fa fa-link"></i>
-                     <a :href="word.short_url" class="">
-                        {{ word.short_url }}
-                     </a>
+
+                  <li v-if="word.user">
+                     <i class="fa fa-user"></i>
+                     {{ word.user.name }}
                   </li>
                </ul>
             </div>
@@ -111,8 +110,26 @@
 </template>
 
 <script>
+   const title = 'Indeks Kata';
+   const description = 'Indeks kata dalam Glosarium bahasa Indonesia.';
+
    export default {
       name: 'GlosariumWordShow',
+
+      head: {
+         title() {
+            return {
+               inner: title
+            }
+         },
+
+         meta: [
+            {
+               name: 'title',
+               content: description
+            }
+         ]
+      },
 
       data() {
          return {
@@ -134,7 +151,14 @@
             word: this.$route.params.word
          }
          axios.get(this.url, {params}).then(response => {
-            this.word = response.data;      
+            this.word = response.data;
+
+            // update metadata
+            var meta = this;
+            window.setTimeout(() => {
+               meta.title = this.word.origin;
+               meta.$emit('updateHead', meta);
+            }, 3000);
 
             // in same category
             const params = {

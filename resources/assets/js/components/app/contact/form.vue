@@ -4,11 +4,11 @@
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-            <h2 class="text-center">
-               Kontak Kami <br>
-               <small>Sampaikan salam, saran, dan kritik demi kemajuan dan kenyamanan penggunaan aplikasi Glosarium</small>
-            </h2>
-            <hr>
+				<h2 class="text-center">
+					Kontak Kami <br>
+					<small>Sampaikan salam, saran, dan kritik demi kemajuan dan kenyamanan penggunaan aplikasi Glosarium</small>
+				</h2>
+				<hr>
 				<form @submit.prevent="send" action="/contact" method="post">
 
 					<div :class="['form-group', errors.email ? 'has-error' : '']">
@@ -42,91 +42,103 @@
 </template>
 
 <script>
+	const title = 'Kontak Kami';
+	const description = 'Sampaikan salam, saran, dan kritik demi kemajuan dan kenyamanan penggunaan aplikasi Glosarium.';
+
 	export default {
-		name: 'contactForm',
-		
+		name: 'ContactForm',
+
+		head: {
+			title() {
+				return {
+					inner: title
+				}
+			}
+		},
+
 		props: {
 			action: String
 		},
+
 		data() {
-	        return {
-                auth: false,
-	        	loading: false,
-		        errors: [],
-		        state: {
-                    email: '',
-                    subject: '',
-                    message: ''
-                },
-		        alerts: {
-		            type: null,
-		            title: null,
-		            message: null
-		        }
-	        }
-	    },
+			return {
+				auth: false,
+				loading: false,
+				errors: [],
+				state: {
+					email: '',
+					subject: '',
+					message: ''
+				},
+				alerts: {
+					type: null,
+					title: null,
+					message: null
+				}
+			}
+		},
 
-        mounted() {
-        	// disabled search form
-        	this.$root.$data.app.search = false;
-        	
-            this.auth = Laravel.auth;
+		mounted() {
+			// disabled search form
+			this.$root.$data.app.search = false;
 
-            if (Laravel.auth) {
-                this.state.email = Laravel.user.email;
-            }
-        },
+			this.auth = Laravel.auth;
 
-	    methods: {
+			if (Laravel.auth) {
+				this.state.email = Laravel.user.email;
+			}
+			},
 
-            getError(object) {
-                return _.head(object);
-            },
+		methods: {
 
-	        beforeSend: function() {
-	            this.loading = true;
+			getError(object) {
+				return _.head(object);
+			},
 
-	            this.alerts = {
-	                type: null,
-	                message: null
-	            }
-	        },
+			beforeSend: function() {
+				this.loading = true;
 
-	        afterSend: function() {
-	            this.state = forms;
-	            this.errors = [];
+				this.alerts = {
+					type: null,
+					message: null
+				}
+			},
 
-	            this.loading = false;
-	        },
+			afterSend: function() {
+				this.state = forms;
+				this.errors = [];
 
-	        send: function(e) {
-	            this.$Progress.start();
-	            this.beforeSend();
+				this.loading = false;
+			},
 
-	            axios.post(e.target.action, this.state).then(response => {
-	                this.alerts = {
-	                    type: 'success',
-	                    title: response.data.title,
-	                    message: response.data.message
-	                };
+			send: function(e) {
+				this.$Progress.start();
+				this.beforeSend();
 
-	                this.$Progress.finish();
-	                this.afterSend();
-	            }).catch(error => {
-	                if (error.response.status == 422) {
-	                    this.errors = error.response.data;
-	                }
-	                else {
-	                    this.alerts = {
-	                        type: 'danger',
-	                        message: 'Kesalahan Internal Server'
-	                    }
-	                }
+				axios.post(e.target.action, this.state).then(response => {
+					this.alerts = {
+						type: 'success',
+						title: response.data.title,
+						message: response.data.message
+					};
 
-	                this.$Progress.fail();
-	                this.loading = false;
-	            })
-	        }
-	    }
+					this.$Progress.finish();
+					this.afterSend();
+				}).catch(error => {
+					if (error.response.status == 422) {
+						this.errors = error.response.data;
+					}
+					else {
+						this.alerts = {
+							type: 'danger',
+							message: 'Kesalahan Internal Server'
+						}
+					}
+
+					this.$Progress.fail();
+					this.loading = false;
+				})
+			}
+		}
 	}
 </script>
