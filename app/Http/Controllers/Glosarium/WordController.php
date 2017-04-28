@@ -34,17 +34,6 @@ class WordController extends Controller
     public function __construct()
     {
         $this->cacheTime = Carbon::now()->addDays(30);
-
-        view()->share([
-            'js' => [
-                'route' => \Route::currentRouteName(),
-                'api' => [
-                    'wordIndex' => route('glosarium.word.paginate'),
-                    'categoryIndex' => route('glosarium.category.paginate'),
-                    'allCategory' => route('glosarium.category.all'),
-                ],
-            ],
-        ]);
     }
 
     /**
@@ -118,7 +107,7 @@ class WordController extends Controller
             ->whereHas('category', function ($category) {
                 return $category->whereSlug(request('category'));
             })
-            ->with('category', 'description')
+            ->with('category', 'description', 'user')
             ->withCount('favorites')
             ->firstOrFail();
 
