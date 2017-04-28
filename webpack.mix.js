@@ -11,13 +11,15 @@ const { mix } = require('laravel-mix');
  |
  */
 
- mix.webpackConfig({
+mix.disableNotifications();
+
+mix.webpackConfig({
     output: {
     	/**
     	 * Base path for async components
     	 * @link http://router.vuejs.org/en/advanced/lazy-loading.html
     	 */ 
-        publicPath: "/" // 
+        publicPath: "/"
     }
 });
 
@@ -47,5 +49,3 @@ mix.scripts('node_modules/jquery.easing/jquery.easing.min.js', 'public/js/jquery
 // theme script
 mix.js('resources/assets/js/theme.js', 'public/js/theme.js');
 mix.js('resources/assets/js/app.js', 'public/js/app.js');
-mix.js('resources/assets/js/bus.js', 'public/js/bus.js');
-mix.js('resources/assets/js/api.js', 'public/js/api.js');
