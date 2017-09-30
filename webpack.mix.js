@@ -11,18 +11,6 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.disableNotifications();
-
-mix.webpackConfig({
-    output: {
-    	/**
-    	 * Base path for async components
-    	 * @link http://router.vuejs.org/en/advanced/lazy-loading.html
-    	 */ 
-        publicPath: "/"
-    }
-});
-
 // bootstrap
 mix.less('node_modules/bootstrap/less/bootstrap.less', 'public/css/bootstrap.css');
 mix.js('node_modules/bootstrap/dist/js/npm.js', 'public/js/bootstrap.js');
@@ -47,5 +35,20 @@ mix.copy('node_modules/highlight.js/styles/monokai.css', 'public/css/');
 mix.scripts('node_modules/jquery.easing/jquery.easing.min.js', 'public/js/jquery.easing.js');
 
 // theme script
-mix.js('resources/assets/js/theme.js', 'public/js/theme.js');
 mix.js('resources/assets/js/app.js', 'public/js/app.js');
+mix.js('resources/assets/js/theme.js', 'public/js/theme.js');
+mix.js('resources/assets/js/api.js', 'public/js/api.js');
+
+// glosarium
+mix.js('resources/assets/js/glosarium/category/index.js', 'public/js/glosarium/category.index.js');
+mix.js('resources/assets/js/glosarium/category/show.js', 'public/js/glosarium/category.show.js');
+
+mix.js('resources/assets/js/glosarium/word/index.js', 'public/js/glosarium/word.index.js');
+mix.js('resources/assets/js/glosarium/word/create.js', 'public/js/glosarium/word.create.js');
+mix.js('resources/assets/js/glosarium/word/show.js', 'public/js/glosarium/word.show.js');
+
+// user
+mix.js('resources/assets/js/user/register.js', 'public/js/user.register.js');
+
+// contact
+mix.js('resources/assets/js/contact/form.js', 'public/js/contact.form.js');

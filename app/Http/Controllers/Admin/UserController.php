@@ -19,21 +19,6 @@ use Auth;
 
 class UserController extends Controller
 {
-    public function paginate()
-    {
-        abort_if(!Auth::user()->can('show', User::class), 403, trans('global.http.403'));
-
-        $users = User::orderBy('name', 'ASC')
-            ->filter()
-            ->paginate(request('limit', 20));
-
-        if (request('keyword')) {
-            $users->appends(request()->all());
-        }
-
-        return response()->json($users);
-    }
-
     /**
      * Display a listing of the resource.
      *

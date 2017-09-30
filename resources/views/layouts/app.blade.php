@@ -59,12 +59,12 @@
                                 @if (auth()->check())
                                 <li class="dropdown">
                                     <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
-                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} ({{ auth()->user()->role_name }}) <b class="caret"></b>
+                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} <b class="caret"></b>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{ url('user/#/dashboard') }}">@lang('user.dashboard')</a></li>
-                                        <li><a href="{{ url('user/#/notification') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
-                                        <li><a href="{{ url('user/#/password') }}">Ubah Sandi Lewat</a></li>
+                                        <li><a href="#">Beranda</a></li>
+                                        <li><a href="{{ route('user.notification.index') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
+                                        <li><a href="{{ route('user.password.form') }}">Ubah Sandi Lewat</a></li>
                                     </ul>
                                 </li>
                                 <li class="link-btn"><a href="{{ url('logout') }}" class="logout"><span class="btn btn-theme  btn-pill btn-xs btn-line">Keluar</span></a></li>
@@ -112,9 +112,7 @@
                 </div>
                 <!-- mobile navbar -->
                 <!-- form search area-->
-                <div class="container">
-                    @yield('heading')
-                </div>
+                @yield('heading')
             </header>
             <!-- end main-header -->
 
@@ -165,11 +163,7 @@
                 'locale' => config('app.locale'),
                 'csrfToken' => csrf_token(),
                 'url' => env('APP_URL'),
-                'auth' => auth()->check(),
-                'user' => [
-                    'email' => auth()->check() ? auth()->user()->email : null,
-                    'name' => auth()->check() ? auth()->user()->name : null,
-                ]
+                'auth' => auth()->check()
             ]) !!}
         </script>
 

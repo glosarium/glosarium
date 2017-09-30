@@ -34,6 +34,17 @@ class WordController extends Controller
     public function __construct()
     {
         $this->cacheTime = Carbon::now()->addDays(30);
+
+        view()->share([
+            'js' => [
+                'route' => \Route::currentRouteName(),
+                'api'   => [
+                    'wordIndex'     => route('glosarium.word.paginate'),
+                    'categoryIndex' => route('glosarium.category.paginate'),
+                    'allCategory'   => route('glosarium.category.all'),
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -101,20 +112,17 @@ class WordController extends Controller
      * @param  string                     $slug
      * @return Illuminate\Http\Response
      */
-    public function show()
+    public function show($category, $slug)
     {
-        $word = Word::whereSlug(request('word'))
-            ->whereHas('category', function ($category) {
-                return $category->whereSlug(request('category'));
-            })
-            ->with('category', 'description', 'user')
+        $word = Word::whereSlug($slug)
+            ->with('category', 'description')
             ->withCount('favorites')
             ->firstOrFail();
 
         // get wikipedia page if description is empty
         if ($word->has_description) {
             if (empty($word->description)) {
-                $wikipedia = new Wikipedia;
+                $wikipedia  = new Wikipedia;
                 $wikipedias = $wikipedia->openSearch($word->locale);
                 if (empty($wikipedias)) {
                     $wikipedias = $wikipedia->openSearch($word->origin);
@@ -122,10 +130,10 @@ class WordController extends Controller
 
                 if (!$wikipedia->isEmpty()) {
                     $word->description = Description::create([
-                        'word_id' => $word->id,
-                        'title' => $wikipedia->title(),
+                        'word_id'     => $word->id,
+                        'title'       => $wikipedia->title(),
                         'description' => $wikipedia->description(),
-                        'url' => $wikipedia->url(),
+                        'url'         => $wikipedia->url(),
                     ]);
                 } else {
                     // flag word has no description
@@ -133,17 +141,6 @@ class WordController extends Controller
                     $word->save();
                 }
             }
-        }
-
-        if (request()->ajax()) {
-            if (!empty($word)) {
-                return response()->json($word);
-            }
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Kata tidak ditemukan.',
-            ], 404);
         }
 
         // set meta description
@@ -169,7 +166,7 @@ class WordController extends Controller
         $link = \App\Link::firstOrCreate([
             'hash' => $hash,
             'type' => 'glosarium',
-            'url' => route('glosarium.word.show', [$word->category->slug, $word->slug]),
+            'url'  => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
         return view(Route::currentRouteName(), compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
@@ -204,13 +201,13 @@ class WordController extends Controller
         abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $cacheTime = \Carbon\Carbon::now()->addDays(7);
-        $total = Cache::remember('glosarium.total', $cacheTime, function () {
+        $total     = Cache::remember('glosarium.total', $cacheTime, function () {
             return \App\Glosarium\Word::count();
         });
 
         return response()->json([
             'isSuccess' => true,
-            'total' => number_format($total, 0, ',', '.'),
+            'total'     => number_format($total, 0, ',', '.'),
         ]);
     }
 
@@ -243,14 +240,14 @@ class WordController extends Controller
     {
         try {
             $glosarium = Word::create([
-                'user_id' => Auth::id(),
-                'category_id' => $request->category,
-                'origin' => $request->origin,
-                'locale' => $request->locale,
-                'lang' => 'en',
+                'user_id'      => Auth::id(),
+                'category_id'  => $request->category,
+                'origin'       => $request->origin,
+                'locale'       => $request->locale,
+                'lang'         => 'en',
                 'is_published' => Auth::user()->type == 'admin',
-                'is_standard' => false,
-                'retry_count' => 0,
+                'is_standard'  => false,
+                'retry_count'  => 0,
             ]);
 
             // send notifications
@@ -260,9 +257,9 @@ class WordController extends Controller
             return response()->json([
                 'isSuccess' => true,
                 'glosarium' => $glosarium,
-                'alerts' => [
-                    'type' => 'success',
-                    'title' => trans('global.success'),
+                'alerts'    => [
+                    'type'    => 'success',
+                    'title'   => trans('global.success'),
                     'message' => trans('glosarium.word.msg.created'),
                 ],
             ]);
@@ -270,7 +267,7 @@ class WordController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'isSuccess' => false,
-                'message' => $e->getMessage(),
+                'message'   => $e->getMessage(),
             ]);
 
             abort(500, $e->getMessage());
@@ -289,7 +286,7 @@ class WordController extends Controller
         $words = Word::orderBy('created_at', 'DESC')
             ->with('category')
             ->whereIsPublished(true)
-            ->limit(request('limit', 20))
+            ->limit(20)
             ->get();
 
         return response()->json([

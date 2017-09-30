@@ -49,17 +49,6 @@ class Wikipedia
         ]);
     }
 
-    /**
-     * Make sure we can call Wikipedia API
-     */
-    public function ping(): bool
-    {
-        $client = new Client;
-        $response = $client->get($this->url);
-
-        return $response->getStatusCode() === 200;
-    }
-
     public function openSearch($keywords = null)
     {
         if (is_array($keywords)) {

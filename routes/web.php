@@ -11,8 +11,6 @@
 |
  */
 
-Route::get('/app', 'AppController');
-
 Route::get('api', 'PageController@redirectApi')->name('page.api.redirect');
 Route::get('api/version/{version?}', 'PageController@api')->name('page.api.index');
 

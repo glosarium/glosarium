@@ -6,12 +6,10 @@ use Auth;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class Word extends Model
 {
     use Sluggable;
-    use Searchable;
 
     protected $table = 'glosarium_words';
 
@@ -34,7 +32,16 @@ class Word extends Model
     ];
 
     protected $hidden = [
-
+        'id',
+        'category_id',
+        'alias',
+        'pronounce',
+        'status',
+        'is_published',
+        'is_standard',
+        'created_at',
+        'updated_at',
+        'user_id',
     ];
 
     protected $appends = [
@@ -55,26 +62,6 @@ class Word extends Model
         'is_published'    => 'boolean',
         'has_description' => 'boolean',
     ];
-
-    /**
-     * Get the index name for the model.
-     *
-     * @return string
-     */
-    public function searchableAs()
-    {
-        return 'glosarium_word_index';
-    }
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return $this->toArray();
-    }
 
     public function getRouteKeyName()
     {
@@ -177,13 +164,6 @@ class Word extends Model
                     'keyword' => strtolower(trim(request('keyword'))),
                 ]);
             }
-        }
-
-        // filter by category
-        if (request('category')) {
-            $query->whereHas('category', function ($category) {
-                return $category->whereSlug(request('category'));
-            });
         }
 
         return $query;

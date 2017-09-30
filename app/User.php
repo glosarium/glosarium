@@ -44,7 +44,6 @@ class User extends Authenticatable
     protected $appends = [
         'created_diff',
         'updated_diff',
-        'role_name',
     ];
 
     /**
@@ -73,20 +72,6 @@ class User extends Authenticatable
     public function getUpdatedDiffAttribute()
     {
         return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
-    }
-
-    public function getRoleNameAttribute()
-    {
-        $roles = [
-            'admin' => trans('user.role.admin'),
-            'contributor' => trans('user.role.contributor'),
-        ];
-
-        if (!array_key_exists($this->attributes['type'], $roles)) {
-            return trans('user.role.contributor');
-        }
-
-        return $roles[$this->attributes['type']];
     }
 
     public function glosariums()

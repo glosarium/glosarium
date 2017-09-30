@@ -5,12 +5,10 @@ namespace App\Glosarium;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class Category extends Model
 {
     use Sluggable;
-    use Searchable;
 
     protected $table = 'glosarium_categories';
 
@@ -29,7 +27,6 @@ class Category extends Model
         'updated_diff',
         'edit_url',
         'destroy_url',
-        'summary',
     ];
 
     protected $hidden = [
@@ -42,26 +39,6 @@ class Category extends Model
         'metadata'     => 'json',
         'is_published' => 'boolean',
     ];
-
-    /**
-     * Get the index name for the model.
-     *
-     * @return string
-     */
-    public function searchableAs()
-    {
-        return 'glosarium_category_index';
-    }
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return $this->toArray();
-    }
 
     /**
      * Default parameter for URI.
@@ -103,11 +80,6 @@ class Category extends Model
         return $updatedAt->diffForHumans();
     }
 
-    public function getSummaryAttribute()
-    {
-        return str_limit($this->attributes['description'], 50);
-    }
-
     /**
      * @return mixed
      */
@@ -122,9 +94,9 @@ class Category extends Model
      * @param  object     $query Eloquent
      * @return Eloquent
      */
-    public function scopeFilter($query, $keyword = null)
+    public function scopeFilter($query)
     {
-        $keyword = request('keyword', $keyword);
+        $keyword = request('keyword');
 
         if ($keyword) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
