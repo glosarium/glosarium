@@ -2,7 +2,7 @@
 
 namespace App\Policies\Glosarium;
 
-use App\App\Word;
+use App\Glosarium\Word;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -10,11 +10,19 @@ class WordPolicy
 {
     use HandlesAuthorization;
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function before(User $user)
     {
         return $user->type == 'admin';
     }
 
+    /**
+     * @param User $user
+     * @param Word $word
+     */
     public function moderation(User $user, Word $word)
     {
         # code...
@@ -23,7 +31,7 @@ class WordPolicy
     /**
      * Determine whether the user can view the word.
      *
-     * @param  \App\User           $user
+     * @param  \App\User     $user
      * @param  \App\App\Word $word
      * @return mixed
      */
@@ -46,7 +54,7 @@ class WordPolicy
     /**
      * Determine whether the user can update the word.
      *
-     * @param  \App\User           $user
+     * @param  \App\User     $user
      * @param  \App\App\Word $word
      * @return mixed
      */
@@ -58,7 +66,7 @@ class WordPolicy
     /**
      * Determine whether the user can delete the word.
      *
-     * @param  \App\User           $user
+     * @param  \App\User     $user
      * @param  \App\App\Word $word
      * @return mixed
      */

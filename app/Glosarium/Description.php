@@ -35,7 +35,7 @@ class Description extends Model
      * @var array
      */
     protected $casts = [
-        'vote_up'   => 'integer',
+        'vote_up' => 'integer',
         'vote_down' => 'integer',
     ];
 
@@ -44,6 +44,6 @@ class Description extends Model
      */
     public function word()
     {
-        return $this->belongsTo(\App\App\Word::class);
+        return $this->belongsTo(Word::class);
     }
 }

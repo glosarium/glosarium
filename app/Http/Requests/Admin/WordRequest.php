@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\App\Word;
+use App\Glosarium\Word;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,10 +31,10 @@ class WordRequest extends FormRequest
     {
         $rules = [
             'category' => 'required|integer',
-            'lang'     => 'required|string|max:3',
-            'origin'   => 'required|string|max:255',
-            'locale'   => 'required|string|max:255',
-            'publish'  => 'required|boolean',
+            'lang' => 'required|string|max:3',
+            'origin' => 'required|string|max:255',
+            'locale' => 'required|string|max:255',
+            'publish' => 'required|boolean',
         ];
 
         return $rules;

@@ -12,8 +12,8 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\App\Category;
-use App\App\Word;
+use App\Glosarium\Category;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 
 class SitemapController extends Controller
@@ -27,7 +27,7 @@ class SitemapController extends Controller
 
         // cache categories
         $rememberFor = \Carbon\Carbon::now()->addDays(30);
-        $categories  = \Cache::remember('sitemap.categories', $rememberFor, function () {
+        $categories = \Cache::remember('sitemap.categories', $rememberFor, function () {
             return Category::orderBy('name', 'ASC')
                 ->whereIsPublished(true)
                 ->get();
@@ -65,7 +65,7 @@ class SitemapController extends Controller
 
         $sitemap = \App::make('sitemap');
 
-        $keyCache    = sprintf('sitemap.word.%s', $category->slug);
+        $keyCache = sprintf('sitemap.word.%s', $category->slug);
         $rememberFor = \Carbon\Carbon::now()->addDays(30);
 
         // get word by category in store in cache
@@ -84,8 +84,8 @@ class SitemapController extends Controller
 
             $images = [
                 [
-                    'url'     => url($file),
-                    'title'   => $word->locale,
+                    'url' => url($file),
+                    'title' => $word->locale,
                     'caption' => $word->locale,
                 ],
             ];

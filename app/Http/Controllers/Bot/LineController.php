@@ -15,7 +15,7 @@ namespace App\Http\Controllers\Bot;
 // Models
 use App\Bot\Keyword;
 use App\Bot\LINE\Line;
-use App\App\Word;
+use App\Glosarium\Word;
 
 // Controllers
 use App\Http\Controllers\Controller;
@@ -31,6 +31,9 @@ use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class LineController extends Controller
 {
+    /**
+     * @var mixed
+     */
     private $client;
 
     public function __construct()

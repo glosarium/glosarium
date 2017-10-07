@@ -9,8 +9,8 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\App\Favorite;
-use App\App\Word;
+use App\Glosarium\Favorite;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
@@ -22,6 +22,9 @@ class FavoriteController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * @param Request $request
+     */
     public function favorite(Request $request)
     {
         $word = Word::whereSlug(request('slug'))->first();
@@ -43,13 +46,13 @@ class FavoriteController extends Controller
             ]);
 
             return response()->json([
-                'success'  => true,
+                'success' => true,
                 'favorite' => $favorite,
             ]);
         }
 
         return response()->json([
-            'success'  => false,
+            'success' => false,
             'favorite' => $favorite,
         ]);
     }

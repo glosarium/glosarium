@@ -10,6 +10,9 @@ class Category extends Model
 {
     use Sluggable;
 
+    /**
+     * @var string
+     */
     protected $table = 'glosarium_categories';
 
     /**
@@ -22,6 +25,9 @@ class Category extends Model
         'metadata',
     ];
 
+    /**
+     * @var array
+     */
     protected $appends = [
         'url',
         'updated_diff',
@@ -29,14 +35,20 @@ class Category extends Model
         'destroy_url',
     ];
 
+    /**
+     * @var array
+     */
     protected $hidden = [
         'is_published',
         'created_at',
         'updated_at',
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
-        'metadata'     => 'json',
+        'metadata' => 'json',
         'is_published' => 'boolean',
     ];
 
@@ -74,6 +86,9 @@ class Category extends Model
         return route('admin.category.destroy', [$this->attributes['slug']]);
     }
 
+    /**
+     * @return mixed
+     */
     public function getUpdatedDiffAttribute()
     {
         $updatedAt = Carbon::parse($this->attributes['updated_at']);
@@ -85,7 +100,7 @@ class Category extends Model
      */
     public function words()
     {
-        return $this->hasMany(\App\App\Word::class, 'category_id', 'id');
+        return $this->hasMany(Word::class, 'category_id', 'id');
     }
 
     /**
