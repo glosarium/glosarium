@@ -12,13 +12,14 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\Glosarium\Category;
-use App\Glosarium\Word;
+use App\App\Category;
+use App\App\Word;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Glosarium\CategoryRequest;
+use App\Http\Requests\App\CategoryRequest;
 use App\Libraries\Image;
 use Cache;
 use Carbon\Carbon;
+use Illuminate\View\View;
 use Route;
 
 /**
@@ -26,6 +27,9 @@ use Route;
  */
 class CategoryController extends Controller
 {
+    /**
+     * @var mixed
+     */
     private $cacheTime;
 
     public function __construct()
@@ -36,10 +40,10 @@ class CategoryController extends Controller
             'js' => [
                 'route' => Route::currentRouteName(),
                 'index' => route('glosarium.category.paginate'),
-                'all'   => route('glosarium.category.all'),
-                'word'  => [
+                'all' => route('glosarium.category.all'),
+                'word' => [
                     'category' => url('word/category'),
-                    'latest'   => route('glosarium.word.latest'),
+                    'latest' => route('glosarium.word.latest'),
                 ],
             ],
         ]);
@@ -86,7 +90,7 @@ class CategoryController extends Controller
     public function index()
     {
         // create image
-        $image     = new Image;
+        $image = new Image;
         $imagePath = $image->addText(trans('glosarium.category.index'), 50, 400, 200)
             ->render('images/pages', 'category')
             ->path();
@@ -100,7 +104,7 @@ class CategoryController extends Controller
      * @param  string                     $slug
      * @return Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($slug): View
     {
         $this->cacheTime = Carbon::now()->addDays(7);
 
@@ -111,13 +115,20 @@ class CategoryController extends Controller
 
         abort_if(empty($category), 404, trans('glosarium.category.notFound'));
 
-        // create header image
-        $image     = new Image;
-        $imagePath = $image->addText($category->name, 50, 400, 200)
-            ->render('images/glosariums/categories', $category->slug)
-            ->path();
+        $words = Word::whereHas('category', function ($category) use ($slug) {
+            return $category->whereSlug($slug);
+        })
+            ->with('user', 'category', 'description')
+            ->withCount('favorites')
+            ->isPublished()
+            ->sort()
+            ->paginate();
 
-        return view(Route::currentRouteName(), compact('category', 'imagePath'))
+        // create header image
+        $image = (new Image)->addText($category->name, 50, 400, 200)
+            ->render('categories', $category->slug);
+
+        return view('glosariums.categories.show', compact('category', 'words'))
             ->withTitle(trans('glosarium.category.index', ['name' => $category->name]));
     }
 
@@ -126,16 +137,19 @@ class CategoryController extends Controller
         abort_if(!request()->ajax(), 404, trans('global.notFound'));
 
         $cacheTime = \Carbon\Carbon::now()->addDays(30);
-        $total     = Cache::remember('category.total', $cacheTime, function () {
-            return \App\Glosarium\Category::count();
+        $total = Cache::remember('category.total', $cacheTime, function () {
+            return \App\App\Category::count();
         });
 
         return response()->json([
             'isSuccess' => true,
-            'total'     => number_format($total, 0, ',', '.'),
+            'total' => number_format($total, 0, ',', '.'),
         ]);
     }
 
+    /**
+     * @param $slug
+     */
     public function edit($slug)
     {
         $category = Category::whereSlug($slug)->firstOrFail();
@@ -146,12 +160,16 @@ class CategoryController extends Controller
             ]));
     }
 
+    /**
+     * @param CategoryRequest $request
+     * @param $slug
+     */
     public function update(CategoryRequest $request, $slug)
     {
         $category = Category::whereSlug($slug)->firstOrFail();
 
-        $category->name         = $request->name;
-        $category->description  = $request->description;
+        $category->name = $request->name;
+        $category->description = $request->description;
         $category->is_published = $request->publish;
         $category->save();
 

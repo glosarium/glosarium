@@ -85,7 +85,7 @@ class Category extends Model
      */
     public function words()
     {
-        return $this->hasMany(\App\Glosarium\Word::class, 'category_id', 'id');
+        return $this->hasMany(\App\App\Word::class, 'category_id', 'id');
     }
 
     /**

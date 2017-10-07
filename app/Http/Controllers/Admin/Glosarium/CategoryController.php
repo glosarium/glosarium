@@ -12,7 +12,7 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
-use App\Glosarium\Category;
+use App\App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use Auth;

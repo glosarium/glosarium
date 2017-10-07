@@ -40,7 +40,7 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
 
-        $this->redirectTo = route('glosarium.word.index');
+        $this->redirectTo = route('home');
     }
 
     /**
@@ -62,9 +62,9 @@ class RegisterController extends Controller
         });
 
         return Validator::make($data, [
-            'name'                 => 'required|max:100|valid_name',
-            'email'                => 'required|email|max:255|unique:users,email',
-            'password'             => 'required|min:6',
+            'name' => 'required|max:100|valid_name',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ]);
     }
@@ -79,9 +79,9 @@ class RegisterController extends Controller
     {
         try {
             $user = User::create([
-                'name'      => $data['name'],
-                'email'     => $data['email'],
-                'password'  => bcrypt($data['password']),
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
                 'is_active' => true,
             ]);
 
@@ -95,7 +95,7 @@ class RegisterController extends Controller
             if (request()->ajax()) {
                 return response()->json([
                     'isSuccess' => false,
-                    'message'   => trans('global.internalError'),
+                    'message' => trans('global.internalError'),
                 ], 500);
             }
 
@@ -122,7 +122,7 @@ class RegisterController extends Controller
         if (request()->ajax()) {
             return response()->json([
                 'isSuccess' => true,
-                'url'       => route('glosarium.word.index'),
+                'url' => route('glosarium.word.index'),
             ]);
         } else {
             return redirect($this->redirectPath());
@@ -136,7 +136,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('auths.registers.form', compact('image'))
+        return view('users.register', compact('image'))
             ->withTitle(trans('user.register'));
     }
 

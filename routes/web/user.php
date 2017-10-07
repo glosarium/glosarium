@@ -2,6 +2,7 @@
 
 Auth::routes();
 Route::post('user/email', 'Auth\RegisterController@email')->name('user.email');
+Route::get('dashboard', 'User\DashboardController')->name('user.dashboard');
 
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
     // notification

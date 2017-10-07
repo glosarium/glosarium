@@ -36,7 +36,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
 
-        $this->redirectTo = route('glosarium.word.index');
+        $this->redirectTo = route('home');
     }
 
     /**
@@ -54,7 +54,7 @@ class LoginController extends Controller
 
         $imagePath = $image->path();
 
-        return view('auths.logins.form', compact('imagePath'))
+        return view('users.login', compact('imagePath'))
             ->withTitle($title);
     }
 
@@ -99,7 +99,7 @@ class LoginController extends Controller
     {
         $this->validate($request, [
             $this->username() => 'required|exists:users,email',
-            'password'        => 'required',
+            'password' => 'required',
         ]);
     }
 
@@ -120,7 +120,7 @@ class LoginController extends Controller
         if ($auth and request()->ajax()) {
             return response()->json([
                 'isSuccess' => true,
-                'url'       => $this->redirectPath(),
+                'url' => $this->redirectPath(),
             ]);
         }
 

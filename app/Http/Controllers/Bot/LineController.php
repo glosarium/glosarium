@@ -15,7 +15,7 @@ namespace App\Http\Controllers\Bot;
 // Models
 use App\Bot\Keyword;
 use App\Bot\LINE\Line;
-use App\Glosarium\Word;
+use App\App\Word;
 
 // Controllers
 use App\Http\Controllers\Controller;

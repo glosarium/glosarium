@@ -9,8 +9,8 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\Glosarium\Favorite;
-use App\Glosarium\Word;
+use App\App\Favorite;
+use App\App\Word;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;

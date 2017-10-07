@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Word;
 
-use App\Glosarium\Word;
+use App\App\Word;
 use Illuminate\Console\Command;
 
 class Duplicate extends Command

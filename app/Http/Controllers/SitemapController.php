@@ -12,8 +12,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Glosarium\Category;
-use App\Glosarium\Word;
+use App\App\Category;
+use App\App\Word;
 
 class SitemapController extends Controller
 {

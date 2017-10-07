@@ -2,7 +2,7 @@
 
 namespace App\Policies\Glosarium;
 
-use App\Glosarium\Category;
+use App\App\Category;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -19,7 +19,7 @@ class CategoryPolicy
      * Determine whether the user can view the category.
      *
      * @param  \App\User               $user
-     * @param  \App\Glosarium\Category $category
+     * @param  \App\App\Category $category
      * @return mixed
      */
     public function view(User $user, Category $category)
@@ -42,7 +42,7 @@ class CategoryPolicy
      * Determine whether the user can update the category.
      *
      * @param  \App\User               $user
-     * @param  \App\Glosarium\Category $category
+     * @param  \App\App\Category $category
      * @return mixed
      */
     public function update(User $user, Category $category)
@@ -54,7 +54,7 @@ class CategoryPolicy
      * Determine whether the user can delete the category.
      *
      * @param  \App\User               $user
-     * @param  \App\Glosarium\Category $category
+     * @param  \App\App\Category $category
      * @return mixed
      */
     public function delete(User $user, Category $category)

@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Glosarium;
 
-use App\Glosarium\Word;
+use App\App\Word;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\Glosarium\Description;
+use App\App\Description;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

@@ -76,17 +76,17 @@ class User extends Authenticatable
 
     public function glosariums()
     {
-        return $this->hasMany(\App\Glosarium\Word::class);
+        return $this->hasMany(\App\App\Word::class);
     }
 
     public function glosariumWords()
     {
-        return $this->hasMany(\App\Glosarium\Word::class);
+        return $this->hasMany(\App\App\Word::class);
     }
 
     public function favorites()
     {
-        return $this->hasMany(\App\Glosarium\Favorite::class);
+        return $this->hasMany(\App\App\Favorite::class);
     }
 
     public function scopeFilter($query)
