@@ -12,24 +12,13 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
-use App\Glosarium\Category;
+use App\App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use Auth;
 
 class CategoryController extends Controller
 {
-    public function paginate()
-    {
-        $categories = Category::orderBy('name', 'ASC')
-            ->paginate(request('limit', 20));
-
-        if (request()->all()) {
-            $categories->appends(request()->all());
-        }
-
-        return response()->json($categories);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -74,8 +63,8 @@ class CategoryController extends Controller
     {
         abort_if(!Auth()->user()->can('edit', $category), 403, trans('global.http.403'));
 
-        $category->name = $category->name;
-        $category->description = $category->description;
+        $category->name         = $category->name;
+        $category->description  = $category->description;
         $category->is_published = $category->publish;
         $category->save();
 

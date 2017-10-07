@@ -3,16 +3,17 @@
 namespace App\Glosarium;
 
 use Auth;
-use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class Word extends Model
 {
     use Sluggable;
-    use Searchable;
 
+    /**
+     * @var string
+     */
     protected $table = 'glosarium_words';
 
     /**
@@ -33,48 +34,39 @@ class Word extends Model
         'has_description',
     ];
 
+    /**
+     * @var array
+     */
     protected $hidden = [
-
+        'id',
+        'category_id',
+        'alias',
+        'pronounce',
+        'status',
+        'is_published',
+        'is_standard',
+        'created_at',
+        'updated_at',
+        'user_id',
     ];
 
+    /**
+     * @var array
+     */
     protected $appends = [
-        'url',
-        'created_diff',
-        'updated_diff',
         'short_url',
-        'edit_url',
     ];
 
     /**
      * @var array
      */
     protected $casts = [
-        'user_id'         => 'integer',
-        'category_id'     => 'integer',
-        'is_standard'     => 'boolean',
-        'is_published'    => 'boolean',
+        'user_id' => 'integer',
+        'category_id' => 'integer',
+        'is_standard' => 'boolean',
+        'is_published' => 'boolean',
         'has_description' => 'boolean',
     ];
-
-    /**
-     * Get the index name for the model.
-     *
-     * @return string
-     */
-    public function searchableAs()
-    {
-        return 'glosarium_word_index';
-    }
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return $this->toArray();
-    }
 
     public function getRouteKeyName()
     {
@@ -88,38 +80,6 @@ class Word extends Model
                 'source' => 'locale',
             ],
         ];
-    }
-
-    public function getUrlAttribute()
-    {
-        if (empty($this->relations)) {
-            return null;
-        }
-
-        return route('glosarium.word.show', [
-            $this->relations['category']['attributes']['slug'],
-            $this->attributes['slug'],
-        ]);
-    }
-
-    public function getEditUrlAttribute()
-    {
-        return route('admin.word.edit', [$this->attributes['id']]);
-    }
-
-    public function getCreatedDiffAttribute()
-    {
-        return Carbon::parse($this->attributes['created_at'])->diffForHumans();
-    }
-
-    /**
-     * Add attribute human data
-     *
-     * @return ELoquent
-     */
-    public function getUpdatedDiffAttribute()
-    {
-        return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
     }
 
     /**
@@ -137,7 +97,7 @@ class Word extends Model
      */
     public function category()
     {
-        return $this->belongsTo(\App\Glosarium\Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -145,14 +105,20 @@ class Word extends Model
      */
     public function description()
     {
-        return $this->hasOne(\App\Glosarium\Description::class);
+        return $this->hasOne(Description::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function user()
     {
         return $this->belongsTo(\App\User::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
@@ -164,32 +130,30 @@ class Word extends Model
      * @param  object $query     Eloquent query
      * @return object Eloquent
      */
-    public function scopeFilter($query)
+    public function scopeFilter($query, $field)
     {
-        if (request('keyword')) {
-            $query->where('origin', 'LIKE', '%' . request('keyword') . '%')
-                ->orWhere('locale', 'LIKE', '%' . request('keyword') . '%');
+        if ($field) {
+            $query->where('origin', 'LIKE', '%' . $field . '%')
+                ->orWhere('locale', 'LIKE', '%' . $field . '%');
 
             // save to search database
             if (!Auth::check() or (Auth::check() and Auth::user()->type != 'admin')) {
                 Search::create([
                     'user_id' => Auth::check() ? Auth::id() : null,
-                    'keyword' => strtolower(trim(request('keyword'))),
+                    'keyword' => strtolower($field),
                 ]);
             }
-        }
-
-        // filter by category
-        if (request('category')) {
-            $query->whereHas('category', function ($category) {
-                return $category->whereSlug(request('category'));
-            });
         }
 
         return $query;
     }
 
-    public function scopeFilterPending($query, $keyword = null)
+    /**
+     * @param  $query
+     * @param  $keyword
+     * @return mixed
+     */
+    public function scopeFilterPending($query, $keyword = null): Builder
     {
         $keyword = trim(request('keyword', $keyword));
 
@@ -207,7 +171,7 @@ class Word extends Model
      * @param  object $query     Eloquent query
      * @return object Eloquent
      */
-    public function scopeSort($query, $keyword = null)
+    public function scopeSort($query, $keyword = null): Builder
     {
         // is on search?
         if (request('keyword', $keyword)) {
@@ -220,5 +184,14 @@ class Word extends Model
 
         return $query;
 
+    }
+
+    /**
+     * @param  $query
+     * @return mixed
+     */
+    public function scopeIsPublished($query): Builder
+    {
+        return $query->whereIsPublished(true);
     }
 }

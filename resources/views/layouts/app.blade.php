@@ -1,192 +1,114 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        @stack('metadata')
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ $title or config('app.name') }}</title>
-        <!--favicon-->
-        <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
-        <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+    {!! SEO::generate() !!}
 
-        <!-- bootstrap -->
-        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ asset('css/app.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
-        <!-- Icons -->
-        <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Oswald:100,300,400,500,600,800%7COpen+Sans:300,400,500,600,700,800%7CMontserrat:400,700' rel='stylesheet' type='text/css'>
 
-        <!-- lightbox -->
-        <link href="{{ asset('css/magnific-popup.css') }}" rel="stylesheet">
+    <!-- Favicons -->
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}">
+  </head>
 
-        <!-- Themes styles-->
-        <link href="{{ asset('css/theme.css') }}" rel="stylesheet">
-        @stack('css')
+  <body class="nav-on-header smart-nav">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+    <!-- Navigation bar -->
+    <nav class="navbar">
+      <div class="container">
 
-        @if (app()->environment('production'))
-            @if ((auth()->check() and auth()->user()->type != 'admin') or ! auth()->check())
-                @include('partials/analytic')
-            @endif
+        <!-- Logo -->
+        <div class="pull-left">
+          <a class="navbar-toggle" href="#" data-toggle="offcanvas"><i class="ti-menu"></i></a>
 
-            @include('partials.ads.level')
-        @endif
-    </head>
-    <body>
-        <!-- wrapper page -->
-        <div class="wrapper" id="app">
-            <!-- main-header -->
-            <header class="main-header">
-                <!-- main navbar -->
-                <nav class="navbar navbar-default main-navbar hidden-sm hidden-xs">
-                    <div class="container">
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul class="nav navbar-nav">
-                                @include('partials.menu')
-                            </ul>
-                            <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                            <ul class="nav navbar-nav navbar-right">
-                                @if (auth()->check())
-                                <li class="dropdown">
-                                    <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
-                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} ({{ auth()->user()->role_name }}) <b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="{{ url('user/#/dashboard') }}">@lang('user.dashboard')</a></li>
-                                        <li><a href="{{ url('user/#/notification') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
-                                        <li><a href="{{ url('user/#/password') }}">Ubah Sandi Lewat</a></li>
-                                    </ul>
-                                </li>
-                                <li class="link-btn"><a href="{{ url('logout') }}" class="logout"><span class="btn btn-theme  btn-pill btn-xs btn-line">Keluar</span></a></li>
-                                @else
-                                <li class="link-btn"><a href="{{ url('login') }}"><span class="btn btn-theme btn-pill btn-xs btn-line">Masuk</span></a></li>
-                                <li class="link-btn"><a href="{{ url('register') }}"><span class="btn btn-theme  btn-pill btn-xs btn-line">Daftar Sebagai Kontributor</span></a></li>
-                                @endif
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <!-- end main navbar -->
-                <!-- mobile navbar -->
-                <div class="container">
-                    <nav class="mobile-nav hidden-md hidden-lg">
-                        <ul class="nav navbar-nav nav-block-left">
-                                @if (auth()->check())
-                                <li class="dropdown">
-                                    <a href="#" class="link-profile dropdown-toggle"  data-toggle="dropdown" >
-                                    <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}" alt="{{ auth()->user()->name }}" class="img-profile"> &nbsp; {{ auth()->user()->name }} <b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Beranda</a></li>
-                                        <li><a href="{{ route('user.notification.index') }}">Notifikasi <span class="badge">{{ auth()->user()->unreadNotifications->count() }}</span></a></li>
-                                        <li><a href="{{ route('user.password.form') }}">Ubah Sandi Lewat</a></li>
-                                    </ul>
-                                </li>
-                                @endif
-                            </ul>
-                        <a href="#" class="btn-nav-toogle first">
-                        <span class="bars"></span>
-                        Menu
-                        </a>
-                        <div class="mobile-nav-block">
-                            <h4>Navigasi</h4>
-                            <a href="#" class="btn-nav-toogle">
-                            <span class="barsclose"></span>
-                            Tutup
-                            </a>
-                            <ul class="nav navbar-nav">
-                                @include('partials.menu')
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-                <!-- mobile navbar -->
-                <!-- form search area-->
-                <div class="container">
-                    @yield('heading')
-                </div>
-            </header>
-            <!-- end main-header -->
+          <div class="logo-wrapper">
+            <a class="logo" href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}"></a>
+            <a class="logo-alt" href="{{ route('home') }}"><img src="{{ asset('img/logo-alt.png') }}" alt="{{ config('app.name') }}"></a>
+          </div>
 
-            <!-- body-content -->
-            <div class="body-content clearfix">
-                <div class="bg-color1" id="content">
-                    <div class="container">
-                        @yield('content')
-                    </div>
-                </div>
-            </div>
-            <!--end body-content -->
-
-            <!-- main-footer -->
-            <footer class="main-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-inline link-footer text-center-xs">
-                                <li><a href="{{ route('glosarium.word.index') }}">Beranda</a></li>
-                                <li><a href="{{ route('contact.form') }}">Kontak Kami</a></li>
-                                <li><a href="{{ route('page.api.index', ['beta']) }}">API (Beta)</a></li>
-                                <li><a href="http://s.id/glosariumLINE">LINE@</a></li>
-                                @if (app()->environment('local'))
-                                    <li><a href="https://www.laravel.com">Laravel {{ $laravelVersion }}</a></li>
-                                @endif
-                            </ul>
-                        </div>
-                        <div class="col-sm-6 ">
-                            <p class="text-center-xs hidden-lg hidden-md hidden-sm">Tetap Terhubung</p>
-                            <div class="socials text-right text-center-xs">
-                                <a href="https://facebook.com/arvernester"><i class="fa fa-facebook"></i></a>
-                                <a href="https://twitter.com/arvernester"><i class="fa fa-twitter"></i></a>
-                                <a href="https://id.linkedin.com/in/arvernester"><i class="fa fa-linkedin"></i></a>
-                                <a href="https://instagram.com/glosariumid"><i class="fa fa-instagram"></i></a>
-                                <a href="http://yugo.my.id"><i class="fa fa-rss"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- end main-footer -->
         </div>
-        <!-- end wrapper page -->
+        <!-- END Logo -->
 
-        <script>
-            window.Laravel = {!! json_encode([
-                'locale' => config('app.locale'),
-                'csrfToken' => csrf_token(),
-                'url' => env('APP_URL'),
-                'auth' => auth()->check(),
-                'user' => [
-                    'email' => auth()->check() ? auth()->user()->email : null,
-                    'name' => auth()->check() ? auth()->user()->name : null,
-                ]
-            ]) !!}
-        </script>
+        @guest
+        <!-- User account -->
+        <div class="pull-right user-login">
+          <a class="btn btn-sm btn-primary" href="{{ route('login') }}">Masuk</a> atau <a href="{{ route('register') }}">daftar</a>
+        </div>
+        <!-- END User account -->
+        @endguest
 
-        <script src="{{ asset('js/app.js') }}"></script>
+        @auth
+        <!-- User account -->
+        <div class="pull-right">
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="{{ asset('js/jquery.easing.js') }}"></script>
+          <div class="dropdown user-account">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+              <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}">
+            </a>
 
-        <!-- jQuery Bootstrap -->
-        <script src="{{ asset('js/bootstrap.js') }}"></script>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
+              <li><a href="">Ubah Sandi Lewat</a></li>
+              <li><a href="{{ route('logout') }}">Keluar</a></li>
+            </ul>
+          </div>
 
-        <!-- Lightbox -->
-        <script src="{{ asset('js/magnific-popup.js') }}"></script>
+        </div>
+        <!-- END User account -->
+        @endauth
 
-        <!-- Theme JS -->
-        <script src="{{ asset ('js/theme.js') }}"></script>
+        <!-- Navigation menu -->
+        <ul class="nav-menu">
+          <li>
+            <a href="{{ route('home') }}">Beranda</a>
+          </li>
+        </ul>
+        <!-- END Navigation menu -->
 
-        @stack('js')
-    </body>
+      </div>
+    </nav>
+    <!-- END Navigation bar -->
+
+
+    <!-- Page header -->
+    @yield('header')
+    <!-- END Page header -->
+
+
+    <!-- Main container -->
+    <main>
+
+      @yield('content')
+
+    </main>
+    <!-- END Main container -->
+
+
+    <!-- Site footer -->
+    <footer class="site-footer">
+
+      @include('layouts.partials.footer')
+
+    </footer>
+    <!-- END Site footer -->
+
+
+    <!-- Back to top button -->
+    <a id="scroll-up" href="#" title="Kembali ke atas"><i class="ti-angle-up"></i></a>
+    <!-- END Back to top button -->
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+
+    @stack('js')
+
+  </body>
 </html>

@@ -20,13 +20,6 @@ use Illuminate\Http\Request;
 
 class KeywordController extends Controller
 {
-    public function paginate()
-    {
-        $keywords = Keyword::orderBy('keyword', 'ASC')
-            ->paginate(request('limit', 20));
-
-        return response()->json($keywords);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -108,7 +101,7 @@ class KeywordController extends Controller
     {
         abort_if(!Auth::user()->can('update', $keyword), 403, trans('global.http.403'));
 
-        $keyword->message = $request->message;
+        $keyword->message     = $request->message;
         $keyword->description = $request->description;
         $keyword->save();
 

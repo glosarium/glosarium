@@ -44,6 +44,6 @@ class Description extends Model
      */
     public function word()
     {
-        return $this->belongsTo(\App\Glosarium\Word::class);
+        return $this->belongsTo(\App\App\Word::class);
     }
 }

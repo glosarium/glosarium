@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Libraries\Image;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use SEO;
 
 class LoginController extends Controller
 {
@@ -36,7 +37,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
 
-        $this->redirectTo = route('glosarium.word.index');
+        $this->redirectTo = route('home');
     }
 
     /**
@@ -46,16 +47,14 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $title = trans('user.login');
+        $image = (new Image)->addText('Masuk', 50, 400, 150)
+            ->addText(config('app.name'), 40, 400, 250)
+            ->render('pages', 'login');
 
-        $image = new Image;
+        SEO::setTitle('Masuk Sebagai Kontributor');
+        SEO::opengraph()->addProperty('image', $image->path());
 
-        $image->addText($title, 30, 400, 300)->render('images/users/', $title);
-
-        $imagePath = $image->path();
-
-        return view('auths.logins.form', compact('imagePath'))
-            ->withTitle($title);
+        return view('users.login');
     }
 
     /**
@@ -99,7 +98,7 @@ class LoginController extends Controller
     {
         $this->validate($request, [
             $this->username() => 'required|exists:users,email',
-            'password'        => 'required',
+            'password' => 'required',
         ]);
     }
 
@@ -120,7 +119,7 @@ class LoginController extends Controller
         if ($auth and request()->ajax()) {
             return response()->json([
                 'isSuccess' => true,
-                'url'       => $this->redirectPath(),
+                'url' => $this->redirectPath(),
             ]);
         }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Glosarium\Word;
+use App\App\Word;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 

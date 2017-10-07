@@ -37,14 +37,20 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'is_active' => 'boolean',
     ];
 
+    /**
+     * @var array
+     */
     protected $appends = [
         'created_diff',
         'updated_diff',
-        'role_name',
+        'avatar',
     ];
 
     /**
@@ -75,35 +81,39 @@ class User extends Authenticatable
         return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
     }
 
-    public function getRoleNameAttribute()
+    public function getAvatarAttribute()
     {
-        $roles = [
-            'admin' => trans('user.role.admin'),
-            'contributor' => trans('user.role.contributor'),
-        ];
-
-        if (!array_key_exists($this->attributes['type'], $roles)) {
-            return trans('user.role.contributor');
-        }
-
-        return $roles[$this->attributes['type']];
+        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']);
     }
 
+    /**
+     * @return mixed
+     */
     public function glosariums()
     {
-        return $this->hasMany(\App\Glosarium\Word::class);
+        return $this->hasMany(\App\App\Word::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function glosariumWords()
     {
-        return $this->hasMany(\App\Glosarium\Word::class);
+        return $this->hasMany(\App\App\Word::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function favorites()
     {
-        return $this->hasMany(\App\Glosarium\Favorite::class);
+        return $this->hasMany(\App\App\Favorite::class);
     }
 
+    /**
+     * @param  $query
+     * @return mixed
+     */
     public function scopeFilter($query)
     {
         $keyword = request('keyword');

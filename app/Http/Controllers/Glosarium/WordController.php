@@ -20,15 +20,20 @@ use App\User;
 use Auth;
 use Cache;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Mail;
 use Notification;
 use Route;
+use SEO;
 
 /**
  * Manage glosarium words
  */
 class WordController extends Controller
 {
+    /**
+     * @var mixed
+     */
     private $cacheTime;
 
     public function __construct()
@@ -101,13 +106,13 @@ class WordController extends Controller
      * @param  string                     $slug
      * @return Illuminate\Http\Response
      */
-    public function show()
+    public function show(Request $request, $categorySlug, $slug)
     {
-        $word = Word::whereSlug(request('word'))
-            ->whereHas('category', function ($category) {
-                return $category->whereSlug(request('category'));
+        $word = Word::whereSlug($slug)
+            ->whereHas('category', function ($category) use ($categorySlug) {
+                return $category->whereSlug($categorySlug);
             })
-            ->with('category', 'description', 'user')
+            ->with('category', 'description')
             ->withCount('favorites')
             ->firstOrFail();
 
@@ -135,34 +140,10 @@ class WordController extends Controller
             }
         }
 
-        if (request()->ajax()) {
-            if (!empty($word)) {
-                return response()->json($word);
-            }
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Kata tidak ditemukan.',
-            ], 404);
-        }
-
-        // set meta description
-        if (!empty($word->description)) {
-            $metaDescription = $word->description->description;
-        } else {
-            $metaDescription = trans('glosarium.word.description', [
-                'origin' => $word->origin,
-                'locale' => $word->locale,
-            ]);
-        }
-
         // generate image
-        $image = new Image;
-        $image->addText($word->origin, 50, 400, 150)
+        $image = (new Image)->addText(sprintf('%s (%s)', $word->origin, $word->lang), 50, 400, 150)
             ->addText($word->locale, 40, 400, 250)
-            ->render(sprintf('images/glosariums/%s', $word->category->slug), $word->slug);
-
-        $imagePath = $image->path();
+            ->render(sprintf('words/%s', $word->category->slug), $word->slug);
 
         // short link
         $hash = base_convert($word->id, 20, 36);
@@ -172,7 +153,14 @@ class WordController extends Controller
             'url' => route('glosarium.word.show', [$word->category->slug, $word->slug]),
         ]);
 
-        return view(Route::currentRouteName(), compact('totalWord', 'word', 'wikipedias', 'imagePath', 'link', 'metaDescription'))
+        // seo config
+        SEO::setTitle(sprintf('Padanan kata %s adalah %s', $word->locale, $word->origin));
+        SEO::opengraph()->addProperty('image', $image->path());
+        if (!empty($word->description['description'])) {
+            SEO::setDescription($word->description['description']);
+        }
+
+        return view('glosariums.words.show', compact('word', 'link'))
             ->withTitle(trans('glosarium.word.show', [
                 'origin' => $word->origin,
                 'locale' => $word->locale,
@@ -205,7 +193,7 @@ class WordController extends Controller
 
         $cacheTime = \Carbon\Carbon::now()->addDays(7);
         $total = Cache::remember('glosarium.total', $cacheTime, function () {
-            return \App\Glosarium\Word::count();
+            return \App\App\Word::count();
         });
 
         return response()->json([
@@ -289,7 +277,7 @@ class WordController extends Controller
         $words = Word::orderBy('created_at', 'DESC')
             ->with('category')
             ->whereIsPublished(true)
-            ->limit(request('limit', 20))
+            ->limit(20)
             ->get();
 
         return response()->json([

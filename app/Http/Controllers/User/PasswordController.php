@@ -37,18 +37,9 @@ class PasswordController extends Controller
         $user->password = bcrypt($request->password);
 
         if ($user->save() === true) {
-            // ajax request
-            if (request()->ajax()) {
-                return response()->json([
-                    'status'  => true,
-                    'message' => trans('user.msg.passwordUpdated'),
-                ]);
-            }
-
-            // browser request
             return redirect()
                 ->route('user.password.form')
-                ->withSuccess(trans('user.msg.passwordUpdated'));
+                ->withSuccess('Sandi lewat berhasil diperbarui');
         }
 
         return redirect()->back();

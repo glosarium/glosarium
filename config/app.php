@@ -181,15 +181,12 @@ return [
         // https://github.com/RoumenDamianoff/laravel-sitemap
         Roumen\Sitemap\SitemapServiceProvider::class,
 
+        /**
+         * https://github.com/artesaos/seotools
+         */
+        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+
         Jenssegers\Agent\AgentServiceProvider::class,
-
-        // https://github.com/spatie/laravel-fractal
-        Spatie\Fractal\FractalServiceProvider::class,
-
-        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
-
-        Laravel\Scout\ScoutServiceProvider::class,
-        ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
 
         /*
          * Application Service Providers...
@@ -253,10 +250,11 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
-        'Fractal' => Spatie\Fractal\FractalFacade::class,
-
-        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
-        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+        // SEO tools
+        'SEOMeta' => Artesaos\SEOTools\Facades\SEOMeta::class,
+        'OpenGraph' => Artesaos\SEOTools\Facades\OpenGraph::class,
+        'Twitter' => Artesaos\SEOTools\Facades\TwitterCard::class,
+        'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
     ],
 
 ];

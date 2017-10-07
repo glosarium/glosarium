@@ -12,8 +12,8 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
-use App\Glosarium\Category;
-use App\Glosarium\Word;
+use App\App\Category;
+use App\App\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\WordRequest;
 use Auth;

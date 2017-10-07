@@ -2,7 +2,7 @@
 
 namespace App\Policies\Glosarium;
 
-use App\Glosarium\Word;
+use App\App\Word;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -24,7 +24,7 @@ class WordPolicy
      * Determine whether the user can view the word.
      *
      * @param  \App\User           $user
-     * @param  \App\Glosarium\Word $word
+     * @param  \App\App\Word $word
      * @return mixed
      */
     public function view(User $user, Word $word)
@@ -47,7 +47,7 @@ class WordPolicy
      * Determine whether the user can update the word.
      *
      * @param  \App\User           $user
-     * @param  \App\Glosarium\Word $word
+     * @param  \App\App\Word $word
      * @return mixed
      */
     public function update(User $user, Word $word)
@@ -59,7 +59,7 @@ class WordPolicy
      * Determine whether the user can delete the word.
      *
      * @param  \App\User           $user
-     * @param  \App\Glosarium\Word $word
+     * @param  \App\App\Word $word
      * @return mixed
      */
     public function delete(User $user, Word $word)
