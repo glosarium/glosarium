@@ -154,7 +154,7 @@ class WordController extends Controller
         ]);
 
         // seo config
-        SEO::setTitle(sprintf('Padanan kata %s adalah %s', $word->locale, $word->origin));
+        SEO::setTitle(sprintf('Padanan kata %s adalah %s', $word->origin, $word->locale));
         SEO::opengraph()->addProperty('image', $image->path());
         if (!empty($word->description['description'])) {
             SEO::setDescription($word->description['description']);
