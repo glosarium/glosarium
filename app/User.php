@@ -37,13 +37,20 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'is_active' => 'boolean',
     ];
 
+    /**
+     * @var array
+     */
     protected $appends = [
         'created_diff',
         'updated_diff',
+        'avatar',
     ];
 
     /**
@@ -74,21 +81,39 @@ class User extends Authenticatable
         return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
     }
 
+    public function getAvatarAttribute()
+    {
+        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']);
+    }
+
+    /**
+     * @return mixed
+     */
     public function glosariums()
     {
         return $this->hasMany(\App\App\Word::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function glosariumWords()
     {
         return $this->hasMany(\App\App\Word::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function favorites()
     {
         return $this->hasMany(\App\App\Favorite::class);
     }
 
+    /**
+     * @param  $query
+     * @return mixed
+     */
     public function scopeFilter($query)
     {
         $keyword = request('keyword');

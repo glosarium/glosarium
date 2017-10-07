@@ -1,8 +1,11 @@
 <?php
 
 Auth::routes();
-Route::post('user/email', 'Auth\RegisterController@email')->name('user.email');
 Route::get('dashboard', 'User\DashboardController')->name('user.dashboard');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
+// register
+Route::get('user/confirm', 'Auth\ConfirmController')->name('user.confirm');
 
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {
     // notification
@@ -16,9 +19,4 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
     // password
     Route::get('user/password', 'PasswordController@form')->name('password.form');
     Route::post('user/password', 'PasswordController@update')->name('password.update');
-});
-
-// user
-Route::group(['prefix' => 'user', 'namespace' => 'User', 'as' => 'user.'], function () {
-    Route::get('total', 'UserController@total')->name('user.total');
 });

@@ -7,14 +7,14 @@
   </a>
   <h1>Masuk ke Akun Kamu</h1>
 
-  <form action="{{ route('login') }}">
+  <form action="{{ route('login') }}" method="post">
     {{ csrf_field() }}
     {{ method_field('post') }}
 
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="ti-email"></i></span>
-        <input type="email" class="form-control" placeholder="Pos-el">
+        <input type="email" name="email" class="form-control" placeholder="Pos-el">
       </div>
     </div>
 
@@ -23,7 +23,7 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="ti-unlock"></i></span>
-        <input type="password" class="form-control" placeholder="Sandi Lewat">
+        <input type="password" name="password" class="form-control" placeholder="Sandi Lewat">
       </div>
     </div>
 

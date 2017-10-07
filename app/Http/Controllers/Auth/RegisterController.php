@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\Image;
+use App\Mail\User\RegisterMail;
+use App\Newsletter\Subscriber;
 use App\Notifications\User\RegistrationNotification;
 use App\User;
+use DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
+use Mail;
 use Notification;
+use SEO;
 
 class RegisterController extends Controller
 {
@@ -65,7 +72,6 @@ class RegisterController extends Controller
             'name' => 'required|max:100|valid_name',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|min:6',
-            'passwordConfirmation' => 'required|same:password',
         ]);
     }
 
@@ -78,18 +84,31 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         try {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-                'is_active' => true,
-            ]);
+            DB::transaction(function () use ($data, &$user) {
+                $user = User::create([
+                    'name' => $data['name'],
+                    'email' => strtolower($data['email']),
+                    'password' => bcrypt($data['password']),
+                    'is_active' => false, // need confirm via email
+                ]);
 
-            // notif admin
-            $users = User::whereType('admin')
-                ->whereIsActive(true)
-                ->get();
-            Notification::send($users, new RegistrationNotification($user));
+                // subscribe to newsletter
+                $subscriber = Subscriber::firstOrNew([
+                    'email' => $user->email,
+                ]);
+
+                $subscriber->name = $user->name;
+                $subscriber->is_subscribed = true;
+                $subscriber->save();
+
+                // notify user where type is admin
+                $users = User::whereType('admin')
+                    ->whereIsActive(true)
+                    ->get();
+                Notification::send($users, new RegistrationNotification($user));
+
+                Mail::to($user->email)->send(new RegisterMail($user));
+            });
 
         } catch (Exception $e) {
             if (request()->ajax()) {
@@ -119,14 +138,7 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        if (request()->ajax()) {
-            return response()->json([
-                'isSuccess' => true,
-                'url' => route('glosarium.word.index'),
-            ]);
-        } else {
-            return redirect($this->redirectPath());
-        }
+        return redirect($this->redirectPath());
     }
 
     /**
@@ -134,23 +146,17 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(): View
     {
-        return view('users.register', compact('image'))
-            ->withTitle(trans('user.register'));
-    }
+        $image = (new Image)->addText('Daftar Kontributor', 50, 400, 150)
+            ->addText(config('app.name'), 40, 400, 250)
+            ->render('pages', 'register');
 
-    public function email()
-    {
-        $user = User::whereEmail(request('email'))->first();
+        // seo config
+        SEO::setTitle('Daftar Sebagai Kontributor');
+        SEO::setDescription('Dengan mendaftar sebagai kontributor, kamu dapat berperang aktif untuk menambahkan padanan kata baru dan menentukan deskripsi yang sesuai.');
+        SEO::opengraph()->addProperty('image', $image->path());
 
-        if (!empty($user)) {
-            return response()->json([
-                'success' => false,
-                'message' => trans('user.emailExists'),
-            ], 422);
-        }
-
-        return response()->json(['success' => true]);
+        return view('users.register');
     }
 }

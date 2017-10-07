@@ -36,11 +36,33 @@
         </div>
         <!-- END Logo -->
 
+        @guest
         <!-- User account -->
         <div class="pull-right user-login">
           <a class="btn btn-sm btn-primary" href="{{ route('login') }}">Masuk</a> atau <a href="{{ route('register') }}">daftar</a>
         </div>
         <!-- END User account -->
+        @endguest
+
+        @auth
+        <!-- User account -->
+        <div class="pull-right">
+
+          <div class="dropdown user-account">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+              <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}">
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
+              <li><a href="">Ubah Sandi Lewat</a></li>
+              <li><a href="{{ route('logout') }}">Keluar</a></li>
+            </ul>
+          </div>
+
+        </div>
+        <!-- END User account -->
+        @endauth
 
         <!-- Navigation menu -->
         <ul class="nav-menu">

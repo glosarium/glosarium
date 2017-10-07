@@ -7,12 +7,14 @@
   </a>
   <h1>Daftar Sebagai Kontributor</h1>
 
-  <form action="#">
+  <form action="{{ route('register') }}" method="post">
+    {{ csrf_field() }}
+    {{ method_field('post') }}
 
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="ti-user"></i></span>
-        <input type="text" class="form-control" placeholder="Nama Lengkap">
+        <input type="text" name="name" class="form-control" placeholder="Nama Lengkap">
       </div>
     </div>
 
@@ -21,7 +23,7 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="ti-email"></i></span>
-        <input type="text" class="form-control" placeholder="Pos-el">
+        <input type="email" name="email" class="form-control" placeholder="Pos-el">
       </div>
     </div>
 
@@ -30,7 +32,7 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="ti-unlock"></i></span>
-        <input type="password" class="form-control" placeholder="Sandi Lewat">
+        <input type="password" name="password" class="form-control" placeholder="Sandi Lewat">
       </div>
     </div>
 
