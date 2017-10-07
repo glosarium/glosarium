@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Glosarium;
 
-use App\App\Word;
+use App\Glosarium\Word;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -11,8 +11,14 @@ class WordCreatedNotification extends Notification
 {
     use Queueable;
 
+    /**
+     * @var mixed
+     */
     private $word;
 
+    /**
+     * @var mixed
+     */
     private $user;
 
     /**
@@ -64,10 +70,10 @@ class WordCreatedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type'    => 'info',
+            'type' => 'info',
             'subject' => 'Kata Baru',
             'message' => sprintf('Sebuah kata baru %s dari %s.', $this->word->origin, $this->user),
-            'data'    => [
+            'data' => [
                 'origin' => $this->word->origin,
                 'locale' => $this->word->locale,
             ],

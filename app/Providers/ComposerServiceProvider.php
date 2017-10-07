@@ -27,7 +27,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('user.partial.sidebar', function ($view) {
-            $totalModeration = \App\App\Word::whereIsPublished(false)->count();
+            $totalModeration = \App\Glosarium\Word::whereIsPublished(false)->count();
             $view->with('totalModeration', $totalModeration);
         });
 

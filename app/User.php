@@ -91,7 +91,7 @@ class User extends Authenticatable
      */
     public function glosariums()
     {
-        return $this->hasMany(\App\App\Word::class);
+        return $this->hasMany(\App\Glosarium\Word::class);
     }
 
     /**
@@ -99,7 +99,7 @@ class User extends Authenticatable
      */
     public function glosariumWords()
     {
-        return $this->hasMany(\App\App\Word::class);
+        return $this->hasMany(\App\Glosarium\Word::class);
     }
 
     /**

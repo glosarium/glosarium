@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Word;
 
-use App\App\WordCategory;
+use App\Glosarium\WordCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

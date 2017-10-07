@@ -12,8 +12,8 @@
 
 namespace App\Http\Controllers\Admin\Glosarium;
 
-use App\App\Category;
-use App\App\Word;
+use App\Glosarium\Category;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\WordRequest;
 use Auth;
@@ -92,13 +92,13 @@ class WordController extends Controller
         abort_if(!Auth::user()->can('create', Word::class), 403, trans('global.http.403'));
 
         $word = Word::create([
-            'user_id'      => Auth::id(),
-            'category_id'  => $request->category,
-            'lang'         => $request->lang,
-            'origin'       => $request->origin,
-            'locale'       => $request->locale,
+            'user_id' => Auth::id(),
+            'category_id' => $request->category,
+            'lang' => $request->lang,
+            'origin' => $request->origin,
+            'locale' => $request->locale,
             'is_published' => $request->publish,
-            'is_standard'  => true,
+            'is_standard' => true,
         ]);
 
         return redirect()->back()
@@ -139,10 +139,10 @@ class WordController extends Controller
 
         abort_if(!Auth::user()->can('update', $word), 403, trans('global.http.403'));
 
-        $word->category_id  = $request->category;
-        $word->lang         = $request->lang;
-        $word->origin       = $request->origin;
-        $word->locale       = $request->locale;
+        $word->category_id = $request->category;
+        $word->lang = $request->lang;
+        $word->origin = $request->origin;
+        $word->locale = $request->locale;
         $word->is_published = $request->publish;
 
         $word->save();
@@ -167,7 +167,7 @@ class WordController extends Controller
 
         return response()->json([
             'success' => $deleted,
-            'title'   => trans('global.success'),
+            'title' => trans('global.success'),
             'message' => trans('glosarium.word.deleted'),
         ]);
     }

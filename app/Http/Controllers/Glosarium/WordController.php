@@ -193,7 +193,7 @@ class WordController extends Controller
 
         $cacheTime = \Carbon\Carbon::now()->addDays(7);
         $total = Cache::remember('glosarium.total', $cacheTime, function () {
-            return \App\App\Word::count();
+            return \App\Glosarium\Word::count();
         });
 
         return response()->json([

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Word;
 
-use App\App\Word;
+use App\Glosarium\Word;
 use Illuminate\Console\Command;
 
 class Duplicate extends Command
@@ -54,13 +54,13 @@ class Duplicate extends Command
                     } else {
                         if (!empty($clone)) {
                             Word::Create([
-                                'user_id'      => $word->user_id,
-                                'category_id'  => $word->category_id,
-                                'lang'         => $word->lang,
-                                'origin'       => $word->origin,
-                                'locale'       => trim($clone),
+                                'user_id' => $word->user_id,
+                                'category_id' => $word->category_id,
+                                'lang' => $word->lang,
+                                'origin' => $word->origin,
+                                'locale' => trim($clone),
                                 'is_published' => $word->is_published,
-                                'is_standard'  => $word->is_standard,
+                                'is_standard' => $word->is_standard,
                             ]);
                         }
                     }
