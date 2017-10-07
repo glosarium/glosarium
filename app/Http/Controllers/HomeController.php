@@ -20,6 +20,7 @@ class HomeController extends Controller
     {
         if ($request->has('word')) {
             $words = Word::sort()
+                ->with('user', 'description', 'category')
                 ->filter($request->word)
                 ->isPublished()
                 ->paginate();

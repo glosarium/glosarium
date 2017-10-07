@@ -23,10 +23,12 @@
           <span><a href="{{ route('glosarium.category.show', $word->category->slug) }}">{{ $word->category->name }}</a></span>
         </li>
 
+        @if (! empty($word->user))
         <li>
           <i class="fa fa-user fa-fw"></i>
           <span><a href="#" title="Lihat profil {{ $word->user->name }}">{{ $word->user->name }}</a></span>
         </li>
+        @endif
 
         <li>
           <i class="fa fa-link fa-fw"></i>

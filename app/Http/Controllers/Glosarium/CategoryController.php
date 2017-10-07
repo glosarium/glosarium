@@ -21,6 +21,7 @@ use Cache;
 use Carbon\Carbon;
 use Illuminate\View\View;
 use Route;
+use SEO;
 
 /**
  * Glosarium category controller
@@ -127,6 +128,11 @@ class CategoryController extends Controller
         // create header image
         $image = (new Image)->addText($category->name, 50, 400, 200)
             ->render('categories', $category->slug);
+
+        // seo config
+        SEO::setTitle($category->name);
+        SEO::setDescription($category->description);
+        SEO::opengraph()->addProperty('image', $image->path());
 
         return view('glosariums.categories.show', compact('category', 'words'))
             ->withTitle(trans('glosarium.category.index', ['name' => $category->name]));

@@ -108,10 +108,12 @@
                       <span>{{ $word->category->name }}</span>
                     </li>
 
+                    @if (! empty($word->user))
                     <li>
                       <i class="fa fa-user fa-fw"></i>
                       <span>{{ $word->user->name }}</span>
                     </li>
+                    @endif
 
                     <li>
                       <i class="fa fa-link fa-fw"></i>
