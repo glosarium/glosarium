@@ -12,10 +12,10 @@
 
 namespace App\Http\Controllers\Glosarium;
 
-use App\App\Category;
-use App\App\Word;
+use App\Glosarium\Category;
+use App\Glosarium\Word;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\App\CategoryRequest;
+use App\Http\Requests\Glosarium\CategoryRequest;
 use App\Libraries\Image;
 use Cache;
 use Carbon\Carbon;

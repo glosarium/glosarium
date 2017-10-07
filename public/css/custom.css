@@ -5,3 +5,7 @@ header.latest-words {
 div.logo {
     margin-top: 20px;
 }
+
+.page-header .button-group .btn {
+    margin-left: 0;
+}

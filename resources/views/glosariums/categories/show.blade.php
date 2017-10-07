@@ -29,10 +29,10 @@
           $word->slug,
           'word' => request('word'),
           'page' => request('page')
-        ]) }}" title="Lihat rincian untuk {{ $word->origin }}">
+        ]) }}" title="Lihat rincian untuk {{ $word->origin }} - {{ $word->locale }}">
           <header>
             <div class="hgroup">
-              <h4>{{ strtolower($word->oritgin) }} <span class="label label-success">{{ $word->lang }}</span></h4>
+              <h4>{{ strtolower($word->origin) }} <span class="label label-success">{{ $word->lang }}</span></h4>
               <h5>{{ strtolower($word->locale) }}</h5>
             </div>
             <time datetime="2016-03-10 20:00">{{ $word->created_diff }}</time>

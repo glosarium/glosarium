@@ -20,7 +20,7 @@
       <ul class="details cols-3">
         <li>
           <i class="{{ $word->category->metadata['icon'] }} fa-fw"></i>
-          <span>{{ $word->category->name }}</span>
+          <span><a href="{{ route('glosarium.category.show', $word->category->slug) }}">{{ $word->category->name }}</a></span>
         </li>
 
         <li>
@@ -37,24 +37,18 @@
       <div class="button-group">
         <ul class="social-icons">
           <li class="title">Bagikan pada</li>
-          <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-          <li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
-          <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-          <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+          <li><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"><i class="fa fa-facebook"></i></a></li>
+          <li><a class="google-plus" href="https://plus.google.com/share?url={{ url()->current() }}"><i class="fa fa-google-plus"></i></a></li>
+          <li><a class="twitter" href="https://twitter.com/intent/tweet?url={{ $word->short_url }}&text=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}.&hashtags=glosarium,bahasa,indonesia"><i class="fa fa-twitter"></i></a></li>
+          <li><a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ url()->current() }}&title=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}&summary=&source="><i class="fa fa-linkedin"></i></a></li>
         </ul>
 
         <div class="action-buttons">
-          <a href="{{ route('home', [
-            'word' => request('word'),
-            'page' => request('page'),
-            'source' => $word->slug
-          ]) }}" class="btn btn-success">
-            Kembali
-          </a>
-          <a class="btn btn-info" href="#" disabled="true">
-              <i class="fa fa"></i>
-              Favorit
-          </a>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="fa fa-thumbs-up fa-fw"></i> 0</button>
+            <button type="button" class="btn btn-danger"><i class="fa fa-thumbs-down fa-fw"></i> 0</button>
+            <button type="button" class="btn btn-info"><i class="fa fa-bookmark fa-fw"></i> {{ $word->favorites_count }}</button>
+          </div>
         </div>
       </div>
 
