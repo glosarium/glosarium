@@ -1,6 +1,7 @@
 <?php
 
 Auth::routes();
+Route::get('profile/{username}', 'User\ProfileController@show')->name('user.profile.show');
 Route::get('dashboard', 'User\DashboardController')->name('user.dashboard');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 

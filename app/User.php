@@ -83,7 +83,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute()
     {
-        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']);
+        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']).'?s=150';
     }
 
     /**
