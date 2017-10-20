@@ -55,6 +55,8 @@ class HomeController extends Controller
             if (!empty($words->first()->description['description'])) {
                 SEO::setDescription($words->first()->description['description']);
             }
+        } else {
+            SEO::setDescription(config('app.description'));
         }
 
         return view('home', compact('words', 'categories'));

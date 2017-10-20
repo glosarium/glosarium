@@ -40,8 +40,7 @@ class ContactController extends Controller
         $image->addText(trans('contact.heading'), 30, 400, 250);
         $imagePath = $image->render('images/pages/', 'kontak')->path();
 
-        return view(Route::currentRouteName(), compact('imagePath'))
-            ->withTitle(trans('contact.title'));
+        return view(Route::currentRouteName(), compact('imagePath'));
     }
 
     /**

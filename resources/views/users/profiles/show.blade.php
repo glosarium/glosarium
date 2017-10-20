@@ -5,24 +5,32 @@
     <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-4">
-        <img src="{{ $user->avatar }}" alt="{{ $user->name }}">
+            <img src="{{ $user->avatar }}" alt="{{ $user->name }}">
         </div>
 
         <div class="col-xs-12 col-sm-8 header-detail">
-        <div class="hgroup">
-            <h1>{{ $user->name }}</h1>
-            <h3>{{ ucwords($user->type) }}</h3>
+            <div class="hgroup">
+                <h1>{{ $user->name }}</h1>
+                <h3>{{ ucwords($user->headline) }}</h3>
+            </div>
+            <hr>
+            <p class="lead">
+            @if (!empty($user->about))
+                {{ $user->about }}
+            @else
+                Tidak ada keterangan untuk pengguna ini.
+            @endif
+            </p>
+            </div>
         </div>
-        <hr>
-        <p class="lead">
-        @if (!empty($user->about))
-            {{ $user->about }}
-        @else
-            Tidak ada keterangan untuk pengguna ini.
+
+        @if (auth()->user()->id == $user->id)
+        <div class="button-group">
+          <div class="action-buttons">
+            <a class="btn btn-success" href="{{ route('user.profile.edit') }}">Ubah Profil</a>
+          </div>
+        </div>
         @endif
-        </p>
-        </div>
-    </div>
     </div>
 </header>
 @endsection
