@@ -32,7 +32,7 @@
 @section('content')
 <section class="no-padding-top bg-alt">
     <div class="container">
-        <div class="row item-blocks-connected">
+        <div class="row">
 
         <div class="col-xs-12">
             <br>
@@ -43,13 +43,17 @@
         @foreach ($categories as $category)
         <div class="col-xs-12">
             <a class="item-block" href="{{ route('glosarium.category.show', $category->slug) }}">
-                <header>                    
-                    <div class="hgroup">
-                    <h4> <i class="fa-fw {{ $category->metadata['icon'] }}"></i> {{ $category->name }}</h4>
-                    <h5>{{ number_format($category->words_count, 0, ',', '.') }} kata</h5>
-                    <p class="lead">{{ $category->description }}</p>
-                    </div>
+                <header>
+                <div class="hgroup">
+                    <h4>{{ $category->name }}</h4>
+                    <h5><i class="{{ $category->metadata['icon'] }} fa-fw"></i></h5>
+                </div>
+                <span class="open-position">{{ number_format($category->words_count, 0, ',', '.') }} kata dalam kategori</span>
                 </header>
+
+                <div class="item-body">
+                <p>{{ $category->description }}</p>
+                </div>
             </a>
         </div>
         @endforeach
@@ -58,7 +62,7 @@
 
 
         <!-- Page navigation -->
-        <nav class="text-center">
+        <nav>
             {{ $categories->links() }}
         </nav>
         <!-- END Page navigation -->

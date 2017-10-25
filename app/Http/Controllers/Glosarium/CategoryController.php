@@ -36,18 +36,6 @@ class CategoryController extends Controller
     public function __construct()
     {
         $this->cacheTime = Carbon::now()->addDays(30);
-
-        view()->share([
-            'js' => [
-                'route' => Route::currentRouteName(),
-                'index' => route('glosarium.category.paginate'),
-                'all' => route('glosarium.category.all'),
-                'word' => [
-                    'category' => url('word/category'),
-                    'latest' => route('glosarium.word.latest'),
-                ],
-            ],
-        ]);
     }
 
     /**
@@ -130,7 +118,7 @@ class CategoryController extends Controller
                 ->first();
         });
 
-        abort_if(empty($category), 404, trans('glosarium.category.notFound'));
+        abort_if(empty($category), 404, sprintf('Kategori "%s" tidak ditemukan.', $slug));
 
         $words = Word::whereHas('category', function ($category) use ($slug) {
             return $category->whereSlug($slug);
