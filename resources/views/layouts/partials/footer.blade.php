@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-xs-6 col-md-3">
-      <h6>Menu</h6>
+      <h6>Tautan Utama</h6>
       <ul class="footer-links">
         <li><a href="page-about.html">Tentang Kami</a></li>
         <li><a href="page-about.html">Blog</a></li>
@@ -56,7 +56,7 @@
         <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
         <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
         <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
-        <li><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></li>
+        <li><a class="instagram" href="https://www.instagram.com/glosariumid"><i class="fa fa-instagram"></i></a></li>
       </ul>
     </div>
   </div>

@@ -20,15 +20,71 @@
 
   <body class="nav-on-header smart-nav">
 
+    <nav class="navbar">
+      <div class="container">
+
+        <!-- Logo -->
+        <div class="pull-left">
+          <a class="navbar-toggle" href="#" data-toggle="offcanvas"><i class="ti-menu"></i></a>
+
+          <div class="logo-wrapper">
+            <a class="logo" href="{{ route('home') }}"></a>
+            <a class="logo-alt" href="{{ route('home') }}"></a>
+          </div>
+
+        </div>
+        <!-- END Logo -->
+
+        @guest
+        <!-- User account -->
+        <div class="pull-right user-login">
+          <a class="btn btn-sm btn-primary" href="{{ route('login') }}"><i class="fa fa-lock fa-fw"></i> Masuk</a>
+        </div>
+        <!-- END User account -->
+        @endguest
+
+        @auth
+        <!-- User account -->
+        <div class="pull-right">
+
+          <div class="dropdown user-account">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+              <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}">
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
+              <li><a href="{{ route('user.profile.show', auth()->user()->username) }}">Profil Saya</a></li>
+              <li><a href="">Ubah Sandi Lewat</a></li>
+              <li><a href="{{ route('logout') }}">Keluar</a></li>
+            </ul>
+          </div>
+
+        </div>
+        <!-- END User account -->
+        @endauth
+
+        <!-- Navigation menu -->
+        <ul class="nav-menu pull-left">
+          <li>
+            <a href="{{ route('home') }}">Beranda</a>
+            <a href="{{ route('glosarium.category.index') }}">Kategori</a>
+            <a href="{{ route('contact.form') }}">Kontak Kami</a>
+          </li>
+        </ul>
+        <!-- END Navigation menu -->
+
+      </div>
+    </nav>
+
     <!-- Main container -->
     <main>
 
-      <section class="no-padding-top">
+      <section>
         <div class="container">
           <div class="row logo">
             <div class="row text-center">
               <a href="{{ route('home') }}" title="Kembali ke Beranda">
-                <img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}">
               </a>
             </div>
           </div>
@@ -36,9 +92,10 @@
           <div class="row">
             <div class="col-xs-12">
               <form class="header-job-search" method="get" action="{{ url()->current() }}">
+              <input type="hidden" name="utm_source" value="homepage">
 
                 <div class="input-keyword">
-                  <input type="search" name="word" class="form-control" placeholder="Kata dalam bahasa asing maupun bahasa lokal" value="{{ request('word') }}">
+                  <input type="search" name="keyword" class="form-control" placeholder="Kata dalam bahasa asing maupun bahasa lokal" value="{{ request('word') }}">
                 </div>
 
                 <div class="btn-search">
@@ -89,7 +146,7 @@
               ]) }}" title="Lihat rincian untuk {{ $word->origin }} - {{ $word->locale }}">
                 <header>
                   <div class="hgroup">
-                    <h4>{{ strtolower($word->origin) }} <span class="label label-success">{{ $word->lang }}</span></h4>
+                    <h4>{{ strtolower($word->origin) }} <span class="label label-info">{{ $word->lang }}</span></h4>
                     <h5>{{ strtolower($word->locale) }}</h5>
                   </div>
                   <time datetime="2016-03-10 20:00">{{ $word->created_diff }}</time>

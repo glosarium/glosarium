@@ -3,7 +3,6 @@
 @section('content')
 <div class="login-block">
   <a href="{{ route('home') }}" title="Kembali ke Beranda">
-    <img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}">
   </a>
   <h1>Masuk ke Akun Kamu</h1>
 

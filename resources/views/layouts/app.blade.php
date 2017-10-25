@@ -29,8 +29,8 @@
           <a class="navbar-toggle" href="#" data-toggle="offcanvas"><i class="ti-menu"></i></a>
 
           <div class="logo-wrapper">
-            <a class="logo" href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}"></a>
-            <a class="logo-alt" href="{{ route('home') }}"><img src="{{ asset('img/logo-alt.png') }}" alt="{{ config('app.name') }}"></a>
+            <a class="logo" href="{{ route('home') }}"></a>
+            <a class="logo-alt" href="{{ route('home') }}"></a>
           </div>
 
         </div>
@@ -39,7 +39,7 @@
         @guest
         <!-- User account -->
         <div class="pull-right user-login">
-          <a class="btn btn-sm btn-primary" href="{{ route('login') }}">Masuk</a> atau <a href="{{ route('register') }}">daftar</a>
+          <a class="btn btn-sm btn-primary" href="{{ route('login') }}">Masuk</a> atau <a href="{{ route('register') }}">Daftar sebagai Kontributor</a>
         </div>
         <!-- END User account -->
         @endguest
@@ -66,7 +66,7 @@
         @endauth
 
         <!-- Navigation menu -->
-        <ul class="nav-menu">
+        <ul class="nav-menu pull-left">
           <li>
             <a href="{{ route('home') }}">Beranda</a>
             <a href="{{ route('glosarium.category.index') }}">Kategori</a>

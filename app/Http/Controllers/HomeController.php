@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Glosarium\Category;
@@ -16,16 +15,21 @@ class HomeController extends Controller
     /**
      * @param Request $Request
      */
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request) : View
     {
-        if ($request->has('word')) {
+        $this->validate($request, [
+            'keyword' => 'string',
+            'limit' => 'integer|max:20'
+        ]);
+
+        if ($request->has('keyword')) {
             $words = Word::sort()
                 ->with('user', 'description', 'category')
-                ->filter($request->word)
+                ->filter($request->keyword)
                 ->isPublished()
-                ->paginate();
+                ->paginate($request->limit ?? 20);
 
-            $words->appends($request->only('word'));
+            $words->appends($request->only('keyword', 'limit'));
 
             if ($words->total() >= 1) {
                 $meta = $words->first();
@@ -49,13 +53,14 @@ class HomeController extends Controller
             ->render('pages', 'home');
 
         // seo config
-        SEO::setTitle($title ?? config('app.name'));
+        SEO::setTitle($title ?? config('app.description'));
         SEO::opengraph()->addProperty('image', $image->path());
         if (isset($words) and $words->total() >= 1) {
             if (!empty($words->first()->description['description'])) {
                 SEO::setDescription($words->first()->description['description']);
             }
-        } else {
+        }
+        else {
             SEO::setDescription(config('app.description'));
         }
 
