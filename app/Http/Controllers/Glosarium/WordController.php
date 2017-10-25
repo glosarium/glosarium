@@ -40,6 +40,9 @@ class WordController extends Controller
     public function __construct()
     {
         $this->cacheTime = Carbon::now()->addDays(30);
+
+        // default description for metadata
+        SEO::setDescription(config('app.description'));
     }
 
     /**
@@ -116,7 +119,6 @@ class WordController extends Controller
 
         // generate metadata for SEO
         SEO::setTitle('Jelajahi Kata');
-        SEO::setDescription(config('app.description'));
         SEO::opengraph()->addProperty('image', $image);
 
         // get categories
@@ -332,6 +334,8 @@ class WordController extends Controller
             ->paginate($request->limit ?? 20);
 
         $categories = Category::dropdown();
+
+        SEO::setTitle('Kontribusi Kata');
 
         return view('glosariums.words.contribute', compact('words', 'categories'));
     }
