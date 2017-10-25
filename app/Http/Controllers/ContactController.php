@@ -20,6 +20,7 @@ use App\User;
 use Auth;
 use Illuminate\View\View;
 use Mail;
+use SEO;
 
 /**
  * Send message from guest via form
@@ -36,6 +37,11 @@ class ContactController extends Controller
         $image = (new Image)
             ->addText('Kontak Kami', 100, 400, 150)
             ->render('images/pages/', 'kontak')->path();
+
+        // generate meta for SEO
+        SEO::setTitle('Kontak Kami');
+        SEO::setDescription(config('app.description'));
+        SEO::opengraph()->addProperty('image', $image);
 
         return view('contacts.form');
     }
