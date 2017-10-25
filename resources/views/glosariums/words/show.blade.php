@@ -26,7 +26,7 @@
         @if (! empty($word->user))
         <li>
           <i class="fa fa-user fa-fw"></i>
-          <span><a href="#" title="Lihat profil {{ $word->user->name }}">{{ $word->user->name }}</a></span>
+          <span><a href="{{ route('user.profile.show', $word->user->username) }}" title="Lihat profil {{ $word->user->name }}">{{ $word->user->name }}</a></span>
         </li>
         @endif
 

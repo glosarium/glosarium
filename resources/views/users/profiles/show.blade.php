@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        @if (auth()->user()->id == $user->id)
+        @if (auth()->check() and (auth()->user()->id == $user->id))
         <div class="button-group">
           <div class="action-buttons">
             <a class="btn btn-success" href="{{ route('user.profile.edit') }}">Ubah Profil</a>

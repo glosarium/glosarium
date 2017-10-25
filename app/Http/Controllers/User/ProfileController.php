@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function show($username) : View
     {
         $user = User::whereUsername($username)->firstOrFail();
-
+        
         // set meta description for SEO
         SEO::setTitle($user->name);
         SEO::setDescription($user->about);
