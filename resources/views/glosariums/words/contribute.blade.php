@@ -52,8 +52,8 @@
                                     'slug' => $word->slug
                                 ])
                             @endphp
-                            <h4><a href="{{ $url }}">{{ $word->locale }}</a></h4>
-                            <h5><a href="{{ $url }}">{{ $word->origin }}</a></h5>
+                            <h4><a href="{{ $url }}">{{ $word->origin }}</a></h4>
+                            <h5><a href="{{ $url }}">{{ $word->locale }}</a></h5>
                         </div>
                         <div class="header-meta">
                             <span class="category">
