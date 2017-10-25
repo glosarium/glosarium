@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Glosarium\WordRequest;
 use App\Libraries\Image;
 use App\Libraries\Wikipedia;
-use App\Notifications\Glosarium\WordCreatedNotification;
 use App\User;
 use Auth;
 use Cache;
@@ -23,8 +22,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mail;
 use Notification;
-use Route;
 use SEO;
+use Illuminate\View\View;
 
 /**
  * Manage glosarium words
@@ -88,15 +87,42 @@ class WordController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request): View
     {
-        // generate image for index
-        $image = new Image;
-        $image->addText(config('app.name'), 50, 400, 200);
-        $imagePath = $image->render('images/pages', 'home')->path();
+        $this->validate($request, [
+            'limit' => 'integer|max:50',
+            'kategori' => 'array'
+        ]);
 
-        return view(Route::currentRouteName(), compact('totalWord', 'imagePath'))
-            ->withTitle(trans('glosarium.word.index'));
+        // generate image for index
+        $image = (new Image)
+            ->addText(config('app.name'), 50, 400, 200)
+            ->render('images/pages', 'home')
+            ->path();
+
+        $words = Word::whereIsPublished(true)
+            ->when($request->kategori, function($query) use($request){
+                $query->whereHas('category', function($category) use($request){
+                    return $category->whereIn('slug', $request->kategori);
+                });
+            })
+            ->filter($request->katakunci)
+            ->with('category', 'description')
+            ->paginate($request->limit ?? 20);
+
+        $words->appends($request->only('katakunci'));
+
+        // generate metadata for SEO
+        SEO::setTitle('Jelajahi Kata');
+        SEO::setDescription(config('app.description'));
+        SEO::opengraph()->addProperty('image', $image);
+
+        // get categories
+        $categories = \App\Glosarium\Category::orderBy('name', 'ASC')
+            ->whereIsPublished(true)
+            ->pluck('name', 'slug');
+
+        return view('glosariums.words.index', compact('words', 'categories'));
     }
 
     /**

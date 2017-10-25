@@ -50,11 +50,6 @@
                 <i class="fa fa-user fa-fw"></i>
                 <span>{{ ! empty($word->user) ? $word->user->name : 'Anonim' }}</span>
               </li>
-
-              <li>
-                <i class="fa fa-thumbs-up fa-fw"></i>
-                <span>{{ $word->favorites_count }} Favorit</span>
-              </li>
             </ul>
           </footer>
         </a>

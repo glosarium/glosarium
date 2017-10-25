@@ -10,5 +10,6 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::get('kategori/{slug}', 'CategoryController@show')->name('category.show');
 
     // word
-    Route::get('/{category}/{slug}', 'WordController@show')->name('word.show');
+    Route::get('kata', 'WordController@index')->name('word.index');
+    Route::get('{category}/{slug}', 'WordController@show')->name('word.show');
 });
