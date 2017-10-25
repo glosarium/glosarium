@@ -65,8 +65,8 @@
                     <footer>
                         <p class="status"><strong>Status:</strong> {{ $word->is_published ? 'Dipublikasikan' : 'Belum dipublikasikan' }}</p>
                         <div class="action-btn">
-                            <a class="btn btn-xs btn-gray" href="#">Sunting</a>
-                            <a class="btn btn-xs btn-danger" href="#">Hapus</a>
+                            <a class="btn btn-xs btn-gray" href="{{ route('glosarium.word.edit', $word->slug) }}">Sunting</a>
+                            <a class="btn btn-xs btn-danger" href="{{ route('glosarium.word.destroy', $word->slug) }}">Hapus</a>
                         </div>
                     </footer>
                 </div>

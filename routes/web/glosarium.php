@@ -5,6 +5,9 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
         Route::get('kata/ajukan', 'WordController@create')->name('word.create');
         Route::post('kata/ajukan', 'WordController@store')->name('word.store');
         Route::get('kata/pesan/{id}', 'WordController@mail')->name('word.mail');
+        Route::get('kata/{slug}/sunting', 'WordController@edit')->name('word.edit');
+        Route::put('kata/{slug}/sunting', 'WordController@update')->name('word.update');
+        Route::get('kata/{slug}/hapus', 'WordController@destroy')->name('word.destroy');
     });
 
     // sitemap

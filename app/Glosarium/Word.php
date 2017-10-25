@@ -6,10 +6,12 @@ use Auth;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Word extends Model
 {
     use Sluggable;
+    use SoftDeletes;
 
     /**
      * @var string
@@ -66,6 +68,15 @@ class Word extends Model
         'is_standard' => 'boolean',
         'is_published' => 'boolean',
         'has_description' => 'boolean',
+    ];
+
+    /**
+     * Casts as Carbon object.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at'
     ];
 
     public function getRouteKeyName()

@@ -40,48 +40,6 @@ class WordController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function paginate()
-    {
-        $words = Word::filter()
-            ->sort()
-            ->with('category', 'description')
-            ->paginate(20);
-
-        if (!empty(request())) {
-            $words->appends(request()->all());
-        }
-
-        return response()->json($words);
-    }
-
-    /**
-     * Filter word by category
-     * @param  integer $categoryId
-     * @return string  json
-     */
-    public function category($categorySlug)
-    {
-        $words = Word::whereHas('category', function ($category) use ($categorySlug) {
-            return $category->whereSlug($categorySlug);
-        })
-            ->with('category', 'description')
-            ->whereIsPublished(true)
-            ->filter()
-            ->sort()
-            ->paginate();
-
-        if (!empty(request())) {
-            $words->appends(request()->all());
-        }
-
-        return response()->json($words);
-    }
-
-    /**
      * Show all words
      *
      * @return Illuminate\Http\Response
@@ -194,21 +152,6 @@ class WordController extends Controller
     }
 
     /**
-     * Find similar word
-     *
-     * @return string JSON
-     */
-    public function similar()
-    {
-        // find similar category
-        $words = Word::whereOrigin(request('origin'))
-            ->with('category')
-            ->get();
-
-        return response()->json($words);
-    }
-
-    /**
      * Show form to create new word.
      *
      * @return View
@@ -257,23 +200,46 @@ class WordController extends Controller
     }
 
     /**
-     * Get latest words
+     * Show form edit.
      *
-     * @return string JSON
+     * @param string $slug
+     * @return View
      */
-    public function latest()
+    public function edit(string $slug) : View
     {
-        abort_if(!request()->ajax(), 404, trans('global.notFound'));
-
-        $words = Word::orderBy('created_at', 'DESC')
+        $word = Word::whereSlug($slug)
+            ->whereUserId(\Auth::id())
             ->with('category')
-            ->whereIsPublished(true)
-            ->limit(20)
-            ->get();
+            ->firstOrFail();
 
-        return response()->json([
-            'words' => $words,
+        $categories = Category::dropdown();
+
+        \SEO::setTitle(sprintf('Sunting Kata %s - %s', $word->origin, $word->locale));
+
+        return view('glosariums.words.edit', compact('word', 'categories'));
+    }
+
+    /**
+     * Save edited word.
+     *
+     * @param WordRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(WordRequest $request, string $slug) : \Illuminate\Http\RedirectResponse
+    {
+        $word = Word::whereSlug($slug)
+            ->whereUserId(\Auth::id())
+            ->firstOrFail();
+
+        $request->merge([
+            'is_published' => false,
+            'category_id' => Category::whereSlug($request->category_id)->first()->id
         ]);
+
+        $word->fill($request->all());
+        $word->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -300,5 +266,24 @@ class WordController extends Controller
         \SEO::setTitle('Kontribusi Kata');
 
         return view('glosariums.words.contribute', compact('words', 'categories'));
+    }
+
+    /**
+     * Move word to trash.
+     *
+     * @param string $slug
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(string $slug) : \Illuminate\Http\RedirectResponse
+    {
+        $word = Word::whereSlug($slug)
+            ->whereUserId(\Auth::id())
+            ->firstOrFail();
+
+        abort_if($word->is_published, 404, 'Kamu tidak dapat menghapus kata yang sudah dipublikasikan.');
+
+        $word->delete();
+
+        return redirect()->back();
     }
 }
