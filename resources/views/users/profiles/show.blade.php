@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-<header class="page-header bg-img" style="background-image: url(assets/img/bg-banner1.jpg)">
+<header class="page-header bg-img" style="background-image: url({{ asset('assets/img/bg-banner1.jpg') }})">
     <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-4">
@@ -27,7 +27,7 @@
         @if (auth()->check() and (auth()->user()->id == $user->id))
         <div class="button-group">
           <div class="action-buttons">
-            <a class="btn btn-success" href="{{ route('user.profile.edit') }}">Ubah Profil</a>
+            <a class="btn btn-primary" href="{{ route('user.profile.edit') }}">Ubah Profil</a>
           </div>
         </div>
         @endif
