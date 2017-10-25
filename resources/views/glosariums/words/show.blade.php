@@ -14,7 +14,7 @@
       @if (!empty($word->description))
         <p class="lead">{{ $word->description['description'] }}</p>
       @else
-        <p class="lead">Beluma ada deskripsi untuk padanan kata <strong>{{ $word->locale }}</strong>.</p>
+        <p class="lead">Belum ada deskripsi untuk padanan kata <strong>{{ $word->locale }}</strong>.</p>
       @endif
 
       <ul class="details cols-3">

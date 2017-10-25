@@ -116,14 +116,14 @@
 
 
         <header class="section-header latest-words">
-          <span>Pencarian</span>
+          <span>Hasil Pencarian</span>
           @if ($words->total() >= 1)
-              <h2>Hasil Pencarian untuk Kata "{{ request('word') }}"</h2>
+              <h2>Hasil Pencarian untuk Kata "{{ request('katakunci') }}"</h2>
           @endif
         </header>
 
           @if ($words->total() <= 0)
-            <p>Pencarian kamu - <strong>{{ request('word') }}</strong> - tidak cocok dengan kata apapun.</p>
+            <p>Pencarian kamu - <strong>{{ request('katakunci') }}</strong> - tidak cocok dengan kata apapun.</p>
 
             <p>Saran:</p>
 
