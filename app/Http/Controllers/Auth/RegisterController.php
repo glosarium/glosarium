@@ -89,7 +89,9 @@ class RegisterController extends Controller
                     'name' => $data['name'],
                     'email' => strtolower($data['email']),
                     'password' => bcrypt($data['password']),
-                    'is_active' => false, // need confirm via email
+                    'is_active' => false, // need confirm via email,
+                    'headline' => 'Kontributor',
+                    'about' => ''
                 ]);
 
                 // subscribe to newsletter
