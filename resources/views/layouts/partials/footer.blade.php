@@ -15,7 +15,7 @@
         <li><a href="page-about.html">Blog</a></li>
         <li><a href="page-faq.html">Jelajahi Kata</a></li>
         <li><a href="{{ route('glosarium.category.index') }}">Semua Kategori</a></li>
-        <li><a href="page-contact.html">Kontak</a></li>
+        <li><a href="{{ route('contact.form') }}">Kontak</a></li>
       </ul>
     </div>
 

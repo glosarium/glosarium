@@ -13,11 +13,7 @@
 
 Route::get('/', 'HomeController')->name('home');
 
-Route::get('/contact', 'ContactController@form')->name('contact.form');
-Route::get('/contact/mail/{id}', 'ContactController@show')->name('contact.show');
-Route::post('/contact/send', 'ContactController@send')->name('contact.post');
-
-Route::get('/external', 'LinkController@external')->name('link.external');
-
-Route::get('/{hash}', 'LinkController@redirect')->name('link.redirect')
-    ->where('hash', '[A-Za-z0-9]+');
+// contact controller
+Route::get('kontak', 'ContactController@form')->name('contact.form');
+Route::get('kontak/pesan/{id}', 'ContactController@show')->name('contact.show');
+Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');

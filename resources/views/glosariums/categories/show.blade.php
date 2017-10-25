@@ -52,11 +52,6 @@
               </li>
 
               <li>
-                <i class="fa fa-link fa-fw"></i>
-                <span>{{ $word->short_url}}</span>
-              </li>
-
-              <li>
                 <i class="fa fa-thumbs-up fa-fw"></i>
                 <span>{{ $word->favorites_count }} Favorit</span>
               </li>

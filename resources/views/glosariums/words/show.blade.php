@@ -29,11 +29,6 @@
           <span><a href="{{ route('user.profile.show', $word->user->username) }}" title="Lihat profil {{ $word->user->name }}">{{ $word->user->name }}</a></span>
         </li>
         @endif
-
-        <li>
-          <i class="fa fa-link fa-fw"></i>
-          <span>{{ $word->short_url }} <a href="#"><i class="fa fa-copy fa-fw"></i></a></span>
-        </li>
       </ul>
 
       <div class="button-group">
@@ -41,7 +36,7 @@
           <li class="title">Bagikan pada</li>
           <li><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"><i class="fa fa-facebook"></i></a></li>
           <li><a class="google-plus" href="https://plus.google.com/share?url={{ url()->current() }}"><i class="fa fa-google-plus"></i></a></li>
-          <li><a class="twitter" href="https://twitter.com/intent/tweet?url={{ $word->short_url }}&text=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}.&hashtags=glosarium,bahasa,indonesia"><i class="fa fa-twitter"></i></a></li>
+          <li><a class="twitter" href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}.&hashtags=glosarium,bahasa,indonesia"><i class="fa fa-twitter"></i></a></li>
           <li><a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ url()->current() }}&title=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}&summary=&source="><i class="fa fa-linkedin"></i></a></li>
         </ul>
 

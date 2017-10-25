@@ -54,7 +54,7 @@ class Word extends Model
      * @var array
      */
     protected $appends = [
-        'short_url',
+
     ];
 
     /**
