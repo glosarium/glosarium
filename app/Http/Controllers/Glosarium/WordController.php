@@ -17,13 +17,7 @@ use App\Http\Requests\Glosarium\WordRequest;
 use App\Libraries\Image;
 use App\Libraries\Wikipedia;
 use App\User;
-use Auth;
-use Cache;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Mail;
-use Notification;
-use SEO;
 use Illuminate\View\View;
 use App\Glosarium\Category;
 
@@ -39,10 +33,10 @@ class WordController extends Controller
 
     public function __construct()
     {
-        $this->cacheTime = Carbon::now()->addDays(30);
+        $this->cacheTime = \Carbon\Carbon::now()->addDays(30);
 
         // default description for metadata
-        SEO::setDescription(config('app.description'));
+        \SEO::setDescription(config('app.description'));
     }
 
     /**
@@ -118,8 +112,8 @@ class WordController extends Controller
         $words->appends($request->only('katakunci'));
 
         // generate metadata for SEO
-        SEO::setTitle('Jelajahi Kata');
-        SEO::opengraph()->addProperty('image', $image);
+        \SEO::setTitle('Jelajahi Kata');
+        \SEO::opengraph()->addProperty('image', $image);
 
         // get categories
         $categories = Category::dropdown();
@@ -137,12 +131,15 @@ class WordController extends Controller
     public function show(Request $request, $categorySlug, $slug)
     {
         $word = Word::whereSlug($slug)
+            ->whereIsPublished(true)
             ->whereHas('category', function ($category) use ($categorySlug) {
             return $category->whereSlug($categorySlug);
         })
             ->with('category', 'description')
             ->withCount('favorites')
-            ->firstOrFail();
+            ->first();
+
+        abort_if(empty($word), 404, 'Kata tidak ditemukan dalam pangkalan data.');
 
         // get wikipedia page if description is empty
         if ($word->has_description) {
@@ -183,10 +180,10 @@ class WordController extends Controller
         ]);
 
         // seo config
-        SEO::setTitle(sprintf('Padanan kata %s adalah %s', $word->origin, $word->locale));
-        SEO::opengraph()->addProperty('image', $image->path());
+        \SEO::setTitle(sprintf('Padanan kata %s adalah %s', $word->origin, $word->locale));
+        \SEO::opengraph()->addProperty('image', $image->path());
         if (!empty($word->description['description'])) {
-            SEO::setDescription($word->description['description']);
+            \SEO::setDescription($word->description['description']);
         }
 
         return view('glosariums.words.show', compact('word', 'link'))
@@ -212,42 +209,22 @@ class WordController extends Controller
     }
 
     /**
-     * Count word and get total
+     * Show form to create new word.
      *
-     * @return string JSON
+     * @return View
      */
-    public function total()
-    {
-        abort_if(!request()->ajax(), 404, trans('global.notFound'));
-
-        $cacheTime = \Carbon\Carbon::now()->addDays(7);
-        $total = Cache::remember('glosarium.total', $cacheTime, function () {
-            return \App\Glosarium\Word::count();
-        });
-
-        return response()->json([
-            'isSuccess' => true,
-            'total' => number_format($total, 0, ',', '.'),
-        ]);
-    }
-
-    /**
-     * Show create form
-     *
-     * @return Illuminate\Http\Response
-     */
-    public function create()
+    public function create() : View
     {
         // create image
-        $image = new Image;
+        $image = (new Image)->addText($title = trans('glosarium.word.create'), 40, 400, 200)
+            ->render('images/pages', 'create-glossary')
+            ->path();
 
-        $image->addText($title = trans('glosarium.word.create'), 40, 400, 200)
-            ->render('images/pages', 'create-glossary');
+        \SEO::opengraph()->addProperty('image', $image);
 
-        $imagePath = $image->path();
+        $categories = Category::dropdown();
 
-        return view(Route::currentRouteName(), compact('imagePath'))
-            ->withTitle($title);
+        return view('glosariums.words.create', \compact('categories'));
     }
 
     /**
@@ -256,42 +233,27 @@ class WordController extends Controller
      * @param  WordRequest $request
      * @return string      JSON
      */
-    public function store(WordRequest $request)
+    public function store(WordRequest $request) : \Illuminate\Http\RedirectResponse
     {
-        try {
-            $glosarium = Word::create([
-                'user_id' => Auth::id(),
-                'category_id' => $request->category,
-                'origin' => $request->origin,
-                'locale' => $request->locale,
+        \DB::transaction(function () use (&$word, $request) {
+            $request->merge([
                 'lang' => 'en',
-                'is_published' => Auth::user()->type == 'admin',
+                'user_id' => \Auth::id(),
+                'is_published' => \Auth::user()->type == 'admin',
                 'is_standard' => false,
-                'retry_count' => 0,
+                'category_id' => Category::whereSlug($request->category_id)->first()->id
             ]);
 
-            // send notifications
-            $users = User::whereType('admin')->get();
-            Notification::send($users, new WordCreatedNotification($glosarium, Auth::user()->name));
+            $word = Word::create($request->all());
+    
+            // send email confirmation to glosarium
+            \Mail::to('glosariumid@gmail.com')
+                ->send(new \App\Mail\Glosarium\Word\CreateMail($word, \Auth::user()));
+        });
 
-            return response()->json([
-                'isSuccess' => true,
-                'glosarium' => $glosarium,
-                'alerts' => [
-                    'type' => 'success',
-                    'title' => trans('global.success'),
-                    'message' => trans('glosarium.word.msg.created'),
-                ],
-            ]);
-
-        } catch (Exception $e) {
-            return response()->json([
-                'isSuccess' => false,
-                'message' => $e->getMessage(),
-            ]);
-
-            abort(500, $e->getMessage());
-        }
+        return redirect()
+            ->back()
+            ->with('word', $word);
     }
 
     /**
@@ -327,7 +289,7 @@ class WordController extends Controller
             'katakunci' => 'string'
         ]);
 
-        $words = Word::whereUserId(Auth::id())
+        $words = Word::whereUserId(\Auth::id())
             ->orderBy('created_at', 'DESC')
             ->with('category')
             ->filter($request->katakunci)
@@ -335,7 +297,7 @@ class WordController extends Controller
 
         $categories = Category::dropdown();
 
-        SEO::setTitle('Kontribusi Kata');
+        \SEO::setTitle('Kontribusi Kata');
 
         return view('glosariums.words.contribute', compact('words', 'categories'));
     }

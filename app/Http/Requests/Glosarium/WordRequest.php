@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Requests\Glosarium;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class WordRequest extends FormRequest
 {
@@ -25,10 +25,15 @@ class WordRequest extends FormRequest
     public function rules()
     {
         return [
-            'category'    => 'required|integer|exists:glosarium_categories,id',
-            'origin'      => 'required|min:2',
-            'locale'      => 'required|min:2',
+            'category_id' => [
+                'required',
+                'string',
+                Rule::exists( (new \App\Glosarium\Category)->getTable(), 'slug')
+            ],
+            'origin' => 'required|min:2|max:255',
+            'locale' => 'required|min:2|max:255',
             'description' => 'max:1000',
+            'source' => 'string|max:255'
         ];
     }
 }

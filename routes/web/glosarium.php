@@ -2,6 +2,9 @@
 Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::get('kata/kontribusi', 'WordController@contribute')->name('word.contribute');
+        Route::get('kata/ajukan', 'WordController@create')->name('word.create');
+        Route::post('kata/ajukan', 'WordController@store')->name('word.store');
+        Route::get('kata/pesan/{id}', 'WordController@mail')->name('word.mail');
     });
 
     // sitemap
