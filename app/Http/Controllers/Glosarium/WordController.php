@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Glosarium adalah aplikasi berbasis web yang menyediakan berbagai kata glosarium,
  * kamus nasional dan kamus bahasa daerah.
@@ -24,6 +25,7 @@ use Mail;
 use Notification;
 use SEO;
 use Illuminate\View\View;
+use App\Glosarium\Category;
 
 /**
  * Manage glosarium words
@@ -87,7 +89,7 @@ class WordController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-    public function index(Request $request): View
+    public function index(Request $request) : View
     {
         $this->validate($request, [
             'limit' => 'integer|max:50',
@@ -101,11 +103,11 @@ class WordController extends Controller
             ->path();
 
         $words = Word::whereIsPublished(true)
-            ->when($request->kategori, function($query) use($request){
-                $query->whereHas('category', function($category) use($request){
-                    return $category->whereIn('slug', $request->kategori);
-                });
-            })
+            ->when($request->kategori, function ($query) use ($request) {
+            $query->whereHas('category', function ($category) use ($request) {
+                return $category->whereIn('slug', $request->kategori);
+            });
+        })
             ->filter($request->katakunci)
             ->with('category', 'description')
             ->paginate($request->limit ?? 20);
@@ -118,9 +120,7 @@ class WordController extends Controller
         SEO::opengraph()->addProperty('image', $image);
 
         // get categories
-        $categories = \App\Glosarium\Category::orderBy('name', 'ASC')
-            ->whereIsPublished(true)
-            ->pluck('name', 'slug');
+        $categories = Category::dropdown();
 
         return view('glosariums.words.index', compact('words', 'categories'));
     }
@@ -136,8 +136,8 @@ class WordController extends Controller
     {
         $word = Word::whereSlug($slug)
             ->whereHas('category', function ($category) use ($categorySlug) {
-                return $category->whereSlug($categorySlug);
-            })
+            return $category->whereSlug($categorySlug);
+        })
             ->with('category', 'description')
             ->withCount('favorites')
             ->firstOrFail();
@@ -158,7 +158,8 @@ class WordController extends Controller
                         'description' => $wikipedia->description(),
                         'url' => $wikipedia->url(),
                     ]);
-                } else {
+                }
+                else {
                     // flag word has no description
                     $word->has_description = false;
                     $word->save();
@@ -188,9 +189,9 @@ class WordController extends Controller
 
         return view('glosariums.words.show', compact('word', 'link'))
             ->withTitle(trans('glosarium.word.show', [
-                'origin' => $word->origin,
-                'locale' => $word->locale,
-            ]));
+            'origin' => $word->origin,
+            'locale' => $word->locale,
+        ]));
     }
 
     /**
@@ -309,5 +310,29 @@ class WordController extends Controller
         return response()->json([
             'words' => $words,
         ]);
+    }
+
+    /**
+     * Show word contributed by user.
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function contribute(Request $request) : View
+    {
+        $this->validate($request, [
+            'limit' => 'integer|max:50',
+            'katakunci' => 'string'
+        ]);
+
+        $words = Word::whereUserId(Auth::id())
+            ->orderBy('created_at', 'DESC')
+            ->with('category')
+            ->filter($request->katakunci)
+            ->paginate($request->limit ?? 20);
+
+        $categories = Category::dropdown();
+
+        return view('glosariums.words.contribute', compact('words', 'categories'));
     }
 }

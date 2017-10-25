@@ -9,3 +9,9 @@ div.logo {
 .page-header .button-group .btn {
     margin-left: 0;
 }
+
+.item-block header .category {
+    display: block;
+    color: #96a2b2;
+    line-height: 35px;
+}

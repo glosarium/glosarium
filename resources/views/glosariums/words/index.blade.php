@@ -3,7 +3,7 @@
 @section('header')
 <header class="page-header bg-img" style="background-image: url({{ asset('assets/img/bg-banner1.jpg') }});">
     <div class="container page-name">
-        <h1 class="text-center">Jelajai Kata</h1>
+        <h1 class="text-center">Jelajahi Kata</h1>
         <p class="lead text-center">Jelajahi kata demi kata di Glosarium Indonesia.</p>
     </div>
     <div class="container">

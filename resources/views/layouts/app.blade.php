@@ -56,6 +56,7 @@
             <ul class="dropdown-menu dropdown-menu-right">
               <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
               <li><a href="{{ route('user.profile.show', auth()->user()->username) }}">Profil Saya</a></li>
+              <li><a href="{{ route('glosarium.word.contribute') }}">Kontribusi Kata</a> </li>
               <li><a href="">Ubah Sandi Lewat</a></li>
               <li><a href="{{ route('logout') }}">Keluar</a></li>
             </ul>

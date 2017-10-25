@@ -1,6 +1,9 @@
 <?php
-
 Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('kata/kontribusi', 'WordController@contribute')->name('word.contribute');
+    });
+
     // sitemap
     Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.index');
     Route::get('sitemap/{slug}.xml', 'SitemapController@category')->name('sitemap.category');

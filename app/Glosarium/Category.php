@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Glosarium;
 
 use Carbon\Carbon;
@@ -127,5 +126,19 @@ class Category extends Model
     public function scopeSort($query, $order = 'ASC')
     {
         return $query->orderBy('name', $order);
+    }
+
+    /**
+     * Format category data for dropdown html.
+     *
+     * @param string $value
+     * @param string $id
+     * @return array
+     */
+    public static function dropdown($value = 'name', $id = 'slug') : \Illuminate\Support\Collection
+    {
+        return self::orderBy('name', 'ASC')
+            ->whereIsPublished(true)
+            ->pluck($value, $id);
     }
 }
