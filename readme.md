@@ -16,18 +16,19 @@ Lihat aplikasi pada [Glosarium Indonesia](http://glosarium.web.id).
 - Dan berbagai fitur lainnya yang akan terus ditambahkan.
 
 ## Kebutuhan Sistem
-- Apahace atau Nginx Web Server.
-- PHP 7.0.
+- Apache atau Nginx Web Server.
+- PHP >= 7.1.
 - MySQL 5.7.x atau di atasnya.
 - Redis Server.
-- ElasticSearch (opsi).
+- ElasticSearch (opsional).
+- SQLite atau PDO.
 
 ## Instalasi
 - Klon repositori [glosarium/glosarium](https://github.com/glosarium/glosarium) ke mesin lokal.
-- Masuk ke direktori aplikasi dan perbarui librari dan kerangka kerja dengan perintah ```composer install```.
+- Masuk ke direktori aplikasi dan perbarui librari dan kerangka kerja dengan perintah ```composer install``` atau ```composer update -vvv```.
 - Salin berkas ```.env.example``` menjadi ```.env```. Ubah beberapa pengaturan di dalam berkas tersebut, termasuk berkas pengaturan pangkalan data.
 - Buat kunci enkripsi baru dengan perintah ```php artisan key:generate```.
-- Jalankan perintah ```php artisan migrate -m``` untuk membuat tabel baru beserta datanya pada pangkalan data.
+- Jalankan perintah ```php artisan migrate -seed``` untuk membuat tabel baru beserta datanya pada pangkalan data.
 - Jalankan built-in web server dengan perintah ```php artisan serve```.
 
 Terakhir, akses aplikasi web melalui peramban dengan tautan ```http://localhost:8000```.
