@@ -69,6 +69,7 @@
         <ul class="nav-menu">
           <li>
             <a href="{{ route('home') }}">Beranda</a>
+            <a href="{{ route('glosarium.category.index') }}">Kategori</a>
           </li>
         </ul>
         <!-- END Navigation menu -->

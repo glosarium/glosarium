@@ -109,10 +109,8 @@ class Category extends Model
      * @param  object     $query Eloquent
      * @return Eloquent
      */
-    public function scopeFilter($query)
+    public function scopeFilter($query, $keyword)
     {
-        $keyword = request('keyword');
-
         if ($keyword) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
         }

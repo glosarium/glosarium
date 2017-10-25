@@ -48,7 +48,7 @@
             <ul class="details cols-3">
               <li>
                 <i class="fa fa-user fa-fw"></i>
-                <span>{{ $word->user->name }}</span>
+                <span>{{ ! empty($word->user) ? $word->user->name : 'Anonim' }}</span>
               </li>
 
               <li>

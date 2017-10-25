@@ -84,20 +84,31 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show all categories
+     * Show all categories.
      *
-     * @return Response
+     * @return View
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request): View
     {
+        $this->validate($request, [
+            'keyword' => 'string',
+        ]);
+
         // create image
         $image = new Image;
-        $imagePath = $image->addText(trans('glosarium.category.index'), 50, 400, 200)
+        $imagePath = $image->addText('Kategori', 50, 400, 200)
             ->render('images/pages', 'category')
             ->path();
 
-        return view(Route::currentRouteName(), compact('imagePath', 'totalWord'))
-            ->withTitle(trans('glosarium.category.index'));
+        $categories = Category::orderBy('name', 'ASC')
+            ->whereIsPublished(true)
+            ->withCount('words')
+            ->when($request->keyword, function ($query) use ($request) {
+                return $query->filter($request->keyword);
+            })
+            ->paginate(20);
+
+        return view('glosariums.categories.index', compact('imagePath', 'categories'));
     }
 
     /**
