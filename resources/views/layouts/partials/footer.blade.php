@@ -11,7 +11,7 @@
     <div class="col-xs-6 col-md-3">
       <h6>Tautan Utama</h6>
       <ul class="footer-links">
-        <li><a href="page-about.html">Tentang Kami</a></li>
+        <li><a href="{{ route('page.about') }}">Tentang Kami</a></li>
         <li><a href="page-about.html">Blog</a></li>
         <li><a href="{{ route('glosarium.word.index') }}">Jelajahi Kata</a></li>
         <li><a href="{{ route('glosarium.category.index') }}">Semua Kategori</a></li>

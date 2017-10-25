@@ -17,3 +17,6 @@ Route::get('/', 'HomeController')->name('home');
 Route::get('kontak', 'ContactController@form')->name('contact.form');
 Route::get('kontak/pesan/{id}', 'ContactController@show')->name('contact.show');
 Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');
+
+// static pages
+Route::get('tentang-kami', 'PageController@about')->name('page.about');

@@ -13,43 +13,29 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\Image;
-use Parsedown;
+use Illuminate\View\View;
+use SEO;
 
 class PageController extends Controller
 {
-    public function index()
+    public function about() : View
     {
-        $image = new Image;
-        $image->addText(config('app.name'), 50, 400, 200);
-        $imagePath = $image->render('images/pages', 'home')->path();
+        // create image
+        $image = (new Image)->addText('Tentang Glosarium', 50, 400, 200)
+            ->render('images/pages', 'about')
+            ->path();
 
-        return view('page.index', compact('total', 'imagePath'));
-    }
+        // generate metadata for SEO
+        SEO::setTitle(sprintf('Tentang %s', config('app.name')));
+        SEO::setDescription(config('app.description'));
+        SEO::opengraph()->addProperty('image', $image);
 
-    public function redirectApi()
-    {
-        return redirect()->route('page.api.index', ['beta']);
-    }
+        // get contributors
+        $users = \App\User::where('type', 'admin')
+            ->take(3)
+            ->orderBy('created_at', 'ASC')
+            ->get();
 
-    public function api($version = null)
-    {
-        $latestApi = 'beta';
-
-        $view = 'page.api.' . $version;
-
-        if (!view()->exists($view)) {
-            abort(404, trans('global.notFound'));
-        }
-
-        $image = new Image;
-        $image->addText('APA/API', 100, 400, 150);
-        $image->addText('Dokumentasi dan Implementasi', 30, 400, 250);
-        $imagePath = $image->render('images/pages/', 'api')->path();
-
-        // Markdown parser
-        $parsedown = new Parsedown;
-
-        return view($view, compact('imagePath', 'parsedown', 'version', 'latestApi'))
-            ->withTitle(trans('api.title'));
+        return view('pages.about', \compact('users'));
     }
 }
