@@ -37,14 +37,13 @@
         <div class="row">
             <div class="col-xs-12 text-right">
                 <br>
-                <a class="btn btn-primary btn-sm" href="job-add.html">Ajukan Kata Baru</a>
+                <a class="btn btn-primary btn-sm" href="{{ route('glosarium.word.create') }}">Ajukan Kata Baru</a>
             </div>
             
             @foreach ($words as $word)
             <div class="col-xs-12">
                 <div class="item-block">
                     <header>
-                        <a href="company-detail.html"><img src="assets/img/logo-google.jpg" alt=""></a>
                         <div class="hgroup">
                             @php
                                 $url = route('glosarium.word.show', [
