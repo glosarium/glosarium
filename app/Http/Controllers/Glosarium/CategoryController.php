@@ -92,11 +92,11 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'keyword' => 'string',
+            'limit' => 'integer|max:50'
         ]);
 
         // create image
-        $image = new Image;
-        $imagePath = $image->addText('Kategori', 50, 400, 200)
+        $image = (new Image)->addText('Kategori', 50, 400, 200)
             ->render('images/pages', 'category')
             ->path();
 
@@ -106,9 +106,14 @@ class CategoryController extends Controller
             ->when($request->keyword, function ($query) use ($request) {
                 return $query->filter($request->keyword);
             })
-            ->paginate(20);
+            ->paginate($request->limit ?? 20);
 
-        return view('glosariums.categories.index', compact('imagePath', 'categories'));
+        // generate metadata for SEO
+        SEO::setTitle('Kategori Glosarium');
+        SEO::setDescription(\htmlspecialchars($categories->random()->description));
+        SEO::opengraph()->addProperty('image', $image);
+
+        return view('glosariums.categories.index', compact('categories'));
     }
 
     /**
