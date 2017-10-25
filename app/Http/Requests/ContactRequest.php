@@ -26,7 +26,7 @@ class ContactRequest extends FormRequest
     {
         $rules = [
             'subject' => 'required|string|max:100',
-            'message' => 'required|string',
+            'message' => 'required|string|min:20',
         ];
 
         if (!Auth::check()) {

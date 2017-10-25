@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    protected $fillables = [
+    /**
+     * Available fields for mass assignment.
+     *
+     * @var array
+     */
+    protected $fillable = [
         'from',
         'to',
         'subject',

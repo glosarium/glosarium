@@ -14,6 +14,7 @@
 Route::get('/', 'HomeController')->name('home');
 
 Route::get('/contact', 'ContactController@form')->name('contact.form');
+Route::get('/contact/mail/{id}', 'ContactController@show')->name('contact.show');
 Route::post('/contact/send', 'ContactController@send')->name('contact.post');
 
 Route::get('/external', 'LinkController@external')->name('link.external');

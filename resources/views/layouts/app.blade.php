@@ -70,6 +70,7 @@
           <li>
             <a href="{{ route('home') }}">Beranda</a>
             <a href="{{ route('glosarium.category.index') }}">Kategori</a>
+            <a href="{{ route('contact.form') }}">Kontak Kami</a>
           </li>
         </ul>
         <!-- END Navigation menu -->
