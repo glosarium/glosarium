@@ -18,18 +18,18 @@ class HomeController extends Controller
     public function __invoke(Request $request) : View
     {
         $this->validate($request, [
-            'keyword' => 'string',
+            'katakunci' => 'string',
             'limit' => 'integer|max:20'
         ]);
 
-        if ($request->has('keyword')) {
+        if ($request->has('katakunci')) {
             $words = Word::sort()
                 ->with('user', 'description', 'category')
-                ->filter($request->keyword)
+                ->filter($request->katakunci)
                 ->isPublished()
                 ->paginate($request->limit ?? 20);
 
-            $words->appends($request->only('keyword', 'limit'));
+            $words->appends($request->only('katakunci', 'limit'));
 
             if ($words->total() >= 1) {
                 $meta = $words->first();

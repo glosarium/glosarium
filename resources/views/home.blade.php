@@ -96,7 +96,7 @@
               <input type="hidden" name="utm_source" value="homepage">
 
                 <div class="input-keyword">
-                  <input type="search" name="keyword" class="form-control" placeholder="Kata dalam bahasa asing maupun bahasa lokal" value="{{ request('word') }}">
+                  <input type="search" name="katakunci" class="form-control" placeholder="Kata dalam bahasa asing maupun bahasa lokal" value="{{ request('katakunci') }}">
                 </div>
 
                 <div class="btn-search">
@@ -164,18 +164,6 @@
                     <li>
                       <i class="{{ $word->category->metadata['icon'] }} fa-fw"></i>
                       <span>{{ $word->category->name }}</span>
-                    </li>
-
-                    @if (! empty($word->user))
-                    <li>
-                      <i class="fa fa-user fa-fw"></i>
-                      <span>{{ $word->user->name }}</span>
-                    </li>
-                    @endif
-
-                    <li>
-                      <i class="fa fa-link fa-fw"></i>
-                      <span>{{ $word->short_url}}</span>
                     </li>
                   </ul>
                 </footer>
