@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\ProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -41,7 +42,7 @@ class ProfileController extends Controller
      * @param Request $request
      * @return void
      */
-    public function update(Request $request) : \Illuminate\Http\RedirectResponse
+    public function update(ProfileRequest $request) : \Illuminate\Http\RedirectResponse
     {
         if (empty($request->about)) {
             $request->merge([

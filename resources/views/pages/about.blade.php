@@ -35,10 +35,21 @@
                     </h5>
                     <img src="{{ $user->avatar }}" alt="{{ $user->name }}">
                     <ul class="social-icons">
-                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
-                        <li><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></li>
+                        @if ($user->website)
+                            <li><a class="git" target="_blank" href="{{ $user->website }}"><i class="fa fa-link"></i></a></li>
+                        @endif
+
+                        @if ($user->twitter)
+                            <li><a class="twitter" target="_blank" href="{{ $user->twitter_link }}"><i class="fa fa-twitter"></i></a></li>
+                        @endif
+
+                        @if ($user->facebook)
+                            <li><a class="facebook" target="_blank" href="{{ $user->facebook }}"><i class="fa fa-facebook"></i></a></li>
+                        @endif
+
+                        @if ($user->instagram)
+                            <li><a class="instagram" target="_blank" href="{{ $user->instagram_link }}"><i class="fa fa-instagram"></i></a></li>
+                        @endif
                     </ul>
                     <p>{{ $user->about }}</p>
                 </div>

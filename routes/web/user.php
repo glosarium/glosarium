@@ -8,8 +8,8 @@ Route::get('user/confirm', 'Auth\ConfirmController')->name('user.confirm');
 
 Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], function () {    
     // profile
-    Route::get('edit-profile', 'ProfileController@edit')->name('profile.edit');
-    Route::put('update-profile', 'ProfileController@update')->name('profile.update');
+    Route::get('profil', 'ProfileController@edit')->name('profile.edit');
+    Route::put('profil', 'ProfileController@update')->name('profile.update');
 
     // password
     Route::get('user/password', 'PasswordController@form')->name('password.form');

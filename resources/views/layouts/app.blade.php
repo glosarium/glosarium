@@ -72,7 +72,8 @@
             <a href="{{ route('home') }}">Beranda</a>
             <a href="{{ route('glosarium.word.index') }}">Jelajahi Kata</a>
             <a href="{{ route('glosarium.category.index') }}">Kategori</a>
-            <a href="{{ route('contact.form') }}">Kontak Kami</a>
+            <a href="{{ route('page.about') }}">Tentang Kami</a>
+            <a href="{{ route('contact.form') }}">Kontak</a>
           </li>
         </ul>
         <!-- END Navigation menu -->

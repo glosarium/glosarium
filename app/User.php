@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Carbon\Carbon;
@@ -27,6 +26,10 @@ class User extends Authenticatable
         'type',
         'about',
         'headline',
+        'website',
+        'twitter',
+        'instagram',
+        'facebook',
         'is_active',
     ];
 
@@ -50,9 +53,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-        'created_diff',
-        'updated_diff',
         'avatar',
+        'twitter_link',
+        'instagram_link'
     ];
 
     /**
@@ -73,33 +76,50 @@ class User extends Authenticatable
         ];
     }
 
-    public function getCreatedDiffAttribute()
+    /**
+     * Get image path from Gravatar based on email address.
+     *
+     * @return string
+     */
+    public function getAvatarAttribute() : string
     {
-        return Carbon::parse($this->attributes['created_at'])->diffForHumans();
-    }
-
-    public function getUpdatedDiffAttribute()
-    {
-        return Carbon::parse($this->attributes['updated_at'])->diffForHumans();
-    }
-
-    public function getAvatarAttribute()
-    {
-        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']).'?s=150';
+        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']) . '?s=200';
     }
 
     /**
-     * @return mixed
+     * Return full path Twitter profile.
+     *
+     * @return string|null
      */
-    public function glosariums()
+    public function getTwitterLinkAttribute() : ? string
     {
-        return $this->hasMany(\App\Glosarium\Word::class);
+        if (!empty($this->attributes['twitter'])) {
+            return 'https://www.twitter.com/' . $this->attributes['twitter'];
+        }
+
+        return null;
     }
 
     /**
-     * @return mixed
+     * Get full path Instagram profile.
+     *
+     * @return string|null
      */
-    public function glosariumWords()
+    public function getInstagramLinkAttribute() : ? string
+    {
+        if (!empty($this->attributes['instagram'])) {
+            return 'https://www.instagram.com/' . $this->attributes['instagram'];
+        }
+
+        return null;
+    }
+
+    /**
+     * User has many words.
+     *
+     * @return void
+     */
+    public function words()
     {
         return $this->hasMany(\App\Glosarium\Word::class);
     }
