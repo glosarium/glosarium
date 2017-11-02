@@ -120,6 +120,11 @@ class CategoryController extends Controller
 
         abort_if(empty($category), 404, sprintf('Kategori "%s" tidak ditemukan.', $slug));
 
+        // generate short url
+        if (empty($category->short_url)) {
+            \dispatch(new \App\Jobs\Glosarium\Categories\CreateShortUrl($category));
+        }
+
         $words = Word::whereHas('category', function ($category) use ($slug) {
             return $category->whereSlug($slug);
         })

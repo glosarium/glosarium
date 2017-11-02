@@ -33,6 +33,8 @@ class ProfileController extends Controller
      */
     public function edit() : View
     {
+        \SEO::setTitle('Ubah Profil');
+        
         return view('users.profiles.edit', ['user' => \Auth::user()]);
     }
 

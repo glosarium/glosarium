@@ -86,7 +86,7 @@ class WordController extends Controller
      * @param  string                     $slug
      * @return Illuminate\Http\Response
      */
-    public function show(Request $request, $categorySlug, $slug)
+    public function show(Request $request, $categorySlug, $slug) : View
     {
         $word = Word::whereSlug($slug)
             ->whereIsPublished(true)
@@ -98,6 +98,11 @@ class WordController extends Controller
             ->first();
 
         abort_if(empty($word), 404, 'Kata tidak ditemukan dalam pangkalan data.');
+
+        // create short URL and send to queue
+        if (empty($word->short_url)) {
+            \dispatch(new \App\Jobs\Glosarium\Words\CreateShortUrl($word));
+        }
 
         // get wikipedia page if description is empty
         if ($word->has_description) {
@@ -188,6 +193,10 @@ class WordController extends Controller
             ]);
 
             $word = Word::create($request->all());
+
+            if ($word->is_published) {
+                \dispatch(new \App\Jobs\Glosarium\Words\CreateShortUrl($word));
+            }
     
             // send email confirmation to glosarium
             \Mail::to('glosariumid@gmail.com')

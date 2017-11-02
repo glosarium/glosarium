@@ -22,16 +22,14 @@ class Category extends Model
         'name',
         'is_published',
         'metadata',
+        'short_url',
     ];
 
     /**
      * @var array
      */
     protected $appends = [
-        'url',
-        'updated_diff',
-        'edit_url',
-        'destroy_url',
+            
     ];
 
     /**
@@ -68,21 +66,6 @@ class Category extends Model
                 'source' => 'name',
             ],
         ];
-    }
-
-    public function getUrlAttribute()
-    {
-        return route('glosarium.category.show', [$this->attributes['slug']]);
-    }
-
-    public function getEditUrlAttribute()
-    {
-        return route('admin.category.edit', [$this->attributes['slug']]);
-    }
-
-    public function getDestroyUrlAttribute()
-    {
-        return route('admin.category.destroy', [$this->attributes['slug']]);
     }
 
     /**

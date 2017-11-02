@@ -31,6 +31,8 @@ class Word extends Model
         'locale',
         'spell',
         'pronounce',
+        'source',
+        'short_url',
         'is_standard',
         'is_published',
         'has_description',
@@ -91,16 +93,6 @@ class Word extends Model
                 'source' => 'locale',
             ],
         ];
-    }
-
-    /**
-     * Hash code and convert it as short URL
-     *
-     * @return string
-     */
-    public function getShortUrlAttribute()
-    {
-        return route('link.redirect', [base_convert($this->attributes['id'], 20, 36)]);
     }
 
     /**

@@ -5,6 +5,7 @@
   <div class="container no-shadow">
     <h3 class="text-center"><span class="{{ $category->metadata['icon'] }}"></span></h3>
     <h1 class="text-center">{{ $category->name }}</h1>
+    <h6 class="text-center">{{ $category->short_url }}</h6>
     <p class="lead text-center">{{ $category->description }}</p>
   </div>
 </header>

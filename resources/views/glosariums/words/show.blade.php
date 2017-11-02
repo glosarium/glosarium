@@ -6,7 +6,7 @@
     <div class="header-detail">
       <div class="hgroup">
         <h1>{{ $word->origin }} <span class="label label-info">{{ $word->lang }}</span></h1>
-        <h3>{{ $word->locale }}</h3>
+        <h3>{{ $word->locale }} <small>{{ $word->spell }}</small></h3>
       </div>
       <time datetime="{{ $word->created_at->format('Y-m-d H:i:s') }}">{{ $word->created_diff }}</time>
       <hr>
@@ -29,6 +29,17 @@
           <span><a href="{{ route('user.profile.show', $word->user->username) }}" title="Lihat profil {{ $word->user->name }}">{{ $word->user->name }}</a></span>
         </li>
         @endif
+
+        @if (! empty($word->short_url))
+        <li>
+          <i class="fa fa-link fa-fw"></i>
+          <span>{{ $word->short_url }}</span>
+          <span>
+            <a href="#" id="copy-url" title="Salin tautan pendek" data-clipboard-text="{{ $word->short_url }}"><i class="fa fa-copy fa-fw"></i></a>
+          </span>
+        </li>
+        @endif
+        
       </ul>
 
       <div class="button-group">
@@ -36,7 +47,13 @@
           <li class="title">Bagikan pada</li>
           <li><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"><i class="fa fa-facebook"></i></a></li>
           <li><a class="google-plus" href="https://plus.google.com/share?url={{ url()->current() }}"><i class="fa fa-google-plus"></i></a></li>
-          <li><a class="twitter" href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}.&hashtags=glosarium,bahasa,indonesia"><i class="fa fa-twitter"></i></a></li>
+          
+          @if (empty($word->short_url))
+            <li><a class="twitter" href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}.&hashtags=glosarium,bahasa,indonesia"><i class="fa fa-twitter"></i></a></li>
+          @else
+            <li><a class="twitter" href="https://twitter.com/intent/tweet?url={{ $word->short_url }}&text=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}.&hashtags=glosarium,bahasa,indonesia"><i class="fa fa-twitter"></i></a></li>
+          @endif
+
           <li><a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ url()->current() }}&title=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}&summary=&source="><i class="fa fa-linkedin"></i></a></li>
         </ul>
 
@@ -72,4 +89,8 @@
 
 @push('js')
   <script id="dsq-count-scr" src="//glosarium.disqus.com/count.js" async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script>
+    var clipboard = new Clipboard('#copy-url')
+  </script>
 @endpush

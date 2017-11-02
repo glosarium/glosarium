@@ -20,3 +20,37 @@ Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');
 
 // static pages
 Route::get('tentang-kami', 'PageController@about')->name('page.about');
+
+Route::get('test-url', function () {
+    $client = new \GuzzleHttp\Client([
+        'base_uri' => config('services.google_url_shortener.url')
+    ]);
+
+    $word = App\Glosarium\Word::inRandomOrder()->first();
+
+    $response = $client->post('v1/url', [
+        'headers' => [
+            'Content-Type' => 'application/json'
+        ],
+        'query' => [
+            'key' => config('services.google_url_shortener.key')
+        ],
+        'json' => [
+            'longUrl' => sprintf('https://www.glosarium.web.id/%s/%s', 
+                $word->category->slug,
+                $word->slug
+            )
+        ]
+    ]);
+
+    if ($response->getStatusCode() === 200) {
+        $body = json_decode((string)$response->getBody());
+
+        if (!empty($body->id)) {
+            $word->short_url = $body->id;
+            $word->save();
+        }
+
+        return response()->json($word);
+    }
+});
