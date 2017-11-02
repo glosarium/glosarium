@@ -1,29 +1,24 @@
 @extends('layouts.app')
 
-@section('heading')
-	@include('partials.title')
+@section('header')
+<header class="page-header bg-img" style="background-image: url(assets/img/bg-banner1.jpg)">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 header-detail">
+        <div class="hgroup">
+            <h1>403</h1>
+            <h3>{{ $exception->getMessage() }}</h3>
+        </div>
+        <hr>
+        <p class="lead">
+			Kamu tidak punya hak akses untuk membuka halaman ini. <a href="{{ route('home') }}">Kembali ke Beranda</a>.
+        </p>
+        </div>
+    </div>
+    </div>
+</header>
 @endsection
 
 @section('content')
-<div class="row">
-	<div class="col-md-12">
-		<div class="text-center">
-    <h1>Ups!</h1>
-    <h2>{{ $exception->getMessage() }}</h2>
-</div>
-<!-- end text centered -->
-<!-- big text error -->
-<div class="big-error">{{ $exception->getStatusCode() }}</div>
-<!-- end big text error -->
-	</div>
-</div>
-@endsection
 
-@push('js')
-	<script src={{ asset('js/app.js') }}></script>
-	<script>
-		$(function(){
-			$('#content').addClass('block-section');
-		})
-	</script>
-@endpush
+@endsection

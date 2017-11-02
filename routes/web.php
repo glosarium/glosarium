@@ -20,3 +20,11 @@ Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');
 
 // static pages
 Route::get('tentang-kami', 'PageController@about')->name('page.about');
+
+Horizon::auth(function ($request) {
+    if (\Auth::check()) {
+        return \Auth::user()->type === 'admin';
+    }
+
+    return false;
+});

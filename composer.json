@@ -13,6 +13,7 @@
     "intervention/image": "^2.3",
     "jenssegers/agent": "^2.5",
     "laravel/framework": "5.5.*",
+    "laravel/horizon": "^1.0",
     "laravel/socialite": "^3.0",
     "laravel/tinker": "^1.0",
     "linecorp/line-bot-sdk": "^1.5",
