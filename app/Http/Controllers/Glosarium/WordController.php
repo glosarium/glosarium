@@ -137,14 +137,6 @@ class WordController extends Controller
             ->addText($word->locale, 40, 400, 250)
             ->render(sprintf('words/%s', $word->category->slug), $word->slug);
 
-        // short link
-        $hash = base_convert($word->id, 20, 36);
-        $link = \App\Link::firstOrCreate([
-            'hash' => $hash,
-            'type' => 'glosarium',
-            'url' => route('glosarium.word.show', [$word->category->slug, $word->slug]),
-        ]);
-
         // seo config
         \SEO::setTitle(sprintf('Padanan kata %s adalah %s', $word->origin, $word->locale));
         \SEO::opengraph()->addProperty('image', $image->path());
