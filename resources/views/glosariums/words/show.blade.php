@@ -31,6 +31,7 @@
 
         @if (! empty($dictionaries))
           @foreach($dictionaries as $dictionary)
+            @if ($dictionary->descriptions->count() >= 1)
               <h3>{{ $dictionary->word }} <small>{{ $dictionary->pronounciation }}</small></h3>
               <ol>
                 @foreach($dictionary->descriptions as $description)
@@ -42,6 +43,7 @@
                     </li>
                 @endforeach
               </ol>
+            @endif
           @endforeach
         @endif
       @endif
