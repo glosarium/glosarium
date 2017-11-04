@@ -20,3 +20,8 @@ span.sample {
     font-style: italic;
     color: #96a2b2;
 }
+
+/** Hide continue reading from WordPress exceprt **/
+p.link-more {
+    visibility: hidden;
+}

@@ -21,6 +21,10 @@ Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');
 // static pages
 Route::get('tentang-kami', 'PageController@about')->name('page.about');
 
+// blog
+Route::get('blog', 'BlogController@index')->name('blog.index');
+Route::get('blog/{slug}', 'BlogController@show')->name('blog.show');
+
 Horizon::auth(function ($request) {
     if (\Auth::check()) {
         return \Auth::user()->type === 'admin';

@@ -6,13 +6,17 @@
       <p class="text-justify">Glosarium adalah suatu daftar alfabetis istilah dalam suatu ranah pengetahuan tertentu yang dilengkapi dengan definisi untuk istilah-istilah tersebut. Biasanya glosarium ada di bagian akhir suatu buku dan menyertakan istilah-istilah dalam buku tersebut yang baru diperkenalkan atau paling tidak, tak umum ditemukan.</p>
 
       <p>Aplikasi Glosarium dikembangkan oleh <a href="https://www.yugo.myd.id">Dedy Yugo Purwanto</a>.</p>
+
+      @if(Request::is('blog') or Request::is('blog/*'))
+          <p>&copy; Blog diberdayakan oleh <a href="https://www.wordpress.org">WordPress</a>.</p>
+      @endif
     </div>
 
     <div class="col-xs-6 col-md-3">
       <h6>Tautan Utama</h6>
       <ul class="footer-links">
         <li><a href="{{ route('home') }}">Beranda</a></li>
-        <li><a href="page-about.html">Blog</a></li>
+        <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('glosarium.word.index') }}">Jelajahi Kata</a></li>
         <li><a href="{{ route('glosarium.category.index') }}">Semua Kategori</a></li>
         <li><a href="{{ route('page.about') }}">Tentang Kami</a></li>

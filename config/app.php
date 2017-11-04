@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -10,7 +9,7 @@ return [
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
-     */
+ */
 
     'name' => 'Glosarium Indonesia',
     'description' => env('APP_DESCRIPTION'),
@@ -140,8 +139,8 @@ return [
     'providers' => [
 
         /*
-         * Laravel Framework Service Providers...
-         */
+     * Laravel Framework Service Providers...
+     */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -197,6 +196,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        App\Providers\WordpressServiceProvider::class,
     ],
 
     /*
@@ -255,6 +255,12 @@ return [
         'OpenGraph' => Artesaos\SEOTools\Facades\OpenGraph::class,
         'Twitter' => Artesaos\SEOTools\Facades\TwitterCard::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+
+        // Wordpress Facade
+        'WPBlog' => App\Facades\Wordpress\Blog::class,
+        'WPCategory' => App\Facades\Wordpress\Category::class,
+        'WPTag' => App\Facades\Wordpress\Tag::class,
+        'WPPost' => App\Facades\Wordpress\Post::class,
     ],
 
 ];

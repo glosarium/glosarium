@@ -46,5 +46,9 @@ return [
 
     'dictionary' => [
         'url' => env('DICTIONARY_URL')
+    ],
+
+    'blog' => [
+        'url' => env('BLOG_URL')
     ]
 ];
