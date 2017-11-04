@@ -65,6 +65,7 @@ class WordController extends Controller
         })
             ->filter($request->katakunci)
             ->with('category', 'description')
+            ->orderBy('origin', 'ASC')
             ->paginate($request->limit ?? 20);
 
         $words->appends($request->only('katakunci'));
