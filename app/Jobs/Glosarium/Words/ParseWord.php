@@ -42,7 +42,7 @@ class ParseWord implements ShouldQueue
         $stemmer = $stemmerFactory->createStemmer();
         
         // save local words
-        $locales = explode(' ', $stemmer->stem($this->glosariumWord->locale));
+        $locales = array_filter(explode(' ', $stemmer->stem($this->glosariumWord->locale)));
 
         // get default class
         $group = Group::firstOrCreate([
@@ -68,7 +68,7 @@ class ParseWord implements ShouldQueue
         }
 
         // save foreign word
-        $foreigns = explode(' ', $this->glosariumWord->origin);
+        $foreigns = array_filter(explode(' ', $this->glosariumWord->origin));
         foreach ($foreigns as $foreign) {
             $count = DictionaryWord::whereWord($foreign)->count();
             if ($count <= 0) {
