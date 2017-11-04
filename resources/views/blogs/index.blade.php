@@ -40,12 +40,12 @@
                 </p>
             </article>
             @endforeach
-            <nav>
+            {{--  <nav>
                 <ul class="pager">
-                    <li class="previous"><a href="#"><i class="ti-arrow-left"></i> Older posts</a></li>
-                    <li class="next"><a href="#">Newer posts <i class="ti-arrow-right"></i></a></li>
+                    <li class="previous"><a href="#"><i class="ti-arrow-left"></i> Sebelumnya</a></li>
+                    <li class="next"><a href="#">Selanjutnya <i class="ti-arrow-right"></i></a></li>
                 </ul>
-            </nav>
+            </nav>  --}}
         </div>
         
         @include('blogs.sidebar')
