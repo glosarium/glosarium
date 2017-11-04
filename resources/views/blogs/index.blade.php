@@ -30,7 +30,9 @@
                 </div>
                 <header>
                     <h2><a href="{{ route('blog.show', $post->slug) }}">{{ $post->title->rendered }}</a></h2>
-                    <time datetime="2016-04-04 20:00">{{ Carbon\Carbon::parse($post->modified)->diffForHumans() }}</time>
+                    <time datetime="{{ Carbon\Carbon::parse($post->date)->format('Y-m-d H:i:s') }}">
+                        {{ Carbon\Carbon::parse($post->date)->diffForHumans() }}
+                    </time>
                 </header>
                 <div class="blog-content">
                     {!! $post->excerpt->rendered !!}

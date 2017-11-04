@@ -5,8 +5,8 @@
     <div class="container no-shadow">
         <h1 class="text-center">{{ $post->title->rendered }}</h1>
         <p class="lead text-center">
-            <time datetime="{{ Carbon\Carbon::parse($post->modified)->format('Y-m-d H:i:s') }}">
-                {{ Carbon\Carbon::parse($post->modified)->diffForHumans() }}
+            <time datetime="{{ Carbon\Carbon::parse($post->date)->format('Y-m-d H:i:s') }}">
+                {{ Carbon\Carbon::parse($post->date)->diffForHumans() }}
             </time>
         </p>
     </div>
@@ -45,7 +45,7 @@
                 </ul>
                 <div id="comments">
                     <header>
-                        <h3>Komentar <span class="txt-gray">(<span class="disqus-comment-count" data-disqus-url="{{ url()->current() }}"></span>)</span></h3>
+                        <h3>Komentar</h3>
                     </header>
                     @include('partials.disqus.comment', [
                         'url' => url()->current(),
