@@ -34,8 +34,11 @@ class UpdateInfo implements ShouldQueue
      */
     public function handle()
     {
-        $client = new Client;
-        $response = $client->get('http://www.kateglo.com/api.php', [
+        $client = new Client([
+            'base_uri' => config('services.dictionary.url')
+        ]);
+
+        $response = $client->get('api.php', [
             'query' => [
                 'format' => 'json',
                 'phrase' => $this->word->word
