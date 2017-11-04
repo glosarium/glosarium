@@ -99,6 +99,8 @@ class WordController extends Controller
 
         abort_if(empty($word), 404, 'Kata tidak ditemukan dalam pangkalan data.');
 
+        \dispatch(new \App\Jobs\Glosarium\Words\ParseWord($word));
+
         // create short URL and send to queue
         if (empty($word->short_url)) {
             \dispatch(new \App\Jobs\Glosarium\Words\CreateShortUrl($word));

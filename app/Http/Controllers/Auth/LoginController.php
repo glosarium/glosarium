@@ -116,13 +116,6 @@ class LoginController extends Controller
 
         $auth = $this->authenticated($request, $this->guard()->user());
 
-        if ($auth and request()->ajax()) {
-            return response()->json([
-                'isSuccess' => true,
-                'url' => $this->redirectPath(),
-            ]);
-        }
-
         return redirect()->intended($this->redirectPath());
     }
 }
