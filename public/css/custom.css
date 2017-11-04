@@ -15,3 +15,8 @@ div.logo {
     color: #96a2b2;
     line-height: 35px;
 }
+
+span.sample {
+    font-style: italic;
+    color: #96a2b2;
+}

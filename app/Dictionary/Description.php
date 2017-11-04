@@ -23,7 +23,8 @@ class Description extends Model
      */
     protected $fillable = [
         'text',
-        'sample'
+        'sample',
+        'source'
     ];
 
     /**

@@ -27,7 +27,7 @@ class Group extends Model
      *
      * @return boolean
      */
-    public function hasMany()
+    public function words() : HasMany
     {
         return $this->hasMany(Word::class);
     }

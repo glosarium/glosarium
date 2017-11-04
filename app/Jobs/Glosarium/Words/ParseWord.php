@@ -74,9 +74,10 @@ class ParseWord implements ShouldQueue
             if ($count <= 0) {
                 DictionaryWord::create([
                     'user_id' => $userId,
+                    'group_id' => $group->id,
                     'lang' => $this->glosariumWord->lang,
                     'word' => $foreign,
-                    'spell' => '',
+                    'pronounciation' => '',
                     'source' => ''
                 ]);
             }

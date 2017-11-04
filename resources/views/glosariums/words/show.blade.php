@@ -20,9 +20,30 @@
         @endif
 
         <p class="lead">{{ $word->description['description'] }}</p>
-        <p>Sumber: <a href="{{ $word->description->url }}" target="_blank" title="Lihat {{ $word->description->title }} di Wikipedia ">{{ $word->description->url }}</a></p>
+        <p>Sumber: <a href="{{ $word->description->url }}" target="_blank" title="Lihat {{ $word->description->title }} di Wikipedia ">{{ $word->description->url }}</a>.</p>
       @else
-        <p class="lead">Belum ada deskripsi untuk padanan kata <strong>{{ $word->locale }}</strong>.</p>
+        <p class="lead">
+          Belum ada deskripsi untuk padanan kata <strong>{{ $word->locale }}</strong>.
+          @if (! empty($dictionaries->first()->descriptions))
+            Arti per kata di bawah mungkin bisa menjelaskan padanan kata tersebut.
+          @endif
+        </p>
+
+        @if (! empty($dictionaries))
+          @foreach($dictionaries as $dictionary)
+              <h3>{{ $dictionary->word }} <small>{{ $dictionary->pronounciation }}</small></h3>
+              <ol>
+                @foreach($dictionary->descriptions as $description)
+                  <li>
+                    {{ $description->text }}
+                    @if (! empty($description->sample))
+                      <span class="sample">{{ $description->sample }}</sample>
+                    @endif
+                    </li>
+                @endforeach
+              </ol>
+          @endforeach
+        @endif
       @endif
 
       <ul class="details cols-3">

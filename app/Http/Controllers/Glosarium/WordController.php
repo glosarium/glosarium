@@ -151,7 +151,14 @@ class WordController extends Controller
             \SEO::setDescription($word->description['description']);
         }
 
-        return view('glosariums.words.show', compact('word', 'link'))
+        if (empty($word->description)) {
+            $locales = explode(' ', $word->locale);
+            $dictionaries = \App\Dictionary\Word::whereIn('word', $locales)
+                ->with('group', 'descriptions')
+                ->get();
+        }
+
+        return view('glosariums.words.show', compact('word', 'link', 'dictionaries'))
             ->withTitle(trans('glosarium.word.show', [
             'origin' => $word->origin,
             'locale' => $word->locale,
