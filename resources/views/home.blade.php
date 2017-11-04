@@ -1,260 +1,128 @@
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    {!! SEO::generate() !!}
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Oswald:100,300,400,500,600,800%7COpen+Sans:300,400,500,600,700,800%7CMontserrat:400,700' rel='stylesheet' type='text/css'>
-
-    <!-- Favicons -->
-    <link rel="icon" href="{{ asset('img/favicon.ico') }}">
-  </head>
-
-  <body class="nav-on-header smart-nav">
-
-    <nav class="navbar">
-      <div class="container">
-
-        <!-- Logo -->
-        <div class="pull-left">
-          <a class="navbar-toggle" href="#" data-toggle="offcanvas"><i class="ti-menu"></i></a>
-
-          <div class="logo-wrapper">
-            <a class="logo" href="{{ route('home') }}"></a>
-            <a class="logo-alt" href="{{ route('home') }}"></a>
-          </div>
-
+@section('header')
+<header class="page-header bg-img text-center" style="background-image: url({{ asset('assets/img/bg-banner2.jpg') }})">
+    <div class="container">
+        <div class="col-xs-12">
+            <h1>Glosarium Indonesia</h1>
+            <h5 class="font-alt">Temukan kata dalam bahasa asing maupun padanan bahasa lokal, bahasa Indonesia.</h5>
+            <br>
+            <form action="{{ url()->current() }}" method="get">
+                <div id="faq-search" class="form-group">
+                    <i class="ti-search fa-flip-horizontal1"></i>
+                    <input type="text" class="form-control" name="katakunci" placeholder="Bahasa asing maupun bahasa lokal..." value="{{ request('katakunci') }}">
+                </div>
+            </form>
         </div>
-        <!-- END Logo -->
+    </div>
+</header>
+@endsection
 
-        @guest
-        <!-- User account -->
-        <div class="pull-right user-login">
-          <a class="btn btn-sm btn-primary" href="{{ route('login') }}"><i class="fa fa-lock fa-fw"></i> Masuk</a>
-        </div>
-        <!-- END User account -->
-        @endguest
-
-        @auth
-        <!-- User account -->
-        <div class="pull-right">
-
-          <div class="dropdown user-account">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-              <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}">
-            </a>
-
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
-              <li><a href="{{ route('user.profile.show', auth()->user()->username) }}">Profil Saya</a></li>
-              <li><a href="">Ubah Sandi Lewat</a></li>
-              <li><a href="{{ route('glosarium.word.contribute') }}">Kontribusi Kata</a> </li>
-              <li><a href="{{ route('logout') }}">Keluar</a></li>
-            </ul>
-          </div>
-
-        </div>
-        <!-- END User account -->
-        @endauth
-
-        <!-- Navigation menu -->
-        <ul class="nav-menu pull-left">
-          <li>
-            <a href="{{ route('home') }}">Beranda</a>
-            <a href="{{ route('glosarium.word.index') }}">Jelajahi Kata</a>
-            <a href="{{ route('glosarium.category.index') }}">Kategori</a>
-            <a href="{{ route('blog.index') }}">Blog</a>
-            <a href="{{ route('page.about') }}">Tentang Kami</a>
-            <a href="{{ route('contact.form') }}">Kontak</a>
-          </li>
-        </ul>
-        <!-- END Navigation menu -->
-
-      </div>
-    </nav>
-
-    <!-- Main container -->
-    <main>
-
-      <section>
+@section('content')
+<main>
+    <!-- Recent words -->
+    @if (! empty($words))
+    <section class="no-padding-top bg-alt">
         <div class="container">
-          <div class="row logo">
-            <div class="row text-center">
-              <a href="{{ route('home') }}" title="Kembali ke Beranda">
-              </a>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <form class="header-job-search" method="get" action="{{ url()->current() }}">
-              <input type="hidden" name="utm_source" value="homepage">
-
-                <div class="input-keyword">
-                  <input type="search" name="katakunci" class="form-control" placeholder="Kata dalam bahasa asing maupun bahasa lokal" value="{{ request('katakunci') }}">
-                </div>
-
-                <div class="btn-search">
-                  <button class="btn btn-primary" type="submit">Cari Kata</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Recent words -->
-      @if (! empty($words))
-      <section class="no-padding-top bg-alt">
-        <div class="container">
-
-
-        <header class="section-header latest-words">
-          <span>Hasil Pencarian</span>
-          @if ($words->total() >= 1)
-              <h2>Hasil Pencarian untuk Kata "{{ request('katakunci') }}"</h2>
-          @endif
-        </header>
-
-          @if ($words->total() <= 0)
-            <p>Pencarian kamu - <strong>{{ request('katakunci') }}</strong> - tidak cocok dengan kata apapun.</p>
-
-            <p>Saran:</p>
-
-            <ul>
-              <li>Pastikan semua kata dieja dengan benar.</li>
-              <li>Coba kata kunci yang lain.</li>
-              <li>Coba kata kunci yang lebih umum.</li>
-              <li>Coba kurangi kata kunci.</li>
-            </ul>
-          @endif
-
-          <div class="row item-blocks-condensed">
-
-            <!-- Job item -->
-            @foreach ($words as $word)
-            <div class="col-xs-12">
-              <a class="item-block" href="{{ route('glosarium.word.show', [
-                $word->category->slug,
-                $word->slug,
-                'word' => request('word'),
-                'page' => request('page')
-              ]) }}" title="Lihat rincian untuk {{ $word->origin }} - {{ $word->locale }}">
-                <header>
-                  <div class="hgroup">
-                    <h4>{{ strtolower($word->origin) }} <span class="label label-info">{{ $word->lang }}</span></h4>
-                    <h5>{{ strtolower($word->locale) }}</h5>
-                  </div>
-                  <time datetime="2016-03-10 20:00">{{ $word->created_diff }}</time>
-                </header>
-
-                @if (! empty($word->description))
-                <div class="item-body">
-                  <p>{{ $word->description['description'] }}</p>
-                </div>
+            <header class="section-header latest-words">
+                <span>Hasil Pencarian</span>
+                @if ($words->total() >= 1)
+                <h2>Hasil Pencarian untuk Kata "{{ request('katakunci') }}"</h2>
                 @endif
-
-                <footer>
-                  <ul class="details cols-3">
-                    <li>
-                      <i class="{{ $word->category->metadata['icon'] }} fa-fw"></i>
-                      <span>{{ $word->category->name }}</span>
-                    </li>
-                  </ul>
-                </footer>
-              </a>
+            </header>
+            @if ($words->total() <= 0)
+            <p>Pencarian kamu - <strong>{{ request('katakunci') }}</strong> - tidak cocok dengan kata apapun.</p>
+            <p>Saran:</p>
+            <ul>
+                <li>Pastikan semua kata dieja dengan benar.</li>
+                <li>Coba kata kunci yang lain.</li>
+                <li>Coba kata kunci yang lebih umum.</li>
+                <li>Coba kurangi kata kunci.</li>
+            </ul>
+            @endif
+            <div class="row item-blocks-condensed">
+                <!-- Job item -->
+                @foreach ($words as $word)
+                <div class="col-xs-12">
+                    <a class="item-block" href="{{ route('glosarium.word.show', [
+                        $word->category->slug,
+                        $word->slug,
+                        'word' => request('word'),
+                        'page' => request('page')
+                        ]) }}" title="Lihat rincian untuk {{ $word->origin }} - {{ $word->locale }}">
+                        <header>
+                            <div class="hgroup">
+                                <h4>{{ strtolower($word->origin) }} <span class="label label-info">{{ $word->lang }}</span></h4>
+                                <h5>{{ strtolower($word->locale) }}</h5>
+                            </div>
+                            <time datetime="2016-03-10 20:00">{{ $word->created_diff }}</time>
+                        </header>
+                        @if (! empty($word->description))
+                        <div class="item-body">
+                            <p>{{ $word->description['description'] }}</p>
+                        </div>
+                        @endif
+                        <footer>
+                            <ul class="details cols-3">
+                                <li>
+                                    <i class="{{ $word->category->metadata['icon'] }} fa-fw"></i>
+                                    <span>{{ $word->category->name }}</span>
+                                </li>
+                            </ul>
+                        </footer>
+                    </a>
+                </div>
+                @endforeach
+                <!-- END words item -->
             </div>
-            @endforeach
-            <!-- END words item -->
-
-          </div>
-
-          <footer>
-            {{ $words->links() }}
-          </footer>
+            <footer>
+                {{ $words->links() }}
+            </footer>
         </div>
-      </section>
-      @endif
-      <!-- END Recent words -->
-
-      <!-- Categories -->
-      <section class=" bg-alt">
+    </section>
+    @endif
+    <!-- END Recent words -->
+    <!-- Categories -->
+    <section class=" bg-alt">
         <div class="container">
-          <header class="section-header">
-            <span>Kategori</span>
-            <h2>Menampilkan Kategori Acak</h2>
-            <p>Kategori acak akan berubah setiap harinya</p>
-          </header>
-
-          <div class="category-grid">
-            @foreach ($categories as $category)
-            <a href="{{ route('glosarium.category.show', $category->slug) }}">
-              <i class="{{ $category->metadata['icon'] }} fa-fw"></i>
-              <h6>
-                {{ $category->name }} <br>
-                <small>{{ number_format($category->words_count, 0, ',', '.') }} kata</small>
-              </h6>
-
-              <p>{{ str_limit($category->description, 120) }}</p>
-            </a>
-            @endforeach
-          </div>
-
-        </div>
-      </section>
-      <!-- END Categories -->
-
-
-      <!-- Newsletter -->
-      <section class="bg-img text-center" style="background-image: url(assets/img/bg-facts.jpg)">
-        <div class="container">
-          <h2><strong>Berlangganan</strong></h2>
-          <h6 class="font-alt">Berlangganan nawala untuk mendapatkan informasi terbaru</h6>
-          <br><br>
-          <form class="form-subscribe" method="post" action="{{ route('newsletter.subscriber.subscribe') }}">
-            {{ csrf_field() }}
-            {{ method_field('post') }}
-
-            <div class="input-group">
-              <input type="text" name="email" class="form-control input-lg" placeholder="Alamat pos-el kamu">
-              <span class="input-group-btn">
-                <button class="btn btn-success btn-lg" type="submit">Berlangganan</button>
-              </span>
+            <header class="section-header">
+                <span>Kategori</span>
+                <h2>Menampilkan Kategori Acak</h2>
+                <p>Kategori acak akan berubah setiap harinya</p>
+            </header>
+            <div class="category-grid">
+                @foreach ($categories as $category)
+                <a href="{{ route('glosarium.category.show', $category->slug) }}">
+                    <i class="{{ $category->metadata['icon'] }} fa-fw"></i>
+                    <h6>
+                        {{ $category->name }} <br>
+                        <small>{{ number_format($category->words_count, 0, ',', '.') }} kata</small>
+                    </h6>
+                    <p>{{ str_limit($category->description, 120) }}</p>
+                </a>
+                @endforeach
             </div>
-          </form>
         </div>
-      </section>
-      <!-- END Newsletter -->
-
-
-    </main>
-    <!-- END Main container -->
-
-
-    <!-- Site footer -->
-    <footer class="site-footer">
-
-      @include('layouts.partials.footer')
-
-    </footer>
-    <!-- END Site footer -->
-
-
-    <!-- Back to top button -->
-    <a id="scroll-up" href="#"><i class="ti-angle-up"></i></a>
-    <!-- END Back to top button -->
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.min.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
-
-  </body>
-</html>
+    </section>
+    <!-- END Categories -->
+    <!-- Newsletter -->
+    <section class="bg-img text-center" style="background-image: url(assets/img/bg-facts.jpg)">
+        <div class="container">
+            <h2><strong>Berlangganan</strong></h2>
+            <h6 class="font-alt">Berlangganan nawala untuk mendapatkan informasi terbaru</h6>
+            <br><br>
+            <form class="form-subscribe" method="post" action="{{ route('newsletter.subscriber.subscribe') }}">
+                {{ csrf_field() }}
+                {{ method_field('post') }}
+                <div class="input-group">
+                    <input type="text" name="email" class="form-control input-lg" placeholder="Alamat pos-el kamu">
+                    <span class="input-group-btn">
+                    <button class="btn btn-success btn-lg" type="submit">Berlangganan</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- END Newsletter -->
+</main>
+@endsection

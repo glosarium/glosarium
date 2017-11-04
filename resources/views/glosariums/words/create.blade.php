@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-<header class="page-header">
+<header class="page-header bg-img">
     <div class="container page-name">
         <h1 class="text-center">Ajukan Kata Baru</h1>
         <p class="lead text-center">Sebagai kontributor, kata yang kamu ajukan harus melalui tahap moderasi.</p>
