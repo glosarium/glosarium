@@ -12,7 +12,15 @@
       <hr>
 
       @if (!empty($word->description))
+        @if ($word->description->vote_down > $word->description->vote_up)
+          <div class="alert alert-warning">
+            <strong>Perhatian!</strong><br/>
+            Dikarenakan banyaknya resensi negatif, deskripsi di bawah mungkin tidak sesuai dengan penjelasan untuk padanan kata <strong>{{ $word->locale }}</strong>.
+          </div>
+        @endif
+
         <p class="lead">{{ $word->description['description'] }}</p>
+        <p>Sumber: <a href="{{ $word->description->url }}" target="_blank" title="Lihat {{ $word->description->title }} di Wikipedia ">{{ $word->description->url }}</a></p>
       @else
         <p class="lead">Belum ada deskripsi untuk padanan kata <strong>{{ $word->locale }}</strong>.</p>
       @endif
