@@ -17,4 +17,6 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
     // password
     Route::get('sandi-lewat', 'PasswordController@form')->name('password.edit');
     Route::post('user/password', 'PasswordController@update')->name('password.update');
+
+    Route::get('kontributor', 'UserController@index')->name('index');
 });

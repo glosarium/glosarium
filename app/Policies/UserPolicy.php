@@ -9,9 +9,15 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $self)
+    /**
+     * Authorize all actions within a given policy.
+     *
+     * @param User $self
+     * @return bool
+     */
+    public function before(User $self): bool
     {
-        return $self->type == 'admin';
+        return $self->type === 'admin';
     }
 
     public function restore(User $self)
@@ -33,7 +39,7 @@ class UserPolicy
      */
     public function view(User $self, User $user)
     {
-        //
+        
     }
 
     /**
