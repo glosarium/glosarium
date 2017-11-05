@@ -3,8 +3,8 @@
 @section('header')
 <header class="page-header bg-img size-lg" style="background-image: url(assets/img/bg-banner2.jpg)">
     <div class="container no-shadow">
-        <h1 class="text-center">Kontributor</h1>
-        <p class="lead text-center">Daftar kontributor yang terdaftar di {{ config('app.name') }}.</p>
+        <h1 class="text-center">Glosarium Kategori ({{ $categories->total() }})</h1>
+        <p class="lead text-center">Daftar kategori yang tersimpan dalam pangkalan data glosarium..</p>
     </div>
 </header>
 @endsection
@@ -18,22 +18,18 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Nama lengkap</th>
-                            <th>Nama pengguna</th>
-                            <th>Alamat pos-el</th>
-                            <th>Grup</th>
-                            <th>Tanggal Daftar</th>
+                            <th>Nama kategori</th>
+                            <th>Jumlah kata</th>
+                            <th>Dibuat</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach($categories as $category)
                         <tr>
-                            <td><a href="{{ route('user.profile.show', $user->username) }}">{{ $user->name }}</a></td>
-                            <td>{{ $user->username }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->type == 'contributor' ? 'Kontributor' : 'Admin' }}</td>
-                            <td>{{ $user->created_at }}</td>
+                            <td><a href="{{ route('glosarium.category.index') }}">{{ $category->name }}</a></td>
+                            <td class="text-right">{{ number_format($category->words_count, 0, ',', '.') }} kata</td>
+                            <td>{{ $category->created_at->format('d/m/Y H:i') }}</td>
                             <td class="actions">
                                 <a href=""><i class="fa fa-edit fa-fw"></i></a>
                                 <a href=""><i class="fa fa-trash fa-fw"></i></a>
@@ -44,7 +40,7 @@
                 </table>
             </div>
 
-            {{ $users->links() }}
+            {{ $categories->links() }}
         </div>
     </section>
 

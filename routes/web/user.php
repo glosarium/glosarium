@@ -19,4 +19,8 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
     Route::post('user/password', 'PasswordController@update')->name('password.update');
 
     Route::get('kontributor', 'UserController@index')->name('index');
+
+    Route::get('glosarium/kata', 'Glosarium\WordController@index')->name('glosarium.word.index');
+
+    Route::get('glosarium/kategori', 'Glosarium\CategoryController@index')->name('glosarium.category.index');
 });
