@@ -42,7 +42,9 @@
                 <a class="btn btn-sm btn-primary" href="{{ route('login') }}">Masuk</a> atau <a href="{{ route('register') }}">Daftar sebagai Kontributor</a>
             </div>
             <!-- END User account -->
-            @endguest @auth
+            @endguest
+            
+            @auth
             <!-- User account -->
             <div class="pull-right">
 
@@ -73,7 +75,7 @@
                 <li><a href="{{ route('page.about') }}">Tentang Kami</a></li>
                 <li><a href="{{ route('contact.form') }}">Kontak</a></li>
 
-                @if(auth()->user()->type == 'admin')
+                @if(auth()->check() and auth()->user()->type == 'admin')
                     <li>
                         <a href="#">Administrasi</a>
                         <ul>
