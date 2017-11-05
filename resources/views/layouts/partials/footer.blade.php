@@ -27,13 +27,13 @@
     <div class="col-xs-6 col-md-3">
       <h6>Tautan Lain</h6>
       <ul class="footer-links">
-        <li><a href="job-list.html">Doumentasi API/APA</a></li>
+        <li><a href="#">Doumentasi API/APA</a></li>
         <li><a href="https://www.github.com/glosarium/glosarium" target="_blank">Kontribusi di Github</a></li>
         <hr>
         @guest
         <li><a href="{{ route('login') }}">Masuk</a></li>
         <li><a href="{{ route('register') }}">Daftar Sebagai Kontributor</a></li>
-        <li><a href="job-list.html">Lupa Sandi Lewat</a></li>
+        <li><a href="{{ route('password.request') }}">Lupa Sandi Lewat</a></li>
         @endguest
         @auth
         <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>

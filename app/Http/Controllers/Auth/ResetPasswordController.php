@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use SEO;
+use Illuminate\View\View;
 
 class ResetPasswordController extends Controller
 {
@@ -22,11 +24,20 @@ class ResetPasswordController extends Controller
     use ResetsPasswords;
 
     /**
+     * Redirect page after reseting password.
+     *
+     * @var string
+     */
+    protected $redirectTo;
+
+    /**
      * Create a new controller instance.
      */
     public function __construct()
     {
         $this->middleware('guest');
+
+        $this->redirectTo = route('home');
     }
 
     /**
@@ -38,9 +49,11 @@ class ResetPasswordController extends Controller
      * @param  string|null                                                $token
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request, $token = null): View
     {
-        return view('controllers.auth.passwords.reset')->with(
+        SEO::setTitle('Setel Ulang Sandi Lewat');
+
+        return view('users.passwords.reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }

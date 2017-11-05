@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use SEO;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends Controller
 {
@@ -34,9 +37,11 @@ class ForgotPasswordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLinkRequestForm()
+    public function showLinkRequestForm(): View
     {
-        return view('controllers.auth.passwords.email');
+        SEO::setTitle('Lupa Sandi Lewat');
+
+        return view('users.passwords.email');
     }
 
     /**
@@ -57,13 +62,6 @@ class ForgotPasswordController extends Controller
         $response = $this->broker()->sendResetLink(
             $request->only('email')
         );
-
-        if (request()->ajax()) {
-            return response()->json([
-                'isSuccess' => true,
-                'message'   => 'Surel instruksi berhasil dikirim ke kotak masuk.',
-            ]);
-        }
 
         return $response == Password::RESET_LINK_SENT
         ? $this->sendResetLinkResponse($response)

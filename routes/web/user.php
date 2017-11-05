@@ -1,5 +1,8 @@
 <?php
 Auth::routes();
+Route::get('masuk', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('daftar', 'Auth\RegisterController@showRegistrationForm')->name('register');
+
 Route::get('profil/{username}', 'User\ProfileController@show')->name('user.profile.show');
 Route::get('keluar', 'Auth\LoginController@logout')->name('logout');
 

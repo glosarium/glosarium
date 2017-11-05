@@ -2,54 +2,53 @@
 
 @section('content')
 <div class="login-block">
-  <a href="{{ route('home') }}" title="Kembali ke Beranda">
-  </a>
-  <h1>Daftar Sebagai Kontributor</h1>
+    <h1>Daftar Sebagai Kontributor</h1>
 
-  <form action="{{ route('register') }}" method="post">
-    {{ csrf_field() }}
-    {{ method_field('post') }}
+    @include('partials.validation')
 
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="ti-user"></i></span>
-        <input type="text" name="name" class="form-control" placeholder="Nama Lengkap">
-      </div>
-    </div>
+    <form action="{{ url('register') }}" method="post">
+        {{ csrf_field() }} {{ method_field('post') }}
 
-    <hr class="hr-xs">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ti-user"></i></span>
+                <input type="text" name="name" class="form-control" placeholder="Nama lengkap" value="{{ old('email') }}" autofocus="true">
+            </div>
+        </div>
 
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="ti-email"></i></span>
-        <input type="email" name="email" class="form-control" placeholder="Pos-el">
-      </div>
-    </div>
+        <hr class="hr-xs">
 
-    <hr class="hr-xs">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ti-email"></i></span>
+                <input type="email" name="email" class="form-control" placeholder="Alamat pos-el" value="{{ old('email') }}">
+            </div>
+        </div>
 
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="ti-unlock"></i></span>
-        <input type="password" name="password" class="form-control" placeholder="Sandi Lewat">
-      </div>
-    </div>
+        <hr class="hr-xs">
 
-    <button class="btn btn-primary btn-block" type="submit">Daftar</button>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="ti-unlock"></i></span>
+                <input type="password" name="password" class="form-control" placeholder="Sandi lewat">
+            </div>
+        </div>
 
-    <div class="login-footer">
-      <h6>Atau daftar dengan sosial media</h6>
-      <ul class="social-icons">
-        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
-      </ul>
-    </div>
+        <button class="btn btn-primary btn-block" type="submit">Daftar</button>
 
-  </form>
+        <div class="login-footer">
+            <h6>Atau daftar dengan sosial media</h6>
+            <ul class="social-icons">
+                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+
+    </form>
 </div>
 
 <div class="login-links">
-  <p class="text-center">Sudah punya akun? <a class="txt-brand" href="{{ route('login') }}">Masuk</a></p>
+    <p class="text-center">Sudah punya akun? <a class="txt-brand" href="{{ route('login') }}">Masuk</a></p>
 </div>
 @endsection
