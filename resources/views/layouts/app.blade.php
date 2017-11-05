@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ config('app.locale') }}">
 
 <head>
     <meta charset="utf-8">
@@ -52,7 +52,7 @@
             </a>
 
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
+                        {{--  <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>  --}}
                         <li><a href="{{ route('user.profile.show', auth()->user()->username) }}">Profil Saya</a></li>
                         <li><a href="{{ route('glosarium.word.contribute') }}">Kontribusi Kata</a> </li>
                         <li><a href="{{ route('user.password.edit') }}">Ubah Sandi Lewat</a></li>
@@ -79,6 +79,7 @@
                         <ul>
                             <li><a href="{{ route('user.glosarium.word.index') }}">Glosarium Kata</a></li>
                             <li><a href="{{ route('user.glosarium.category.index') }}">Glosarium Kategori</a></li>
+                            <li><a href="{{ route('user.dictionary.word.index') }}">Kamus</a></li>
                             <li><a href="{{ route('user.index') }}">Kontributor</a></li>
                             <li><a href="{{ config('services.blog.url') }}wp-admin">Blog</a></li>
                             <li><a href="{{ url('horizon') }}">Horizon (Antrian)</a></li>

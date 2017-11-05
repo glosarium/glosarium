@@ -3,8 +3,8 @@
 @section('header')
 <header class="page-header bg-img size-lg" style="background-image: url(assets/img/bg-banner2.jpg)">
     <div class="container no-shadow">
-        <h1 class="text-center">Glosarium Kategori ({{ $categories->total() }})</h1>
-        <p class="lead text-center">Daftar kategori yang tersimpan dalam pangkalan data glosarium.</p>
+        <h1 class="text-center">Kamus ({{ number_format($words->total(), 0, ',', '.') }})</h1>
+        <p class="lead text-center">Daftar kata yang tersimpan dalam pangkalan data kamus.</p>
     </div>
 </header>
 @endsection
@@ -18,18 +18,20 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Nama kategori</th>
-                            <th>Jumlah kata</th>
+                            <th>Kata</th>
+                            <th>Jenis kata</th>
+                            <th>Kontributor</th>
                             <th>Dibuat</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($categories as $category)
+                        @foreach($words as $word)
                         <tr>
-                            <td><a href="{{ route('glosarium.category.index') }}">{{ $category->name }}</a></td>
-                            <td class="text-right">{{ number_format($category->words_count, 0, ',', '.') }} kata</td>
-                            <td>{{ $category->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $word->word }}</td>
+                            <td>{{ $word->group->name }}</td>
+                            <td><a href="{{ route('user.profile.show', $word->user->username) }}">{{ $word->user->name }}</a></td>
+                            <td>{{ $word->created_at->format('d/m/Y H:i') }}</td>
                             <td class="actions">
                                 <a href=""><i class="fa fa-edit fa-fw"></i></a>
                                 <a href=""><i class="fa fa-trash fa-fw"></i></a>
@@ -40,7 +42,7 @@
                 </table>
             </div>
 
-            {{ $categories->links() }}
+            {{ $words->links() }}
         </div>
     </section>
 
