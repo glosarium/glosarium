@@ -37,7 +37,7 @@
         @endguest
         @auth
         <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>
-        <li><a href="">Ubah Sandi Lewat</a></li>
+        <li><a href="{{ route('user.password.edit') }}">Ubah Sandi Lewat</a></li>
         <li><a href="{{ route('logout') }}">Keluar</a></li>
         @endauth
       </ul>

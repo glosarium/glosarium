@@ -15,33 +15,39 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PasswordRequest;
 use App\User;
+use Illuminate\View\View;
+use SEO;
+use Illuminate\Http\RedirectResponse;
+use Auth;
 
 /**
  * Password management for logged user
  */
 class PasswordController extends Controller
 {
-    public function form()
+    /**
+     * Show form for change current password.
+     *
+     * @return View
+     */
+    public function form(): View
     {
-        return view('user.password.form')
-            ->withTitle('Ubah Sandi Lewat');
+        SEO::setTitle('Ubah Sandi Lewat');
+        
+        return view('users.passwords.edit');
     }
 
     /**
      * @param ValidationRequest $request
      */
-    public function update(PasswordRequest $request)
+    public function update(PasswordRequest $request): RedirectResponse
     {
-        $user = User::findOrFail(\Auth::id());
-
+        $user = Auth::user();
         $user->password = bcrypt($request->password);
+        $user->save();
 
-        if ($user->save() === true) {
-            return redirect()
-                ->route('user.password.form')
-                ->withSuccess('Sandi lewat berhasil diperbarui');
-        }
-
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->withSuccess('Sandi lewat berhasil diperbarui.');
     }
 }

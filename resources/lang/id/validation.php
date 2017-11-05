@@ -102,6 +102,7 @@ return [
         ],
     ],
     'valid_name' => 'Penggunaan :attribute tidak diizinkan.',
+    'password' => 'Isian :attribute tidak cocok.',
 
     /*
     |---------------------------------------------------------------------------------------
@@ -123,8 +124,9 @@ return [
         'message' => 'pesan',
         'name' => 'nama',
         'email' => 'surel',
+        'current_password' => 'sandi lewat saat ini',
         'password' => 'sandi lewat',
-        'passwordConfirmation' => 'konfirmasi sandi lewat',
+        'password_confirmation' => 'konfirmasi sandi lewat',
         'keyword' => 'katakunci',
         'category_id' => 'kategori'
     ],
