@@ -68,6 +68,18 @@
                                     <i class="{{ $word->category->metadata['icon'] }} fa-fw"></i>
                                     <span>{{ $word->category->name }}</span>
                                 </li>
+                                
+                                <li>
+                                    <i class="fa fa-user fa-fw"></i>
+                                    <span>{{ ! empty($word->user) ? $word->user->name : 'Anonim' }}</span>
+                                </li>
+                                
+                                @if($word->short_url)
+                                <li>
+                                    <i class="fa fa-link fa-fw"></i>
+                                    <span>{{ $word->short_url }}</span>
+                                </li>
+                                @endif
                             </ul>
                         </footer>
                     </a>

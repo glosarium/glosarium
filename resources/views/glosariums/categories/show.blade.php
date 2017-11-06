@@ -2,67 +2,74 @@
 
 @section('header')
 <header class="page-header bg-img size-lg" style="background-image: url({{ asset('img/bg-banner1.jpg') }})">
-  <div class="container no-shadow">
-    <h3 class="text-center"><span class="{{ $category->metadata['icon'] }}"></span></h3>
-    <h1 class="text-center">{{ $category->name }}</h1>
-    <h6 class="text-center">{{ $category->short_url }}</h6>
-    <p class="lead text-center">{{ $category->description }}</p>
-  </div>
+    <div class="container no-shadow">
+        <h3 class="text-center"><span class="{{ $category->metadata['icon'] }}"></span></h3>
+        <h1 class="text-center">{{ $category->name }}</h1>
+        <h6 class="text-center">{{ $category->short_url }}</h6>
+        <p class="lead text-center">{{ $category->description }}</p>
+    </div>
 </header>
 @endsection
 
 @section('content')
 <section class="no-padding-top bg-alt">
-  <div class="container">
-    <div class="row item-blocks-condensed">
+    <div class="container">
+        <div class="row item-blocks-condensed">
 
-      <div class="col-xs-12 text-right">
-        <br>
-        <a class="btn btn-primary btn-sm" href="company-add.html">Tambah Kata Baru</a>
-      </div>
+            <div class="col-xs-12 text-right">
+                <br>
+                <a class="btn btn-primary btn-sm" href="company-add.html">Tambah Kata Baru</a>
+            </div>
 
 
-      @foreach ($words as $word)
-      <!-- Words item -->
-      <div class="col-xs-12">
-        <a class="item-block" href="{{ route('glosarium.word.show', [
+            @foreach ($words as $word)
+            <!-- Words item -->
+            <div class="col-xs-12">
+                <a class="item-block" href="{{ route('glosarium.word.show', [
           $word->category->slug,
           $word->slug,
           'word' => request('word'),
           'page' => request('page')
         ]) }}" title="Lihat rincian untuk {{ $word->origin }} - {{ $word->locale }}">
-          <header>
-            <div class="hgroup">
-              <h4>{{ strtolower($word->origin) }} <span class="label label-info">{{ $word->lang }}</span></h4>
-              <h5>{{ strtolower($word->locale) }}</h5>
+                    <header>
+                        <div class="hgroup">
+                            <h4>{{ strtolower($word->origin) }} <span class="label label-info">{{ $word->lang }}</span></h4>
+                            <h5>{{ strtolower($word->locale) }}</h5>
+                        </div>
+                        <time datetime="2016-03-10 20:00">{{ $word->created_diff }}</time>
+                    </header>
+
+                    @if (! empty($word->description))
+                    <div class="item-body">
+                        <p>{{ $word->description['description'] }}</p>
+                    </div>
+                    @endif
+
+                    <footer>
+                        <ul class="details cols-3">
+                            <li>
+                                <i class="fa fa-user fa-fw"></i>
+                                <span>{{ ! empty($word->user) ? $word->user->name : 'Anonim' }}</span>
+                            </li>
+                            
+                            @if($word->short_url)
+                            <li>
+                                <i class="fa fa-link fa-fw"></i>
+                                <span>{{ $word->short_url }}</span>
+                            </li>
+                            @endif
+                        </ul>
+                    </footer>
+                </a>
             </div>
-            <time datetime="2016-03-10 20:00">{{ $word->created_diff }}</time>
-          </header>
+            <!-- END Words item -->
+            @endforeach
 
-          @if (! empty($word->description))
-          <div class="item-body">
-            <p>{{ $word->description['description'] }}</p>
-          </div>
-          @endif
+            <div class="col-md-12">
+                {{ $words->links() }}
+            </div>
 
-          <footer>
-            <ul class="details cols-3">
-              <li>
-                <i class="fa fa-user fa-fw"></i>
-                <span>{{ ! empty($word->user) ? $word->user->name : 'Anonim' }}</span>
-              </li>
-            </ul>
-          </footer>
-        </a>
-      </div>
-      <!-- END Words item -->
-      @endforeach
-
-      <div class="col-md-12">
-        {{ $words->links() }}
-      </div>
-
+        </div>
     </div>
-  </div>
 </section>
 @endsection
