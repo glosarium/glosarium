@@ -91,14 +91,16 @@ class CategoryController extends Controller
         $categories = Category::orderBy('name', 'ASC')
             ->whereIsPublished(true)
             ->withCount('words')
-            ->when($request->keyword, function ($query) use ($request) {
-                return $query->filter($request->keyword);
+            ->when($request->katakunci, function ($query) use ($request) {
+                return $query->filter($request->katakunci);
             })
             ->paginate($request->limit ?? 20);
 
         // generate metadata for SEO
         SEO::setTitle('Kategori Glosarium');
-        SEO::setDescription(\htmlspecialchars($categories->random()->description));
+        if ($categories->total() >= 1) {
+            SEO::setDescription(\htmlspecialchars($categories->random()->description));
+        }
         SEO::opengraph()->addProperty('image', $image);
 
         return view('glosariums.categories.index', compact('categories'));
