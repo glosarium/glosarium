@@ -10,6 +10,8 @@ use App\Dictionary\Word;
 use GuzzleHttp\Client;
 use App\Dictionary\Group;
 use App\Dictionary\Description;
+use Log;
+use GuzzleHttp\TransferStats;
 
 class UpdateInfo implements ShouldQueue
 {
@@ -42,11 +44,16 @@ class UpdateInfo implements ShouldQueue
             'query' => [
                 'format' => 'json',
                 'phrase' => $this->word->word
-            ]
+            ],
+            'on_stats' => function(TransferStats $stats) use (&$url) {
+                $url = $stats->getEffectiveUri();
+            }
         ]);
 
         if ($response->getStatusCode() === 200) {
             $body = (string)$response->getBody();
+
+            Log::debug(sprintf('Request to %s: %s', $url, $body));
 
             if ($this->isJson($body)) {
                 $body = json_decode($body);
@@ -55,6 +62,7 @@ class UpdateInfo implements ShouldQueue
                     'name' => $body->kateglo->lex_class_name
                 ]);
 
+                $this->word->group_id = $group->id;
                 $this->word->pronounciation = $body->kateglo->pronounciation ?? '';
                 $this->word->source = $body->kateglo->ref_source_name;
                 $this->word->save();

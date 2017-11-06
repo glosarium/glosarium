@@ -40,9 +40,11 @@ class ParseWord implements ShouldQueue
         // stem origin word
         $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
         $stemmer = $stemmerFactory->createStemmer();
+
+        $sanitizedLocaleWord = preg_replace('/[\()+]/', '', $this->glosariumWord->locale);
         
         // save local words
-        $locales = array_filter(explode(' ', $stemmer->stem($this->glosariumWord->locale)));
+        $locales = array_filter(explode(' ', $stemmer->stem($sanitizedLocaleWord)));
 
         // get default class
         $group = Group::firstOrCreate([
@@ -64,22 +66,6 @@ class ParseWord implements ShouldQueue
 
                 \dispatch(new \App\Jobs\Dictionary\Words\UpdateInfo($word));
                 unset($word);
-            }
-        }
-
-        // save foreign word
-        $foreigns = array_filter(explode(' ', $this->glosariumWord->origin));
-        foreach ($foreigns as $foreign) {
-            $count = DictionaryWord::whereWord($foreign)->count();
-            if ($count <= 0) {
-                DictionaryWord::create([
-                    'user_id' => $userId,
-                    'group_id' => $group->id,
-                    'lang' => $this->glosariumWord->lang,
-                    'word' => $foreign,
-                    'pronounciation' => '',
-                    'source' => ''
-                ]);
             }
         }
     }
