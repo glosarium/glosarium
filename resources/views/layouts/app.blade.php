@@ -50,8 +50,8 @@
 
                 <div class="dropdown user-account">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-              <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}">
-            </a>
+                        <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}">
+                    </a>
 
                     <ul class="dropdown-menu dropdown-menu-right">
                         {{--  <li><a href="">Dasbor ({{ auth()->user()->name }})</a></li>  --}}
@@ -79,8 +79,8 @@
                     <li>
                         <a href="#">Administrasi</a>
                         <ul>
-                            <li><a href="{{ route('user.glosarium.word.index') }}">Glosarium Kata</a></li>
-                            <li><a href="{{ route('user.glosarium.category.index') }}">Glosarium Kategori</a></li>
+                            <li><a href="{{ route('glosarium.word.all') }}">Kata</a></li>
+                            <li><a href="{{ route('user.glosarium.category.index') }}">Kategori</a></li>
                             <li><a href="{{ route('user.dictionary.word.index') }}">Kamus</a></li>
                             <li><a href="{{ route('user.index') }}">Kontributor</a></li>
                             <li><a href="{{ config('services.blog.url') }}wp-admin">Blog</a></li>

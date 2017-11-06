@@ -20,8 +20,6 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth', 'as' => 'user.'], f
 
     Route::get('kontributor', 'UserController@index')->name('index');
 
-    Route::get('glosarium/kata', 'Glosarium\WordController@index')->name('glosarium.word.index');
-
     Route::get('glosarium/kategori', 'Glosarium\CategoryController@index')->name('glosarium.category.index');
 
     Route::get('kamus/kata', 'Dictionary\WordController@index')->name('dictionary.word.index');

@@ -20,6 +20,9 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Glosarium\Category;
+use Illuminate\Http\RedirectResponse;
+use SEO;
+use Auth;
 
 /**
  * Manage glosarium words
@@ -37,6 +40,81 @@ class WordController extends Controller
 
         // default description for metadata
         \SEO::setDescription(config('app.description'));
+    }
+
+    /**
+     * Show all words for administrations.
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function all(Request $request): View
+    {
+        $this->authorize('all', Word::class);
+
+        $this->validate($request, [
+            'limit' => 'integer|max:50',
+            'kategori' => 'array',
+            'katakunci' => 'string'
+        ]);
+
+        SEO::setTitle('Semua Kata');
+
+        $words = Word::orderBy('origin', 'ASC')
+            ->with('category', 'user')
+            ->when($request->katakunci, function($query) use($request){
+                return $query->filter($request->katakunci);
+            })
+            ->when($request->kategori, function($query) use($request){
+                return $query->whereHas('category', function($category) use($request){
+                    return $category->whereIn('slug', $request->kategori);
+                });
+            })
+            ->paginate($request->limit ?? 20);
+
+        $words->appends($request->only('limit', 'kategori'));
+
+        $categories = Category::dropdown();
+
+        return view('glosariums.words.all', compact('words', 'categories'));
+    }
+
+    /**
+     * Show all pending words.
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function moderation(Request $request): View
+    {
+        $this->authorize('moderation', Word::class);
+
+        SEO::setTitle('Moderasi Kata');
+
+        $words = Word::whereIsPublished(false)
+            ->with('category', 'user')
+            ->paginate(20);
+
+        return view('glosariums.words.moderation', compact('words'));
+    }
+
+    /**
+     * Show all deleted words.
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function trash(Request $request): View
+    {
+        $this->authorize('trash', Word::class);
+
+        SEO::setTitle('Tong Sampah');
+
+        $words = Word::onlyTrashed()
+            ->with('category', 'user')
+            ->paginate(20);
+
+        return view('glosariums.words.trash', compact('words'));
     }
 
     /**
@@ -165,6 +243,8 @@ class WordController extends Controller
      */
     public function create() : View
     {
+        $this->authorize('create', Word::class);
+        
         // create image
         $image = (new Image)->addText($title = trans('glosarium.word.create'), 40, 400, 200)
             ->render('images/pages', 'create-glossary')
@@ -183,7 +263,7 @@ class WordController extends Controller
      * @param  WordRequest $request
      * @return string      JSON
      */
-    public function store(WordRequest $request) : \Illuminate\Http\RedirectResponse
+    public function store(WordRequest $request) : RedirectResponse
     {
         \DB::transaction(function () use (&$word, $request) {
             $request->merge([
@@ -206,8 +286,8 @@ class WordController extends Controller
         });
 
         return redirect()
-            ->back()
-            ->with('word', $word);
+            ->route('glosarium.word.edit', $word->slug)
+            ->withSuccess(sprintf('Kata %s (%s) berhasil ditambahkan.', $word->origin, $word->locale));
     }
 
     /**
@@ -219,9 +299,10 @@ class WordController extends Controller
     public function edit(string $slug) : View
     {
         $word = Word::whereSlug($slug)
-            ->whereUserId(\Auth::id())
             ->with('category')
             ->firstOrFail();
+
+        $this->authorize('view', $word);
 
         $categories = Category::dropdown();
 
@@ -236,21 +317,24 @@ class WordController extends Controller
      * @param WordRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(WordRequest $request, string $slug) : \Illuminate\Http\RedirectResponse
+    public function update(WordRequest $request, string $slug) : RedirectResponse
     {
         $word = Word::whereSlug($slug)
-            ->whereUserId(\Auth::id())
             ->firstOrFail();
 
+        $this->authorize('update', $word);
+
         $request->merge([
-            'is_published' => false,
+            'is_published' => Auth::user()->type === 'admin',
             'category_id' => Category::whereSlug($request->category_id)->first()->id
         ]);
 
         $word->fill($request->all());
         $word->save();
 
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->withSuccess(sprintf('Kata %s (%s) berhasil diperbarui. Kata dimasukkan kembali ke dalam mode moderasi.', $word->origin, $word->locale));
     }
 
     /**
@@ -288,13 +372,85 @@ class WordController extends Controller
     public function destroy(string $slug) : \Illuminate\Http\RedirectResponse
     {
         $word = Word::whereSlug($slug)
-            ->whereUserId(\Auth::id())
             ->firstOrFail();
+
+        $this->authorize('destroy', $word);
+
+        if ($word->is_published) {
+            return redirect()
+                ->back()
+                ->withWarning('Kata yang sudah dipublikasikan tidak dapat dihapus.');
+        }
 
         abort_if($word->is_published, 404, 'Kamu tidak dapat menghapus kata yang sudah dipublikasikan.');
 
         $word->delete();
 
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->withSuccess('Kata berhasil dihapus dari pangkalan data.');
+    }
+
+    /**
+     * Publish pending word.
+     *
+     * @param string $slug
+     * @return RedirectResponse
+     */
+    public function publish(string $slug): RedirectResponse
+    {
+        $word = Word::whereSlug($slug)
+            ->firstOrFail();
+
+        $this->authorize('publish', $word);
+
+        $word->is_published = true;
+        $word->save();
+
+        return redirect()
+            ->back()
+            ->withSuccess(sprintf('Kata %s (%s) disetujui dan telah ditampilkan di pencarian.', $word->origin, $word->locale));
+    }
+
+    /**
+     * Restore trashed word.
+     *
+     * @param string $slug
+     * @return RedirectResponse
+     */
+    public function restore(string $slug): RedirectResponse
+    {
+        $word = Word::whereSlug($slug)
+            ->onlyTrashed()
+            ->firstOrFail();
+
+        $this->authorize('restore', $word);
+
+        $word->restore();
+
+        return redirect()
+            ->back()
+            ->withSuccess(sprintf('Kata %s (%s) telah dikembalikan ke pencarian.', $word->origin, $word->locale));
+    }
+
+    /**
+     * Delete word forever.
+     *
+     * @param string $slug
+     * @return RedirectResponse
+     */
+    public function delete(string $slug): RedirectResponse
+    {
+        $word = Word::whereSlug($slug)
+            ->onlyTrashed()
+            ->firstOrFail();
+
+        $this->authorize('delete', $word);
+
+        $word->forceDelete();
+
+        return redirect()
+            ->back()
+            ->withSuccess(sprintf('Kata %s (%s) telah dihapus selamanya.', $word->origin, $word->locale));
     }
 }

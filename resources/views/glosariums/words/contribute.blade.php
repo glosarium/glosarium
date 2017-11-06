@@ -32,13 +32,25 @@
 @endsection
 
 @section('content')
-<section class="no-padding-top bg-alt">
+<section class="bg-alt">
     <div class="container">
         <div class="row">
+
+            @include('partials.message')
+
+            @if($words->total() >= 1)
             <div class="col-xs-12 text-right">
                 <br>
                 <a class="btn btn-primary btn-sm" href="{{ route('glosarium.word.create') }}">Ajukan Kata Baru</a>
             </div>
+            @endif
+
+            @if($words->total() <= 0)
+            <div class="alert alert-info">
+                <strong>Info.</strong><br>
+                Belum ada kata yang kamu tambahkan. <a href="{{ route('glosarium.word.create') }}" class="alert-link">Tambah sekarang</a>.
+            </div>
+            @endif
             
             @foreach ($words as $word)
             <div class="col-xs-12">

@@ -3,8 +3,8 @@
 @section('header')
 <header class="page-header bg-img size-lg" style="background-image: url(assets/img/bg-banner2.jpg)">
     <div class="container no-shadow">
-        <h1 class="text-center">Glosarium Kata ({{ number_format($words->total(), 0, ',', '.') }})</h1>
-        <p class="lead text-center">Daftar kata yang tersimpan dalam pangkalan data glosarium.</p>
+        <h1 class="text-center">Kata Dihapus ({{ number_format($words->total(), 0, ',', '.') }})</h1>
+        <p class="lead text-center">Daftar kata yang telah dihapus. Di halaman ini, kamu dapat mengembalikan kata untuk ditampilkan di pencarian.</p>
     </div>
 </header>
 @endsection
@@ -14,6 +14,26 @@
 
     <section>
         <div class="container">
+
+            <div class="row">
+
+                @include('partials.message')
+
+                <div class="col-xs-12 text-right">
+                    <br>
+                    <a class="btn btn-primary btn-sm" href="{{ route('glosarium.word.all') }}">Semua Kata</a>
+                </div>
+            </div>
+            <hr>
+            
+            @if($words->total() <= 0)
+                <div class="alert alert-info">
+                    <strong>Info.</strong><br>
+                    Tidak ada kata yang dihapus.
+                </div>
+            @endif
+
+            @if ($words->total() >= 1)
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -35,14 +55,15 @@
                             <td><a href="{{ route('user.profile.show', $word->user->username) }}">{{ $word->user->name }}</a></td>
                             <td>{{ $word->created_at->format('d/m/Y H:i') }}</td>
                             <td class="actions">
-                                <a href=""><i class="fa fa-edit fa-fw"></i></a>
-                                <a href=""><i class="fa fa-trash fa-fw"></i></a>
+                                <a href="{{ route('glosarium.word.restore', $word->slug) }}" title="Publikasikan kata {{ $word->origin }} ({{ $word->locale }})"><i class="fa fa-refresh fa-fw"></i></a>
+                                <a href="{{ route('glosarium.word.delete', $word->slug) }}" title="Hapus selamanya"><i class="fa fa-trash fa-fw"></i></a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+            @endif
 
             {{ $words->links() }}
         </div>

@@ -11,67 +11,119 @@ class WordPolicy
     use HandlesAuthorization;
 
     /**
+     * Show all glosarium words.
+     *
      * @param User $user
-     * @return mixed
+     * @return void
      */
-    public function before(User $user)
+    public function all(User $user): bool
     {
-        return $user->type == 'admin';
+        return $user->type === 'admin';
     }
 
     /**
+     * Show pending words.
+     *
      * @param User $user
-     * @param Word $word
+     * @return bool
      */
-    public function moderation(User $user, Word $word)
+    public function moderation(User $user): bool
     {
-        # code...
+        return $user->type === 'admin';
     }
 
     /**
      * Determine whether the user can view the word.
      *
-     * @param  \App\User     $user
-     * @param  \App\App\Word $word
-     * @return mixed
+     * @param User $user
+     * @param Word $word
+     * @return bool
      */
-    public function view(User $user, Word $word)
+    public function view(User $user, Word $word): bool
     {
-
+        return $user->type === 'admin' or $user->id == $word->user_id;
     }
 
     /**
      * Determine whether the user can create words.
      *
-     * @param  \App\User $user
-     * @return mixed
+     * @param User $user
+     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
      * Determine whether the user can update the word.
      *
-     * @param  \App\User     $user
-     * @param  \App\App\Word $word
-     * @return mixed
+     * @param User $user
+     * @param Word $word
+     * @return bool
      */
-    public function update(User $user, Word $word)
+    public function update(User $user, Word $word): bool
     {
-        //
+        return $user->type === 'admin' or $user->id == $word->user_id;
     }
 
     /**
      * Determine whether the user can delete the word.
      *
-     * @param  \App\User     $user
-     * @param  \App\App\Word $word
-     * @return mixed
+     * @param User $user
+     * @param Word $word
+     * @return bool
      */
-    public function delete(User $user, Word $word)
+    public function destroy(User $user, Word $word): bool
     {
-        //
+        return $user->type === 'admin' or $user->id == $word->user_id;
+    }
+
+    /**
+     * Authorize publish word.
+     *
+     * @param User $user
+     * @param Word $word
+     * @return bool
+     */
+    public function publish(User $user, Word $word): bool
+    {
+        return $user->type === 'admin';
+    }
+    
+    /**
+     * Word has been moved to trash.
+     *
+     * @param User $user
+     * @param Word $word
+     * @return bool
+     */
+    public function trash(User $user): bool
+    {
+        return $user->type === 'admin';
+    }
+
+    /**
+     * Restore trashed word.
+     *
+     * @param User $user
+     * @param Word $word
+     * @return bool
+     */
+    public function restore(User $user, Word $word): bool
+    {
+        return $user->type === 'admin';
+    }
+
+    /**
+     * Delete word forever.
+     *
+     * @param User $user
+     * @param Word $word
+     * @return bool
+     */
+    public function delete(User $user, Word $word): bool
+    {
+        return $user->type === 'admin';
     }
 }

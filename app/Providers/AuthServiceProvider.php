@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Glosarium\Word;
+use App\Policies\Glosarium\WordPolicy;
+use App\User;
+use App\Policies\UserPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -12,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        \App\User::class => \App\Policies\UserPolicy::class,
+        User::class => UserPolicy::class,
+        Word::class => WordPolicy::class
     ];
 
     /**

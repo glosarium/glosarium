@@ -7,11 +7,12 @@
         <div class="col-xs-12 col-sm-12 header-detail">
         <div class="hgroup">
             <h1>403</h1>
-            <h3>{{ $exception->getMessage() }}</h3>
+            <h3>Hak akses ditolak.</h3>
         </div>
         <hr>
         <p class="lead">
 			Kamu tidak punya hak akses untuk membuka halaman ini. <a href="{{ route('home') }}">Kembali ke Beranda</a>.
+            <a href="{{ route('contact.form') }}">Kontak kami</a> jika kamu mengalami kendala seputar penggunaan aplikasi.
         </p>
         </div>
     </div>
