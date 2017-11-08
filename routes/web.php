@@ -14,6 +14,12 @@
 Route::get('/', 'HomeController')->name('home');
 
 // contact controller
+Route::group(['middleware' => 'auth', 'as' => 'contact.'], function(){
+    Route::get('kontak/pesan-masuk', 'ContactController@index')->name('index');
+    Route::get('kontak/{id}/hapus', 'ContactController@destroy')->name('destroy');
+    Route::get('kontak/{id}/balas', 'ContactController@reply')->name('reply');
+    Route::post('kontak/{id}/balas', 'ContactController@submit')->name('submit');
+});
 Route::get('kontak', 'ContactController@form')->name('contact.form');
 Route::get('kontak/pesan/{id}', 'ContactController@show')->name('contact.show');
 Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');

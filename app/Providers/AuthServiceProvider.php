@@ -7,6 +7,8 @@ use App\Glosarium\Word;
 use App\Policies\Glosarium\WordPolicy;
 use App\User;
 use App\Policies\UserPolicy;
+use App\Message;
+use App\Policies\ContactPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
-        Word::class => WordPolicy::class
+        Word::class => WordPolicy::class,
+        Message::class => ContactPolicy::class,
     ];
 
     /**

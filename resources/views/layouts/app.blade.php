@@ -84,6 +84,7 @@
                             <li><a href="{{ route('user.dictionary.word.index') }}">Kamus</a></li>
                             <li><a href="{{ route('user.index') }}">Kontributor</a></li>
                             <li><a href="{{ config('services.blog.url') }}wp-admin">Blog</a></li>
+                            <li><a href="{{ route('contact.index') }}">Kotak Masuk (Kontak)</a></li>
                             <li><a href="{{ url('horizon') }}">Horizon (Antrian)</a></li>
                             <li><a href="{{ url('log-viewer') }}">Log Kesalahan</a></li>
                         </ul>
