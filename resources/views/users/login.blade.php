@@ -5,10 +5,12 @@
 
     <form action="{{ url('login') }}" method="post">
         {{ csrf_field() }}
+        {{ method_field('post') }}
+
+        <input type="hidden" name="remember" value="1">
         
         @include('partials.validation')
 
-        {{ method_field('post') }}
 
         <div class="form-group">
             <div class="input-group">
