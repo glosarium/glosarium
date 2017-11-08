@@ -43,7 +43,8 @@ class UpdateInfo implements ShouldQueue
         $response = $client->get('api.php', [
             'query' => [
                 'format' => 'json',
-                'phrase' => $this->word->word
+                'phrase' => $this->word->word,
+                'http_errors' => false,
             ],
             'on_stats' => function(TransferStats $stats) use (&$url) {
                 $url = $stats->getEffectiveUri();
@@ -82,6 +83,9 @@ class UpdateInfo implements ShouldQueue
                     Description::insert($descriptions);
                 }
             }
+        }
+        else {
+            Log::error(sprintf('Request to %s returned %s.', $url, $response->getStatusCode()));
         }
     }
 
