@@ -3,12 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Glosarium\Word;
-use App\Policies\Glosarium\WordPolicy;
-use App\User;
-use App\Policies\UserPolicy;
-use App\Message;
-use App\Policies\ContactPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,9 +12,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        User::class => UserPolicy::class,
-        Word::class => WordPolicy::class,
-        Message::class => ContactPolicy::class,
+        \App\User::class => \App\Policies\UserPolicy::class,
+        \App\Glosarium\Word::class => \App\Policies\Glosarium\WordPolicy::class,
+        \App\Message::class => \App\Policies\ContactPolicy::class,
+        \App\Dictionary\Word::class => \App\Policies\Dictionary\WordPolicy::class,
     ];
 
     /**

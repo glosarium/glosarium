@@ -81,7 +81,7 @@
                         <ul>
                             <li><a href="{{ route('glosarium.word.all') }}">Kata</a></li>
                             <li><a href="{{ route('user.glosarium.category.index') }}">Kategori</a></li>
-                            <li><a href="{{ route('user.dictionary.word.index') }}">Kamus</a></li>
+                            <li><a href="{{ route('dictionary.word.index') }}">Kamus</a></li>
                             <li><a href="{{ route('user.index') }}">Kontributor</a></li>
                             <li><a href="{{ config('services.blog.url') }}wp-admin">Blog</a></li>
                             <li><a href="{{ route('contact.index') }}">Kotak Masuk (Kontak)</a></li>

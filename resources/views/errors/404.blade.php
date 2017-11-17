@@ -11,7 +11,12 @@
         </div>
         <hr>
         <p class="lead">
-			Halaman yang kamu cari tidak ditemukan atau sudah dihapus sebelumnya. <a href="{{ route('home') }}">Kembali ke Beranda</a>.
+			Halaman yang kamu cari tidak ditemukan atau sudah dihapus sebelumnya.
+        </p>
+
+        <p>
+            <i class="fa fa-home"></i> 
+            <a href="{{ route('home') }}">Kembali ke Beranda</a>
         </p>
         </div>
     </div>

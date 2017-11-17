@@ -14,6 +14,11 @@
 
     <section>
         <div class="container">
+
+            <div class="row">
+                @include('partials.message')
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -28,13 +33,14 @@
                     <tbody>
                         @foreach($words as $word)
                         <tr>
-                            <td>{{ $word->word }}</td>
+                            <td><a href="{{ route('dictionary.word.show', $word->word) }}">{{ $word->word }}</a></td>
                             <td>{{ $word->group->name }}</td>
                             <td><a href="{{ route('user.profile.show', $word->user->username) }}">{{ $word->user->name }}</a></td>
-                            <td>{{ $word->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $word->created_at->format('d M Y H:i') }}</td>
                             <td class="actions">
-                                <a href=""><i class="fa fa-edit fa-fw"></i></a>
-                                <a href=""><i class="fa fa-trash fa-fw"></i></a>
+                                <a href="{{ route('dictionary.word.edit', $word->word) }}" title="Ubah {{ $word->word }}"><i class="fa fa-edit fa-fw"></i></a>
+                                <a href="{{ route('dictionary.word.destroy', $word->word) }}" title="Hapus {{ $word->word }}"><i class="fa fa-trash fa-fw"></i></a>
+                                <a href="" title="Sinkronisasi deskripsi untuk {{ $word->word }}"><i class="fa fa-refresh fa-fw"></i></a>
                             </td>
                         </tr>
                         @endforeach

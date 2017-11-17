@@ -11,8 +11,13 @@
         </div>
         <hr>
         <p class="lead">
-			Kamu tidak punya hak akses untuk membuka halaman ini. <a href="{{ route('home') }}">Kembali ke Beranda</a>.
+			Kamu tidak punya hak akses untuk membuka halaman ini.
             <a href="{{ route('contact.form') }}">Kontak kami</a> jika kamu mengalami kendala seputar penggunaan aplikasi.
+        </p>
+
+        <p>
+            <i class="fa fa-home"></i> 
+            <a href="{{ route('home') }}">Kembali ke Beranda</a>
         </p>
         </div>
     </div>

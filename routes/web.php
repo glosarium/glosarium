@@ -13,13 +13,27 @@
 
 Route::get('/', 'HomeController')->name('home');
 
-// contact controller
-Route::group(['middleware' => 'auth', 'as' => 'contact.'], function(){
-    Route::get('kontak/pesan-masuk', 'ContactController@index')->name('index');
-    Route::get('kontak/{id}/hapus', 'ContactController@destroy')->name('destroy');
-    Route::get('kontak/{id}/balas', 'ContactController@reply')->name('reply');
-    Route::post('kontak/{id}/balas', 'ContactController@submit')->name('submit');
+Route::group(['middleware' => 'auth'], function(){
+    Route::group(['as' => 'contact.'], function(){
+        // contact controller
+        Route::get('kontak/pesan-masuk', 'ContactController@index')->name('index');
+        Route::get('kontak/{id}/hapus', 'ContactController@destroy')->name('destroy');
+        Route::get('kontak/{id}/balas', 'ContactController@reply')->name('reply');
+        Route::post('kontak/{id}/balas', 'ContactController@submit')->name('submit');
+    });
+
+    Route::group(['namespace' => 'Dictionary', 'as' => 'dictionary.'], function(){
+        // dictionary
+        Route::get('kamus/kata', 'WordController@index')->name('word.index');
+        Route::get('kamus/{entry}/ubah', 'WordController@destroy')->name('word.edit');
+        Route::put('kamus/{entry}/ubah', 'WordController@update')->name('word.update');
+        Route::get('kamus/{entry}/hapus', 'WordController@destroy')->name('word.destroy');
+    });
 });
+
+// dictionary
+Route::get('/kamus/entri/{entry}', 'Dictionary\WordController@show')->name('dictionary.word.show');
+
 Route::get('kontak', 'ContactController@form')->name('contact.form');
 Route::get('kontak/pesan/{id}', 'ContactController@show')->name('contact.show');
 Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');

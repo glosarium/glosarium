@@ -8,7 +8,7 @@
         <h1>{{ $word->origin }} <span class="label label-info">{{ $word->lang }}</span></h1>
         <h3>{{ $word->locale }} <small>{{ $word->spell }}</small></h3>
       </div>
-      <time datetime="{{ $word->created_at->format('Y-m-d H:i:s') }}">{{ $word->created_diff }}</time>
+      <time datetime="{{ $word->created_at->format('Y-m-d H:i:s') }}">{{ $word->created_at->diffForHumans() }}</time>
       <hr>
 
       @if (!empty($word->description))
@@ -32,7 +32,7 @@
         @if (! empty($dictionaries))
           @foreach($dictionaries as $dictionary)
             @if ($dictionary->descriptions->count() >= 1)
-              <h3>{{ $dictionary->word }} <small>{{ $dictionary->pronounciation }}</small></h3>
+              <h3> <a href="{{ route('dictionary.word.show', $dictionary->word) }}">{{ $dictionary->word }}</a> <small>{{ $dictionary->pronounciation }}</small></h3>
               <ol>
                 @foreach($dictionary->descriptions as $description)
                   <li>
