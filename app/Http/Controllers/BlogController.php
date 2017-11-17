@@ -9,6 +9,7 @@ use WPBlog;
 use WPCategory;
 use WPTag;
 use WPPost;
+use Illuminate\View\View;
 
 class BlogController extends Controller
 {
@@ -28,7 +29,13 @@ class BlogController extends Controller
         ]);
     }
 
-    public function index(Request $request)
+    /**
+     * Show all blog posts.
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function index(Request $request): View
     {
         $this->validate($request, [
             's' => 'string'
@@ -50,14 +57,20 @@ class BlogController extends Controller
 
             if (isset($post->_embedded->{'wp:featuredmedia'})) {
                 $media = $media = collect($post->_embedded->{'wp:featuredmedia'})->first();
-                SEO::opengrap()->addProperty($media->media_details->sizes->full->source_url);
+                SEO::opengraph()->addProperty('image', $media->media_details->sizes->full->source_url);
             }
         }
 
         return view('blogs.index', compact('categories', 'tags', 'posts'));
     }
 
-    public function show(string $slug)
+    /**
+     * Show single post using slug.
+     *
+     * @param string $slug
+     * @return View
+     */
+    public function show(string $slug): View
     {
         $post = WPPost::getBySlug($slug);
 
