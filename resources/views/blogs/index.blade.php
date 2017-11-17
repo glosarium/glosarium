@@ -20,6 +20,7 @@
 
             @foreach ($posts as $post)
             <article class="post">
+                @if (isset($post->_embedded->{'wp:featuredmedia'}))
                 <div class="post-media">
                     <a href="{{ route('blog.show', $post->slug) }}">
                         @php
@@ -28,6 +29,7 @@
                         <img src="{{ $media->media_details->sizes->full->source_url }}" alt="{{ $media->caption->rendered }}">
                     </a>
                 </div>
+                @endif
                 <header>
                     <h2><a href="{{ route('blog.show', $post->slug) }}">{{ $post->title->rendered }}</a></h2>
                     <time datetime="{{ Carbon\Carbon::parse($post->date)->format('Y-m-d H:i:s') }}">

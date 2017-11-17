@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-<header class="page-header bg-img size-xl overlay-light" style="background-image: url({{ $image->source_url }})">
+<header class="page-header bg-img size-xl overlay-light" style="{{ isset($image) ? 'background-image: url('.$image->source_url.')' : null }}">
     <div class="container no-shadow">
         <h1 class="text-center">{{ $post->title->rendered }}</h1>
         <p class="lead text-center">

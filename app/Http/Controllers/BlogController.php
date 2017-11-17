@@ -41,6 +41,18 @@ class BlogController extends Controller
         else {
             $posts = WPPost::all();
         }
+        
+        // generate SEO metadata based on latest post
+        if (! empty($posts) and ! empty($posts[0])) {
+            $post = $posts[0];
+            SEO::setTitle($post->title->rendered);
+            SEO::setDescription(str_limit(strip_tags($post->excerpt->rendered), 160));
+
+            if (isset($post->_embedded->{'wp:featuredmedia'})) {
+                $media = $media = collect($post->_embedded->{'wp:featuredmedia'})->first();
+                SEO::opengrap()->addProperty($media->media_details->sizes->full->source_url);
+            }
+        }
 
         return view('blogs.index', compact('categories', 'tags', 'posts'));
     }
@@ -49,14 +61,13 @@ class BlogController extends Controller
     {
         $post = WPPost::getBySlug($slug);
 
-        abort_if(empty($post), 404, 'Pos tidak ditemukan.');
-
-        // get image
-        $image = collect($post->_embedded->{'wp:featuredmedia'})->first();
+        abort_if(empty($post), 404, 'Pos tidak ditemukan dalam pangkalan data.');
 
         SEO::setTitle($post->title->rendered);
         SEO::setDescription(str_limit(strip_tags(explode('</p>', $post->excerpt->rendered)[0])), 160);
-        if (!empty($image)) {
+        if (isset($post->_embedded->{'wp:featuredmedia'})) {
+            // get image
+            $image = collect($post->_embedded->{'wp:featuredmedia'})->first();
             SEO::opengraph()->addProperty('image', $image->source_url);
         }
         SEO::opengraph()->addProperty('author', $post->_embedded->author[0]->name);
