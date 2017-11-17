@@ -5,6 +5,9 @@
     </div>
     <div class="container">
         <div class="row">
+
+            @include('partials.message')
+
             <form method="post" action="{{ route('user.password.update') }}">
                 {{ csrf_field() }} {{ method_field('post') }}
                 <div class="form-group col-xs-12 col-sm-12 {{ !$errors->has('current_password') ?: 'has-error' }}">
