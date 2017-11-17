@@ -44,8 +44,8 @@ class UpdateInfo implements ShouldQueue
             'query' => [
                 'format' => 'json',
                 'phrase' => $this->word->word,
-                'http_errors' => false,
             ],
+            'http_errors' => false,
             'on_stats' => function(TransferStats $stats) use (&$url) {
                 $url = $stats->getEffectiveUri();
             }
@@ -54,7 +54,7 @@ class UpdateInfo implements ShouldQueue
         if ($response->getStatusCode() === 200) {
             $body = (string)$response->getBody();
 
-            Log::debug(sprintf('Request to %s: %s', $url, $body));
+            Log::debug(sprintf('Melakukan permintaan data ke %s: %s', $url, $body));
 
             if ($this->isJson($body)) {
                 $body = json_decode($body);
