@@ -8,6 +8,7 @@
         {{ method_field('post') }}
 
         <input type="hidden" name="remember" value="1">
+        <input type="hidden" name="redirect" value="{{ request('kembali') }}">
         
         @include('partials.validation')
 
