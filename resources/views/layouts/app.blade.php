@@ -58,6 +58,7 @@
                         <li><a href="{{ route('user.profile.show', auth()->user()->username) }}">Profil Saya</a></li>
                         <li><a href="{{ route('glosarium.word.create') }}">Ajukan Kata Baru</a> </li>
                         <li><a href="{{ route('glosarium.word.contribute') }}">Kontribusi Kata</a> </li>
+                        <li><a href="{{ route('glosarium.favorite.index') }}">Kata Favorit</a> </li>
                         <li><a href="{{ route('user.password.edit') }}">Ubah Sandi Lewat</a></li>
                         <li><a href="{{ route('logout') }}">Keluar</a></li>
                     </ul>

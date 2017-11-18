@@ -15,6 +15,10 @@ Route::group(['namespace' => 'Glosarium', 'as' => 'glosarium.'], function () {
         Route::put('kata/{slug}/sunting', 'WordController@update')->name('word.update');
         Route::get('kata/{slug}/buang', 'WordController@destroy')->name('word.destroy');
 
+        Route::get('favorit/{slug}', 'FavoriteController@toggle')->name('favorite.toggle');
+        Route::get('favorit', 'FavoriteController@index')->name('favorite.index');
+        Route::get('favorit/{id}/hapus', 'FavoriteController@destroy')->name('favorite.destroy');
+
         Route::get('deskripsi/{slug}/{type}', 'DescriptionController@vote')->name('description.vote');
     });
 

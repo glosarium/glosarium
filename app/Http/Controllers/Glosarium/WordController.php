@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Glosarium\Category;
 use Illuminate\Http\RedirectResponse;
+use App\Glosarium\Favorite;
 use SEO;
 use Auth;
 
@@ -369,20 +370,16 @@ class WordController extends Controller
      * @param string $slug
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $slug) : \Illuminate\Http\RedirectResponse
+    public function destroy(string $slug) : RedirectResponse
     {
         $word = Word::whereSlug($slug)
-            ->firstOrFail();
+            ->first();
+
+        abort_if(empty($word), 404, 'Kata tidak ditemukan dalam pangkalan data.');
 
         $this->authorize('destroy', $word);
 
-        if ($word->is_published) {
-            return redirect()
-                ->back()
-                ->withWarning('Kata yang sudah dipublikasikan tidak dapat dihapus.');
-        }
-
-        abort_if($word->is_published, 404, 'Kamu tidak dapat menghapus kata yang sudah dipublikasikan.');
+        abort_if($word->is_published, 500, 'Kamu tidak dapat menghapus kata yang sudah dipublikasikan.');
 
         $word->delete();
 

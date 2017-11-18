@@ -47,7 +47,7 @@
             <ul class="details cols-3">
                 <li>
                     <i class="{{ $word->category->metadata['icon'] }} fa-fw"></i>
-                    <span><a href="{{ route('glosarium.category.show', $word->category->slug) }}">{{ $word->category->name }}</a></span>
+                    <span><a href="{{ route('glosarium.category.show', $word->category->slug) }}" title="Lihat kata dalam kategori {{ $word->category->name }}">{{ $word->category->name }}</a></span>
                 </li>
                 @if (! empty($word->user))
                     <li>
@@ -78,15 +78,21 @@
                     <li><a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ url()->current() }}&title=Padanan kata {{ $word->origin }} ({{ $word->lang }}) adalah {{ $word->locale }}&summary=&source="><i class="fa fa-linkedin"></i></a></li>
                 </ul>
 
-                @if ($word->description and auth()->check())
                 <div class="action-buttons">
                     <div class="btn-group">
-                        <a href="{{ route('glosarium.description.vote', [$word->slug, 'bagus']) }}" class="btn btn-primary"><i class="fa fa-thumbs-up fa-fw"></i> {{ $word->description->vote_up }}</a>
-                        <a href="{{ route('glosarium.description.vote', [$word->slug, 'jelek']) }}" class="btn btn-danger"><i class="fa fa-thumbs-down fa-fw"></i> {{ $word->description->vote_down }}</a>
-                        <button type="button" class="btn btn-info"><i class="fa fa-bookmark fa-fw"></i> {{ $word->favorites_count }}</button>
+                        @if ($word->description and auth()->check())
+                            <a href="{{ route('glosarium.description.vote', [$word->slug, 'bagus']) }}" class="btn btn-primary"><i class="fa fa-thumbs-up fa-fw"></i> {{ $word->description->vote_up }}</a>
+                            <a href="{{ route('glosarium.description.vote', [$word->slug, 'jelek']) }}" class="btn btn-danger"><i class="fa fa-thumbs-down fa-fw"></i> {{ $word->description->vote_down }}</a>
+                        @endif
+
+                        @if(auth()->check())
+                            <a href="{{ route('glosarium.favorite.toggle', $word->slug) }}" class="btn btn-info" title="Jadikan kata favorit"><i class="fa fa-bookmark fa-fw"></i> {{ number_format($word->favorites_count, 0, ',', '.') }}</a>
+                        @else
+                            <a href="#" class="btn btn-info" title="Kamu harus masuk terlebih dahulu untuk membuat daftar kata favorit" disabled="true"><i class="fa fa-bookmark fa-fw"></i> {{ number_format($word->favorites_count, 0, ',', '.') }}</a>
+                            <a href="{{ route('login', ['kembali' => url()->current()]) }}" class="btn btn-info"><i class="fa fa-lock fa-fw"></i> Masuk</a>
+                        @endif
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>
