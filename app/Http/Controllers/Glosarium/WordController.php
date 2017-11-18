@@ -60,8 +60,7 @@ class WordController extends Controller
 
         SEO::setTitle('Semua Kata');
 
-        $words = Word::orderBy('origin', 'ASC')
-            ->with('category', 'user')
+        $words = Word::with('category', 'user')
             ->when($request->katakunci, function($query) use($request){
                 return $query->filter($request->katakunci);
             })
@@ -70,6 +69,7 @@ class WordController extends Controller
                     return $category->whereIn('slug', $request->kategori);
                 });
             })
+            ->sort($request->katakunci)
             ->paginate($request->limit ?? 20);
 
         $words->appends($request->only('limit', 'kategori'));
@@ -137,13 +137,13 @@ class WordController extends Controller
 
         $words = Word::whereIsPublished(true)
             ->when($request->kategori, function ($query) use ($request) {
-            $query->whereHas('category', function ($category) use ($request) {
-                return $category->whereIn('slug', $request->kategori);
-            });
-        })
+                $query->whereHas('category', function ($category) use ($request) {
+                    return $category->whereIn('slug', $request->kategori);
+                });
+            })
             ->filter($request->katakunci)
-            ->with('category', 'description')
-            ->orderBy('origin', 'ASC')
+            ->with('category', 'description', 'user')
+            ->sort($request->katakunci)
             ->paginate($request->limit ?? 20);
 
         $words->appends($request->only('katakunci'));

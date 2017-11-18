@@ -57,13 +57,6 @@ class Word extends Model
     /**
      * @var array
      */
-    protected $appends = [
-
-    ];
-
-    /**
-     * @var array
-     */
     protected $casts = [
         'user_id' => 'integer',
         'category_id' => 'integer',
@@ -177,13 +170,14 @@ class Word extends Model
     public function scopeSort($query, $keyword = null): Builder
     {
         // is on search?
-        if (request('keyword', $keyword)) {
-            $query->orderBy(\DB::raw('LENGTH(origin)'), 'ASC')
-                ->orderBy(\DB::raw('LENGTH(locale)'), 'ASC');
+        if ($keyword) {
+            $query->orderBy(\DB::raw('CHAR_LENGTH(origin)'), 'ASC')
+                ->orderBy(\DB::raw('CHAR_LENGTH(locale)'), 'ASC');
         }
-
-        $query->orderBy('origin', 'ASC')
-            ->orderBy('locale', 'ASC');
+        else {
+            $query->orderBy('origin', 'ASC')
+                ->orderBy('locale', 'ASC');
+        }
 
         return $query;
 

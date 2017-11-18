@@ -23,7 +23,7 @@ class HomeController extends Controller
         ]);
 
         if ($request->has('katakunci')) {
-            $words = Word::sort()
+            $words = Word::sort($request->katakunci)
                 ->with('user', 'description', 'category')
                 ->filter($request->katakunci)
                 ->isPublished()
