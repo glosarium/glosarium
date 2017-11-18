@@ -29,7 +29,7 @@
             
             @if($words->total() <= 0)
                 <div class="alert alert-info">
-                    <strong>Info.</strong><br>
+                    <strong>Info</strong><br>
                     Belum ada kata yang membutuhkan moderasi.
                 </div>
             @endif

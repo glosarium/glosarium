@@ -37,12 +37,14 @@
 
     <section>
         <div class="container">
+
+            @include('partials.message')
             
             <div class="row">
                 <div class="col-xs-12 text-right">
                     <br>
                     <a class="btn btn-primary btn-sm" href="{{ route('glosarium.word.moderation') }}">Moderasi Kata</a>
-                    <a class="btn btn-white btn-sm" href="{{ route('glosarium.word.create') }}">Tong Sampah</a>
+                    <a class="btn btn-white btn-sm" href="{{ route('glosarium.word.trash') }}">Tong Sampah</a>
                 </div>
             </div>
             <hr
@@ -55,6 +57,7 @@
                             <th>Kata lokal</th>
                             <th>Kategori</th>
                             <th>Kontributor</th>
+                            <th>Status</th>
                             <th>Dibuat</th>
                             <th>Aksi</th>
                         </tr>
@@ -66,10 +69,11 @@
                             <td>{{ $word->locale }}</td>
                             <td><a href="{{ route('glosarium.category.show', $word->category->slug) }}">{{ $word->category->name }}</a></td>
                             <td><a href="{{ route('user.profile.show', $word->user->username) }}">{{ $word->user->name }}</a></td>
-                            <td>{{ $word->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $word->is_published ? 'Dipublikasikan' : 'Moderasi'}}
+                            <td>{{ $word->created_at->format('d M Y H:i') }}</td>
                             <td class="actions">
-                                <a href="{{ route('glosarium.word.edit', $word->slug) }}"><i class="fa fa-edit fa-fw"></i></a>
-                                <a href="{{ route('glosarium.word.destroy', $word->slug) }}"><i class="fa fa-trash fa-fw"></i></a>
+                                <a href="{{ route('glosarium.word.edit', $word->slug) }}" title="Sunting kata"><i class="fa fa-edit fa-fw"></i></a>
+                                <a href="{{ route('glosarium.word.destroy', $word->slug) }}" title="Buang ke tong sampah"><i class="fa fa-trash fa-fw"></i></a>
                             </td>
                         </tr>
                         @endforeach

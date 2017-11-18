@@ -9,7 +9,9 @@
     <div class="container">
         <div class="row">
 
-            @include('partials.message')
+            <div class="col-sm-12">
+                @include('partials.message')
+            </div>
             
             <form method="post" action="{{ route('glosarium.word.update', $word->slug) }}">
                 {{ csrf_field() }}

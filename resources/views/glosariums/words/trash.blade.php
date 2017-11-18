@@ -55,7 +55,7 @@
                             <td><a href="{{ route('user.profile.show', $word->user->username) }}">{{ $word->user->name }}</a></td>
                             <td>{{ $word->created_at->format('d/m/Y H:i') }}</td>
                             <td class="actions">
-                                <a href="{{ route('glosarium.word.restore', $word->slug) }}" title="Publikasikan kata {{ $word->origin }} ({{ $word->locale }})"><i class="fa fa-refresh fa-fw"></i></a>
+                                <a href="{{ route('glosarium.word.restore', $word->slug) }}" title="Kembalikan kata"><i class="fa fa-refresh fa-fw"></i></a>
                                 <a href="{{ route('glosarium.word.delete', $word->slug) }}" title="Hapus selamanya"><i class="fa fa-trash fa-fw"></i></a>
                             </td>
                         </tr>
