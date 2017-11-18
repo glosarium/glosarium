@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 header-detail">
         <div class="hgroup">
-            <h1>404</h1>
+            <h1>500</h1>
             <h3>{{ $exception->getMessage() }}</h3>
         </div>
         <hr>
