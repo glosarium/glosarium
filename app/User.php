@@ -23,6 +23,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'image',
         'type',
         'about',
         'headline',
@@ -55,7 +56,7 @@ class User extends Authenticatable
     protected $appends = [
         'avatar',
         'twitter_link',
-        'instagram_link'
+        'instagram_link',
     ];
 
     /**
@@ -81,8 +82,11 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getAvatarAttribute() : string
+    public function getAvatarAttribute(): string
     {
+        if (!empty($this->attributes['image'])) {
+            return $this->attributes['image'];
+        }
         return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']) . '?s=200';
     }
 
@@ -91,7 +95,7 @@ class User extends Authenticatable
      *
      * @return string|null
      */
-    public function getTwitterLinkAttribute() : ? string
+    public function getTwitterLinkAttribute(): ?string
     {
         if (!empty($this->attributes['twitter'])) {
             return 'https://www.twitter.com/' . $this->attributes['twitter'];
@@ -105,7 +109,7 @@ class User extends Authenticatable
      *
      * @return string|null
      */
-    public function getInstagramLinkAttribute() : ? string
+    public function getInstagramLinkAttribute(): ?string
     {
         if (!empty($this->attributes['instagram'])) {
             return 'https://www.instagram.com/' . $this->attributes['instagram'];

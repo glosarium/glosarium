@@ -12,6 +12,7 @@ class UserProvider extends Model
         'driver_name',
         'driver_id',
         'name',
+        'nickname',
         'email',
         'image',
     ];
@@ -19,17 +20,6 @@ class UserProvider extends Model
     protected $casts = [
         'user_id' => 'integer',
     ];
-
-    /**
-     * Casts default driver id as sha1 instead of plain text from social media.
-     *
-     * @param string $id
-     * @return string
-     */
-    public function setDriverIdAttribute(string $id): string
-    {
-        return sha1($id);
-    }
 
     /**
      * User providers belongs to user.
@@ -53,7 +43,7 @@ class UserProvider extends Model
     {
         return self::create([
             'user_id' => $user->id,
-            'driver_id' => $provider->getId(),
+            'driver_id' => sha1($provider->getId()),
             'driver_name' => $driver,
             'name' => $provider->getName(),
             'nickname' => $provider->getNickname(),

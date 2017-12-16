@@ -34,9 +34,9 @@
         <div class="login-footer">
             <h6>Atau masuk dengan sosial media</h6>
             <ul class="social-icons">
-                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="facebook" href="{{ route('social.redirect', 'facebook') }}"><i class="fa fa-facebook"></i></a></li>
                 <li><a class="twitter" href="{{ route('social.redirect', 'twitter') }}"><i class="fa fa-twitter"></i></a></li>
-                <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a class="linkedin" href="{{ route('social.redirect', 'linkedin') }}"><i class="fa fa-linkedin"></i></a></li>
             </ul>
         </div>
 

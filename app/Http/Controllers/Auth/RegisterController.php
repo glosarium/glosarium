@@ -8,6 +8,7 @@ use App\Mail\User\RegisterMail;
 use App\Newsletter\Subscriber;
 use App\Notifications\User\RegistrationNotification;
 use App\User;
+use App\UserProvider;
 use DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -85,14 +86,20 @@ class RegisterController extends Controller
     {
         try {
             DB::transaction(function () use ($data, &$user) {
+                $provider = session('provider');
+                $image = !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar();
+
                 $user = User::create([
                     'name' => $data['name'],
                     'email' => strtolower($data['email']),
                     'password' => bcrypt($data['password']),
-                    'is_active' => false, // need confirm via email,
+                    'is_active' => !empty($provider),
                     'headline' => 'Kontributor',
-                    'about' => ''
+                    'about' => $provider->user['description'] ?? '',
+                    'image' => isset($image) ? $image : '',
                 ]);
+
+                $userProvider = UserProvider::store($provider, $user, session('driver'));
 
                 // subscribe to newsletter
                 $subscriber = Subscriber::firstOrNew([
@@ -109,7 +116,12 @@ class RegisterController extends Controller
                     ->get();
                 Notification::send($users, new RegistrationNotification($user));
 
-                Mail::to($user->email)->send(new RegisterMail($user));
+                if (empty($provider)) {
+                    Mail::to($user->email)->send(new RegisterMail($user));
+                }
+
+                session()->forget('provider');
+                session()->forget('driver');
             });
 
         } catch (Exception $e) {

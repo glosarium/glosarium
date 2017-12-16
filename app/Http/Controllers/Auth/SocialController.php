@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use App\UserProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
@@ -26,10 +29,11 @@ class SocialController extends Controller
     {
         $providers = [
             'twitter',
+            'facebook',
         ];
 
         if (!in_array($driver, $providers)) {
-            abort(500, 'Invalid provider name.');
+            abort(500, sprintf('Media sosial %s tidak didukung untuk saat ini.', $driver));
         }
 
         return Socialite::driver($driver)->redirect();
@@ -63,18 +67,29 @@ class SocialController extends Controller
             $user = User::whereEmail($provider->getEmail())->first();
 
             if (empty($user)) {
-                DB::transaction(function () use (&$user, $driver, $provider) {
+                DB::transaction(function () use (&$user, $driver, $provider, $image) {
                     $user = User::create([
                         'email' => $provider->getEmail(),
                         'name' => $provider->getName(),
                         'password' => '',
                         'image' => $image,
+                        'headline' => '',
+                        'about' => !empty($provider->user['description']) ? $provider->user['description'] : '',
                         'twitter' => $driver == 'twitter' ? $provider->getNickname() : null,
+                        'is_active' => true,
                     ]);
 
                     $userProvider = UserProvider::store($provider, $user, $driver);
                 });
             } else {
+                if (empty($user->image)) {
+                    $user->image = $image;
+                }
+                if (empty($user->about) and !empty($provider->user['description'])) {
+                    $user->about = $provider->user['description'];
+                }
+                $user->save();
+
                 $userProvider = UserProvider::store($provider, $user, $driver);
             }
 
@@ -83,13 +98,8 @@ class SocialController extends Controller
             return redirect($this->redirectTo);
         } else {
             // email empty and user register manually
-            session()->put('social', [
-                'provider' => $driver,
-                'id' => $provider->getId(),
-                'name' => $provider->getName(),
-                'username' => $provider->getNickname(),
-                'image' => $image,
-            ]);
+            session()->put('provider', $provider);
+            session()->put('driver', $driver);
 
             return redirect()
                 ->route('register');
