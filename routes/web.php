@@ -45,6 +45,12 @@ Route::get('tentang-kami', 'PageController@about')->name('page.about');
 Route::get('blog', 'BlogController@index')->name('blog.index');
 Route::get('blog/{slug}', 'BlogController@show')->name('blog.show');
 
+// login social media
+Route::group(['middleware' => 'guest'], function(){
+    Route::get('login/{driver}', 'Auth\SocialController@redirect')->name('social.redirect');
+    Route::get('login/{driver}/callback', 'Auth\SocialController@callback')->name('social.callback');
+});
+
 Horizon::auth(function ($request) {
     if (\Auth::check()) {
         return \Auth::user()->type === 'admin';

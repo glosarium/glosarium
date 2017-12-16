@@ -15,13 +15,12 @@
     "jenssegers/agent": "^2.5",
     "laravel/framework": "5.5.*",
     "laravel/horizon": "^1.0",
-    "laravel/socialite": "^3.0",
+    "laravel/socialite": "3.0.8",
     "laravel/tinker": "^1.0",
     "linecorp/line-bot-sdk": "^1.5",
     "predis/predis": "^1.1",
     "roumen/sitemap": "^2.6",
-    "sastrawi/sastrawi": "^1.2",
-    "tymon/jwt-auth": "^0.5.10"
+    "sastrawi/sastrawi": "^1.2"
   },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -54,11 +53,14 @@
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "php artisan optimize",
+            "php artisan key:generate"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "php artisan optimize",
+            "php artisan cache:clear",
+            "php artisan config:clear"
         ]
     },
     "config": {

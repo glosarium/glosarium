@@ -11,7 +11,7 @@ return [
     | default location for this type of information, allowing packages
     | to have a conventional place to find your various credentials.
     |
- */
+     */
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
@@ -41,14 +41,20 @@ return [
 
     'google_url_shortener' => [
         'url' => env('GOOGLE_URL'),
-        'key' => env('GOOGLE_KEY')
+        'key' => env('GOOGLE_KEY'),
     ],
 
     'dictionary' => [
-        'url' => env('DICTIONARY_URL')
+        'url' => env('DICTIONARY_URL'),
     ],
 
     'blog' => [
-        'url' => env('BLOG_URL')
-    ]
+        'url' => env('BLOG_URL'),
+    ],
+
+    'twitter' => [
+        'client_id' => env('TWITTER_ID'),
+        'client_secret' => env('TWITTER_SECRET'),
+        'redirect' => env('TWITTER_URL'),
+    ],
 ];
