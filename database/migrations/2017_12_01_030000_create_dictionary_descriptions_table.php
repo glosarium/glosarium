@@ -1,10 +1,11 @@
 <?php
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
-class CreateDictionaryDescriptionTable extends Migration
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateDictionaryDescriptionsTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -17,11 +18,13 @@ class CreateDictionaryDescriptionTable extends Migration
             $table->integer('word_id')->unsigned();
             $table->text('text');
             $table->text('sample');
-            $table->string('source')->nullable()->default(null);
+            $table->string('source')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('word_id')->references('id')->on('dictionary_words');
+            $table->foreign('word_id')
+                ->references('id')
+                ->on('dictionary_words');
         });
     }
 
@@ -32,6 +35,7 @@ class CreateDictionaryDescriptionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dictionary_descriptions');
+        Schema::drop('dictionary_descriptions');
     }
+
 }
