@@ -30,6 +30,7 @@ class SocialController extends Controller
         $providers = [
             'twitter',
             'facebook',
+            'linkedin',
         ];
 
         if (!in_array($driver, $providers)) {

@@ -63,4 +63,10 @@ return [
         'client_secret' => env('FACEBOOK_SECRET'),
         'redirect' => env('FACEBOOK_URL'),
     ],
+
+    'linkedin' => [
+        'client_id' => env('LINKEDIN_ID'),
+        'client_secret' => env('LINKEDIN_SECRET'),
+        'redirect' => env('LINKEDID_URL'),
+    ],
 ];
