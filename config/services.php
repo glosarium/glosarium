@@ -40,8 +40,8 @@ return [
     ],
 
     'google_url_shortener' => [
-        'url' => env('GOOGLE_URL'),
-        'key' => env('GOOGLE_KEY'),
+        'url' => env('GOOGLE_SHORTENER_URL'),
+        'key' => env('GOOGLE_SHORTENER_KEY'),
     ],
 
     'dictionary' => [
