@@ -4,7 +4,7 @@ Glosarium adalah suatu daftar alfabetis istilah dalam suatu ranah pengetahuan te
 
 Lihat aplikasi pada [Glosarium Indonesia](http://glosarium.web.id).
 
-[![Glosarium Indonesia.png](https://s28.postimg.org/ov5mtoe1p/Glosarium_Indonesia.png)](https://postimg.org/image/xdf2y0kk9/)
+[![Glosarium_adalah_suatu_daftar_alfabetis_istilah.png](https://s26.postimg.org/bxs86wla1/Glosarium_adalah_suatu_daftar_alfabetis_istilah.png)](https://postimg.org/image/4ukcrafud/)
 
 ## Fitur Aplikasi
 - Pencarian kata.
