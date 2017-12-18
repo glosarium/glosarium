@@ -32,7 +32,7 @@
         <button class="btn btn-primary btn-block" type="submit">Masuk</button>
 
         <div class="login-footer">
-            <h6>Atau masuk dengan sosial media</h6>
+            <h6>Atau masuk dengan media sosial</h6>
             <ul class="social-icons">
                 <li><a class="facebook" href="{{ route('social.redirect', 'facebook') }}"><i class="fa fa-facebook"></i></a></li>
                 <li><a class="twitter" href="{{ route('social.redirect', 'twitter') }}"><i class="fa fa-twitter"></i></a></li>
