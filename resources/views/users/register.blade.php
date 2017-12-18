@@ -42,6 +42,9 @@
                 <li><a class="facebook" href="{{ route('social.redirect', 'facebook') }}"><i class="fa fa-facebook"></i></a></li>
                 <li><a class="twitter" href="{{ route('social.redirect', 'twitter') }}"><i class="fa fa-twitter"></i></a></li>
                 <li><a class="linkedin" href="{{ route('social.redirect', 'linkedin') }}"><i class="fa fa-linkedin"></i></a></li>
+                <li><a class="google-plus" href="{{ route('social.redirect', 'google') }}"><i class="fa fa-google-plus"></i></a></li>
+                <li><a class="github" href="{{ route('social.redirect', 'github') }}"><i class="fa fa-github"></i></a></li>
+                <li><a class="bitbucket" href="{{ route('social.redirect', 'bitbucket') }}"><i class="fa fa-bitbucket"></i></a></li>
             </ul>
         </div>
 

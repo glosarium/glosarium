@@ -32,6 +32,9 @@ class SocialController extends Controller
             'twitter',
             'facebook',
             'linkedin',
+            'google',
+            'github',
+            'bitbucket',
         ];
 
         if (!in_array($driver, $providers)) {
