@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\UserProvider;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
@@ -46,8 +47,15 @@ class SocialController extends Controller
      * @param string $driver
      * @return void
      */
-    public function callback($driver)
+    public function callback(Request $request, string $driver)
     {
+        abort_if(empty($request->all()), 500, 'Akses halaman tidak valid.');
+
+        if ($request->has('error') or $request->has('denied')) {
+            return redirect()
+                ->route('login');
+        }
+
         $provider = Socialite::driver($driver)->user();
 
         $userProvider = UserProvider::whereDriverName($driver)
