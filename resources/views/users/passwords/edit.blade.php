@@ -6,15 +6,21 @@
     <div class="container">
         <div class="row">
 
-            @include('partials.message')
+            <div class="col-md-12">
+                @include('partials.message')
+            </div>
 
             <form method="post" action="{{ route('user.password.update') }}">
-                {{ csrf_field() }} {{ method_field('post') }}
+                {{ csrf_field() }}
+                {{ method_field('post') }}
+
+                @if(! empty(auth()->user()->password))
                 <div class="form-group col-xs-12 col-sm-12 {{ !$errors->has('current_password') ?: 'has-error' }}">
                     <label>Sandi lewat lama</label>
                     <input type="password" name="current_password" class="form-control" autofocus="true">
                     <span class="help-block">{{ $errors->first('current_password') }}</span>
                 </div>
+                @endif
                 
                 <div class="form-group col-xs-12 col-sm-6 {{ !$errors->has('password') ?: 'has-error' }}">
                     <label>Sandi lewat baru</label>
@@ -31,7 +37,9 @@
         <div class="button-group">
             <div class="action-buttons">
                 <div class="upload-button">
-                    <button type="submit" class="btn btn-block btn-primary">Ubah Sandi Lewat</button>
+                    <button type="submit" class="btn btn-block btn-primary">
+                        {{ ! empty(auth()->user()->password) ? 'Ubah Sandi Lewat' : 'Setel Sandi Lewat' }}
+                    </button>
                 </div>
             </div>
         </div>

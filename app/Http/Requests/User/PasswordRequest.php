@@ -4,6 +4,7 @@ namespace App\Http\Requests\User;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class PasswordRequest extends FormRequest
 {
@@ -22,15 +23,17 @@ class PasswordRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        \Validator::extend('password', function ($attribute, $value) {
-            return \Hash::check($value, Auth::user()->password);
-        });
+        if ($request->has('current_password')) {
+            \Validator::extend('password', function ($attribute, $value) {
+                return \Hash::check($value, Auth::user()->password);
+            });
+        }
 
         return [
-            'current_password' => 'required|password',
-            'password'         => 'required|min:6|confirmed',
+            'current_password' => 'required|password|sometimes',
+            'password' => 'required|min:6|confirmed',
         ];
     }
 }
