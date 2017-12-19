@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -134,6 +135,16 @@ class User extends Authenticatable
     public function favorites()
     {
         return $this->hasMany(\App\App\Favorite::class);
+    }
+
+    /**
+     * User has many providers (social media account).
+     *
+     * @return HasMany
+     */
+    public function providers(): HasMany
+    {
+        return $this->hasMany(UserProvider::class);
     }
 
     /**

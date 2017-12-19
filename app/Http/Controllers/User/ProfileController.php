@@ -6,6 +6,7 @@ use Illuminate\View\View;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\ProfileRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -35,7 +36,10 @@ class ProfileController extends Controller
     {
         \SEO::setTitle('Ubah Profil');
         
-        return view('users.profiles.edit', ['user' => \Auth::user()]);
+        return view('users.profiles.edit', [
+            'user' => Auth::user(),
+            'providers' => Auth::user()->providers->keyBy('driver_name')->toArray()
+        ]);
     }
 
     /**

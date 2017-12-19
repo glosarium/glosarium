@@ -47,7 +47,7 @@
                     <a class="btn btn-white btn-sm" href="{{ route('glosarium.word.trash') }}">Tong Sampah</a>
                 </div>
             </div>
-            <hr
+            <hr>
 
             <div class="table-responsive">
                 <table class="table table-striped">

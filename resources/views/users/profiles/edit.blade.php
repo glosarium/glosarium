@@ -13,8 +13,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-4">
                     <div class="form-group">
-                        <img class="img-responsive" src="{{ $user->avatar }}">
-                        <span class="help-block">Gambar dapat diubah melalui <a href="https://www.gravatar.com" target="_blank">Gravatar</a>.</span>
+                        <img alt="{{ auth()->user()->name }}" class="img-responsive" src="{{ $user->avatar }}" width="400">
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-8">
@@ -80,4 +79,43 @@
 @endsection
 
 @section('content')
+<main>
+
+    <section>
+        <div class="container">
+
+            @include('partials.message')
+
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Media Sosial Terhubung</div>
+
+                    <div class="panel-body">
+                            @foreach(config('auth.socials') as $social => $alias)
+                                @if(array_key_exists($social, $providers))
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-{{ $social }} fa-stack-1x"></i>
+                                    </span>
+                                    {{ $providers[$social]['name'] }}
+                                    @if(! empty($providers[$social]['email']))
+                                        ({{ $providers[$social]['email'] }})
+                                    @endif
+                                @else
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-{{ $social }} fa-stack-1x"></i>
+                                    </span>
+                                    Belum terhubung
+                                @endif
+                                <br>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
 @endsection
