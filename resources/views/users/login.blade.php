@@ -25,7 +25,7 @@
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ti-unlock"></i></span>
-                <input type="password" name="password" class="form-control" placeholder="Sandi Lewat">
+                <input type="password" name="password" class="form-control" placeholder="Sandi lewat">
             </div>
         </div>
 
