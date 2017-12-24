@@ -75,7 +75,7 @@ class SocialController extends Controller
         if (!empty($userProvider)) {
             Auth::loginUsingId($userProvider->user_id);
 
-            if (starts_with($userProvider->user->image, 'http:')) {
+            if (empty($userProvider->user->image) or starts_with($userProvider->user->image, 'http:')) {
                 $userProvider->user->image = $secureImage;
                 $userProvider->user->save();
             }
