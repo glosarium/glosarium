@@ -4,6 +4,9 @@
 <header class="page-header bg-img text-center" style="background-image: url({{ asset('assets/img/bg-banner2.jpg') }})">
     <div class="container">
         <div class="col-xs-12">
+            @if (auth()->check() and auth()->user()->is_active == false)
+                <user-confirmation name="{{ auth()->user()->name }}"></user-confirmation>
+            @endif
             <h1>Glosarium Indonesia</h1>
             <h5 class="font-alt">Temukan kata dalam bahasa asing maupun padanan bahasa lokal, bahasa Indonesia.</h5>
             <br>

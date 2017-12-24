@@ -11,6 +11,13 @@
         </div>
         <div class="container">
             <div class="row">
+                <div class="col-md-12">
+                    @if (auth()->check() and auth()->user()->is_active == false)
+                        <user-confirmation name="{{ auth()->user()->name }}"></user-confirmation>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-12 col-sm-4">
                     <div class="form-group">
                         <img alt="{{ auth()->user()->name }}" class="img-responsive" src="{{ $user->avatar }}" width="400">

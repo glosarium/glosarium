@@ -15,6 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('user-confirmation', require('./components/user/Confirmation.vue'));
+
 const app = new Vue({
     el: '#app'
 });
