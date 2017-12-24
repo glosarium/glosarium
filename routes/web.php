@@ -13,8 +13,8 @@
 
 Route::get('/', 'HomeController')->name('home');
 
-Route::group(['middleware' => 'auth'], function(){
-    Route::group(['as' => 'contact.'], function(){
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['as' => 'contact.'], function () {
         // contact controller
         Route::get('kontak/pesan-masuk', 'ContactController@index')->name('index');
         Route::get('kontak/{id}/hapus', 'ContactController@destroy')->name('destroy');
@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('kontak/{id}/balas', 'ContactController@submit')->name('submit');
     });
 
-    Route::group(['namespace' => 'Dictionary', 'as' => 'dictionary.'], function(){
+    Route::group(['namespace' => 'Dictionary', 'as' => 'dictionary.'], function () {
         // dictionary
         Route::get('kamus/kata', 'WordController@index')->name('word.index');
         Route::get('kamus/{entry}/ubah', 'WordController@destroy')->name('word.edit');
@@ -41,12 +41,8 @@ Route::post('kontak/kirim', 'ContactController@send')->name('contact.post');
 // static pages
 Route::get('tentang-kami', 'PageController@about')->name('page.about');
 
-// blog
-Route::get('blog', 'BlogController@index')->name('blog.index');
-Route::get('blog/{slug}', 'BlogController@show')->name('blog.show');
-
 // login social media
-Route::group(['middleware' => 'guest'], function(){
+Route::group(['middleware' => 'guest'], function () {
     Route::get('masuk/{driver}', 'Auth\SocialController@redirect')->name('social.redirect');
     Route::get('masuk/{driver}/callback', 'Auth\SocialController@callback')->name('social.callback');
 });
