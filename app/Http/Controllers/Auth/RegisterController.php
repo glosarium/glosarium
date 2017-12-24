@@ -54,7 +54,8 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array                                        $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -79,7 +80,8 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return User
      */
     protected function create(array $data)
@@ -87,7 +89,9 @@ class RegisterController extends Controller
         try {
             DB::transaction(function () use ($data, &$user) {
                 $provider = session('provider');
-                $image = !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar();
+                if (!empty($provider)) {
+                    $image = !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar();
+                }
 
                 $user = User::create([
                     'name' => $data['name'],
@@ -99,7 +103,9 @@ class RegisterController extends Controller
                     'image' => isset($image) ? $image : '',
                 ]);
 
-                $userProvider = UserProvider::store($provider, $user, session('driver'));
+                if (!empty($provider)) {
+                    $userProvider = UserProvider::store($provider, $user, session('driver'));
+                }
 
                 // subscribe to newsletter
                 $subscriber = Subscriber::firstOrNew([
@@ -123,7 +129,6 @@ class RegisterController extends Controller
                 session()->forget('provider');
                 session()->forget('driver');
             });
-
         } catch (Exception $e) {
             if (request()->ajax()) {
                 return response()->json([
@@ -141,7 +146,8 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request    $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -162,7 +168,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(): View
     {
-        $image = (new Image)->addText('Daftar Kontributor', 50, 400, 150)
+        $image = (new Image())->addText('Daftar Kontributor', 50, 400, 150)
             ->addText(config('app.name'), 40, 400, 250)
             ->render('pages', 'register');
 
