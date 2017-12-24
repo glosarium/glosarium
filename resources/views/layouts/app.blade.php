@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> {!! SEO::generate() !!}
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <meta name="csrf-token" contint="{{ csrf_token() }}">
+    {!! SEO::generate() !!}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.min.css') }}" rel="stylesheet">
@@ -111,7 +113,7 @@
 
 
     <!-- Main container -->
-    <main>
+    <main id="app">
 
         @yield('content')
 
@@ -135,6 +137,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{ asset('js/component.js') }}"></script>
 
     @stack('js')
 
