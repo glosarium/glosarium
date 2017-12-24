@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="subscribe" class="form-subscribe" method="post" action="/newsletter/subscribe">
+<form @submit.prevent="subscribe" class="form-subscribe" method="post" action="/nawala/langganan">
     <div class="input-group">
         <input :disabled="loading" v-model="email" type="text" name="email" class="form-control input-lg" placeholder="Alamat pos-el kamu">
         <span class="input-group-btn">
