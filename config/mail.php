@@ -55,7 +55,7 @@ return [
      */
 
     'from' => [
-        'address' => 'glosarium.id@gmail.com',
+        'address' => 'info@glosarium.web.id',
         'name' => 'Glosarium Indonesia',
     ],
 
