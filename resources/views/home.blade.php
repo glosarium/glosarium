@@ -126,16 +126,7 @@
             <h2><strong>Berlangganan</strong></h2>
             <h6 class="font-alt">Berlangganan nawala untuk mendapatkan informasi terbaru</h6>
             <br><br>
-            <form class="form-subscribe" method="post" action="{{ route('newsletter.subscriber.subscribe') }}">
-                {{ csrf_field() }}
-                {{ method_field('post') }}
-                <div class="input-group">
-                    <input type="text" name="email" class="form-control input-lg" placeholder="Alamat pos-el kamu">
-                    <span class="input-group-btn">
-                    <button class="btn btn-success btn-lg" type="submit">Berlangganan</button>
-                    </span>
-                </div>
-            </form>
+            <newsletter-subscribe></newsletter-subscribe>
         </div>
     </section>
     <!-- END Newsletter -->

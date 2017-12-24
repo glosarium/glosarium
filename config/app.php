@@ -1,6 +1,6 @@
 <?php
-return [
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -137,7 +137,6 @@ return [
      */
 
     'providers' => [
-
         /*
      * Laravel Framework Service Providers...
      */
@@ -180,7 +179,7 @@ return [
         // https://github.com/RoumenDamianoff/laravel-sitemap
         Roumen\Sitemap\SitemapServiceProvider::class,
 
-        /**
+        /*
          * https://github.com/artesaos/seotools
          */
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
@@ -196,7 +195,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-        App\Providers\WordpressServiceProvider::class,
     ],
 
     /*
@@ -211,7 +209,6 @@ return [
      */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -255,12 +252,5 @@ return [
         'OpenGraph' => Artesaos\SEOTools\Facades\OpenGraph::class,
         'Twitter' => Artesaos\SEOTools\Facades\TwitterCard::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
-
-        // Wordpress Facade
-        'WPBlog' => App\Facades\Wordpress\Blog::class,
-        'WPCategory' => App\Facades\Wordpress\Category::class,
-        'WPTag' => App\Facades\Wordpress\Tag::class,
-        'WPPost' => App\Facades\Wordpress\Post::class,
     ],
-
 ];

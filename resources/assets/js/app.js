@@ -16,6 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('user-confirmation', require('./components/user/Confirmation.vue'));
+Vue.component('newsletter-subscribe', require('./components/newsletter/Subscribe.vue'));
 
 const app = new Vue({
     el: '#app'

@@ -18,32 +18,39 @@ use App\Mail\Newsletter\UnsubscribeMail;
 use App\Newsletter\Subscriber;
 use Crypt;
 use Illuminate\Http\Request;
-use Mail;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Manage subscribers for newsletter
+ * Manage subscribers for newsletter.
  */
 class SubscriberController extends Controller
 {
     /**
-     * Save or update subscriber
+     * Save new subscriber to database and send email confirmation.
      *
-     * @param  SubscriberRequest          $request
-     * @return Illumitate\Http\Response
+     * @param SubscriberRequest $request
+     *
+     * @return JsonResponse
      */
-    public function subscribe(SubscriberRequest $request)
+    public function subscribe(SubscriberRequest $request): JsonResponse
     {
-        $subscriber = Subscriber::firstOrNew([
-            'email' => $request->email,
+        DB::transaction(function () use (&$subscriber, $request) {
+            $subscriber = Subscriber::firstOrNew([
+                'email' => $request->email,
+            ]);
+
+            $subscriber->name = $request->name ?? $request->name;
+            $subscriber->is_subscribed = false;
+            $subscriber->save();
+
+            Mail::to($subscriber->email)->send(new SubscribeMail($subscriber));
+        });
+
+        return response()->json([
+            'status' => true,
         ]);
-
-        $subscriber->name = $request->name ?? $request->name;
-        $subscriber->is_subscribed = false;
-        $subscriber->save();
-
-        Mail::to($subscriber->email)->send(new SubscribeMail($subscriber));
-
-        return redirect()->back();
     }
 
     /**
