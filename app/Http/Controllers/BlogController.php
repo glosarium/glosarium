@@ -1,14 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use SEO;
-use App\Libraries\Wordpress;
-use WPBlog;
-use WPCategory;
-use WPTag;
-use WPPost;
 use Illuminate\View\View;
 
 class BlogController extends Controller
@@ -22,35 +18,30 @@ class BlogController extends Controller
 
     public function __construct()
     {
-        view()->share([
-            'info' => WPBlog::info(),
-            'categories' => WPCategory::all(),
-            'tags' => WPTag::all()
-        ]);
     }
 
     /**
      * Show all blog posts.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function index(Request $request): View
     {
         $this->validate($request, [
-            's' => 'string'
+            's' => 'string',
         ]);
 
         // get posts
         if ($request->has('s')) {
             $posts = WPPost::search($request->s);
-        }
-        else {
+        } else {
             $posts = WPPost::all();
         }
-        
+
         // generate SEO metadata based on latest post
-        if (! empty($posts) and ! empty($posts[0])) {
+        if (!empty($posts) and !empty($posts[0])) {
             $post = $posts[0];
             SEO::setTitle($post->title->rendered);
             SEO::setDescription(str_limit(strip_tags($post->excerpt->rendered), 160));
@@ -68,6 +59,7 @@ class BlogController extends Controller
      * Show single post using slug.
      *
      * @param string $slug
+     *
      * @return View
      */
     public function show(string $slug): View
