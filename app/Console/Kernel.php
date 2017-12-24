@@ -13,8 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\Word\Duplicate::class,
-        Commands\Route::class,
     ];
 
     /**
