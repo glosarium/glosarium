@@ -47,6 +47,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('masuk/{driver}/callback', 'Auth\SocialController@callback')->name('social.callback');
 });
 
+Route::get('peralatan/pos-el/ujicoba', 'Tool\MailTestController')->middleware('auth');
+
 Horizon::auth(function ($request) {
     if (\Auth::check()) {
         return \Auth::user()->type === 'admin';

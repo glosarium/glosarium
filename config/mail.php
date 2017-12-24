@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Mail Driver
@@ -16,7 +15,7 @@ return [
     |
      */
 
-    'driver'     => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +28,7 @@ return [
     |
      */
 
-    'host'       => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +41,7 @@ return [
     |
      */
 
-    'port'       => env('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,9 +54,14 @@ return [
     |
      */
 
-    'from'       => [
+    'from' => [
         'address' => 'glosarium.id@gmail.com',
-        'name'    => 'Glosarium Indonesia',
+        'name' => 'Glosarium Indonesia',
+    ],
+
+    'bcc' => [
+        'address' => 'dedy.yugo.purwanto@gmail.com',
+        'name' => 'Dedy Yugo Purwanto',
     ],
 
     /*
@@ -84,7 +88,7 @@ return [
     |
      */
 
-    'username'   => env('MAIL_USERNAME'),
+    'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -97,7 +101,7 @@ return [
     |
      */
 
-    'password'   => env('MAIL_PASSWORD'),
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +114,7 @@ return [
     |
      */
 
-    'sendmail'   => '/usr/sbin/sendmail -bs',
+    'sendmail' => '/usr/sbin/sendmail -bs',
 
     /*
     |--------------------------------------------------------------------------
@@ -123,12 +127,11 @@ return [
     |
      */
 
-    'markdown'   => [
+    'markdown' => [
         'theme' => 'default',
 
         'paths' => [
             resource_path('views/vendor/mail'),
         ],
     ],
-
 ];
