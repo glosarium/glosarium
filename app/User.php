@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Carbon\Carbon;
@@ -36,7 +37,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Convert to Carbon object
+     * Convert to Carbon object.
      *
      * @var var
      */
@@ -88,7 +89,8 @@ class User extends Authenticatable
         if (!empty($this->attributes['image'])) {
             return $this->attributes['image'];
         }
-        return 'https://www.gravatar.com/avatar/' . md5($this->attributes['email']) . '?s=200';
+
+        return 'https://www.gravatar.com/avatar/'.md5($this->attributes['email']).'?s=200';
     }
 
     /**
@@ -99,7 +101,7 @@ class User extends Authenticatable
     public function getTwitterLinkAttribute(): ?string
     {
         if (!empty($this->attributes['twitter'])) {
-            return 'https://www.twitter.com/' . $this->attributes['twitter'];
+            return 'https://www.twitter.com/'.$this->attributes['twitter'];
         }
 
         return null;
@@ -113,7 +115,7 @@ class User extends Authenticatable
     public function getInstagramLinkAttribute(): ?string
     {
         if (!empty($this->attributes['instagram'])) {
-            return 'https://www.instagram.com/' . $this->attributes['instagram'];
+            return 'https://www.instagram.com/'.$this->attributes['instagram'];
         }
 
         return null;
@@ -121,8 +123,6 @@ class User extends Authenticatable
 
     /**
      * User has many words.
-     *
-     * @return void
      */
     public function words()
     {
@@ -149,6 +149,7 @@ class User extends Authenticatable
 
     /**
      * @param  $query
+     *
      * @return mixed
      */
     public function scopeFilter($query)
@@ -156,8 +157,8 @@ class User extends Authenticatable
         $keyword = request('keyword');
 
         if ($keyword) {
-            $query->where('name', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+            $query->where('name', 'LIKE', '%'.$keyword.'%')
+                ->orWhere('email', 'LIKE', '%'.$keyword.'%');
         }
 
         return $query;

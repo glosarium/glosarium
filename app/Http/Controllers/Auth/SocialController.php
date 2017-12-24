@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
+use League\OAuth1\Client\Credentials\CredentialsException;
 
 class SocialController extends Controller
 {
-
     /**
      * Default redirect after logged in.
      *
@@ -24,7 +24,6 @@ class SocialController extends Controller
      * Login using third party provider.
      *
      * @param string $provider
-     * @return void
      */
     public function redirect($driver)
     {
@@ -48,7 +47,6 @@ class SocialController extends Controller
      * Callback login and get social media information.
      *
      * @param string $driver
-     * @return void
      */
     public function callback(Request $request, string $driver)
     {
@@ -59,32 +57,42 @@ class SocialController extends Controller
                 ->route('login');
         }
 
-        $provider = Socialite::driver($driver)->user();
+        try {
+            $provider = Socialite::driver($driver)->user();
+        } catch (CredentialsException $e) {
+            abort(500, 'Sesi tidak valid');
+        }
 
         $userProvider = UserProvider::whereDriverName($driver)
             ->whereDriverId(sha1($provider->getId()))
             ->with('user')
             ->first();
 
+        $image = !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar();
+        $secureImage = str_replace('http:', 'https:', $image);
+
         // user provider found, login and redirect to home
         if (!empty($userProvider)) {
             Auth::loginUsingId($userProvider->user_id);
 
+            if (starts_with($userProvider->user->image, 'http:')) {
+                $userProvider->user->image = $secureImage;
+                $userProvider->user->save();
+            }
+
             return redirect($this->redirectTo);
         }
-
-        $image = !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar();
 
         if (!empty($provider->getEmail())) {
             $user = User::whereEmail($provider->getEmail())->first();
 
             if (empty($user)) {
-                DB::transaction(function () use (&$user, $driver, $provider, $image) {
+                DB::transaction(function () use (&$user, $driver, $provider, $secureImage) {
                     $user = User::create([
                         'email' => $provider->getEmail(),
                         'name' => $provider->getName(),
                         'password' => '',
-                        'image' => $image,
+                        'image' => $secureImage,
                         'headline' => '',
                         'about' => !empty($provider->user['description']) ? $provider->user['description'] : '',
                         'twitter' => $driver == 'twitter' ? $provider->getNickname() : null,
@@ -95,7 +103,7 @@ class SocialController extends Controller
                 });
             } else {
                 if (empty($user->image)) {
-                    $user->image = $image;
+                    $user->image = $secureImage;
                 }
                 if (empty($user->about) and !empty($provider->user['description'])) {
                     $user->about = $provider->user['description'];

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class UserProvider extends Model
@@ -23,8 +22,6 @@ class UserProvider extends Model
 
     /**
      * User providers belongs to user.
-     *
-     * @return void
      */
     public function user()
     {
@@ -35,12 +32,15 @@ class UserProvider extends Model
      * Register new provider to user.
      *
      * @param object $provider
-     * @param User $user
+     * @param User   $user
      * @param string $driver
+     *
      * @return self
      */
     public static function store($provider, User $user, string $driver): self
     {
+        $image = !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar();
+
         return self::create([
             'user_id' => $user->id,
             'driver_id' => sha1($provider->getId()),
@@ -48,7 +48,7 @@ class UserProvider extends Model
             'name' => $provider->getName(),
             'nickname' => $provider->getNickname(),
             'email' => $provider->getEmail(),
-            'image' => !empty($provider->avatar_original) ? $provider->avatar_original : $provider->getAvatar(),
+            'image' => str_replace('http:', 'https:', $image),
         ]);
     }
 }
