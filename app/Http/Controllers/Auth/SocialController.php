@@ -8,8 +8,10 @@ use App\UserProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use League\OAuth1\Client\Credentials\CredentialsException;
+use App\Mail\User\SocialLoginMail;
 
 class SocialController extends Controller
 {
@@ -87,7 +89,7 @@ class SocialController extends Controller
             $user = User::whereEmail($provider->getEmail())->first();
 
             if (empty($user)) {
-                DB::transaction(function () use (&$user, $driver, $provider, $secureImage) {
+                DB::transaction(function () use (&$userProvider, &$user, $driver, $provider, $secureImage) {
                     $user = User::create([
                         'email' => $provider->getEmail(),
                         'name' => $provider->getName(),
@@ -114,6 +116,10 @@ class SocialController extends Controller
             }
 
             Auth::loginUsingId($user->id);
+
+            // send email notification to user
+            Mail::to($userProvider->user->email)
+                ->send(new SocialLoginMail($userProvider, $driver));
 
             return redirect($this->redirectTo);
         } else {

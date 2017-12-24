@@ -9,15 +9,16 @@ use App\Newsletter\Subscriber;
 use App\Notifications\User\RegistrationNotification;
 use App\User;
 use App\UserProvider;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use Notification;
 use SEO;
+use App\Mail\User\SocialLoginMail;
 
 class RegisterController extends Controller
 {
@@ -105,6 +106,10 @@ class RegisterController extends Controller
 
                 if (!empty($provider)) {
                     $userProvider = UserProvider::store($provider, $user, session('driver'));
+
+                    // send email notification to user
+                    Mail::to($userProvider->user->email)
+                        ->send(new SocialLoginMail($userProvider, session('driver')));
                 }
 
                 // subscribe to newsletter
