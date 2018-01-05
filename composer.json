@@ -10,6 +10,7 @@
     "artesaos/seotools": "^0.10.0",
     "barryvdh/laravel-debugbar": "^2.3",
     "cviebrock/eloquent-sluggable": "^4.1",
+    "dg/twitter-php": "^3.6",
     "guzzlehttp/guzzle": "^6.2",
     "intervention/image": "^2.3",
     "jenssegers/agent": "^2.5",
