@@ -7,13 +7,13 @@
         <p class="lead text-center">Sebagai kontributor, kata yang kamu ajukan harus melalui tahap moderasi.</p>
     </div>
     <div class="container">
+        <form method="post" action="{{ route('glosarium.word.store') }}">
         <div class="row">
 
             <div class="col-sm-12">
                 @include('partials.message')
             </div>
 
-            <form method="post" action="{{ route('glosarium.word.store') }}">
                 {{ csrf_field() }} {{ method_field('post') }}
                 <div class="form-group col-xs-12 col-sm-6 {{ !$errors->has('origin') ?: 'has-error' }}">
                     <label>Kata asal dalam bahasa asing</label>

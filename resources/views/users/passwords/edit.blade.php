@@ -4,13 +4,13 @@
         <h1 class="text-center">Ubah Sandi Lewat</h1>
     </div>
     <div class="container">
+        <form method="post" action="{{ route('user.password.update') }}">
         <div class="row">
 
             <div class="col-md-12">
                 @include('partials.message')
             </div>
 
-            <form method="post" action="{{ route('user.password.update') }}">
                 {{ csrf_field() }}
                 {{ method_field('post') }}
 
