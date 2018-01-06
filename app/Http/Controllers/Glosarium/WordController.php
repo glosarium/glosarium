@@ -21,12 +21,11 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Glosarium\Category;
 use Illuminate\Http\RedirectResponse;
-use App\Glosarium\Favorite;
 use SEO;
 use Auth;
 
 /**
- * Manage glosarium words
+ * Manage glosarium words.
  */
 class WordController extends Controller
 {
@@ -40,13 +39,14 @@ class WordController extends Controller
         $this->cacheTime = \Carbon\Carbon::now()->addDays(30);
 
         // default description for metadata
-        \SEO::setDescription(config('app.description'));
+        SEO::setDescription(config('app.description'));
     }
 
     /**
      * Show all words for administrations.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function all(Request $request): View
@@ -56,17 +56,17 @@ class WordController extends Controller
         $this->validate($request, [
             'limit' => 'integer|max:50',
             'kategori' => 'array',
-            'katakunci' => 'string'
+            'katakunci' => 'string',
         ]);
 
         SEO::setTitle('Semua Kata');
 
         $words = Word::with('category', 'user')
-            ->when($request->katakunci, function($query) use($request){
+            ->when($request->katakunci, function ($query) use ($request) {
                 return $query->filter($request->katakunci);
             })
-            ->when($request->kategori, function($query) use($request){
-                return $query->whereHas('category', function($category) use($request){
+            ->when($request->kategori, function ($query) use ($request) {
+                return $query->whereHas('category', function ($category) use ($request) {
                     return $category->whereIn('slug', $request->kategori);
                 });
             })
@@ -84,6 +84,7 @@ class WordController extends Controller
      * Show all pending words.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function moderation(Request $request): View
@@ -103,6 +104,7 @@ class WordController extends Controller
      * Show all deleted words.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function trash(Request $request): View
@@ -119,19 +121,19 @@ class WordController extends Controller
     }
 
     /**
-     * Show all words
+     * Show all words.
      *
      * @return Illuminate\Http\Response
      */
-    public function index(Request $request) : View
+    public function index(Request $request): View
     {
         $this->validate($request, [
             'limit' => 'integer|max:50',
-            'kategori' => 'array'
+            'kategori' => 'array',
         ]);
 
         // generate image for index
-        $image = (new Image)
+        $image = (new Image())
             ->addText(config('app.name'), 50, 400, 200)
             ->render('images/pages', 'home')
             ->path();
@@ -160,19 +162,20 @@ class WordController extends Controller
     }
 
     /**
-     * Show single and detailed word
+     * Show single and detailed word.
      *
-     * @param  string                     $category
-     * @param  string                     $slug
+     * @param string $category
+     * @param string $slug
+     *
      * @return Illuminate\Http\Response
      */
-    public function show(Request $request, $categorySlug, $slug) : View
+    public function show(Request $request, $categorySlug, $slug): View
     {
         $word = Word::whereSlug($slug)
             ->whereIsPublished(true)
             ->whereHas('category', function ($category) use ($categorySlug) {
-            return $category->whereSlug($categorySlug);
-        })
+                return $category->whereSlug($categorySlug);
+            })
             ->with('category', 'description')
             ->withCount('favorites')
             ->first();
@@ -189,7 +192,7 @@ class WordController extends Controller
         // get wikipedia page if description is empty
         if ($word->has_description) {
             if (empty($word->description)) {
-                $wikipedia = new Wikipedia;
+                $wikipedia = new Wikipedia();
                 $wikipedias = $wikipedia->openSearch($word->locale);
                 if (empty($wikipedias)) {
                     $wikipedias = $wikipedia->openSearch($word->origin);
@@ -202,8 +205,7 @@ class WordController extends Controller
                         'description' => $wikipedia->description(),
                         'url' => $wikipedia->url(),
                     ]);
-                }
-                else {
+                } else {
                     // flag word has no description
                     $word->has_description = false;
                     $word->save();
@@ -212,7 +214,7 @@ class WordController extends Controller
         }
 
         // generate image
-        $image = (new Image)->addText(sprintf('%s (%s)', $word->origin, $word->lang), 50, 400, 150)
+        $image = (new Image())->addText(sprintf('%s (%s)', $word->origin, $word->lang), 50, 400, 150)
             ->addText($word->locale, 40, 400, 250)
             ->render(sprintf('words/%s', $word->category->slug), $word->slug);
 
@@ -242,12 +244,12 @@ class WordController extends Controller
      *
      * @return View
      */
-    public function create() : View
+    public function create(): View
     {
         $this->authorize('create', Word::class);
-        
+
         // create image
-        $image = (new Image)->addText($title = trans('glosarium.word.create'), 40, 400, 200)
+        $image = (new Image())->addText($title = trans('glosarium.word.create'), 40, 400, 200)
             ->render('images/pages', 'create-glossary')
             ->path();
 
@@ -259,12 +261,13 @@ class WordController extends Controller
     }
 
     /**
-     * Create and store new glossary
+     * Create and store new glossary.
      *
-     * @param  WordRequest $request
-     * @return string      JSON
+     * @param WordRequest $request
+     *
+     * @return string JSON
      */
-    public function store(WordRequest $request) : RedirectResponse
+    public function store(WordRequest $request): RedirectResponse
     {
         \DB::transaction(function () use (&$word, $request) {
             $request->merge([
@@ -272,7 +275,7 @@ class WordController extends Controller
                 'user_id' => \Auth::id(),
                 'is_published' => \Auth::user()->type == 'admin',
                 'is_standard' => false,
-                'category_id' => Category::whereSlug($request->category_id)->first()->id
+                'category_id' => Category::whereSlug($request->category_id)->first()->id,
             ]);
 
             $word = Word::create($request->all());
@@ -280,7 +283,7 @@ class WordController extends Controller
             if ($word->is_published) {
                 \dispatch(new \App\Jobs\Glosarium\Words\CreateShortUrl($word));
             }
-    
+
             // send email confirmation to glosarium
             \Mail::to('glosariumid@gmail.com')
                 ->send(new \App\Mail\Glosarium\Word\CreateMail($word, \Auth::user()));
@@ -295,9 +298,10 @@ class WordController extends Controller
      * Show form edit.
      *
      * @param string $slug
+     *
      * @return View
      */
-    public function edit(string $slug) : View
+    public function edit(string $slug): View
     {
         $word = Word::whereSlug($slug)
             ->with('category')
@@ -316,9 +320,10 @@ class WordController extends Controller
      * Save edited word.
      *
      * @param WordRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(WordRequest $request, string $slug) : RedirectResponse
+    public function update(WordRequest $request, string $slug): RedirectResponse
     {
         $word = Word::whereSlug($slug)
             ->firstOrFail();
@@ -327,7 +332,7 @@ class WordController extends Controller
 
         $request->merge([
             'is_published' => Auth::user()->type === 'admin',
-            'category_id' => Category::whereSlug($request->category_id)->first()->id
+            'category_id' => Category::whereSlug($request->category_id)->first()->id,
         ]);
 
         $word->fill($request->all());
@@ -342,13 +347,14 @@ class WordController extends Controller
      * Show word contributed by user.
      *
      * @param Request $request
+     *
      * @return View
      */
-    public function contribute(Request $request) : View
+    public function contribute(Request $request): View
     {
         $this->validate($request, [
             'limit' => 'integer|max:50',
-            'katakunci' => 'string'
+            'katakunci' => 'string',
         ]);
 
         $words = Word::whereUserId(\Auth::id())
@@ -368,9 +374,10 @@ class WordController extends Controller
      * Move word to trash.
      *
      * @param string $slug
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $slug) : RedirectResponse
+    public function destroy(string $slug): RedirectResponse
     {
         $word = Word::whereSlug($slug)
             ->first();
@@ -392,6 +399,7 @@ class WordController extends Controller
      * Publish pending word.
      *
      * @param string $slug
+     *
      * @return RedirectResponse
      */
     public function publish(string $slug): RedirectResponse
@@ -413,6 +421,7 @@ class WordController extends Controller
      * Restore trashed word.
      *
      * @param string $slug
+     *
      * @return RedirectResponse
      */
     public function restore(string $slug): RedirectResponse
@@ -434,6 +443,7 @@ class WordController extends Controller
      * Delete word forever.
      *
      * @param string $slug
+     *
      * @return RedirectResponse
      */
     public function delete(string $slug): RedirectResponse

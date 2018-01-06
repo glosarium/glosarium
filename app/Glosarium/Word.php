@@ -71,7 +71,7 @@ class Word extends Model
      * @var array
      */
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     public function getRouteKeyName()
@@ -86,6 +86,46 @@ class Word extends Model
                 'source' => 'locale',
             ],
         ];
+    }
+
+    /**
+     * Filter origin attribute before storing into database.
+     *
+     * @param string $origin
+     */
+    public function getOriginAttribute($origin)
+    {
+        return strtolower(trim($origin));
+    }
+
+    /**
+     * Filter local attribute before storing into database.
+     *
+     * @param string $local
+     */
+    public function getLocalAttribute($local)
+    {
+        return strtolower(trim($local));
+    }
+
+    /**
+     * Attribute mutator for origin.
+     *
+     * @param [type] $origin
+     */
+    public function setOriginAttribute($origin)
+    {
+        $this->attributes['origin'] = $this->getOriginAttribute($origin);
+    }
+
+    /**
+     * Attribute mutator local.
+     *
+     * @param string $local
+     */
+    public function setLocalAttribute($local)
+    {
+        $this->attributes['local'] = $this->getLocalAttribute($local);
     }
 
     /**
@@ -121,16 +161,17 @@ class Word extends Model
     }
 
     /**
-     * Full text search by single keyword
+     * Full text search by single keyword.
      *
-     * @param  object $query     Eloquent query
+     * @param object $query Eloquent query
+     *
      * @return object Eloquent
      */
     public function scopeFilter($query, $field)
     {
         if ($field) {
-            $query->where('origin', 'LIKE', '%' . $field . '%')
-                ->orWhere('locale', 'LIKE', '%' . $field . '%');
+            $query->where('origin', 'LIKE', '%'.$field.'%')
+                ->orWhere('locale', 'LIKE', '%'.$field.'%');
 
             // save to search database
             if (!Auth::check() or (Auth::check() and Auth::user()->type != 'admin')) {
@@ -147,6 +188,7 @@ class Word extends Model
     /**
      * @param  $query
      * @param  $keyword
+     *
      * @return mixed
      */
     public function scopeFilterPending($query, $keyword = null): Builder
@@ -154,17 +196,18 @@ class Word extends Model
         $keyword = trim(request('keyword', $keyword));
 
         if (!empty($keyword)) {
-            $query->where('origin', 'like', '%' . $keyword . '%')
-                ->orWhere('locale', 'like', '%' . $keyword . '%');
+            $query->where('origin', 'like', '%'.$keyword.'%')
+                ->orWhere('locale', 'like', '%'.$keyword.'%');
         }
 
         return $query;
     }
 
     /**
-     * Default sorting for word
+     * Default sorting for word.
      *
-     * @param  object $query     Eloquent query
+     * @param object $query Eloquent query
+     *
      * @return object Eloquent
      */
     public function scopeSort($query, $keyword = null): Builder
@@ -173,18 +216,17 @@ class Word extends Model
         if ($keyword) {
             $query->orderBy(\DB::raw('CHAR_LENGTH(origin)'), 'ASC')
                 ->orderBy(\DB::raw('CHAR_LENGTH(locale)'), 'ASC');
-        }
-        else {
+        } else {
             $query->orderBy('origin', 'ASC')
                 ->orderBy('locale', 'ASC');
         }
 
         return $query;
-
     }
 
     /**
      * @param  $query
+     *
      * @return mixed
      */
     public function scopeIsPublished($query): Builder
