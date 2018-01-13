@@ -66,6 +66,8 @@ class TweetCommand extends Command
             );
             $twitter->send($tweet);
 
+            \Log::info('Kata glosarium telah ditwitkan.', $word);
+
             $this->info(sprintf('Word %s (%s) has been tweeted.', $word->origin, $word->locale));
         } else {
             $this->line('No word has been tweeted.');
