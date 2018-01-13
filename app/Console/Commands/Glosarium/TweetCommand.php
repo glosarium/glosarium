@@ -4,7 +4,7 @@ namespace App\Console\Commands\Glosarium;
 
 // Twitter package doesn't define namespace
 // so include it manually to prevent conflict with another class
-include_once 'vendor/dg/twitter-php/src/Twitter.php';
+include_once base_path('vendor/dg/twitter-php/src/Twitter.php');
 
 use Illuminate\Console\Command;
 use App\Glosarium\Word;
