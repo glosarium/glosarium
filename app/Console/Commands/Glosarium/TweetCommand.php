@@ -58,7 +58,7 @@ class TweetCommand extends Command
             ->first();
 
         if (!empty($word)) {
-            $tweet = sprintf('Dalam kategori %s, padanan untuk kata %s adalah %s. #glosarium %s',
+            $tweet = sprintf('Dalam bidang %s, padanan untuk kata %s adalah %s. #glosarium %s',
                 $word->category->name,
                 $word->origin,
                 $word->locale,
