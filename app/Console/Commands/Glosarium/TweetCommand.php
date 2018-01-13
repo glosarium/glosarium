@@ -4,10 +4,11 @@ namespace App\Console\Commands\Glosarium;
 
 // Twitter package doesn't define namespace
 // so include it manually to prevent conflict with another class
-include_once 'vendor/dg/twitter-php/src/twitter.class.php';
+include_once 'vendor/dg/twitter-php/src/Twitter.php';
 
 use Illuminate\Console\Command;
 use App\Glosarium\Word;
+use Illuminate\Support\Facades\Log;
 
 class TweetCommand extends Command
 {
@@ -66,11 +67,15 @@ class TweetCommand extends Command
             );
             $twitter->send($tweet);
 
-            \Log::info('Kata glosarium telah ditwitkan.', $word);
+            Log::info('Kata glosarium telah ditwitkan.', [
+                'origin' => $word->origin,
+                'local' => $word->local,
+                'category' => $word->category->name,
+            ]);
 
-            $this->info(sprintf('Word %s (%s) has been tweeted.', $word->origin, $word->locale));
+            $this->info(sprintf('Kata %s (%s) ditwitkan.', $word->origin, $word->locale));
         } else {
-            $this->line('No word has been tweeted.');
+            $this->line('Tidak ada kata yang ditwitkan.');
         }
     }
 }
