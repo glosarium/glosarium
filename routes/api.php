@@ -10,3 +10,9 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
+
+Route::group(['namespace' => 'Api\V1'], function() {
+    Route::group(['namespace' => 'Glosarium', 'prefix' => 'glosarium'], function(){
+        Route::get('word/search', 'WordController@search');
+    });
+});
